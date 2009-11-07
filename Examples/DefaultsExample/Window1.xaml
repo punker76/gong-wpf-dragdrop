@@ -6,6 +6,17 @@
     xmlns:tk="http://schemas.microsoft.com/wpf/2008/toolkit"
     Title="Gong Solutions Drag'n'Drop: Defaults Example" Height="520" Width="620">
     
+    <Window.Resources>
+        <DataTemplate x:Key="DragAdorner">
+            <Border Background="Silver" BorderBrush="Gray" BorderThickness="1" CornerRadius="2" Margin="1">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/icon.png" Width="16" Margin="0,0,2,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding}" Margin="0,0,2,0" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Window.DataContext>
         <local:Data/>
     </Window.DataContext>
@@ -27,9 +38,11 @@
                 </TextBlock>
                 
                 <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Collection1}" SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>            
+                         dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"/>
                 <ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Collection2}" 
-                         dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>
+                         dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"/>
             </Grid>
         </TabItem>
         
@@ -113,7 +126,8 @@
                 </TextBlock>
 
                 <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Collection1}" SelectionMode="Extended"
-                          dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+                          dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
@@ -128,7 +142,8 @@
                     </ListView.View>
                 </ListView>
                 <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Collection2}" 
-                          dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+                          dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -164,7 +179,8 @@
 
                 <tk:DataGrid Grid.Row="1" Grid.Column="0" AutoGenerateColumns="False" 
                              ItemsSource="{Binding Collection1}" GridLinesVisibility="None"
-                             dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+                             dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
                     <tk:DataGrid.Columns>
                         <tk:DataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value"/>
                     </tk:DataGrid.Columns>
@@ -172,7 +188,8 @@
             
                 <tk:DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False" 
                              ItemsSource="{Binding Collection2}" GridLinesVisibility="None"
-                             dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+                             dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
                     <tk:DataGrid.Columns>
                         <tk:DataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value"/>
                     </tk:DataGrid.Columns>
