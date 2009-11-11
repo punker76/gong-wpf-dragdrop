@@ -112,6 +112,8 @@ namespace GongSolutions.Wpf.DragDrop
             DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop),
                 new UIPropertyMetadata(false, IsDropTargetChanged));
 
+        public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
+
         static void IsDragSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             UIElement uiElement = (UIElement)d;
@@ -287,7 +289,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                     if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null)
                     {
-                        DataObject data = new DataObject(m_Format.Name, m_DragInfo.Data);
+                        DataObject data = new DataObject(DataFormat.Name, m_DragInfo.Data);
                         System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
                         m_DragInfo = null;
                     }
@@ -308,7 +310,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
         {
-            DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo, m_Format.Name);
+            DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo);
             IDropTarget dropHandler = GetDropHandler((UIElement)sender);
 
             if (dropHandler != null)
@@ -368,7 +370,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
         {
-            DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo, m_Format.Name);
+            DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo);
             IDropTarget dropHandler = GetDropHandler((UIElement)sender);
 
             DragAdorner = null;
@@ -419,6 +421,5 @@ namespace GongSolutions.Wpf.DragDrop
         static DragAdorner m_DragAdorner;
         static DragInfo m_DragInfo;
         static DropTargetAdorner m_DropTargetAdorner;
-        static DataFormat m_Format = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
     }
 }
