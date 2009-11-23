@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -248,9 +249,9 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems())
             {
-                IEnumerable selectedItems = itemsControl.GetSelectedItems();
+                IEnumerable<object> selectedItems = itemsControl.GetSelectedItems().Cast<object>();
 
-                if (selectedItems.Cast<object>().Contains(m_DragInfo.SourceItem))
+                if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
                 {
                     // TODO: Re-raise the supressed event if the user didn't initiate a drag.
                     e.Handled = true;
