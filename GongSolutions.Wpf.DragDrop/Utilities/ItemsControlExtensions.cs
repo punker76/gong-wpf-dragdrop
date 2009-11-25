@@ -18,7 +18,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             if (itemsControl is MultiSelector)
             {
                 // The CanSelectMultipleItems property is protected. Use reflection to
-                // get it's value anyway.
+                // get its value anyway.
                 return (bool)itemsControl.GetType()
                     .GetProperty("CanSelectMultipleItems", BindingFlags.Instance | BindingFlags.NonPublic)
                     .GetValue(itemsControl, null);
