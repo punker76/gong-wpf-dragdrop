@@ -3,6 +3,7 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop.Utilities;
+using System.Windows.Data;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -50,11 +51,17 @@ namespace GongSolutions.Wpf.DragDrop
                 if (item != null)
                 {
                     ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+                    GroupItem group = item.GetVisualAncestor<GroupItem>();
 
                     InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
                     TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
                     TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
                     VisualTargetItem = item;
+
+                    if (group != null)
+                    {
+                        TargetGroup = group.Content as CollectionViewGroup;
+                    }
 
                     if (VisualTargetOrientation == Orientation.Vertical)
                     {
@@ -64,6 +71,8 @@ namespace GongSolutions.Wpf.DragDrop
                     {
                         if (e.GetPosition(item).X > item.RenderSize.Width / 2) InsertIndex++;
                     }
+
+                    Console.WriteLine(TargetGroup);
                 }
                 else
                 {
@@ -133,6 +142,16 @@ namespace GongSolutions.Wpf.DragDrop
         /// If the current drop target is unbound or not an ItemsControl, this will be null.
         /// </remarks>
         public object TargetItem { get; private set; }
+
+        /// <summary>
+        /// Gets the current group target.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// If the drag is currently over an ItemsControl with groups, describes the group that
+        /// the drag is currently over.
+        /// </remarks>
+        public CollectionViewGroup TargetGroup { get; private set; }
 
         /// <summary>
         /// Gets the control that is the current drop target.

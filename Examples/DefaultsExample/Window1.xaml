@@ -15,6 +15,12 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+        
+        <CollectionViewSource x:Key="GroupedCollectionViewSource" Source="{Binding GroupedCollection}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Group"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </Window.Resources>
     
     <Window.DataContext>
@@ -254,6 +260,16 @@
                     </TreeViewItem>
                 </TreeView>
             </Grid>
+        </TabItem>
+        
+        <TabItem Header="ListBox with Groups">
+            <ListBox ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}" DisplayMemberPath="Caption"
+                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.DropHandler="{Binding}">
+                <ListBox.GroupStyle>
+                    <x:Static Member="GroupStyle.Default"/>
+                </ListBox.GroupStyle>
+            </ListBox>
         </TabItem>
     </TabControl>
 </Window>

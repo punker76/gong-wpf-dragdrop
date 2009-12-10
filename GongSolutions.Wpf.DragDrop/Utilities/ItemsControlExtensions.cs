@@ -60,9 +60,23 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static Type GetItemContainerType(this ItemsControl itemsControl)
         {
-            // There is no safe way to get the item container type for an ItemsControl. The
-            // best we can do is to look for the control's ItemsPresenter, get it's child 
-            // panel and the first child of that *should* be an item container.
+            // There is no safe way to get the item container type for an ItemsControl. 
+            // First hard-code the types for the common ItemsControls.
+            if (itemsControl is ListBox)
+            {
+                return typeof(ListBoxItem);
+            }
+            else if (itemsControl is ListView)
+            {
+                return typeof(ListViewItem);
+            }
+            else if (itemsControl is TreeView)
+            {
+                return typeof(TreeViewItem);
+            }
+
+            // Otherwise look for the control's ItemsPresenter, get it's child panel and the first 
+            // child of that *should* be an item container.
             //
             // If the control currently has no items, we're out of luck.
             if (itemsControl.Items.Count > 0)
