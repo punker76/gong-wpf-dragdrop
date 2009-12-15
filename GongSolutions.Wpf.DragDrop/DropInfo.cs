@@ -44,23 +44,30 @@ namespace GongSolutions.Wpf.DragDrop
             if (sender is ItemsControl)
             {
                 ItemsControl itemsControl = (ItemsControl)sender;
-                UIElement item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl));
+                Point position = e.GetPosition(itemsControl);
+                UIElement item = itemsControl.GetItemContainerAt(position);
+                bool directlyOverItem = item != null;
 
+                TargetGroup = FindGroup(itemsControl, position);
                 VisualTargetOrientation = itemsControl.GetItemsPanelOrientation();
+
+                if (item == null)
+                {
+                    item = itemsControl.GetItemContainerAt(position, VisualTargetOrientation);
+                    directlyOverItem = false;
+                }
 
                 if (item != null)
                 {
                     ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
-                    GroupItem group = item.GetVisualAncestor<GroupItem>();
 
                     InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
                     TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
-                    TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
-                    VisualTargetItem = item;
 
-                    if (group != null)
+                    if (directlyOverItem)
                     {
-                        TargetGroup = group.Content as CollectionViewGroup;
+                        TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+                        VisualTargetItem = item;
                     }
 
                     if (VisualTargetOrientation == Orientation.Vertical)
@@ -71,8 +78,6 @@ namespace GongSolutions.Wpf.DragDrop
                     {
                         if (e.GetPosition(item).X > item.RenderSize.Width / 2) InsertIndex++;
                     }
-
-                    Console.WriteLine(TargetGroup);
                 }
                 else
                 {
@@ -80,6 +85,23 @@ namespace GongSolutions.Wpf.DragDrop
                     InsertIndex = itemsControl.Items.Count;
                 }
             }
+        }
+
+        private CollectionViewGroup FindGroup(ItemsControl itemsControl, Point position)
+        {
+            DependencyObject element = itemsControl.InputHitTest(position) as DependencyObject;
+
+            if (element != null)
+            {
+                GroupItem groupItem = element.GetVisualAncestor<GroupItem>();
+
+                if (groupItem != null)
+                {
+                    return groupItem.Content as CollectionViewGroup;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

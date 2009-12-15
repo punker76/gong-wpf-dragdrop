@@ -58,21 +58,59 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             return null;
         }
 
+        public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position, 
+                                                   Orientation searchDirection)
+        {
+            Type itemContainerType = GetItemContainerType(itemsControl);
+
+            if (itemContainerType != null)
+            {
+                LineGeometry line;
+
+                switch (searchDirection)
+                {
+                    case Orientation.Horizontal:
+                        line = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+                        break;
+                    case Orientation.Vertical:
+                        line = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid value for searchDirection");
+                }
+
+                List<DependencyObject> hits = new List<DependencyObject>();
+
+                VisualTreeHelper.HitTest(itemsControl, null,
+                    result =>
+                    {
+                        DependencyObject itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
+                        if (itemContainer != null) hits.Add(itemContainer);
+                        return HitTestResultBehavior.Continue;
+                    },
+                    new GeometryHitTestParameters(line));
+
+                return GetClosest(itemsControl, hits, position, searchDirection);
+            }
+
+            return null;
+        }
+
         public static Type GetItemContainerType(this ItemsControl itemsControl)
         {
             // There is no safe way to get the item container type for an ItemsControl. 
             // First hard-code the types for the common ItemsControls.
-            if (itemsControl is ListBox)
-            {
-                return typeof(ListBoxItem);
-            }
-            else if (itemsControl is ListView)
+            if (itemsControl is ListView)
             {
                 return typeof(ListViewItem);
             }
             else if (itemsControl is TreeView)
             {
                 return typeof(TreeViewItem);
+            }
+            else if (itemsControl is ListBox)
+            {
+                return typeof(ListBoxItem);
             }
 
             // Otherwise look for the control's ItemsPresenter, get it's child panel and the first 
@@ -149,6 +187,42 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 return Enumerable.Empty<object>();
             }
+        }
+        
+        static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items, 
+                                    Point position, Orientation searchDirection)
+        {
+            UIElement closest = null;
+            double closestDistance = double.MaxValue;
+
+            foreach (DependencyObject i in items)
+            {
+                UIElement uiElement = i as UIElement;
+
+                if (uiElement != null)
+                {
+                    Point p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                    double distance = double.MaxValue;
+
+                    switch (searchDirection)
+                    {
+                        case Orientation.Horizontal:
+                            distance = Math.Abs(position.X - p.X);
+                            break;
+                        case Orientation.Vertical:
+                            distance = Math.Abs(position.Y - p.Y);
+                            break;
+                    }
+
+                    if (distance < closestDistance)
+                    {
+                        closest = uiElement;
+                        closestDistance = distance;
+                    }
+                }
+            }
+
+            return closest;
         }
     }
 }

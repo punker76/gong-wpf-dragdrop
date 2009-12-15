@@ -28,7 +28,7 @@ namespace DefaultsExample
             {
                 for (int i = 0; i < 2; ++i)
                 {
-                    GroupedCollection.Add(new GroupedItem("Group " + g, "Item " + i));
+                    GroupedCollection.Add(new GroupedItem("Group " + g, "Group " + g + " Item " + i));
                 }
             }
 
@@ -62,6 +62,7 @@ namespace DefaultsExample
         void IDropTarget.DragOver(DropInfo dropInfo)
         {
             DragDrop.DefaultDropHandler.DragOver(dropInfo);
+            if (dropInfo.TargetGroup == null) dropInfo.Effects = System.Windows.DragDropEffects.None;
         }
 
         void IDropTarget.Drop(DropInfo dropInfo)

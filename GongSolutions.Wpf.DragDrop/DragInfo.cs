@@ -41,11 +41,6 @@ namespace GongSolutions.Wpf.DragDrop
                 ItemsControl itemsControl = (ItemsControl)sender;
                 UIElement item = itemsControl.GetItemContainer((UIElement)e.OriginalSource);
 
-                if (item is GroupItem)
-                {
-                    
-                }
-
                 if (item != null)
                 {
                     ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
