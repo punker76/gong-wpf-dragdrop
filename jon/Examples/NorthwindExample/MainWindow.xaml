@@ -1,0 +1,13 @@
+﻿<Window x:Class="NorthwindExample.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:NorthwindExample.ViewModels"
+    xmlns:views="clr-namespace:NorthwindExample.Views"
+    Title="Gong Solutions Drag'n'Drop: Northwind Example" Height="520" Width="620">
+        
+    <TabControl>
+        <TabItem Header="Employees">
+            <views:EmployeesTabView DataContext="{Binding EmployeesTab}"/>
+        </TabItem>
+    </TabControl>
+</Window>
