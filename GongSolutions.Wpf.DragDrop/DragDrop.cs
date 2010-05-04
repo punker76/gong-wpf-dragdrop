@@ -342,6 +342,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo);
             IDropTarget dropHandler = GetDropHandler((UIElement)sender);
+            ItemsControl itemsControl = sender as ItemsControl;
 
             if (dropHandler != null)
             {
@@ -372,23 +373,31 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             // If the target is an ItemsControl then update the drop target adorner.
-            if (sender is ItemsControl)
+            if (itemsControl != null)
             {
-                UIElement adornedElement = ((ItemsControl)sender).GetVisualDescendent<ItemsPresenter>();
+                // Display the adorner in the control's ItemsPresenter. If there is no 
+                // ItemsPresenter provided by the style, try getting hold of a
+                // ScrollContentPresenter and using that.
+                UIElement adornedElement = 
+                    (UIElement)itemsControl.GetVisualDescendent<ItemsPresenter>() ??
+                    (UIElement)itemsControl.GetVisualDescendent<ScrollContentPresenter>();
 
-                if (dropInfo.DropTargetAdorner == null)
+                if (adornedElement != null)
                 {
-                    DropTargetAdorner = null;
-                }
-                else if (!dropInfo.DropTargetAdorner.IsInstanceOfType(DropTargetAdorner))
-                {
-                    DropTargetAdorner = DropTargetAdorner.Create(dropInfo.DropTargetAdorner, adornedElement);
-                }
+                    if (dropInfo.DropTargetAdorner == null)
+                    {
+                        DropTargetAdorner = null;
+                    }
+                    else if (!dropInfo.DropTargetAdorner.IsInstanceOfType(DropTargetAdorner))
+                    {
+                        DropTargetAdorner = DropTargetAdorner.Create(dropInfo.DropTargetAdorner, adornedElement);
+                    }
 
-                if (DropTargetAdorner != null)
-                {
-                    DropTargetAdorner.DropInfo = dropInfo;
-                    DropTargetAdorner.InvalidateVisual();
+                    if (DropTargetAdorner != null)
+                    {
+                        DropTargetAdorner.DropInfo = dropInfo;
+                        DropTargetAdorner.InvalidateVisual();
+                    }
                 }
             }
 

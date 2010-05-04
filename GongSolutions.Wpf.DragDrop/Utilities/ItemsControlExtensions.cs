@@ -142,18 +142,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         public static Orientation GetItemsPanelOrientation(this ItemsControl itemsControl)
         {
             ItemsPresenter itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
-            DependencyObject itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
-            PropertyInfo orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
 
-            if (orientationProperty != null)
+            if (itemsPresenter != null)
             {
-                return (Orientation)orientationProperty.GetValue(itemsPanel, null);
+                DependencyObject itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                PropertyInfo orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
+
+                if (orientationProperty != null)
+                {
+                    return (Orientation)orientationProperty.GetValue(itemsPanel, null);
+                }
             }
-            else
-            {
-                // Make a guess!
-                return Orientation.Vertical;
-            }
+
+            // Make a guess!
+            return Orientation.Vertical;
         }
 
         public static void SetSelectedItem(this ItemsControl itemsControl, object item)
