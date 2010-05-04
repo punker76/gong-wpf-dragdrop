@@ -156,6 +156,27 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
         }
 
+        public static void SetSelectedItem(this ItemsControl itemsControl, object item)
+        {
+            if (itemsControl is MultiSelector)
+            {
+                ((MultiSelector)itemsControl).SelectedItem = item;
+            }
+            else if (itemsControl is ListBox)
+            {
+                ((ListBox)itemsControl).SelectedItem = item;
+            }
+            else if (itemsControl is TreeView)
+            {
+                // TODO: Select the TreeViewItem
+                //((TreeView)itemsControl)
+            }
+            else if (itemsControl is Selector)
+            {
+                ((Selector)itemsControl).SelectedItem = item;                
+            }            
+        }
+
         public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)
         {
             if (itemsControl is MultiSelector)

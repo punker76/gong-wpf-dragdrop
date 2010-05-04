@@ -261,6 +261,25 @@ namespace GongSolutions.Wpf.DragDrop
 
         static void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            // If the sender is allows multiple selections, select the DragInfo source item
+            ItemsControl itemsControl = sender as ItemsControl;
+
+            if (m_DragInfo != null && 
+                m_DragInfo.VisualSourceItem != null && 
+                itemsControl != null && 
+                itemsControl.CanSelectMultipleItems() && 
+                Keyboard.Modifiers != ModifierKeys.Shift && 
+                Keyboard.Modifiers != ModifierKeys.Control &&
+                Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                IEnumerable<object> selectedItems = itemsControl.GetSelectedItems().Cast<object>();
+
+                if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
+                {
+                    itemsControl.SetSelectedItem(m_DragInfo.SourceItem);
+                }
+            }
+
             if (m_DragInfo != null)
             {
                 m_DragInfo = null;
