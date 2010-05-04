@@ -161,8 +161,18 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (template != null)
             {
-                UIElement rootElement = (UIElement)Application.Current.MainWindow.Content;
+                UIElement rootElement = null;
+                Window parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
                 UIElement adornment = null;
+
+                if (parentWindow != null)
+                {
+                    rootElement = parentWindow.Content as UIElement;
+                }
+                if (rootElement == null)
+                {
+                    rootElement = (UIElement)Application.Current.MainWindow.Content;
+                }
 
                 if (m_DragInfo.Data is IEnumerable && !(m_DragInfo.Data is string))
                 {
