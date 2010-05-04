@@ -298,7 +298,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (m_DragInfo != null)
+            if (m_DragInfo != null && !m_DragInProgress)
             {
                 Point dragStart = m_DragInfo.DragStartPosition;
                 Point position = e.GetPosition(null);
@@ -320,7 +320,17 @@ namespace GongSolutions.Wpf.DragDrop
                     if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null)
                     {
                         DataObject data = new DataObject(DataFormat.Name, m_DragInfo.Data);
-                        System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
+
+                        try
+                        {
+                            m_DragInProgress = true;
+                            System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
+                        }
+                        finally
+                        {
+                            m_DragInProgress = false;
+                        }
+
                         m_DragInfo = null;
                     }
                 }
@@ -459,6 +469,7 @@ namespace GongSolutions.Wpf.DragDrop
         static IDropTarget m_DefaultDropHandler;
         static DragAdorner m_DragAdorner;
         static DragInfo m_DragInfo;
+        static bool m_DragInProgress;
         static DropTargetAdorner m_DropTargetAdorner;
     }
 }
