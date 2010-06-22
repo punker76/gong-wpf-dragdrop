@@ -162,10 +162,12 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             if (itemsControl is MultiSelector)
             {
+                ((MultiSelector)itemsControl).SelectedItem = null;
                 ((MultiSelector)itemsControl).SelectedItem = item;
             }
             else if (itemsControl is ListBox)
             {
+                ((ListBox)itemsControl).SelectedItem = null;
                 ((ListBox)itemsControl).SelectedItem = item;
             }
             else if (itemsControl is TreeView)
@@ -175,7 +177,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else if (itemsControl is Selector)
             {
-                ((Selector)itemsControl).SelectedItem = item;                
+                ((Selector)itemsControl).SelectedItem = null;
+                ((Selector)itemsControl).SelectedItem = item;            
             }            
         }
 
