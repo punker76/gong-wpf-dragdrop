@@ -263,7 +263,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
                 {
-                    // TODO: Re-raise the supressed event if the user didn't initiate a drag.
+                    m_ClickSupressItem = m_DragInfo.SourceItem;
                     e.Handled = true;
                 }
             }
@@ -271,20 +271,17 @@ namespace GongSolutions.Wpf.DragDrop
 
         static void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // If the sender is allows multiple selections, select the DragInfo source item
+            // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
+            // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
             ItemsControl itemsControl = sender as ItemsControl;
 
-            if (m_DragInfo != null && 
-                m_DragInfo.VisualSourceItem != null && 
-                itemsControl != null && 
-                itemsControl.CanSelectMultipleItems() && 
-                Keyboard.Modifiers != ModifierKeys.Shift && 
-                Keyboard.Modifiers != ModifierKeys.Control &&
-                Keyboard.Modifiers != (ModifierKeys.Control | ModifierKeys.Shift))
+            if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem == m_DragInfo.SourceItem)
             {
-                IEnumerable<object> selectedItems = itemsControl.GetSelectedItems().Cast<object>();
-
-                if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
+                if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+                {
+                    itemsControl.SetItemSelected(m_DragInfo.SourceItem, false);
+                }
+                else
                 {
                     itemsControl.SetSelectedItem(m_DragInfo.SourceItem);
                 }
@@ -294,6 +291,8 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 m_DragInfo = null;
             }
+
+            m_ClickSupressItem = null;
         }
 
         static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -471,5 +470,6 @@ namespace GongSolutions.Wpf.DragDrop
         static DragInfo m_DragInfo;
         static bool m_DragInProgress;
         static DropTargetAdorner m_DropTargetAdorner;
+        static object m_ClickSupressItem;
     }
 }

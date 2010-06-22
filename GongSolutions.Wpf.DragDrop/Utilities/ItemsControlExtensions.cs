@@ -214,7 +214,75 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 return Enumerable.Empty<object>();
             }
         }
-        
+
+        public static bool GetItemSelected(this ItemsControl itemsControl, object item)
+        {
+            if (itemsControl is MultiSelector)
+            {
+                return ((MultiSelector)itemsControl).SelectedItems.Contains(item);
+            }
+            else if (itemsControl is ListBox)
+            {
+                return ((ListBox)itemsControl).SelectedItems.Contains(item);
+            }
+            else if (itemsControl is TreeView)
+            {
+                return ((TreeView)itemsControl).SelectedItem == item;
+            }
+            else if (itemsControl is Selector)
+            {
+                return ((Selector)itemsControl).SelectedItem == item;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void SetItemSelected(this ItemsControl itemsControl, object item, bool value)
+        {
+            if (itemsControl is MultiSelector)
+            {
+                MultiSelector multiSelector = (MultiSelector)itemsControl;
+
+                if (value)
+                {
+                    if (multiSelector.CanSelectMultipleItems())
+                    {
+                        multiSelector.SelectedItems.Add(item);
+                    }
+                    else
+                    {
+                        multiSelector.SelectedItem = item;
+                    }
+                }
+                else
+                {
+                    multiSelector.SelectedItems.Remove(item);
+                }
+            }
+            else if (itemsControl is ListBox)
+            {
+                ListBox listBox = (ListBox)itemsControl;
+
+                if (value)
+                {
+                    if (listBox.SelectionMode != SelectionMode.Single)
+                    {
+                        listBox.SelectedItems.Add(item);
+                    }
+                    else
+                    {
+                        listBox.SelectedItem = item;
+                    }
+                }
+                else
+                {
+                    listBox.SelectedItems.Remove(item);
+                }
+            }
+        }
+
         static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items, 
                                     Point position, Orientation searchDirection)
         {
