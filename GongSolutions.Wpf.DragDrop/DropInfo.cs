@@ -40,20 +40,20 @@ namespace GongSolutions.Wpf.DragDrop
             DragInfo = dragInfo;
 
             VisualTarget = sender as UIElement;
+            DropPosition = e.GetPosition(VisualTarget);
 
             if (sender is ItemsControl)
             {
                 ItemsControl itemsControl = (ItemsControl)sender;
-                Point position = e.GetPosition(itemsControl);
-                UIElement item = itemsControl.GetItemContainerAt(position);
+                UIElement item = itemsControl.GetItemContainerAt(DropPosition);
                 bool directlyOverItem = item != null;
 
-                TargetGroup = FindGroup(itemsControl, position);
+                TargetGroup = FindGroup(itemsControl, DropPosition);
                 VisualTargetOrientation = itemsControl.GetItemsPanelOrientation();
 
                 if (item == null)
                 {
-                    item = itemsControl.GetItemContainerAt(position, VisualTargetOrientation);
+                    item = itemsControl.GetItemContainerAt(DropPosition, VisualTargetOrientation);
                     directlyOverItem = false;
                 }
 
@@ -121,6 +121,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// if the drag came from within the framework.
         /// </summary>
         public DragInfo DragInfo { get; private set; }
+
+        /// <summary>
+        /// Gets the mouse position relative to the VisualTarget
+        /// </summary>
+        public Point DropPosition { get; private set; }
 
         /// <summary>
         /// Gets or sets the class of drop target to display.
