@@ -59,13 +59,13 @@ namespace DefaultsExample
         // The drop handler is only used for the grouping example.
         //
 
-        void IDropTarget.DragOver(DropInfo dropInfo)
+        void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             DragDrop.DefaultDropHandler.DragOver(dropInfo);
             if (dropInfo.TargetGroup == null) dropInfo.Effects = System.Windows.DragDropEffects.None;
         }
 
-        void IDropTarget.Drop(DropInfo dropInfo)
+        void IDropTarget.Drop(IDropInfo dropInfo)
         {
             // I know this example is called DefaultsExample, but the default handlers don't know how
             // to set an item's group. You need to explicitly set the group on the dropped item like this.

@@ -22,7 +22,7 @@ namespace NorthwindExample.ViewModels
             SubOrdinates.Filter = FilterSubOrdinate;
         }
 
-        void IDropTarget.DragOver(DropInfo dropInfo)
+        void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             EmployeeViewModel targetEmployee = dropInfo.TargetItem as EmployeeViewModel;
             IEnumerable<EmployeeViewModel> employees = GetEmployees(dropInfo.Data);
@@ -34,7 +34,7 @@ namespace NorthwindExample.ViewModels
             }
         }
 
-        void IDropTarget.Drop(DropInfo dropInfo)
+        void IDropTarget.Drop(IDropInfo dropInfo)
         {
             EmployeeViewModel targetEmployee = (EmployeeViewModel)dropInfo.TargetItem;
             IEnumerable<EmployeeViewModel> employees = GetEmployees(dropInfo.Data);

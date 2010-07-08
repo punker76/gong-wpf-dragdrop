@@ -16,7 +16,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// 
         /// <param name="dropInfo">
-        /// Information about the drag.
+        ///   Information about the drag.
         /// </param>
         /// 
         /// <remarks>
@@ -24,15 +24,15 @@ namespace GongSolutions.Wpf.DragDrop
         /// <paramref name="dropInfo"/> should be set to a value other than <see cref="DragDropEffects.None"/>
         /// and <see cref="DropInfo.Data"/> should be set to a non-null value.
         /// </remarks>
-        void DragOver(DropInfo dropInfo);
+        void DragOver(IDropInfo dropInfo);
 
         /// <summary>
         /// Performs a drop.
         /// </summary>
         /// 
         /// <param name="dropInfo">
-        /// Information about the drop.
+        ///   Information about the drop.
         /// </param>
-        void Drop(DropInfo dropInfo);
+        void Drop(IDropInfo dropInfo);
     }
 }
