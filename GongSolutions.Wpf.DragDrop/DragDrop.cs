@@ -419,20 +419,13 @@ namespace GongSolutions.Wpf.DragDrop
         static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
         {
             DropInfo dropInfo = new DropInfo(sender, e, m_DragInfo);
-            IDropTarget dropHandler = GetDropHandler((UIElement)sender);
+            IDropTarget dropHandler = GetDropHandler((UIElement)sender) ?? DefaultDropHandler;
+            IDragSource dragHandler = GetDragHandler((UIElement)sender) ?? DefaultDragHandler;
 
             DragAdorner = null;
             DropTargetAdorner = null;
-
-            if (dropHandler != null)
-            {
-                dropHandler.Drop(dropInfo);
-            }
-            else
-            {
-                DefaultDropHandler.Drop(dropInfo);
-            }
-
+            dropHandler.Drop(dropInfo);
+            dragHandler.Dropped(dropInfo);
             e.Handled = true;
         }
 

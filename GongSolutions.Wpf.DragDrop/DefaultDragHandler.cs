@@ -6,7 +6,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public class DefaultDragHandler : IDragSource
     {
-        public virtual void StartDrag(DragInfo dragInfo)
+        public virtual void StartDrag(IDragInfo dragInfo)
         {
             int itemCount = dragInfo.SourceItems.Cast<object>().Count();
 
@@ -22,6 +22,10 @@ namespace GongSolutions.Wpf.DragDrop
             dragInfo.Effects = (dragInfo.Data != null) ? 
                 DragDropEffects.Copy | DragDropEffects.Move : 
                 DragDropEffects.None;
+        }
+
+        public virtual void Dropped(IDropInfo dropInfo)
+        {
         }
     }
 }

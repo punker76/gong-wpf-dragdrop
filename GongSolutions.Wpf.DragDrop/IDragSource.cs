@@ -22,6 +22,15 @@ namespace GongSolutions.Wpf.DragDrop
         /// To allow a drag to be started, the <see cref="DragInfo.Effects"/> property on <paramref name="dragInfo"/> 
         /// should be set to a value other than <see cref="DragDropEffects.None"/>. 
         /// </remarks>
-        void StartDrag(DragInfo dragInfo);
+        void StartDrag(IDragInfo dragInfo);
+
+        /// <summary>
+        /// Notifies the drag handler that a drop has occurred.
+        /// </summary>
+        /// 
+        /// <param name="dropInfo">
+        ///   Information about the drop.
+        /// </param>
+        void Dropped(IDropInfo dropInfo);
     }
 }
