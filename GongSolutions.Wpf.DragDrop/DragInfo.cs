@@ -120,8 +120,10 @@ namespace GongSolutions.Wpf.DragDrop
                 {
                     ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
-                    SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
-                    SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+                    if (itemParent != null) {
+                      SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
+                      SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+                    }
                     SourceItems = itemsControl.GetSelectedItems();
 
                     // Some controls (I'm looking at you TreeView!) haven't updated their
