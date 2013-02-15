@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("GongSolutions.Wpf.DragDrop")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Drag'n'Drap Framework for WPF")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GongSolutions.Wpf.DragDrop")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCopyright("Copyright © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.3.1")]
-[assembly: AssemblyFileVersion("0.1.3.1")]
+[assembly: AssemblyVersion("0.1.3.2")]
+[assembly: AssemblyFileVersion("0.1.3.2")]
