@@ -14,7 +14,8 @@ It has the following features:
 
 #Current Status
 
-The library is in its early stages, but should still be useful and reasonably bug-free. I've started adding API documentation and version 0.1.3.1 now contains an XML file documenting the most commonly used classes.
+The library is in its early stages, but should still be useful and reasonably bug-free.
+I've started adding API documentation and version 0.1.3.3 now contains an XML file documenting the most commonly used classes.
 
 #Installation
 
@@ -22,6 +23,12 @@ You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-
 
 #Release History
 
++ **0.1.3.3** (16 Feb, 2013)
+	- Fix Issue [34](http://code.google.com/p/gong-wpf-dragdrop/issues/detail?id=34): Error with HitTestScrollBar thx to [rdingwall](https://github.com/rdingwall) (Richard Dingwall)
+	- Fix for possible exception: Unable to cast object of type 'System.Windows.Documents.Run' to type 'System.Windows.UIElement'. thx to [rdingwall](https://github.com/rdingwall) (Richard Dingwall)
++ **0.1.3.2** (15 Feb, 2013)
+	- add icon url and license url for nuget package
+	- add Steven Kirk to authors and owners
 + **0.1.3.1** (7 Feb, 2013)
 	- Fix possible null pointer exception for getting the item parent at DragInfo. 
 	- Create NuGet package.
