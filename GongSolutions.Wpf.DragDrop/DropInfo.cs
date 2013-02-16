@@ -133,65 +133,71 @@ namespace GongSolutions.Wpf.DragDrop
         /// </param>
         public DropInfo(object sender, DragEventArgs e, DragInfo dragInfo)
         {
-            string dataFormat = DragDrop.DataFormat.Name;
-            Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
-            DragInfo = dragInfo;
+            var dataFormat = DragDrop.DataFormat.Name;
+            this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
+            this.DragInfo = dragInfo;
 
-            VisualTarget = sender as UIElement;
-            DropPosition = e.GetPosition(VisualTarget);
+            this.VisualTarget = sender as UIElement;
+            this.DropPosition = e.GetPosition(this.VisualTarget);
 
             if (sender is ItemsControl)
             {
-                ItemsControl itemsControl = (ItemsControl)sender;
-                UIElement item = itemsControl.GetItemContainerAt(DropPosition);
-                bool directlyOverItem = item != null;
+                var itemsControl = (ItemsControl)sender;
+                var item = itemsControl.GetItemContainerAt(this.DropPosition);
+                var directlyOverItem = item != null;
 
-                TargetGroup = FindGroup(itemsControl, DropPosition);
-                VisualTargetOrientation = itemsControl.GetItemsPanelOrientation();
+                this.TargetGroup = this.FindGroup(itemsControl, this.DropPosition);
+                this.VisualTargetOrientation = itemsControl.GetItemsPanelOrientation();
 
                 if (item == null)
                 {
-                    item = itemsControl.GetItemContainerAt(DropPosition, VisualTargetOrientation);
+                    item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
                     directlyOverItem = false;
                 }
 
                 if (item != null)
                 {
-                    ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+                    var itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
-                    InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
-                    TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
+                    this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
+                    this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
 
                     if (directlyOverItem)
                     {
-                        TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
-                        VisualTargetItem = item;
+                        this.TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+                        this.VisualTargetItem = item;
                     }
 
-                    if (VisualTargetOrientation == Orientation.Vertical)
+                    if (this.VisualTargetOrientation == Orientation.Vertical)
                     {
-                        if (e.GetPosition(item).Y > item.RenderSize.Height / 2) InsertIndex++;
+                        if (e.GetPosition(item).Y > item.RenderSize.Height / 2)
+                        {
+                            this.InsertIndex++;
+                        }
                     }
                     else
                     {
-                        if (e.GetPosition(item).X > item.RenderSize.Width / 2) InsertIndex++;
+                        if (e.GetPosition(item).X > item.RenderSize.Width / 2)
+                        {
+                            this.InsertIndex++;
+                        }
                     }
                 }
                 else
                 {
-                    TargetCollection = itemsControl.ItemsSource ?? itemsControl.Items;
-                    InsertIndex = itemsControl.Items.Count;
+                    this.TargetCollection = itemsControl.ItemsSource ?? itemsControl.Items;
+                    this.InsertIndex = itemsControl.Items.Count;
                 }
             }
         }
 
         private CollectionViewGroup FindGroup(ItemsControl itemsControl, Point position)
         {
-            DependencyObject element = itemsControl.InputHitTest(position) as DependencyObject;
+            var element = itemsControl.InputHitTest(position) as DependencyObject;
 
             if (element != null)
             {
-                GroupItem groupItem = element.GetVisualAncestor<GroupItem>();
+                var groupItem = element.GetVisualAncestor<GroupItem>();
 
                 if (groupItem != null)
                 {

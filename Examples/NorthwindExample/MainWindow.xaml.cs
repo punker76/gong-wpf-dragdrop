@@ -19,8 +19,8 @@ namespace NorthwindExample
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = new ApplicationViewModel(new NorthwindDataClassesDataContext());
+            this.InitializeComponent();
+            this.DataContext = new ApplicationViewModel(new NorthwindDataClassesDataContext());
         }
     }
 }

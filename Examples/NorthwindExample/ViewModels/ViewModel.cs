@@ -6,11 +6,11 @@ using System.ComponentModel;
 
 namespace NorthwindExample.ViewModels
 {
-    class ViewModel<TDataModel> : INotifyPropertyChanged
+    internal class ViewModel<TDataModel> : INotifyPropertyChanged
     {
         public ViewModel(TDataModel dataModel)
         {
-            DataModel = dataModel;
+            this.DataModel = dataModel;
         }
 
         public TDataModel DataModel { get; private set; }
@@ -18,9 +18,9 @@ namespace NorthwindExample.ViewModels
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if (this.PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }

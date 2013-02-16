@@ -6,7 +6,7 @@ using NorthwindExample.Models;
 
 namespace NorthwindExample.ViewModels
 {
-    class EmployeeViewModel : ViewModel<Employee>
+    internal class EmployeeViewModel : ViewModel<Employee>
     {
         public EmployeeViewModel(Employee dataModel)
             : base(dataModel)
@@ -15,17 +15,17 @@ namespace NorthwindExample.ViewModels
 
         public string FirstName
         {
-            get { return DataModel.FirstName; }
+            get { return this.DataModel.FirstName; }
         }
 
         public string FullName
         {
-            get { return FirstName + " " + LastName; }
+            get { return this.FirstName + " " + this.LastName; }
         }
 
         public string LastName
         {
-            get { return DataModel.LastName; }
+            get { return this.DataModel.LastName; }
         }
     }
 }

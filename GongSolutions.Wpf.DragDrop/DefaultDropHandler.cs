@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-    class DefaultDropHandler : IDropTarget
+    internal class DefaultDropHandler : IDropTarget
     {
         public virtual void DragOver(IDropInfo dropInfo)
         {
@@ -23,22 +23,22 @@ namespace GongSolutions.Wpf.DragDrop
 
         public virtual void Drop(IDropInfo dropInfo)
         {
-            int insertIndex = dropInfo.InsertIndex;
-            IList destinationList = GetList(dropInfo.TargetCollection);
-            IEnumerable data = ExtractData(dropInfo.Data);
+            var insertIndex = dropInfo.InsertIndex;
+            var destinationList = GetList(dropInfo.TargetCollection);
+            var data = ExtractData(dropInfo.Data);
 
             if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget)
             {
-                IList sourceList = GetList(dropInfo.DragInfo.SourceCollection);
+                var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
 
-                foreach (object o in data)
+                foreach (var o in data)
                 {
-                    int index = sourceList.IndexOf(o);
+                    var index = sourceList.IndexOf(o);
 
                     if (index != -1)
                     {
                         sourceList.RemoveAt(index);
-                        
+
                         if (sourceList == destinationList && index < insertIndex)
                         {
                             --insertIndex;
@@ -47,7 +47,7 @@ namespace GongSolutions.Wpf.DragDrop
                 }
             }
 
-            foreach (object o in data)
+            foreach (var o in data)
             {
                 destinationList.Insert(insertIndex++, o);
             }
@@ -102,7 +102,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
         {
-            ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(targetItem);
+            var parent = ItemsControl.ItemsControlFromItemContainer(targetItem);
 
             while (parent != null)
             {
@@ -119,17 +119,16 @@ namespace GongSolutions.Wpf.DragDrop
 
         protected static bool TestCompatibleTypes(IEnumerable target, object data)
         {
-            TypeFilter filter = (t, o) =>
-            {
-                return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-            };
+            TypeFilter filter = (t, o) => {
+                                    return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+                                };
 
             var enumerableInterfaces = target.GetType().FindInterfaces(filter, null);
             var enumerableTypes = from i in enumerableInterfaces select i.GetGenericArguments().Single();
 
             if (enumerableTypes.Count() > 0)
             {
-                Type dataType = TypeUtilities.GetCommonBaseClass(ExtractData(data));
+                var dataType = TypeUtilities.GetCommonBaseClass(ExtractData(data));
                 return enumerableTypes.Any(t => t.IsAssignableFrom(dataType));
             }
             else

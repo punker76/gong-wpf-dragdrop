@@ -13,29 +13,40 @@ namespace GongSolutions.Wpf.DragDrop.UnitTests
         public void TestCompatibleTypes_Of_Same_Type()
         {
             Assert.IsTrue(DefaultDropHandler_Accessor.TestCompatibleTypes(
-                new List<string>(), 
-                new[] { "Foo", "Bar" }));
+                                                                          new List<string>(),
+                                                                          new[] {"Foo", "Bar"}));
         }
 
         [TestMethod]
         public void TestCompatibleTypes_Common_Interface()
         {
             Assert.IsTrue(DefaultDropHandler_Accessor.TestCompatibleTypes(
-                new List<IInterface>(),
-                new[] { new BaseClass(), new DerivedClassA() }));
+                                                                          new List<IInterface>(),
+                                                                          new[] {new BaseClass(), new DerivedClassA()}));
         }
 
         [TestMethod]
         public void TestCompatibleTypes_Collection_TooDerived()
         {
             Assert.IsFalse(DefaultDropHandler_Accessor.TestCompatibleTypes(
-                new List<DerivedClassA>(),
-                new[] { new BaseClass(), new DerivedClassA() }));
+                                                                           new List<DerivedClassA>(),
+                                                                           new[] {new BaseClass(), new DerivedClassA()}));
         }
 
-        interface IInterface { }
-        class BaseClass : IInterface { }
-        class DerivedClassA : BaseClass { }
-        class DerivedClassB : BaseClass { }
+        private interface IInterface
+        {
+        }
+
+        private class BaseClass : IInterface
+        {
+        }
+
+        private class DerivedClassA : BaseClass
+        {
+        }
+
+        private class DerivedClassB : BaseClass
+        {
+        }
     }
 }

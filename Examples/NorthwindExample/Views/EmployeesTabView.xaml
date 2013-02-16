@@ -6,39 +6,54 @@
     <UserControl.Resources>
         <DataTemplate x:Key="EmployeeDragTemplate">
             <StackPanel>
-                <Image Source="/Person.png" Width="64" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding FullName}" HorizontalAlignment="Center"/>
+                <Image Source="/Person.png"
+                       Width="64"
+                       HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding FullName}"
+                           HorizontalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Margin="0,0,0,4">
+
+        <TextBlock Grid.Row="0"
+                   Margin="0,0,0,4">
             Drag and drop employees to make them the subordinate of another.
         </TextBlock>
-        
-        <tk:DataGrid Grid.Row="1" GridLinesVisibility="None" ItemsSource="{Binding Employees}" 
-                     IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False" SelectionMode="Single"
-                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding}" 
+
+        <tk:DataGrid Grid.Row="1"
+                     GridLinesVisibility="None"
+                     ItemsSource="{Binding Employees}"
+                     IsSynchronizedWithCurrentItem="True"
+                     AutoGenerateColumns="False"
+                     SelectionMode="Single"
+                     dd:DragDrop.IsDragSource="True"
+                     dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.DropHandler="{Binding}"
                      dd:DragDrop.DragAdornerTemplate="{StaticResource EmployeeDragTemplate}">
             <tk:DataGrid.Columns>
-                <tk:DataGridTextColumn Header="First Name" Binding="{Binding FirstName, Mode=OneWay}"/>
-                <tk:DataGridTextColumn Header="Last Name" Binding="{Binding LastName, Mode=OneWay}"/>
+                <tk:DataGridTextColumn Header="First Name"
+                                       Binding="{Binding FirstName, Mode=OneWay}" />
+                <tk:DataGridTextColumn Header="Last Name"
+                                       Binding="{Binding LastName, Mode=OneWay}" />
             </tk:DataGrid.Columns>
         </tk:DataGrid>
-        
+
         <Label Grid.Row="2">Subordinates:</Label>
-        <ListBox Grid.Row="3" ItemsSource="{Binding SubOrdinates}" DisplayMemberPath="FullName"
-                 SelectionMode="Extended" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                 dd:DragDrop.DropHandler="{Binding}" 
-                 dd:DragDrop.DragAdornerTemplate="{StaticResource EmployeeDragTemplate}"/>
+        <ListBox Grid.Row="3"
+                 ItemsSource="{Binding SubOrdinates}"
+                 DisplayMemberPath="FullName"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DropHandler="{Binding}"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource EmployeeDragTemplate}" />
     </Grid>
 </UserControl>

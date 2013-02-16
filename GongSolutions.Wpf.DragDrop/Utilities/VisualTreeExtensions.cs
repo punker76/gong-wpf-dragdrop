@@ -10,12 +10,15 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
         public static T GetVisualAncestor<T>(this DependencyObject d) where T : class
         {
-            DependencyObject item = VisualTreeHelper.GetParent(d);
+            var item = VisualTreeHelper.GetParent(d);
 
             while (item != null)
             {
-                T itemAsT = item as T;
-                if (itemAsT != null) return itemAsT;
+                var itemAsT = item as T;
+                if (itemAsT != null)
+                {
+                    return itemAsT;
+                }
                 item = VisualTreeHelper.GetParent(item);
             }
 
@@ -24,36 +27,39 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static DependencyObject GetVisualAncestor(this DependencyObject d, Type type)
         {
-            DependencyObject item = VisualTreeHelper.GetParent(d);
+            var item = VisualTreeHelper.GetParent(d);
 
             while (item != null)
             {
-                if (item.GetType() == type) return item;
+                if (item.GetType() == type)
+                {
+                    return item;
+                }
                 item = VisualTreeHelper.GetParent(item);
             }
 
             return null;
         }
-        
+
         public static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
         {
             return d.GetVisualDescendents<T>().FirstOrDefault();
         }
-        
+
         public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d) where T : DependencyObject
         {
-            int childCount = VisualTreeHelper.GetChildrenCount(d);
+            var childCount = VisualTreeHelper.GetChildrenCount(d);
 
-            for (int n = 0; n < childCount; n++)
+            for (var n = 0; n < childCount; n++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(d, n);
+                var child = VisualTreeHelper.GetChild(d, n);
 
                 if (child is T)
                 {
                     yield return (T)child;
                 }
 
-                foreach (T match in GetVisualDescendents<T>(child))
+                foreach (var match in GetVisualDescendents<T>(child))
                 {
                     yield return match;
                 }

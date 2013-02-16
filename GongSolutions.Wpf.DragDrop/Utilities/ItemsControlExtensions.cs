@@ -20,8 +20,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 // The CanSelectMultipleItems property is protected. Use reflection to
                 // get its value anyway.
                 return (bool)itemsControl.GetType()
-                    .GetProperty("CanSelectMultipleItems", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .GetValue(itemsControl, null);
+                                         .GetProperty("CanSelectMultipleItems", BindingFlags.Instance | BindingFlags.NonPublic)
+                                         .GetValue(itemsControl, null);
             }
             else if (itemsControl is ListBox)
             {
@@ -35,7 +35,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static UIElement GetItemContainer(this ItemsControl itemsControl, UIElement child)
         {
-            Type itemType = GetItemContainerType(itemsControl);
+            var itemType = GetItemContainerType(itemsControl);
 
             if (itemType != null)
             {
@@ -47,8 +47,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position)
         {
-            IInputElement inputElement = itemsControl.InputHitTest(position);
-            UIElement uiElement = inputElement as UIElement;
+            var inputElement = itemsControl.InputHitTest(position);
+            var uiElement = inputElement as UIElement;
 
             if (uiElement != null)
             {
@@ -58,10 +58,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             return null;
         }
 
-        public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position, 
+        public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position,
                                                    Orientation searchDirection)
         {
-            Type itemContainerType = GetItemContainerType(itemsControl);
+            var itemContainerType = GetItemContainerType(itemsControl);
 
             if (itemContainerType != null)
             {
@@ -79,16 +79,18 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                         throw new ArgumentException("Invalid value for searchDirection");
                 }
 
-                List<DependencyObject> hits = new List<DependencyObject>();
+                var hits = new List<DependencyObject>();
 
                 VisualTreeHelper.HitTest(itemsControl, null,
-                    result =>
-                    {
-                        DependencyObject itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
-                        if (itemContainer != null) hits.Add(itemContainer);
-                        return HitTestResultBehavior.Continue;
-                    },
-                    new GeometryHitTestParameters(line));
+                                         result => {
+                                             var itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
+                                             if (itemContainer != null)
+                                             {
+                                                 hits.Add(itemContainer);
+                                             }
+                                             return HitTestResultBehavior.Continue;
+                                         },
+                                         new GeometryHitTestParameters(line));
 
                 return GetClosest(itemsControl, hits, position, searchDirection);
             }
@@ -119,12 +121,12 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             // If the control currently has no items, we're out of luck.
             if (itemsControl.Items.Count > 0)
             {
-                IEnumerable<ItemsPresenter> itemsPresenters = itemsControl.GetVisualDescendents<ItemsPresenter>();
+                var itemsPresenters = itemsControl.GetVisualDescendents<ItemsPresenter>();
 
-                foreach (ItemsPresenter itemsPresenter in itemsPresenters)
+                foreach (var itemsPresenter in itemsPresenters)
                 {
-                    DependencyObject panel = VisualTreeHelper.GetChild(itemsPresenter, 0);
-                    DependencyObject itemContainer = VisualTreeHelper.GetChild(panel, 0);
+                    var panel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                    var itemContainer = VisualTreeHelper.GetChild(panel, 0);
 
                     // Ensure that this actually *is* an item container by checking it with
                     // ItemContainerGenerator.
@@ -141,12 +143,12 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static Orientation GetItemsPanelOrientation(this ItemsControl itemsControl)
         {
-            ItemsPresenter itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
+            var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
 
             if (itemsPresenter != null)
             {
-                DependencyObject itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
-                PropertyInfo orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
+                var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
 
                 if (orientationProperty != null)
                 {
@@ -178,8 +180,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             else if (itemsControl is Selector)
             {
                 ((Selector)itemsControl).SelectedItem = null;
-                ((Selector)itemsControl).SelectedItem = item;            
-            }            
+                ((Selector)itemsControl).SelectedItem = item;
+            }
         }
 
         public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)
@@ -190,7 +192,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else if (itemsControl is ListBox)
             {
-                ListBox listBox = (ListBox)itemsControl;
+                var listBox = (ListBox)itemsControl;
 
                 if (listBox.SelectionMode == SelectionMode.Single)
                 {
@@ -243,7 +245,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             if (itemsControl is MultiSelector)
             {
-                MultiSelector multiSelector = (MultiSelector)itemsControl;
+                var multiSelector = (MultiSelector)itemsControl;
 
                 if (value)
                 {
@@ -263,7 +265,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else if (itemsControl is ListBox)
             {
-                ListBox listBox = (ListBox)itemsControl;
+                var listBox = (ListBox)itemsControl;
 
                 if (value)
                 {
@@ -283,20 +285,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
         }
 
-        static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items, 
-                                    Point position, Orientation searchDirection)
+        private static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items,
+                                            Point position, Orientation searchDirection)
         {
             UIElement closest = null;
-            double closestDistance = double.MaxValue;
+            var closestDistance = double.MaxValue;
 
-            foreach (DependencyObject i in items)
+            foreach (var i in items)
             {
-                UIElement uiElement = i as UIElement;
+                var uiElement = i as UIElement;
 
                 if (uiElement != null)
                 {
-                    Point p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
-                    double distance = double.MaxValue;
+                    var p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                    var distance = double.MaxValue;
 
                     switch (searchDirection)
                     {

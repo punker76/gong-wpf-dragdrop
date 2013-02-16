@@ -21,7 +21,7 @@ namespace NorthwindExample.Views
     {
         public EmployeesTabView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

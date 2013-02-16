@@ -3,23 +3,23 @@ using NorthwindExample.Models;
 
 namespace NorthwindExample.ViewModels
 {
-    class ApplicationViewModel : ViewModel<NorthwindDataClassesDataContext>
+    internal class ApplicationViewModel : ViewModel<NorthwindDataClassesDataContext>
     {
         public ApplicationViewModel(NorthwindDataClassesDataContext dataModel)
             : base(dataModel)
         {
-            m_AllEmployees = new ObservableCollection<EmployeeViewModel>();
+            this.m_AllEmployees = new ObservableCollection<EmployeeViewModel>();
 
-            foreach (Employee employee in DataModel.Employees)
+            foreach (var employee in this.DataModel.Employees)
             {
-                m_AllEmployees.Add(new EmployeeViewModel(employee));
+                this.m_AllEmployees.Add(new EmployeeViewModel(employee));
             }
 
-            EmployeesTab = new EmployeesTabViewModel(m_AllEmployees);
+            this.EmployeesTab = new EmployeesTabViewModel(this.m_AllEmployees);
         }
 
         public EmployeesTabViewModel EmployeesTab { get; private set; }
 
-        ObservableCollection<EmployeeViewModel> m_AllEmployees;
+        private readonly ObservableCollection<EmployeeViewModel> m_AllEmployees;
     }
 }

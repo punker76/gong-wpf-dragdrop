@@ -22,7 +22,7 @@ namespace DefaultsExample
     {
         public Window1()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

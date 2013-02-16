@@ -13,14 +13,14 @@ namespace GongSolutions.Wpf.DragDrop
             : base(adornedElement)
         {
         }
-        
+
         protected override void OnRender(DrawingContext drawingContext)
         {
-            if (DropInfo.VisualTargetItem != null)
+            if (this.DropInfo.VisualTargetItem != null)
             {
-                Rect rect = new Rect(
-                    DropInfo.VisualTargetItem.TranslatePoint(new Point(), AdornedElement),
-                    VisualTreeHelper.GetDescendantBounds(DropInfo.VisualTargetItem).Size);
+                var rect = new Rect(
+                    this.DropInfo.VisualTargetItem.TranslatePoint(new Point(), this.AdornedElement),
+                    VisualTreeHelper.GetDescendantBounds(this.DropInfo.VisualTargetItem).Size);
                 drawingContext.DrawRoundedRectangle(null, new Pen(Brushes.Gray, 2), rect, 2, 2);
             }
         }

@@ -13,14 +13,14 @@ namespace GongSolutions.Wpf.DragDrop
         public DropTargetAdorner(UIElement adornedElement)
             : base(adornedElement)
         {
-            m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
-            m_AdornerLayer.Add(this);
-            IsHitTestVisible = false;
+            this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
+            this.m_AdornerLayer.Add(this);
+            this.IsHitTestVisible = false;
         }
 
         public void Detatch()
         {
-            m_AdornerLayer.Remove(this);
+            this.m_AdornerLayer.Remove(this);
         }
 
         public DropInfo DropInfo { get; set; }
@@ -33,10 +33,10 @@ namespace GongSolutions.Wpf.DragDrop
                     "The requested adorner class does not derive from DropTargetAdorner.");
             }
 
-            return (DropTargetAdorner)type.GetConstructor(new[] { typeof(UIElement) })
-                .Invoke(new[] { adornedElement });
+            return (DropTargetAdorner)type.GetConstructor(new[] {typeof(UIElement)})
+                                          .Invoke(new[] {adornedElement});
         }
 
-        AdornerLayer m_AdornerLayer;
+        private readonly AdornerLayer m_AdornerLayer;
     }
 }

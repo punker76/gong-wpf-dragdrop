@@ -8,7 +8,7 @@ namespace GongSolutions.Wpf.DragDrop
     {
         public virtual void StartDrag(IDragInfo dragInfo)
         {
-            int itemCount = dragInfo.SourceItems.Cast<object>().Count();
+            var itemCount = dragInfo.SourceItems.Cast<object>().Count();
 
             if (itemCount == 1)
             {
@@ -19,9 +19,9 @@ namespace GongSolutions.Wpf.DragDrop
                 dragInfo.Data = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems);
             }
 
-            dragInfo.Effects = (dragInfo.Data != null) ? 
-                DragDropEffects.Copy | DragDropEffects.Move : 
-                DragDropEffects.None;
+            dragInfo.Effects = (dragInfo.Data != null) ?
+                                   DragDropEffects.Copy | DragDropEffects.Move :
+                                   DragDropEffects.None;
         }
 
         public virtual void Dropped(IDropInfo dropInfo)

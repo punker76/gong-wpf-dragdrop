@@ -106,46 +106,47 @@ namespace GongSolutions.Wpf.DragDrop
         /// </param>
         public DragInfo(object sender, MouseButtonEventArgs e)
         {
-            DragStartPosition = e.GetPosition(null);
-            Effects = DragDropEffects.None;
-            MouseButton = e.ChangedButton;
-            VisualSource = sender as UIElement;
+            this.DragStartPosition = e.GetPosition(null);
+            this.Effects = DragDropEffects.None;
+            this.MouseButton = e.ChangedButton;
+            this.VisualSource = sender as UIElement;
 
             if (sender is ItemsControl)
             {
-                ItemsControl itemsControl = (ItemsControl)sender;
-                UIElement item = itemsControl.GetItemContainer((UIElement)e.OriginalSource);
+                var itemsControl = (ItemsControl)sender;
+                var item = itemsControl.GetItemContainer((UIElement)e.OriginalSource);
 
                 if (item != null)
                 {
-                    ItemsControl itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+                    var itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
-                    if (itemParent != null) {
-                      SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
-                      SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+                    if (itemParent != null)
+                    {
+                        this.SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
+                        this.SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
                     }
-                    SourceItems = itemsControl.GetSelectedItems();
+                    this.SourceItems = itemsControl.GetSelectedItems();
 
                     // Some controls (I'm looking at you TreeView!) haven't updated their
                     // SelectedItem by this point. Check to see if there 1 or less item in 
                     // the SourceItems collection, and if so, override the control's 
                     // SelectedItems with the clicked item.
-                    if (SourceItems.Cast<object>().Count() <= 1)
+                    if (this.SourceItems.Cast<object>().Count() <= 1)
                     {
-                        SourceItems = Enumerable.Repeat(SourceItem, 1);
+                        this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
                     }
 
-                    VisualSourceItem = item;
+                    this.VisualSourceItem = item;
                 }
                 else
                 {
-                    SourceCollection = itemsControl.ItemsSource ?? itemsControl.Items;
+                    this.SourceCollection = itemsControl.ItemsSource ?? itemsControl.Items;
                 }
             }
 
-            if (SourceItems == null)
+            if (this.SourceItems == null)
             {
-                SourceItems = Enumerable.Empty<object>();
+                this.SourceItems = Enumerable.Empty<object>();
             }
         }
 

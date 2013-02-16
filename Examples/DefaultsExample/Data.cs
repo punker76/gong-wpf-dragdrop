@@ -11,43 +11,42 @@ using System.Collections;
 
 namespace DefaultsExample
 {
-    class Data : IDropTarget
+    internal class Data : IDropTarget
     {
         public Data()
         {
-            Collection1 = new ObservableCollection<string>();
-            Collection2 = new ObservableCollection<string>();
+            this.Collection1 = new ObservableCollection<string>();
+            this.Collection2 = new ObservableCollection<string>();
 
-            for (int n = 0; n < 100; ++n)
+            for (var n = 0; n < 100; ++n)
             {
-                Collection1.Add("Item " + n);
+                this.Collection1.Add("Item " + n);
             }
 
-            GroupedCollection = new ObservableCollection<GroupedItem>();
-            for (int g = 0; g < 4; ++g)
+            this.GroupedCollection = new ObservableCollection<GroupedItem>();
+            for (var g = 0; g < 4; ++g)
             {
-                for (int i = 0; i < 2; ++i)
+                for (var i = 0; i < 2; ++i)
                 {
-                    GroupedCollection.Add(new GroupedItem("Group " + g, "Group " + g + " Item " + i));
+                    this.GroupedCollection.Add(new GroupedItem("Group " + g, "Group " + g + " Item " + i));
                 }
             }
 
-            TreeNode root1 = new TreeNode("Root 1");
-            for (int n = 0; n < 10; ++n)
+            var root1 = new TreeNode("Root 1");
+            for (var n = 0; n < 10; ++n)
             {
                 root1.Children.Add(new TreeNode("Item " + n));
             }
 
-            TreeNode root2 = new TreeNode("Root 2");
-            for (int n = 0; n < 4; ++n)
+            var root2 = new TreeNode("Root 2");
+            for (var n = 0; n < 4; ++n)
             {
                 root2.Children.Add(new TreeNode("Item " + (n + 10)));
             }
 
-            TreeCollection = new ObservableCollection<TreeNode>
-            {
-                root1, root2
-            };
+            this.TreeCollection = new ObservableCollection<TreeNode> {
+                                                                         root1, root2
+                                                                     };
         }
 
         public ObservableCollection<string> Collection1 { get; private set; }
@@ -62,7 +61,10 @@ namespace DefaultsExample
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             DragDrop.DefaultDropHandler.DragOver(dropInfo);
-            if (dropInfo.TargetGroup == null) dropInfo.Effects = System.Windows.DragDropEffects.None;
+            if (dropInfo.TargetGroup == null)
+            {
+                dropInfo.Effects = System.Windows.DragDropEffects.None;
+            }
         }
 
         void IDropTarget.Drop(IDropInfo dropInfo)
@@ -80,56 +82,56 @@ namespace DefaultsExample
         }
     }
 
-    class TreeNode
+    internal class TreeNode
     {
         public TreeNode(string caption)
         {
-            Caption = caption;
-            Children = new ObservableCollection<TreeNode>();
+            this.Caption = caption;
+            this.Children = new ObservableCollection<TreeNode>();
         }
 
         public string Caption { get; private set; }
         public ObservableCollection<TreeNode> Children { get; private set; }
     }
 
-    class GroupedItem : INotifyPropertyChanged
+    internal class GroupedItem : INotifyPropertyChanged
     {
         public GroupedItem(string group, string caption)
         {
-            Caption = caption;
-            m_Group = group;
+            this.Caption = caption;
+            this.m_Group = group;
         }
 
         public override string ToString()
         {
-            return m_Group + " " + Caption;
+            return this.m_Group + " " + this.Caption;
         }
 
         public string Caption { get; private set; }
-        
-        public string Group 
+
+        public string Group
         {
-            get { return m_Group; }
+            get { return this.m_Group; }
             set
             {
-                if (m_Group != value)
+                if (this.m_Group != value)
                 {
-                    m_Group = value;
-                    OnPropertyChanged("Group");
+                    this.m_Group = value;
+                    this.OnPropertyChanged("Group");
                 }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged(string name)
+        private void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
+            if (this.PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
 
-        string m_Group;
+        private string m_Group;
     }
 }

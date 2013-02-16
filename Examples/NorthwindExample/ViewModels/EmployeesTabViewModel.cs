@@ -10,22 +10,22 @@ using System.Windows;
 
 namespace NorthwindExample.ViewModels
 {
-    class EmployeesTabViewModel : ViewModel<ICollection<EmployeeViewModel>>, IDropTarget
+    internal class EmployeesTabViewModel : ViewModel<ICollection<EmployeeViewModel>>, IDropTarget
     {
         public EmployeesTabViewModel(IList<EmployeeViewModel> dataModel)
             : base(dataModel)
         {
-            Employees = new ListCollectionView((IList)dataModel);
-            Employees.CurrentChanged += (s, e) => SubOrdinates.Refresh();
+            this.Employees = new ListCollectionView((IList)dataModel);
+            this.Employees.CurrentChanged += (s, e) => this.SubOrdinates.Refresh();
 
-            SubOrdinates = new ListCollectionView((IList)dataModel);
-            SubOrdinates.Filter = FilterSubOrdinate;
+            this.SubOrdinates = new ListCollectionView((IList)dataModel);
+            this.SubOrdinates.Filter = this.FilterSubOrdinate;
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
-            EmployeeViewModel targetEmployee = dropInfo.TargetItem as EmployeeViewModel;
-            IEnumerable<EmployeeViewModel> employees = GetEmployees(dropInfo.Data);
+            var targetEmployee = dropInfo.TargetItem as EmployeeViewModel;
+            var employees = this.GetEmployees(dropInfo.Data);
 
             if (targetEmployee != null && !employees.Contains(targetEmployee))
             {
@@ -36,24 +36,24 @@ namespace NorthwindExample.ViewModels
 
         void IDropTarget.Drop(IDropInfo dropInfo)
         {
-            EmployeeViewModel targetEmployee = (EmployeeViewModel)dropInfo.TargetItem;
-            IEnumerable<EmployeeViewModel> employees = GetEmployees(dropInfo.Data);
+            var targetEmployee = (EmployeeViewModel)dropInfo.TargetItem;
+            var employees = this.GetEmployees(dropInfo.Data);
 
-            foreach (EmployeeViewModel employee in employees)
+            foreach (var employee in employees)
             {
                 employee.DataModel.ReportsTo = targetEmployee.DataModel.EmployeeID;
             }
 
-            SubOrdinates.Refresh();
+            this.SubOrdinates.Refresh();
         }
 
         public ICollectionView Employees { get; private set; }
         public ICollectionView SubOrdinates { get; private set; }
 
-        bool FilterSubOrdinate(object o)
+        private bool FilterSubOrdinate(object o)
         {
-            EmployeeViewModel selectedEmployee = (EmployeeViewModel)Employees.CurrentItem;
-            EmployeeViewModel employee = (EmployeeViewModel)o;
+            var selectedEmployee = (EmployeeViewModel)this.Employees.CurrentItem;
+            var employee = (EmployeeViewModel)o;
 
             if (selectedEmployee != null)
             {
@@ -63,11 +63,11 @@ namespace NorthwindExample.ViewModels
             return true;
         }
 
-        IEnumerable<EmployeeViewModel> GetEmployees(object data)
+        private IEnumerable<EmployeeViewModel> GetEmployees(object data)
         {
             if (data is EmployeeViewModel)
             {
-                return new[] { (EmployeeViewModel)data };
+                return new[] {(EmployeeViewModel)data};
             }
             else if (data is IEnumerable<EmployeeViewModel>)
             {
