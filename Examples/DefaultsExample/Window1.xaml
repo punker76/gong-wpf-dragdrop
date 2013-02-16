@@ -40,6 +40,41 @@
     </Window.DataContext>
 
     <TabControl>
+        <TabItem Header="Show Messagebox on Doubleclick">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    Test for MouseDoubleClick Issue 45
+                </TextBlock>
+
+                <ListBox Grid.Column="0"
+                         Grid.Row="1"
+                         ItemsSource="{Binding Collection1}"
+                         SelectionMode="Extended"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                         MouseDoubleClick="Control_OnMouseDoubleClick"/>
+                <ListBox Grid.Column="1"
+                         Grid.Row="1"
+                         ItemsSource="{Binding Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+            </Grid>
+        </TabItem>
+
         <TabItem Header="Bound ListBoxes">
             <Grid>
                 <Grid.ColumnDefinitions>

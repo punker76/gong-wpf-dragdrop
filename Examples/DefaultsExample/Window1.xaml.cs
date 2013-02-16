@@ -24,5 +24,10 @@ namespace DefaultsExample
         {
             this.InitializeComponent();
         }
+
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(this, "Got the double click.");
+        }
     }
 }

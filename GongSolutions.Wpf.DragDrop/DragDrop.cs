@@ -245,8 +245,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Ignore the click if the user has clicked on a scrollbar.
-            if (HitTestScrollBar(sender, e))
+            // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
+            if (e.ClickCount != 1 || HitTestScrollBar(sender, e))
             {
                 m_DragInfo = null;
                 return;
