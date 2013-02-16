@@ -114,7 +114,9 @@ namespace GongSolutions.Wpf.DragDrop
             if (sender is ItemsControl)
             {
                 var itemsControl = (ItemsControl)sender;
-                var item = itemsControl.GetItemContainer((UIElement)e.OriginalSource);
+
+                // check for UIElement
+                var item = e.OriginalSource is UIElement ? itemsControl.GetItemContainer((UIElement)e.OriginalSource) : null;
 
                 if (item != null)
                 {
