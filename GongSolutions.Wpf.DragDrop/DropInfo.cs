@@ -103,6 +103,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets th orientation of the current drop target.
         /// </summary>
         Orientation VisualTargetOrientation { get; }
+
+        /// <summary>
+        /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
+        /// </summary>
+        DragDropKeyStates KeyStates { get; }
     }
 
     /// <summary>
@@ -136,6 +141,7 @@ namespace GongSolutions.Wpf.DragDrop
             var dataFormat = DragDrop.DataFormat.Name;
             this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
             this.DragInfo = dragInfo;
+            this.KeyStates = e.KeyStates;
 
             this.VisualTarget = sender as UIElement;
             this.DropPosition = e.GetPosition(this.VisualTarget);
@@ -302,5 +308,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets th orientation of the current drop target.
         /// </summary>
         public Orientation VisualTargetOrientation { get; private set; }
+
+        /// <summary>
+        /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
+        /// </summary>
+        public DragDropKeyStates KeyStates { get; private set; }
     }
 }
