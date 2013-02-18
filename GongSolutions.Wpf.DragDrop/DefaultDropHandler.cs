@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-    internal class DefaultDropHandler : IDropTarget
+    public class DefaultDropHandler : IDropTarget
     {
         public virtual void DragOver(IDropInfo dropInfo)
         {
@@ -53,7 +53,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        protected static bool CanAcceptData(IDropInfo dropInfo)
+        public static bool CanAcceptData(IDropInfo dropInfo)
         {
             if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
             {
@@ -76,7 +76,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        protected static IEnumerable ExtractData(object data)
+        public static IEnumerable ExtractData(object data)
         {
             if (data is IEnumerable && !(data is string))
             {
@@ -88,7 +88,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        protected static IList GetList(IEnumerable enumerable)
+        public static IList GetList(IEnumerable enumerable)
         {
             if (enumerable is ICollectionView)
             {
