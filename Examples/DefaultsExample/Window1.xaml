@@ -40,6 +40,52 @@
     </Window.DataContext>
 
     <TabControl>
+        <TabItem Header="Issue 42: Crash when using items deriving from ContentControl">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    Test for Issue 42
+                </TextBlock>
+
+                <ItemsControl Grid.Column="0"
+                              Grid.Row="1"
+                              ItemsSource="{Binding Collection1}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ListBox Grid.Column="1"
+                         Grid.Row="1"
+                         ItemsSource="{Binding Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </TabItem>
+
         <TabItem Header="Show Messagebox on Doubleclick">
             <Grid>
                 <Grid.ColumnDefinitions>
