@@ -15,7 +15,6 @@ It has the following features:
 #Current Status
 
 The library is in its early stages, but should still be useful and reasonably bug-free.
-I've started adding API documentation and version 0.1.3.3 now contains an XML file documenting the most commonly used classes.
 
 #Installation
 
@@ -23,6 +22,10 @@ You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-
 
 #Release History
 
++ **0.1.3.4** (18 Feb, 2013)
+	- Issue #45: After doublclick, item loose focus. No drag drop stuff with multiple mouse clicks!
+	- Issue #46: Added a KeyStates property to the DropInfo class.
+	- Issue #40 make DefaultDropHandler and some methods public
 + **0.1.3.3** (16 Feb, 2013)
 	- Fix Issue [34](http://code.google.com/p/gong-wpf-dragdrop/issues/detail?id=34): Error with HitTestScrollBar thx to [rdingwall](https://github.com/rdingwall) (Richard Dingwall)
 	- Fix for possible exception: Unable to cast object of type 'System.Windows.Documents.Run' to type 'System.Windows.UIElement'. thx to [rdingwall](https://github.com/rdingwall) (Richard Dingwall)
@@ -95,7 +98,7 @@ class ExampleViewModel : IDropTarget
 {
 	public ObservableCollection<ExampleItemViewModel> Items;
 	
-	void IDropTarget.DragOver(DropInfo dropInfo) {
+	void IDropTarget.DragOver(IDropInfo dropInfo) {
 		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
 		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
 		
@@ -105,7 +108,7 @@ class ExampleViewModel : IDropTarget
 		}
 	}
 	
-	void IDropTarget.Drop(DropInfo dropInfo) {
+	void IDropTarget.Drop(IDropInfo dropInfo) {
 		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
 		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
 		targetItem.Children.Add(sourceItem);
