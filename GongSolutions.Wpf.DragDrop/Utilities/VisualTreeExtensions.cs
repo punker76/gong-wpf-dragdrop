@@ -3,14 +3,39 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Windows.Media.Media3D;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     public static class VisualTreeExtensions
     {
+        private static DependencyObject FindVisualTreeRoot(this DependencyObject d)
+        {
+            var current = d;
+            var result = d;
+
+            while (current != null)
+            {
+                result = current;
+                if (current is Visual || current is Visual3D)
+                {
+                    break;
+                }
+                else
+                {
+                    // If we're in Logical Land then we must walk 
+                    // up the logical tree until we find a 
+                    // Visual/Visual3D to get us back to Visual Land.
+                    current = LogicalTreeHelper.GetParent(current);
+                }
+            }
+
+            return result;
+        }
+
         public static T GetVisualAncestor<T>(this DependencyObject d) where T : class
         {
-            var item = VisualTreeHelper.GetParent(d);
+            var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
 
             while (item != null)
             {
@@ -27,7 +52,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static DependencyObject GetVisualAncestor(this DependencyObject d, Type type)
         {
-            var item = VisualTreeHelper.GetParent(d);
+            var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
 
             while (item != null)
             {

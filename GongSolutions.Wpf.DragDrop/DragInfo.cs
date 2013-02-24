@@ -118,6 +118,11 @@ namespace GongSolutions.Wpf.DragDrop
                 // check for UIElement
                 var item = e.OriginalSource is UIElement ? itemsControl.GetItemContainer((UIElement)e.OriginalSource) : null;
 
+                if (item == null)
+                {
+                    item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl), itemsControl.GetItemsPanelOrientation());
+                }
+
                 if (item != null)
                 {
                     var itemParent = ItemsControl.ItemsControlFromItemContainer(item);
