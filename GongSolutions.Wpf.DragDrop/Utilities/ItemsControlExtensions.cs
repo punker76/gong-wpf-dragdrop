@@ -126,7 +126,9 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 foreach (var itemsPresenter in itemsPresenters)
                 {
                     var panel = VisualTreeHelper.GetChild(itemsPresenter, 0);
-                    var itemContainer = VisualTreeHelper.GetChild(panel, 0);
+                    var itemContainer = VisualTreeHelper.GetChildrenCount(panel) > 0
+                                                         ? VisualTreeHelper.GetChild(panel, 0)
+                                                         : null;
 
                     // Ensure that this actually *is* an item container by checking it with
                     // ItemContainerGenerator.
