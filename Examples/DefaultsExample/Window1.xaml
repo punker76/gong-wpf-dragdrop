@@ -266,7 +266,21 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn DisplayMemberBinding="{Binding}" />
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}">
+                                            <TextBlock.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Item 1" />
+                                                    <MenuItem Header="Item 2" />
+                                                    <MenuItem Header="Item 3" />
+                                                </ContextMenu>
+                                            </TextBlock.ContextMenu>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
