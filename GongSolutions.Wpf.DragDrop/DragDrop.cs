@@ -302,7 +302,7 @@ namespace GongSolutions.Wpf.DragDrop
             if (m_DragInfo != null && !m_DragInProgress)
             {
                 var dragStart = m_DragInfo.DragStartPosition;
-                var position = e.GetPosition(null);
+                var position = e.GetPosition((IInputElement)sender);
 
                 if (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance)

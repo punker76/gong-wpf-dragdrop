@@ -112,7 +112,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </param>
         public DragInfo(object sender, MouseButtonEventArgs e)
         {
-            this.DragStartPosition = e.GetPosition(null);
+            this.DragStartPosition = e.GetPosition((IInputElement)sender);
             this.Effects = DragDropEffects.None;
             this.MouseButton = e.ChangedButton;
             this.VisualSource = sender as UIElement;
