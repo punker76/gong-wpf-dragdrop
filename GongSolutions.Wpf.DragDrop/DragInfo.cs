@@ -80,6 +80,12 @@ namespace GongSolutions.Wpf.DragDrop
         /// will hold a ListBoxItem.
         /// </remarks>
         UIElement VisualSourceItem { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
+        /// a custom instance if custom drag and drop behavior is needed.
+        /// </summary>
+        IDataObject DataObject { get; set; }
     }
 
     /// <summary>
@@ -228,5 +234,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// will hold a ListBoxItem.
         /// </remarks>
         public UIElement VisualSourceItem { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
+        /// a custom instance if custom drag and drop behavior is needed.
+        /// </summary>
+        public IDataObject DataObject { get; set; }
     }
 }

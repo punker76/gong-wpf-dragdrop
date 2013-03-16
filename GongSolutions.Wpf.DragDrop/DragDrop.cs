@@ -320,7 +320,16 @@ namespace GongSolutions.Wpf.DragDrop
 
                     if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null)
                     {
-                        var data = new DataObject(DataFormat.Name, m_DragInfo.Data);
+                        var data = m_DragInfo.DataObject;
+
+                        if (data == null)
+                        {
+                            data = new DataObject(DataFormat.Name, m_DragInfo.Data);
+                        }
+                        else
+                        {
+                            data.SetData(DataFormat.Name, m_DragInfo.Data);
+                        }
 
                         try
                         {
