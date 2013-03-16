@@ -108,11 +108,6 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
         DragDropKeyStates KeyStates { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IDataObject"/> of the drag and drop operation.
-        /// </summary>
-        IDataObject DataObject {  get; }
     }
 
     /// <summary>
@@ -145,7 +140,6 @@ namespace GongSolutions.Wpf.DragDrop
         {
             var dataFormat = DragDrop.DataFormat.Name;
             this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
-            this.DataObject = e.Data;
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
 
@@ -319,10 +313,5 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
         public DragDropKeyStates KeyStates { get; private set; }
-
-        /// <summary>
-        /// Gets the <see cref="IDataObject"/> of the drag and drop operation.
-        /// </summary>
-        public IDataObject DataObject { get; private set; }
     }
 }
