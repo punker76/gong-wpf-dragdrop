@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>gong-wpf-dragdrop</id>
-    <version>0.1.3.4</version>
+    <version>0.1.3.5</version>
     <title>gong-wpf-dragdrop</title>
     <authors>Jan Karger (punker76), Steven Kirk, mitchell.jon</authors>
     <owners>Jan Karger (punker76), Steven Kirk</owners>
@@ -14,7 +14,11 @@
     <copyright>Copyright 2013</copyright>
   </metadata>
   <files>
-    <file src="bin\Debug\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\" />
-    <file src="bin\Debug\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\" />
+    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35\GongSolutions.Wpf.DragDrop.dll" />
+    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35\GongSolutions.Wpf.DragDrop.xml" />
+    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35\GongSolutions.Wpf.DragDrop.pdb" />
+    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll" />
+    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml" />
+    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb" />
   </files>
 </package>

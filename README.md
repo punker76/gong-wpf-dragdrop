@@ -22,6 +22,12 @@ You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-
 
 #Release History
 
++ **0.1.3.5** (17 March, 2013)
+	- Issue #17: 'System.Windows.Documents.Run' is not a Visual or Visual3D' Exception
+	- Pull request #52: Sometimes ItemsControlExtensions throws an ArgumentOutOfRangeException
+	- Pull request #53: Add support for custom IDataObject implementations
+	- Issue #22: Problem with drag n drop when ContextMenu is open
+	- .NET 3.5 and .NET 4 nuget target
 + **0.1.3.4** (18 Feb, 2013)
 	- Issue #45: After doublclick, item loose focus. No drag drop stuff with multiple mouse clicks!
 	- Issue #46: Added a KeyStates property to the DropInfo class.
