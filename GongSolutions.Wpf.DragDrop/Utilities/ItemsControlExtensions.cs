@@ -61,36 +61,42 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position,
                                                    Orientation searchDirection)
         {
-            var itemContainerType = GetItemContainerType(itemsControl);
+            Type itemContainerType = GetItemContainerType(itemsControl);
 
             if (itemContainerType != null)
             {
-                LineGeometry line;
-
-                switch (searchDirection)
+                Geometry hitTestGeometry;
+                
+                if (typeof(TreeViewItem).IsAssignableFrom(itemContainerType))
                 {
-                    case Orientation.Horizontal:
-                        line = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
-                        break;
-                    case Orientation.Vertical:
-                        line = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
-                        break;
-                    default:
-                        throw new ArgumentException("Invalid value for searchDirection");
+                    hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+                }
+                else
+                {
+                    switch (searchDirection)
+                    {
+                        case Orientation.Horizontal:
+                            hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+                            break;
+                        case Orientation.Vertical:
+                            hitTestGeometry = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
+                            break;
+                        default:
+                            throw new ArgumentException("Invalid value for searchDirection");
+                    }
                 }
 
-                var hits = new List<DependencyObject>();
+                List<DependencyObject> hits = new List<DependencyObject>();
 
                 VisualTreeHelper.HitTest(itemsControl, null,
-                                         result => {
-                                             var itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
-                                             if (itemContainer != null)
-                                             {
-                                                 hits.Add(itemContainer);
-                                             }
-                                             return HitTestResultBehavior.Continue;
-                                         },
-                                         new GeometryHitTestParameters(line));
+                    result =>
+                    {
+                        DependencyObject itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
+                        if (itemContainer != null && !hits.Contains(itemContainer) && ((UIElement)itemContainer).IsVisible == true)
+                            hits.Add(itemContainer);
+                        return HitTestResultBehavior.Continue;
+                    },
+                    new GeometryHitTestParameters(hitTestGeometry));
 
                 return GetClosest(itemsControl, hits, position, searchDirection);
             }
@@ -102,17 +108,17 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             // There is no safe way to get the item container type for an ItemsControl. 
             // First hard-code the types for the common ItemsControls.
-            if (itemsControl is ListView)
+            if (itemsControl.GetType().IsAssignableFrom(typeof(ListBox)))
             {
-                return typeof(ListViewItem);
+                return typeof(ListBoxItem);
             }
-            else if (itemsControl is TreeView)
+            else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
             {
                 return typeof(TreeViewItem);
             }
-            else if (itemsControl is ListBox)
+            else if (itemsControl.GetType().IsAssignableFrom(typeof(ListView)))
             {
-                return typeof(ListBoxItem);
+                return typeof(ListViewItem);
             }
 
             // Otherwise look for the control's ItemsPresenter, get it's child panel and the first 
@@ -188,11 +194,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)
         {
-            if (itemsControl is MultiSelector)
+            if (itemsControl.GetType().IsAssignableFrom(typeof(MultiSelector)))
             {
                 return ((MultiSelector)itemsControl).SelectedItems;
             }
-            else if (itemsControl is ListBox)
+            else if (itemsControl.GetType().IsAssignableFrom(typeof(ListBox)))
             {
                 var listBox = (ListBox)itemsControl;
 
@@ -205,11 +211,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     return listBox.SelectedItems;
                 }
             }
-            else if (itemsControl is TreeView)
+            else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
             {
                 return Enumerable.Repeat(((TreeView)itemsControl).SelectedItem, 1);
             }
-            else if (itemsControl is Selector)
+            else if (itemsControl.GetType().IsAssignableFrom(typeof(Selector)))
             {
                 return Enumerable.Repeat(((Selector)itemsControl).SelectedItem, 1);
             }
@@ -287,29 +293,41 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
         }
 
-        private static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items,
-                                            Point position, Orientation searchDirection)
+        static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items,
+                                    Point position, Orientation searchDirection)
         {
-            UIElement closest = null;
-            var closestDistance = double.MaxValue;
+            //Console.WriteLine("GetClosest - {0}", itemsControl.ToString());
 
-            foreach (var i in items)
+            UIElement closest = null;
+            double closestDistance = double.MaxValue;
+
+            foreach (DependencyObject i in items)
             {
-                var uiElement = i as UIElement;
+                UIElement uiElement = i as UIElement;
 
                 if (uiElement != null)
                 {
-                    var p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
-                    var distance = double.MaxValue;
-
-                    switch (searchDirection)
+                    Point p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                    double distance = double.MaxValue;
+                    
+                    if (itemsControl is TreeView)
                     {
-                        case Orientation.Horizontal:
-                            distance = Math.Abs(position.X - p.X);
-                            break;
-                        case Orientation.Vertical:
-                            distance = Math.Abs(position.Y - p.Y);
-                            break;
+                        double xDiff = position.X - p.X;
+                        double yDiff = position.Y - p.Y;
+                        double hyp = Math.Sqrt(Math.Pow(xDiff, 2d) + Math.Pow(yDiff, 2d));
+                        distance = Math.Abs(hyp);
+                    }
+                    else
+                    {
+                        switch (searchDirection)
+                        {
+                            case Orientation.Horizontal:
+                                distance = Math.Abs(position.X - p.X);
+                                break;
+                            case Orientation.Vertical:
+                                distance = Math.Abs(position.Y - p.Y);
+                                break;
+                        }
                     }
 
                     if (distance < closestDistance)
@@ -319,7 +337,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     }
                 }
             }
-
+            
             return closest;
         }
     }

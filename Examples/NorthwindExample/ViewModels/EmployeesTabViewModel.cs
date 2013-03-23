@@ -29,6 +29,7 @@ namespace NorthwindExample.ViewModels
 
             if (targetEmployee != null && !employees.Contains(targetEmployee))
             {
+                dropInfo.DestinationText = targetEmployee.FullName;
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
                 dropInfo.Effects = DragDropEffects.Copy;
             }

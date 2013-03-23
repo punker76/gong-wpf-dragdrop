@@ -55,6 +55,11 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static bool CanAcceptData(IDropInfo dropInfo)
         {
+            if (dropInfo == null)
+            {
+                return false;
+            }
+
             if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
             {
                 return GetList(dropInfo.TargetCollection) != null;

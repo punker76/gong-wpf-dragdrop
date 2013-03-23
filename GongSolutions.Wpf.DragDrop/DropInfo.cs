@@ -104,6 +104,17 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         Orientation VisualTargetOrientation { get; }
 
+
+        /// <summary>
+        /// Gets and sets the text displayed in the DropDropEffects adorner.
+        /// </summary>
+        string DestinationText { get; set; }
+
+        /// <summary>
+        /// Gets the relative position the item will be inserted to compared to the TargetItem
+        /// </summary>
+        RelativeInsertPosition InsertPosition { get; }
+
         /// <summary>
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
@@ -168,7 +179,7 @@ namespace GongSolutions.Wpf.DragDrop
                     this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
                     this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
 
-                    if (directlyOverItem)
+                    if (directlyOverItem || typeof(TreeViewItem).IsAssignableFrom(item.GetType()))
                     {
                         this.TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
                         this.VisualTargetItem = item;
@@ -178,14 +189,34 @@ namespace GongSolutions.Wpf.DragDrop
                     {
                         if (e.GetPosition(item).Y > item.RenderSize.Height / 2)
                         {
-                            this.InsertIndex++;
+                            InsertIndex++;
+                            InsertPosition = RelativeInsertPosition.AfterTargetItem;
+                        }
+                        else
+                        {
+                            InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+                        }
+
+                        if (e.GetPosition(item).Y > item.RenderSize.Height * 0.25 && e.GetPosition(item).Y < item.RenderSize.Height * 0.75)
+                        {
+                            InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
                     }
                     else
                     {
                         if (e.GetPosition(item).X > item.RenderSize.Width / 2)
                         {
-                            this.InsertIndex++;
+                            InsertIndex++;
+                            InsertPosition = RelativeInsertPosition.AfterTargetItem;
+                        }
+                        else
+                        {
+                            InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+                        }
+
+                        if (e.GetPosition(item).X > item.RenderSize.Width * 0.25 && e.GetPosition(item).X < item.RenderSize.Width * 0.75)
+                        {
+                            InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
                     }
                 }
@@ -309,9 +340,28 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         public Orientation VisualTargetOrientation { get; private set; }
 
+
+        /// <summary>
+        /// Gets and sets the text displayed in the DropDropEffects adorner.
+        /// </summary>
+        public string DestinationText { get; set; }
+
+        /// <summary>
+        /// Gets the relative position the item will be inserted to compared to the TargetItem
+        /// </summary>
+        public RelativeInsertPosition InsertPosition { get; private set; }
+
         /// <summary>
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
         public DragDropKeyStates KeyStates { get; private set; }
+    }
+
+    [Flags]
+    public enum RelativeInsertPosition
+    {
+        BeforeTargetItem = 0,
+        AfterTargetItem = 1,
+        TargetItemCenter = 2
     }
 }
