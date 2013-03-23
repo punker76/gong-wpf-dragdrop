@@ -161,6 +161,16 @@ namespace GongSolutions.Wpf.DragDrop
             target.SetValue(DropHandlerProperty, value);
         }
 
+        public static bool GetDragSourceIgnore(UIElement target)
+        {
+            return (bool)target.GetValue(DragSourceIgnoreProperty);
+        }
+
+        public static void SetDragSourceIgnore(UIElement target, bool value)
+        {
+            target.SetValue(DragSourceIgnoreProperty, value);
+        }
+
         public static IDragSource DefaultDragHandler
         {
             get
@@ -215,6 +225,9 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static readonly DependencyProperty DropHandlerProperty =
             DependencyProperty.RegisterAttached("DropHandler", typeof(IDropTarget), typeof(DragDrop));
+
+        public static readonly DependencyProperty DragSourceIgnoreProperty =
+            DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsDragSourceProperty =
             DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDrop),
@@ -496,7 +509,7 @@ namespace GongSolutions.Wpf.DragDrop
         private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
-            if (e.ClickCount != 1 || HitTestScrollBar(sender, e))
+            if (e.ClickCount != 1 || HitTestScrollBar(sender, e) || GetDragSourceIgnore((UIElement)sender))
             {
                 m_DragInfo = null;
                 return;
@@ -653,11 +666,18 @@ namespace GongSolutions.Wpf.DragDrop
                 if (DragAdorner.RenderSize.Width > 0 && DragAdorner.RenderSize.Height > 0)
                     _adornerSize = DragAdorner.RenderSize;
 
-                // When there is a custom adorner move to above the cursor and center it
-                if (m_DragInfo != null && GetDragAdornerTemplate(m_DragInfo.VisualSource) != null)
-                    _adornerPos.Offset((_adornerSize.Width * -0.5), (_adornerSize.Height * -0.9));
-                else
-                    _adornerPos.Offset(0, (_adornerSize.Height * -0.5));
+                if (m_DragInfo != null)
+                {
+                    // When there is a custom adorner move to above the cursor and center it
+                    if (GetDragAdornerTemplate(m_DragInfo.VisualSource) != null)
+                    {
+                        _adornerPos.Offset((_adornerSize.Width * -0.5), (_adornerSize.Height * -0.9));
+                    }
+                    else
+                    {
+                        _adornerPos.Offset(m_DragInfo.PositionInDraggedItem.X * -1, m_DragInfo.PositionInDraggedItem.Y * -1);
+                    }
+                }
 
                 DragAdorner.MousePosition = _adornerPos;
                 DragAdorner.InvalidateVisual();
