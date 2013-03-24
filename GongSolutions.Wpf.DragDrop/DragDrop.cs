@@ -54,6 +54,11 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (template == null)
             {
+                if (!GetUseDefaultEffectDataTemplate(target))
+                {
+                    return null;
+                }
+
                 FrameworkElementFactory imageSourceFactory = new FrameworkElementFactory(typeof(Image));
                 imageSourceFactory.SetValue(Image.SourceProperty, IconFactory.EffectNone);
                 imageSourceFactory.SetValue(FrameworkElement.HeightProperty, 12.0);
@@ -376,11 +381,12 @@ namespace GongSolutions.Wpf.DragDrop
 //                bitmap.Freeze();
 
                 // Create a default adornor of the item you're dragging if there's isn't a custom one set
+                var size = m_DragInfo.VisualSourceItem is TreeViewItem ? m_DragInfo.VisualSourceItem.DesiredSize : m_DragInfo.VisualSourceItem.RenderSize;
                 Rectangle rect = new Rectangle();
                 var visualBrush = new VisualBrush(m_DragInfo.VisualSourceItem);
                 rect.Fill = visualBrush.CloneCurrentValue();
-                rect.Width = m_DragInfo.VisualSourceItem.DesiredSize.Width;
-                rect.Height = m_DragInfo.VisualSourceItem.DesiredSize.Height;
+                rect.Width = size.Width;
+                rect.Height = size.Height;
                 rect.IsHitTestVisible = false;
                 adornment = rect;
             }
@@ -608,7 +614,7 @@ namespace GongSolutions.Wpf.DragDrop
                         DefaultDragHandler.StartDrag(m_DragInfo);
                     }
 
-                    if (m_DragInfo  .Effects != DragDropEffects.None && m_DragInfo.Data != null)
+                    if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null)
                     {
                         var data = m_DragInfo.DataObject;
 
@@ -646,6 +652,8 @@ namespace GongSolutions.Wpf.DragDrop
                 DropTargetAdorner = null;
             }
         }
+
+        
 
         private static void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
         {
