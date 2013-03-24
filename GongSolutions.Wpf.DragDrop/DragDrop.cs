@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
@@ -23,6 +26,26 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetDragAdornerTemplate(UIElement target, DataTemplate value)
         {
             target.SetValue(DragAdornerTemplateProperty, value);
+        }
+
+        public static bool GetUseDefaultDragAdorner(UIElement target)
+        {
+            return (bool)target.GetValue(UseDefaultDragAdornerProperty);
+        }
+
+        public static void SetUseDefaultDragAdorner(UIElement target, bool value)
+        {
+            target.SetValue(UseDefaultDragAdornerProperty, value);
+        }
+
+        public static bool GetUseDefaultEffectDataTemplate(UIElement target)
+        {
+            return (bool)target.GetValue(UseDefaultEffectDataTemplateProperty);
+        }
+
+        public static void SetUseDefaultEffectDataTemplate(UIElement target, bool value)
+        {
+            target.SetValue(UseDefaultEffectDataTemplateProperty, value);
         }
 
         public static DataTemplate GetEffectNoneAdornerTemplate(UIElement target)
@@ -53,7 +76,7 @@ namespace GongSolutions.Wpf.DragDrop
             var template = (DataTemplate)target.GetValue(EffectCopyAdornerTemplateProperty);
 
             if (template == null)
-                template = CreateDefaultEffectDataTemplate(IconFactory.EffectCopy, "Copy to", destinationText);
+                template = CreateDefaultEffectDataTemplate(target, IconFactory.EffectCopy, "Copy to", destinationText);
 
             return template;
         }
@@ -68,7 +91,7 @@ namespace GongSolutions.Wpf.DragDrop
             var template = (DataTemplate)target.GetValue(EffectMoveAdornerTemplateProperty);
 
             if (template == null)
-                template = CreateDefaultEffectDataTemplate(IconFactory.EffectMove, "Move to", destinationText);
+                template = CreateDefaultEffectDataTemplate(target, IconFactory.EffectMove, "Move to", destinationText);
 
             return template;
         }
@@ -83,7 +106,7 @@ namespace GongSolutions.Wpf.DragDrop
             var template = (DataTemplate)target.GetValue(EffectLinkAdornerTemplateProperty);
 
             if (template == null)
-                template = CreateDefaultEffectDataTemplate(IconFactory.EffectLink, "Link to", destinationText);
+                template = CreateDefaultEffectDataTemplate(target, IconFactory.EffectLink, "Link to", destinationText);
 
             return template;
         }
@@ -220,6 +243,12 @@ namespace GongSolutions.Wpf.DragDrop
         public static readonly DependencyProperty DragAdornerTemplateProperty =
             DependencyProperty.RegisterAttached("DragAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
 
+        public static readonly DependencyProperty UseDefaultDragAdornerProperty =
+            DependencyProperty.RegisterAttached("UseDefaultDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty UseDefaultEffectDataTemplateProperty =
+            DependencyProperty.RegisterAttached("UseDefaultEffectDataTemplate", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
         public static readonly DependencyProperty DragHandlerProperty =
             DependencyProperty.RegisterAttached("DragHandler", typeof(IDragSource), typeof(DragDrop));
 
@@ -230,12 +259,10 @@ namespace GongSolutions.Wpf.DragDrop
             DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsDragSourceProperty =
-            DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDrop),
-                                                new UIPropertyMetadata(false, IsDragSourceChanged));
+            DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDragSourceChanged));
 
         public static readonly DependencyProperty IsDropTargetProperty =
-            DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop),
-                                                new UIPropertyMetadata(false, IsDropTargetChanged));
+            DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDropTargetChanged));
 
         public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
 
@@ -337,7 +364,7 @@ namespace GongSolutions.Wpf.DragDrop
                     adornment = contentPresenter;
                 }
             }
-            else
+            else if(GetUseDefaultDragAdorner(m_DragInfo.VisualSource))
             {
                 // Create a default adornor of the item you're dragging if there's isn't a custom one set
 //                RenderTargetBitmap bitmap = new RenderTargetBitmap(
@@ -384,13 +411,13 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static DataTemplate CreateDefaultEffectDataTemplate(BitmapImage effectIcon, string effectText)
+        private static DataTemplate CreateDefaultEffectDataTemplate(UIElement target, BitmapImage effectIcon, string effectText, string destinationText)
         {
-            return CreateDefaultEffectDataTemplate(effectIcon, effectText, string.Empty);
-        }
+            if (!GetUseDefaultEffectDataTemplate(target))
+            {
+                return null;
+            }
 
-        private static DataTemplate CreateDefaultEffectDataTemplate(BitmapImage effectIcon, string effectText, string destinationText)
-        {
             // Add icon
             var imageFactory = new FrameworkElementFactory(typeof(Image));
             imageFactory.SetValue(Image.SourceProperty, effectIcon);
