@@ -178,7 +178,9 @@
                          Grid.Row="1"
                          SelectionMode="Extended"
                          dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True">
                     <ListBoxItem>Item1</ListBoxItem>
                     <ListBoxItem>Item2</ListBoxItem>
                     <ListBoxItem>Item3</ListBoxItem>
@@ -382,7 +384,8 @@
                           Grid.Row="1"
                           ItemsSource="{Binding TreeCollection}"
                           dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.IsDropTarget="True">
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultDragAdorner="True">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding Caption}" />
