@@ -12,16 +12,39 @@ It has the following features:
 + Can display Adorners to give the user visual feedback of the operation in progress.
 + Has sensible defaults so that you have to write less code for common operations.
 
-#Current Status
-
-The library is in its early stages, but should still be useful and reasonably bug-free.
-
 #Installation
 
 You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
 
 #Release History
 
++ **0.1.3.6** (25 March, 2013)
+	- add changes from mitchel.jon (latest google code) branch
+		- Made changes to make the drag drop look more like the Windows 7 file explorer drag drop.
+		- Displays the drag adorner all the time even when the DragDropEffect is None.
+		- Offset the adorner so that the cursor is sat at the bottom middle of the adornment.
+		- Added a DragDropEffect adorner object to allow the addition of a WPF adornment for feedback instead of the standard monochrome cursor.
+		- Added dependency properties to allow the user to define their own DragDropEffect adorners.
+		- Added default DragDropEffect adorners for the effect None/Copy/Move/Link.
+		- Changed the events to tunnel instead of bubble. - Improved drag effect adorner.
+		- Removed flicker from drag adorner.
+		- Added support for controls that inherit from TreeView. (might work with other derived controls, but not tested)
+		- Added drop destination text to DropInfo for the effect adorner to display.
+		- Fixed issue with cursor override not being reset on drop.
+		- A few updates to improve drag and drop for TreeViews.
+		- Added RelativeInsertPosition.TargetItemCenter enum so that the DropInfo can tell the end user that the drop area is the middle 50% of the target item.
+		- Marked assembly as CLSCompliant.
+		- Add the cursor position relative to the dragged item when stating a drag operation to the DragInfo object. The allows me to position the default drag adorner under the cursor correctly.
+		- Added the ability to explicitly ignore drag and drop for a particular control in visual tree. e.g. If you have a TextBox in a list control that supports drag and drop, you can't do a drag selection of the text in the TextBox. If you explicitly ignore it then drag selection will work correctly.
+		- Fixed cast exception when attempting to start a drag operation from a FrameworkContentElement. Need to use its parent as it can't be cast as a UIElement.
+
+	- new property UseDefaultDragAdorner: if no drag adorner template is given use a simple default adorner (default is false)
+	- new property UseDefaultEffectDataTemplate: if no effect data template is given use a default template (default is false)
+	- fix size of default drag adorner
+
+	- Issue [#38](https://github.com/punker76/gong-wpf-dragdrop/issues/38): display visual of dragged item instead of using template
+	- Issue [#39](https://github.com/punker76/gong-wpf-dragdrop/issues/39): Highlight adorner outlines too much when TreeView item is collapsed
+	- Issue [#55](https://github.com/punker76/gong-wpf-dragdrop/issues/55): Wrong behaviour when listbox panel is StackPanel FlowDirection="RightToLeft" Orientation="Horizontal"
 + **0.1.3.5** (17 March, 2013)
 	- Issue #17: 'System.Windows.Documents.Run' is not a Visual or Visual3D' Exception
 	- Pull request #52: Sometimes ItemsControlExtensions throws an ArgumentOutOfRangeException
