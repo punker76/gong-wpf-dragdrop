@@ -100,10 +100,14 @@ namespace GongSolutions.Wpf.DragDrop
         UIElement VisualTargetItem { get; }
 
         /// <summary>
-        /// Gets th orientation of the current drop target.
+        /// Gets the orientation of the current drop target.
         /// </summary>
         Orientation VisualTargetOrientation { get; }
 
+        /// <summary>
+        /// Gets the FlowDirection of the current drop target.
+        /// </summary>
+        FlowDirection VisualTargetFlowDirection { get; }
 
         /// <summary>
         /// Gets and sets the text displayed in the DropDropEffects adorner.
@@ -165,6 +169,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                 this.TargetGroup = this.FindGroup(itemsControl, this.DropPosition);
                 this.VisualTargetOrientation = itemsControl.GetItemsPanelOrientation();
+                this.VisualTargetFlowDirection = itemsControl.GetItemsPanelFlowDirection();
 
                 if (item == null)
                 {
@@ -187,7 +192,10 @@ namespace GongSolutions.Wpf.DragDrop
 
                     if (this.VisualTargetOrientation == Orientation.Vertical)
                     {
-                        if (e.GetPosition(item).Y > item.RenderSize.Height / 2)
+                        var currentYPos = e.GetPosition(item).Y;
+                        var targetHeight = item.RenderSize.Height;
+
+                        if (currentYPos > targetHeight / 2)
                         {
                             InsertIndex++;
                             InsertPosition = RelativeInsertPosition.AfterTargetItem;
@@ -197,14 +205,18 @@ namespace GongSolutions.Wpf.DragDrop
                             InsertPosition = RelativeInsertPosition.BeforeTargetItem;
                         }
 
-                        if (e.GetPosition(item).Y > item.RenderSize.Height * 0.25 && e.GetPosition(item).Y < item.RenderSize.Height * 0.75)
+                        if (currentYPos > targetHeight * 0.25 && currentYPos < targetHeight * 0.75)
                         {
                             InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
                     }
                     else
                     {
-                        if (e.GetPosition(item).X > item.RenderSize.Width / 2)
+                        var currentXPos = e.GetPosition(item).X;
+                        var targetWidth = item.RenderSize.Width;
+
+                        if ((this.VisualTargetFlowDirection == FlowDirection.RightToLeft && currentXPos < targetWidth / 2)
+                            || (this.VisualTargetFlowDirection == FlowDirection.LeftToRight && currentXPos > targetWidth / 2))
                         {
                             InsertIndex++;
                             InsertPosition = RelativeInsertPosition.AfterTargetItem;
@@ -214,10 +226,13 @@ namespace GongSolutions.Wpf.DragDrop
                             InsertPosition = RelativeInsertPosition.BeforeTargetItem;
                         }
 
-                        if (e.GetPosition(item).X > item.RenderSize.Width * 0.25 && e.GetPosition(item).X < item.RenderSize.Width * 0.75)
+                        if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
                         {
                             InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
+#if DEBUG
+                        Console.WriteLine("==> DropInfo: {0}, {1}, {2}", InsertPosition, item, InsertIndex);
+#endif
                     }
                 }
                 else
@@ -336,10 +351,14 @@ namespace GongSolutions.Wpf.DragDrop
         public UIElement VisualTargetItem { get; private set; }
 
         /// <summary>
-        /// Gets th orientation of the current drop target.
+        /// Gets the orientation of the current drop target.
         /// </summary>
         public Orientation VisualTargetOrientation { get; private set; }
 
+        /// <summary>
+        /// Gets the orientation of the current drop target.
+        /// </summary>
+        public FlowDirection VisualTargetFlowDirection { get; private set; }
 
         /// <summary>
         /// Gets and sets the text displayed in the DropDropEffects adorner.

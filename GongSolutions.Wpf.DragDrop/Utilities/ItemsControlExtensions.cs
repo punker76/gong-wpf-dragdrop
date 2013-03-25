@@ -168,6 +168,25 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             return Orientation.Vertical;
         }
 
+        public static FlowDirection GetItemsPanelFlowDirection(this ItemsControl itemsControl)
+        {
+            var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
+
+            if (itemsPresenter != null)
+            {
+                var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                var flowDirectionProperty = itemsPanel.GetType().GetProperty("FlowDirection", typeof(FlowDirection));
+
+                if (flowDirectionProperty != null)
+                {
+                    return (FlowDirection)flowDirectionProperty.GetValue(itemsPanel, null);
+                }
+            }
+
+            // Make a guess!
+            return FlowDirection.LeftToRight;
+        }
+
         public static void SetSelectedItem(this ItemsControl itemsControl, object item)
         {
             if (itemsControl is MultiSelector)

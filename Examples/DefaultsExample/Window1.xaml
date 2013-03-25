@@ -202,10 +202,17 @@
 
         <TabItem Header="Horizontal ListBox">
             <Grid>
+                <Grid.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="FontSize" Value="20" />
+                    </Style>
+                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -223,6 +230,29 @@
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBoxItem>Item1</ListBoxItem>
+                    <ListBoxItem>Item2</ListBoxItem>
+                    <ListBoxItem>Item3</ListBoxItem>
+                    <ListBoxItem>Item4</ListBoxItem>
+                    <ListBoxItem>Item5</ListBoxItem>
+                </ListBox>
+
+                <TextBlock Grid.Row="2"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    Demonstrates the default behaviour with a horizontal ListBox with right to left flow direction.
+                </TextBlock>
+
+                <ListBox Grid.Row="3"
+                         SelectionMode="Extended"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        FlowDirection="RightToLeft" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBoxItem>Item1</ListBoxItem>

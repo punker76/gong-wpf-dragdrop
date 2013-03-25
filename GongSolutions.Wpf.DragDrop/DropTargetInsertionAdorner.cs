@@ -41,8 +41,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if (itemContainer != null)
                 {
-                    var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement),
-                                            itemContainer.RenderSize);
+                    var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement), itemContainer.RenderSize);
                     Point point1, point2;
                     double rotation = 0;
 
@@ -58,13 +57,19 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                     else
                     {
-                        if (this.DropInfo.InsertIndex == itemParent.Items.Count)
+                        var itemRectX = itemRect.X;
+
+                        if (this.DropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && this.DropInfo.InsertIndex == itemParent.Items.Count)
                         {
-                            itemRect.X += itemContainer.RenderSize.Width;
+                            itemRectX += itemContainer.RenderSize.Width;
+                        }
+                        else if (this.DropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && this.DropInfo.InsertIndex != itemParent.Items.Count)
+                        {
+                            itemRectX += itemContainer.RenderSize.Width;
                         }
 
-                        point1 = new Point(itemRect.X, itemRect.Y);
-                        point2 = new Point(itemRect.X, itemRect.Bottom);
+                        point1 = new Point(itemRectX, itemRect.Y);
+                        point2 = new Point(itemRectX, itemRect.Bottom);
                         rotation = 90;
                     }
 
