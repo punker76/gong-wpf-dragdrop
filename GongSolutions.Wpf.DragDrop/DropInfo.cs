@@ -190,10 +190,12 @@ namespace GongSolutions.Wpf.DragDrop
                         this.VisualTargetItem = item;
                     }
 
+                    var itemRenderSize = item.RenderSize;
+
                     if (this.VisualTargetOrientation == Orientation.Vertical)
                     {
                         var currentYPos = e.GetPosition(item).Y;
-                        var targetHeight = item.RenderSize.Height;
+                        var targetHeight = itemRenderSize.Height;
 
                         if (currentYPos > targetHeight / 2)
                         {
@@ -213,7 +215,7 @@ namespace GongSolutions.Wpf.DragDrop
                     else
                     {
                         var currentXPos = e.GetPosition(item).X;
-                        var targetWidth = item.RenderSize.Width;
+                        var targetWidth = itemRenderSize.Width;
 
                         if ((this.VisualTargetFlowDirection == FlowDirection.RightToLeft && currentXPos < targetWidth / 2)
                             || (this.VisualTargetFlowDirection == FlowDirection.LeftToRight && currentXPos > targetWidth / 2))
@@ -231,7 +233,7 @@ namespace GongSolutions.Wpf.DragDrop
                             InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
 #if DEBUG
-                        Console.WriteLine("==> DropInfo: {0}, {1}, {2}", InsertPosition, item, InsertIndex);
+                        Console.WriteLine("==> DropInfo: {0}, {1}, {2}, X={3}", InsertPosition, item, InsertIndex, currentXPos);
 #endif
                     }
                 }

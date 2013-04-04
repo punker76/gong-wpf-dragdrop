@@ -215,6 +215,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
@@ -260,6 +261,34 @@
                     <ListBoxItem>Item3</ListBoxItem>
                     <ListBoxItem>Item4</ListBoxItem>
                     <ListBoxItem>Item5</ListBoxItem>
+                </ListBox>
+
+                <ListBox Grid.Row="4"
+                         SelectionMode="Extended"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        FlowDirection="RightToLeft" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <Rectangle Width="100"
+                               Height="60"
+                               Fill="LightCoral"
+                               Stroke="Black" />
+                    <Rectangle Width="120"
+                               Height="60"
+                               Fill="LightCyan"
+                               Stroke="Black" />
+                    <Rectangle Width="140"
+                               Height="60"
+                               Fill="LightGreen"
+                               Stroke="Black" />
+                    <Rectangle Width="160"
+                               Height="60"
+                               Fill="LightPink"
+                               Stroke="Black" />
                 </ListBox>
             </Grid>
         </TabItem>
