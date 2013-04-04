@@ -389,11 +389,11 @@ namespace GongSolutions.Wpf.DragDrop
                 rect.Height = size.Height;
                 rect.IsHitTestVisible = false;
                 adornment = rect;
+                adornment.Opacity = 0.5;
             }
 
             if (adornment != null)
             {
-                adornment.Opacity = 0.5;
                 DragAdorner = new DragAdorner(rootElement, adornment);
             }
         }
