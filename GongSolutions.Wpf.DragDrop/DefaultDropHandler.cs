@@ -55,7 +55,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static bool CanAcceptData(IDropInfo dropInfo)
         {
-            if (dropInfo == null)
+            if (dropInfo == null || dropInfo.DragInfo == null)
             {
                 return false;
             }
