@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -495,7 +496,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static bool HitTestScrollBar(object sender, MouseButtonEventArgs e)
+        private static bool HitTest4Type<T>(object sender, MouseButtonEventArgs e) where T : UIElement
         {
             var hit = VisualTreeHelper.HitTest((Visual)sender, e.GetPosition((IInputElement)sender));
             if (hit == null)
@@ -504,7 +505,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
             else
             {
-                var scrollBar = hit.VisualHit.GetVisualAncestor<System.Windows.Controls.Primitives.ScrollBar>();
+                var scrollBar = hit.VisualHit.GetVisualAncestor<T>();
                 return scrollBar != null && scrollBar.Visibility == Visibility.Visible;
             }
         }
@@ -542,7 +543,12 @@ namespace GongSolutions.Wpf.DragDrop
         private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
-            if (e.ClickCount != 1 || HitTestScrollBar(sender, e) || GetDragSourceIgnore((UIElement)sender))
+            if (e.ClickCount != 1
+                || HitTest4Type<ScrollBar>(sender, e)
+                || HitTest4Type<TextBoxBase>(sender, e)
+                || HitTest4Type<PasswordBox>(sender, e)
+                || HitTest4Type<Slider>(sender, e)
+                || GetDragSourceIgnore((UIElement)sender))
             {
                 m_DragInfo = null;
                 return;
