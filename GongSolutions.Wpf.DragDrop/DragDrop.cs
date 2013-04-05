@@ -593,6 +593,20 @@ namespace GongSolutions.Wpf.DragDrop
             m_ClickSupressItem = null;
         }
 
+        private static IDragSource TryGetDragHandler(DragInfo dragInfo, UIElement sender)
+        {
+            IDragSource dragHandler = null;
+            if (dragInfo != null && dragInfo.VisualSource != null)
+            {
+                dragHandler = GetDragHandler(m_DragInfo.VisualSource);
+            }
+            if (dragHandler == null && sender != null)
+            {
+                dragHandler = GetDragHandler(sender);
+            }
+            return dragHandler ?? DefaultDragHandler;
+        }
+
         private static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (m_DragInfo != null && !m_DragInProgress)
@@ -603,16 +617,8 @@ namespace GongSolutions.Wpf.DragDrop
                 if (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
-                    var dragHandler = GetDragHandler(m_DragInfo.VisualSource);
-
-                    if (dragHandler != null)
-                    {
-                        dragHandler.StartDrag(m_DragInfo);
-                    }
-                    else
-                    {
-                        DefaultDragHandler.StartDrag(m_DragInfo);
-                    }
+                    var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
+                    dragHandler.StartDrag(m_DragInfo);
 
                     if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null)
                     {
@@ -769,7 +775,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             var dropInfo = new DropInfo(sender, e, m_DragInfo);
             var dropHandler = GetDropHandler((UIElement)sender) ?? DefaultDropHandler;
-            var dragHandler = GetDragHandler((UIElement)sender) ?? DefaultDragHandler;
+            var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
 
             DragAdorner = null;
             EffectAdorner = null;
