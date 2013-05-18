@@ -217,7 +217,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 return ((MultiSelector)itemsControl).SelectedItems;
             }
-            else if (itemsControl.GetType().IsAssignableFrom(typeof(ListBox)))
+            else if (itemsControl is ListBox)
             {
                 var listBox = (ListBox)itemsControl;
 
