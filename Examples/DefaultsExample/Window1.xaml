@@ -5,8 +5,8 @@
         xmlns:local="clr-namespace:DefaultsExample"
         xmlns:tk="http://schemas.microsoft.com/wpf/2008/toolkit"
         Title="Gong Solutions Drag'n'Drop: Defaults Example"
-        Height="520"
-        Width="620">
+        Height="500"
+        Width="800">
 
     <Window.Resources>
         <DataTemplate x:Key="DragAdorner">
@@ -39,8 +39,8 @@
         <local:Data />
     </Window.DataContext>
 
-    <TabControl>
-        <TabItem Header="Issue 42: Crash when using items deriving from ContentControl">
+    <TabControl TabStripPlacement="Left">
+        <TabItem Header="Issue 42">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -55,7 +55,7 @@
                            Grid.ColumnSpan="2"
                            Margin="0,8,0,8"
                            TextWrapping="Wrap">
-                    Test for Issue 42
+                    Test for Issue 42: Crash when using items deriving from ContentControl
                 </TextBlock>
 
                 <ItemsControl Grid.Column="0"
@@ -572,6 +572,65 @@
                          dd:DragDrop.IsDragSource="True"
                          dd:DragDrop.IsDropTarget="True"
                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Issue #64">
+            <Grid>
+                <ItemsControl Margin="1"
+                              ItemsSource="{Binding CustomCollection1}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent">
+
+                                <Border BorderThickness="1"
+                                        BorderBrush="#FFF3EDED"
+                                        Background="#FFF3EDED"
+                                        Margin="1"
+                                        Padding="1 1 1 4"
+                                        SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="Bold"
+                                                   FontSize="14" />
+
+                                        <Border Background="Silver"
+                                                Margin="10 0"
+                                                Opacity="0">
+                                            <Border.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <EventTrigger RoutedEvent="Control.MouseEnter">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                                     To="0.8"
+                                                                                     Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                        <EventTrigger RoutedEvent="Control.MouseLeave">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                                     To="0"
+                                                                                     Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </TabItem>
     </TabControl>
