@@ -108,17 +108,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             // There is no safe way to get the item container type for an ItemsControl. 
             // First hard-code the types for the common ItemsControls.
-            if (itemsControl.GetType().IsAssignableFrom(typeof(ListBox)))
+            //if (itemsControl.GetType().IsAssignableFrom(typeof(ListView)))
+            if (typeof(ListView).IsAssignableFrom(itemsControl.GetType()))
+            {
+                return typeof(ListViewItem);
+            }
+            //if (itemsControl.GetType().IsAssignableFrom(typeof(ListBox)))
+            else if (typeof(ListBox).IsAssignableFrom(itemsControl.GetType()))
             {
                 return typeof(ListBoxItem);
             }
-            else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
+            //else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
+            else if (typeof(TreeView).IsAssignableFrom(itemsControl.GetType()))
             {
                 return typeof(TreeViewItem);
-            }
-            else if (itemsControl.GetType().IsAssignableFrom(typeof(ListView)))
-            {
-                return typeof(ListViewItem);
             }
 
             // Otherwise look for the control's ItemsPresenter, get it's child panel and the first 
@@ -213,7 +216,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)
         {
-            if (itemsControl.GetType().IsAssignableFrom(typeof(MultiSelector)))
+            //if (itemsControl.GetType().IsAssignableFrom(typeof(MultiSelector)))
+            if (typeof(MultiSelector).IsAssignableFrom(itemsControl.GetType()))
             {
                 return ((MultiSelector)itemsControl).SelectedItems;
             }
@@ -230,11 +234,13 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     return listBox.SelectedItems;
                 }
             }
-            else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
+            //else if (itemsControl.GetType().IsAssignableFrom(typeof(TreeView)))
+            else if (typeof(TreeView).IsAssignableFrom(itemsControl.GetType()))
             {
                 return Enumerable.Repeat(((TreeView)itemsControl).SelectedItem, 1);
             }
-            else if (itemsControl.GetType().IsAssignableFrom(typeof(Selector)))
+            //else if (itemsControl.GetType().IsAssignableFrom(typeof(Selector)))
+            else if (typeof(Selector).IsAssignableFrom(itemsControl.GetType()))
             {
                 return Enumerable.Repeat(((Selector)itemsControl).SelectedItem, 1);
             }
