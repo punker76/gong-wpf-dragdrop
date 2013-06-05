@@ -18,6 +18,18 @@ You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-
 
 #Release History
 
++ **0.1.3.7** (5 June, 2013)
+	- Issue [#57](https://github.com/punker76/gong-wpf-dragdrop/issues/57): Remove opacity modification of adorned item (will be used only for default adorned items)
+	- Fix possible exception with drag&drop from outside the window or something else
+	- Issue [#49](https://github.com/punker76/gong-wpf-dragdrop/issues/49): The Dropped function from IDragSource is called on the target and not the Source
+	- Issue [#37](https://github.com/punker76/gong-wpf-dragdrop/issues/37), Issue [#12](https://github.com/punker76/gong-wpf-dragdrop/issues/12):
+		- Slider in list item can't be changed. DD thinks the list item is being dragged.
+		- Text box on a list item: when I try to select the text by doing a drag selection the list item starts to be dragged.
+	- Issue [#63](https://github.com/punker76/gong-wpf-dragdrop/issues/63): Multiple items deselected in ListView and other subclasses of ListBox. thx to [rdingwall](https://github.com/rdingwall) (Richard Dingwall)
+		- Fixed over-strict IsAssignableFrom, was causing bug where ListViews and other subclasses of ListBox would lose their selections if multiple items were selected.
+	- Issue [#15](https://github.com/punker76/gong-wpf-dragdrop/issues/15): A drop target can now be placed on a child element of a grid, listbox or something else (more mvvm like). The NotHandled property can be used to allow bubbling the drag over event.
+	- Issue [#64](https://github.com/punker76/gong-wpf-dragdrop/issues/64): Now it's possible to use ItemsControl itself as drag source and drop target.
+	- Issue [#59](https://github.com/punker76/gong-wpf-dragdrop/issues/59): Fix Exception when using WPF UserControl under ElementHost in an Excel AddIn. If no window is found, search again for a UserControl.
 + **0.1.3.6** (25 March, 2013)
 	- add changes from mitchel.jon (latest google code) branch
 		- Made changes to make the drag drop look more like the Windows 7 file explorer drag drop.
