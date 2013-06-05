@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
@@ -332,18 +328,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             DataTemplate template = GetDragAdornerTemplate(m_DragInfo.VisualSource);
 
-            UIElement rootElement = null;
-            Window parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
             UIElement adornment = null;
-
-            if (parentWindow != null)
-            {
-                rootElement = parentWindow.Content as UIElement;
-            }
-            if (rootElement == null)
-            {
-                rootElement = (UIElement)Application.Current.MainWindow.Content;
-            }
 
             if (template != null)
             {
@@ -395,6 +380,20 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (adornment != null)
             {
+                var parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
+                UIElement rootElement = parentWindow != null ? parentWindow.Content as UIElement : null;
+                if (rootElement == null && Application.Current != null && Application.Current.MainWindow != null) {
+                    rootElement = (UIElement)Application.Current.MainWindow.Content;
+                }
+//                i don't want the fu... windows forms reference
+//                if (rootElement == null) {
+//                    var elementHost = m_DragInfo.VisualSource.GetVisualAncestor<ElementHost>();
+//                    rootElement = elementHost != null ? elementHost.Child : null;
+//                }
+                if (rootElement == null) {
+                    rootElement = m_DragInfo.VisualSource.GetVisualAncestor<UserControl>();
+                }
+
                 DragAdorner = new DragAdorner(rootElement, adornment);
             }
         }
