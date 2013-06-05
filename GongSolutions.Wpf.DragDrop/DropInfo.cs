@@ -123,6 +123,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
         DragDropKeyStates KeyStates { get; }
+
+        /// <summary>
+        /// Indicates if the drop info should be handled by itself (useful for child elements)
+        /// </summary>
+        bool NotHandled { get; set; }
     }
 
     /// <summary>
@@ -159,11 +164,16 @@ namespace GongSolutions.Wpf.DragDrop
             this.KeyStates = e.KeyStates;
 
             this.VisualTarget = sender as UIElement;
+            // if drop target isn't a ItemsControl
+            if (!(this.VisualTarget is ItemsControl))
+            {
+                this.VisualTarget = VisualTreeExtensions.GetVisualAncestor<ItemsControl>(this.VisualTarget);
+            }
             this.DropPosition = e.GetPosition(this.VisualTarget);
 
-            if (sender is ItemsControl)
+            if (this.VisualTarget is ItemsControl)
             {
-                var itemsControl = (ItemsControl)sender;
+                var itemsControl = (ItemsControl)this.VisualTarget;
                 var item = itemsControl.GetItemContainerAt(this.DropPosition);
                 var directlyOverItem = item != null;
 
@@ -376,6 +386,8 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
         /// </summary>
         public DragDropKeyStates KeyStates { get; private set; }
+
+        public bool NotHandled { get; set; }
     }
 
     [Flags]

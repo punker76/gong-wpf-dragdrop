@@ -545,5 +545,34 @@
                          dd:DragDrop.IsDropTarget="True" />
             </Grid>
         </TabItem>
+
+        <TabItem Header="Issue #15">
+            <Grid>
+                <Grid.Resources>
+                    <DataTemplate x:Key="CustomTemplate">
+                        <TextBlock Text="{Binding Name}" Background="Transparent"
+                                   dd:DragDrop.IsDropTarget="True"
+                                   dd:DragDrop.DropHandler="{Binding}" />
+                    </DataTemplate>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Column="0"
+                         ItemsSource="{Binding CustomCollection1}"
+                         SelectionMode="Extended"
+                         ItemTemplate="{StaticResource CustomTemplate}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding CustomCollection2}"
+                         ItemTemplate="{StaticResource CustomTemplate}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

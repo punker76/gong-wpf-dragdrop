@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Windows;
 using GongSolutions.Wpf.DragDrop;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Collections;
+using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace DefaultsExample
 {
@@ -17,10 +19,13 @@ namespace DefaultsExample
         {
             this.Collection1 = new ObservableCollection<string>();
             this.Collection2 = new ObservableCollection<string>();
+            this.CustomCollection1 = new ObservableCollection<CustomDataModel>();
+            this.CustomCollection2 = new ObservableCollection<CustomDataModel>();
 
             for (var n = 0; n < 100; ++n)
             {
                 this.Collection1.Add("Item " + n);
+                this.CustomCollection1.Add(new CustomDataModel {Name = "Custom Item " + n});
             }
 
             this.GroupedCollection = new ObservableCollection<GroupedItem>();
@@ -51,6 +56,8 @@ namespace DefaultsExample
 
         public ObservableCollection<string> Collection1 { get; private set; }
         public ObservableCollection<string> Collection2 { get; private set; }
+        public ObservableCollection<CustomDataModel> CustomCollection1 { get; private set; }
+        public ObservableCollection<CustomDataModel> CustomCollection2 { get; private set; }
         public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
         public ObservableCollection<TreeNode> TreeCollection { get; private set; }
 
@@ -61,7 +68,7 @@ namespace DefaultsExample
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             DragDrop.DefaultDropHandler.DragOver(dropInfo);
-            if (dropInfo.TargetGroup == null)
+            if ((dropInfo.Data is CustomDataModel) || dropInfo.TargetGroup == null)
             {
                 dropInfo.Effects = System.Windows.DragDropEffects.None;
             }
@@ -79,6 +86,25 @@ namespace DefaultsExample
             {
                 ((ICollectionView)dropInfo.TargetCollection).Refresh();
             }
+        }
+    }
+
+    internal class CustomDataModel : IDropTarget
+    {
+        public string Name { get; set; }
+
+        public void DragOver(IDropInfo dropInfo) {
+            if (dropInfo.DragInfo.Data is CustomDataModel) {
+                dropInfo.Effects = DragDropEffects.Copy;
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+
+                // test for handled
+                dropInfo.NotHandled = true; // now the DefaultDropHandler should work
+            }
+        }
+
+        public void Drop(IDropInfo dropInfo) {
+            DragDrop.DefaultDropHandler.Drop(dropInfo);
         }
     }
 

@@ -302,7 +302,7 @@ namespace GongSolutions.Wpf.DragDrop
                 //uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
                 //uiElement.PreviewDragLeave += DropTarget_PreviewDragLeave;
                 //uiElement.PreviewDragOver += DropTarget_PreviewDragOver;
-                //uiElement.PreviewDrop += DropTarget_PreviewDropTest;
+                //uiElement.PreviewDrop += DropTarget_PreviewDrop;
 
                 uiElement.DragEnter += DropTarget_PreviewDragEnter;
                 uiElement.DragLeave += DropTarget_PreviewDragLeave;
@@ -665,8 +665,6 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        
-
         private static void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
         {
             DropTarget_PreviewDragOver(sender, e);
@@ -686,17 +684,10 @@ namespace GongSolutions.Wpf.DragDrop
         private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
         {
             var dropInfo = new DropInfo(sender, e, m_DragInfo);
-            var dropHandler = GetDropHandler((UIElement)sender);
-            var itemsControl = sender as ItemsControl;
+            var dropHandler = GetDropHandler((UIElement)sender) ?? DefaultDropHandler;
+            var itemsControl = dropInfo.VisualTarget;
 
-            if (dropHandler != null)
-            {
-                dropHandler.DragOver(dropInfo);
-            }
-            else
-            {
-                DefaultDropHandler.DragOver(dropInfo);
-            }
+            dropHandler.DragOver(dropInfo);
 
             if (DragAdorner == null && m_DragInfo != null)
             {
@@ -772,9 +763,9 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             e.Effects = dropInfo.Effects;
-            e.Handled = true;
+            e.Handled = !dropInfo.NotHandled;
 
-            Scroll((DependencyObject)sender, e);
+            Scroll((DependencyObject)dropInfo.VisualTarget, e);
         }
 
         private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
