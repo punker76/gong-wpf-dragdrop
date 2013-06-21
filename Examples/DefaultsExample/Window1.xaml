@@ -633,5 +633,39 @@
                 </ItemsControl>
             </Grid>
         </TabItem>
+
+        <TabItem Header="Issue #65">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap"
+                           Text="DragDrop doesn't working on treeview subitems" />
+
+                <TreeView Grid.Column="0"
+                          Grid.Row="1"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.UseDefaultDragAdorner="True">
+                    <TreeViewItem Header="Groups"
+                                  ItemsSource="{Binding TreeCollection}">
+                        <TreeViewItem.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Caption}" />
+                            </HierarchicalDataTemplate>
+                        </TreeViewItem.ItemTemplate>
+                    </TreeViewItem>
+                </TreeView>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>
