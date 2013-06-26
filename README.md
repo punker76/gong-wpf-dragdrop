@@ -109,7 +109,7 @@ You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-
 
 A simple example of adding drag/drop to a ListBox:
 
-```
+```xml
 <ListBox ItemsSource="{Binding Collection}"
          dd:DragDrop.IsDragSource="True"
          dd:DragDrop.IsDropTarget="True" />
@@ -123,7 +123,7 @@ If your project contains another ItemsControl with drag/drop enabled in this man
 
 While the defaults can be useful in simple cases, you will usually want more control of what happens when data is dragged/dropped onto your control. You can delegate that responsibility to your ViewModel by setting the DropHandler attached property:
 
-```
+```xml
 <ListBox ItemsSource="{Binding Collection}"
          dd:DragDrop.IsDragSource="True"
          dd:DragDrop.IsDropTarget="True"
@@ -134,7 +134,7 @@ In this example, we're binding the drop handler to the current DataContext, whic
 
 You handle the drop in your ViewModel by implementing the IDropTarget interface:
 
-```
+```csharp
 class ExampleViewModel : IDropTarget
 {
 	public ObservableCollection<ExampleItemViewModel> Items;
