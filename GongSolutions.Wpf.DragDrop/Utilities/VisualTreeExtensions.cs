@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
@@ -64,6 +65,30 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
+        /// </summary>
+        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type type, ItemsControl itemsControl)
+        {
+            var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
+            DependencyObject lastFoundItemByType = null;
+
+            while (item != null)
+            {
+                if (item == itemsControl)
+                {
+                    return lastFoundItemByType;
+                }
+                if (item.GetType() == type)
+                {
+                    lastFoundItemByType = item;
+                }
+                item = VisualTreeHelper.GetParent(item);
+            }
+
+            return lastFoundItemByType;
         }
 
         public static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject

@@ -35,11 +35,14 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static UIElement GetItemContainer(this ItemsControl itemsControl, UIElement child)
         {
-            var itemType = GetItemContainerType(itemsControl);
+            bool isItemContainer;
+            var itemType = GetItemContainerType(itemsControl, out isItemContainer);
 
             if (itemType != null)
             {
-                return (UIElement)child.GetVisualAncestor(itemType);
+                return isItemContainer
+                           ? (UIElement)child.GetVisualAncestor(itemType, itemsControl)
+                           : (UIElement)child.GetVisualAncestor(itemType);
             }
 
             return null;
@@ -61,51 +64,52 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position,
                                                    Orientation searchDirection)
         {
-            Type itemContainerType = GetItemContainerType(itemsControl);
+            bool isItemContainer;
+            var itemContainerType = GetItemContainerType(itemsControl, out isItemContainer);
 
-            if (itemContainerType != null)
-            {
-                Geometry hitTestGeometry;
+            Geometry hitTestGeometry;
                 
-                if (typeof(TreeViewItem).IsAssignableFrom(itemContainerType))
+            if (typeof(TreeViewItem).IsAssignableFrom(itemContainerType))
+            {
+                hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+            }
+            else
+            {
+                switch (searchDirection)
                 {
-                    hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+                    case Orientation.Horizontal:
+                        hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
+                        break;
+                    case Orientation.Vertical:
+                        hitTestGeometry = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid value for searchDirection");
                 }
-                else
-                {
-                    switch (searchDirection)
-                    {
-                        case Orientation.Horizontal:
-                            hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
-                            break;
-                        case Orientation.Vertical:
-                            hitTestGeometry = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
-                            break;
-                        default:
-                            throw new ArgumentException("Invalid value for searchDirection");
-                    }
-                }
-
-                List<DependencyObject> hits = new List<DependencyObject>();
-
-                VisualTreeHelper.HitTest(itemsControl, null,
-                    result =>
-                    {
-                        DependencyObject itemContainer = result.VisualHit.GetVisualAncestor(itemContainerType);
-                        if (itemContainer != null && !hits.Contains(itemContainer) && ((UIElement)itemContainer).IsVisible == true)
-                            hits.Add(itemContainer);
-                        return HitTestResultBehavior.Continue;
-                    },
-                    new GeometryHitTestParameters(hitTestGeometry));
-
-                return GetClosest(itemsControl, hits, position, searchDirection);
             }
 
-            return null;
+            List<DependencyObject> hits = new List<DependencyObject>();
+
+            VisualTreeHelper.HitTest(itemsControl, null,
+                result =>
+                {
+                    var itemContainer = isItemContainer
+                                            ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
+                                            : result.VisualHit.GetVisualAncestor(itemContainerType);
+                    if (itemContainer != null && !hits.Contains(itemContainer) && ((UIElement)itemContainer).IsVisible == true)
+                        hits.Add(itemContainer);
+                    return HitTestResultBehavior.Continue;
+                },
+                new GeometryHitTestParameters(hitTestGeometry));
+
+            return GetClosest(itemsControl, hits, position, searchDirection);
         }
 
-        public static Type GetItemContainerType(this ItemsControl itemsControl)
+        public static Type GetItemContainerType(this ItemsControl itemsControl, out bool isItemContainer)
         {
+            // determines if the itemsControl is not a ListView, ListBox or TreeView
+            isItemContainer = false;
+
             // There is no safe way to get the item container type for an ItemsControl. 
             // First hard-code the types for the common ItemsControls.
             //if (itemsControl.GetType().IsAssignableFrom(typeof(ListView)))
@@ -144,6 +148,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     if (itemContainer != null &&
                         itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) != -1)
                     {
+                        isItemContainer = true;
                         return itemContainer.GetType();
                     }
                 }
