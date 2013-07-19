@@ -196,6 +196,16 @@ namespace GongSolutions.Wpf.DragDrop
             target.SetValue(DragSourceIgnoreProperty, value);
         }
 
+        public static Point GetDragMouseAnchorPoint(UIElement target)
+        {
+            return (Point)target.GetValue(DragMouseAnchorPointProperty);
+        }
+
+        public static void SetDragMouseAnchorPoint(UIElement target, Point value)
+        {
+            target.SetValue(DragMouseAnchorPointProperty, value);
+        }
+
         public static IDragSource DefaultDragHandler
         {
             get
@@ -266,6 +276,12 @@ namespace GongSolutions.Wpf.DragDrop
         public static readonly DependencyProperty IsDropTargetProperty =
             DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDropTargetChanged));
 
+        /// <summary>
+        /// DragMouseAnchorPoint defines the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
+        /// </summary>
+        public static readonly DependencyProperty DragMouseAnchorPointProperty =
+            DependencyProperty.RegisterAttached("DragMouseAnchorPoint", typeof(Point), typeof(DragDrop), new PropertyMetadata(new Point(0, 1)));
+
         public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
 
         private static void IsDragSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -330,6 +346,26 @@ namespace GongSolutions.Wpf.DragDrop
 
             UIElement adornment = null;
 
+            var useDefaultDragAdorner = GetUseDefaultDragAdorner(m_DragInfo.VisualSource);
+
+            if (template == null && useDefaultDragAdorner)
+			{
+				template = new DataTemplate();
+
+				var factory = new FrameworkElementFactory(typeof(Image));
+
+				var bs = CaptureScreen(m_DragInfo.VisualSourceItem);
+				factory.SetValue(Image.SourceProperty, bs);
+				if (m_DragInfo.VisualSourceItem is FrameworkElement)
+				{
+					factory.SetValue(FrameworkElement.WidthProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualWidth);
+					factory.SetValue(FrameworkElement.HeightProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualHeight);
+					factory.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Left);
+					factory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Top);
+				}
+				template.VisualTree = factory;
+			}
+
             if (template != null)
             {
                 if (m_DragInfo.Data is IEnumerable && !(m_DragInfo.Data is string))
@@ -355,31 +391,14 @@ namespace GongSolutions.Wpf.DragDrop
                     adornment = contentPresenter;
                 }
             }
-            else if(GetUseDefaultDragAdorner(m_DragInfo.VisualSource))
-            {
-                // Create a default adornor of the item you're dragging if there's isn't a custom one set
-//                RenderTargetBitmap bitmap = new RenderTargetBitmap(
-//                    Convert.ToInt32(m_DragInfo.VisualSourceItem.DesiredSize.Width),
-//                    Convert.ToInt32(m_DragInfo.VisualSourceItem.DesiredSize.Height),
-//                    96, 96, PixelFormats.Pbgra32);
-//
-//                bitmap.Render(m_DragInfo.VisualSourceItem);
-//                bitmap.Freeze();
-
-                // Create a default adornor of the item you're dragging if there's isn't a custom one set
-                var size = m_DragInfo.VisualSourceItem is TreeViewItem ? m_DragInfo.VisualSourceItem.DesiredSize : m_DragInfo.VisualSourceItem.RenderSize;
-                Rectangle rect = new Rectangle();
-                var visualBrush = new VisualBrush(m_DragInfo.VisualSourceItem);
-                rect.Fill = visualBrush.CloneCurrentValue();
-                rect.Width = size.Width;
-                rect.Height = size.Height;
-                rect.IsHitTestVisible = false;
-                adornment = rect;
-                adornment.Opacity = 0.5;
-            }
 
             if (adornment != null)
             {
+                if (useDefaultDragAdorner)
+                {
+                    adornment.Opacity = 0.5;
+                }
+
                 var parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
                 UIElement rootElement = parentWindow != null ? parentWindow.Content as UIElement : null;
                 if (rootElement == null && Application.Current != null && Application.Current.MainWindow != null) {
@@ -396,6 +415,32 @@ namespace GongSolutions.Wpf.DragDrop
 
                 DragAdorner = new DragAdorner(rootElement, adornment);
             }
+        }
+
+        // Helper to generate the image - I grabbed this off Google 
+        // somewhere. -- Chris Bordeman cbordeman@gmail.com
+        private static BitmapSource CaptureScreen(Visual target, double dpiX = 96.0, double dpiY = 96.0)
+        {
+            if (target == null)
+                return null;
+
+            var bounds = VisualTreeHelper.GetDescendantBounds(target);
+
+            var rtb = new RenderTargetBitmap((int)(bounds.Width * dpiX / 96.0),
+                                             (int)(bounds.Height * dpiY / 96.0),
+                                             dpiX,
+                                             dpiY,
+                                             PixelFormats.Pbgra32);
+
+            var dv = new DrawingVisual();
+            using (var ctx = dv.RenderOpen()) {
+                var vb = new VisualBrush(target);
+                ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
+            }
+
+            rtb.Render(dv);
+
+            return rtb;
         }
 
         static void CreateEffectAdorner(DropInfo dropInfo)
@@ -705,15 +750,9 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if (m_DragInfo != null)
                 {
-                    // When there is a custom adorner move to above the cursor and center it
-                    if (GetDragAdornerTemplate(m_DragInfo.VisualSource) != null)
-                    {
-                        _adornerPos.Offset((_adornerSize.Width * -0.5), (_adornerSize.Height * -0.9));
-                    }
-                    else
-                    {
-                        _adornerPos.Offset(m_DragInfo.PositionInDraggedItem.X * -1, m_DragInfo.PositionInDraggedItem.Y * -1);
-                    }
+                    // move the adorner
+                    _adornerPos.Offset(_adornerSize.Width * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).X,
+                                       _adornerSize.Height * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).Y);
                 }
 
                 DragAdorner.MousePosition = _adornerPos;
