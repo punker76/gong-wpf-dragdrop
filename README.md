@@ -14,10 +14,16 @@ It has the following features:
 
 #Installation
 
-You can download latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
+Try to download or fork the source code and compile it.
+Or: You can download the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
 
 #Release History
 
++ **0.1.3.8** (20 July, 2013)
+	- Issue [#38](https://github.com/punker76/gong-wpf-dragdrop/issues/38):
+		- add DragMouseAnchorPoint dependency property for drag adorner positioning
+		- better capture screen for default drag adorner
+	- Issue [#42](https://github.com/punker76/gong-wpf-dragdrop/issues/42): Now we can have items deriving from ContentControl.
 + **0.1.3.7** (5 June, 2013)
 	- Issue [#57](https://github.com/punker76/gong-wpf-dragdrop/issues/57): Remove opacity modification of adorned item (will be used only for default adorned items)
 	- Fix possible exception with drag&drop from outside the window or something else
