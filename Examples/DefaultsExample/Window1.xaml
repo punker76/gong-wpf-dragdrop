@@ -216,6 +216,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
@@ -263,7 +266,13 @@
                     <ListBoxItem>Item5</ListBoxItem>
                 </ListBox>
 
-                <ListBox Grid.Row="4"
+                <TextBlock Grid.Row="4"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    This doesn't works! (FlowDirection="RightToLeft")
+                </TextBlock>
+
+                <ListBox Grid.Row="5"
                          SelectionMode="Extended"
                          dd:DragDrop.IsDragSource="True"
                          dd:DragDrop.IsDropTarget="True">
@@ -271,6 +280,43 @@
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"
                                         FlowDirection="RightToLeft" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <Rectangle Width="100"
+                               Height="60"
+                               Fill="LightCoral"
+                               Stroke="Black" />
+                    <Rectangle Width="120"
+                               Height="60"
+                               Fill="LightCyan"
+                               Stroke="Black" />
+                    <Rectangle Width="140"
+                               Height="60"
+                               Fill="LightGreen"
+                               Stroke="Black" />
+                    <Rectangle Width="160"
+                               Height="60"
+                               Fill="LightPink"
+                               Stroke="Black" />
+                </ListBox>
+
+                <TextBlock Grid.Row="6"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    This works!!! (RotateTransform Angle="180")
+                </TextBlock>
+
+                <ListBox Grid.Row="7"
+                         SelectionMode="Extended"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         RenderTransformOrigin="0.5,0.5">
+                    <ListBox.RenderTransform>
+                        <RotateTransform Angle="180" />
+                    </ListBox.RenderTransform>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <Rectangle Width="100"
