@@ -94,7 +94,7 @@ namespace GongSolutions.Wpf.DragDrop
         static DropTargetInsertionAdorner()
         {
             // Create the pen and triangle in a static constructor and freeze them to improve performance.
-            const int triangleSize = 3;
+            const int triangleSize = 5;
 
             m_Pen = new Pen(Brushes.Gray, 2);
             m_Pen.Freeze();
