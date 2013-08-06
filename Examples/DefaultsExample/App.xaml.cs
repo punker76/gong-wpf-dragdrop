@@ -5,12 +5,15 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace DefaultsExample
+namespace NorthwindExample
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
+        public App() {
+            this.StartupUri = new Uri("Window(NET35).xaml", UriKind.RelativeOrAbsolute);
+        }
     }
 }

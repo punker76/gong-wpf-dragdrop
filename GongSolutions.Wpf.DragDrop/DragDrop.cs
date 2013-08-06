@@ -6,10 +6,13 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
+#if NET35
+using Microsoft.Windows.Controls;
+using Microsoft.Windows.Controls.Primitives;
+#endif
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -540,18 +543,61 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static bool HitTest4Type<T>(object sender, MouseButtonEventArgs e) where T : UIElement
+        private static T GetHitTestElement4Type<T>(object sender, MouseButtonEventArgs e) where T : UIElement
         {
             var hit = VisualTreeHelper.HitTest((Visual)sender, e.GetPosition((IInputElement)sender));
             if (hit == null)
             {
-                return false;
+                return null;
             }
             else
             {
-                var scrollBar = hit.VisualHit.GetVisualAncestor<T>();
-                return scrollBar != null && scrollBar.Visibility == Visibility.Visible;
+                var uiElement = hit.VisualHit.GetVisualAncestor<T>();
+                return uiElement;
             }
+        }
+
+        private static bool HitTest4Type<T>(object sender, MouseButtonEventArgs e) where T : UIElement
+        {
+            var uiElement = GetHitTestElement4Type<T>(sender, e);
+            return uiElement != null && uiElement.Visibility == Visibility.Visible;
+        }
+
+        private static bool HitTest4GridViewColumnHeader(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ListView)
+            {
+                // no drag&drop for column header
+                var columnHeader = GetHitTestElement4Type<GridViewColumnHeader>(sender, e);
+                if (columnHeader != null && (columnHeader.Role == GridViewColumnHeaderRole.Floating || columnHeader.Visibility == Visibility.Visible))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool HitTest4DataGridTypes(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is DataGrid)
+            {
+                // no drag&drop for column header
+                var columnHeader = GetHitTestElement4Type<DataGridColumnHeader>(sender, e);
+                if (columnHeader != null && columnHeader.Visibility == Visibility.Visible)
+                {
+                    return true;
+                }
+                // no drag&drop for row header
+                var rowHeader = GetHitTestElement4Type<DataGridRowHeader>(sender, e);
+                if (rowHeader != null && rowHeader.Visibility == Visibility.Visible)
+                {
+                    return true;
+                }
+                // drag&drop only for data grid row
+                var dataRow = GetHitTestElement4Type<DataGridRow>(sender, e);
+                return dataRow == null;
+            }
+            return false;
         }
 
         private static void Scroll(DependencyObject o, DragEventArgs e)
@@ -592,6 +638,8 @@ namespace GongSolutions.Wpf.DragDrop
                 || HitTest4Type<TextBoxBase>(sender, e)
                 || HitTest4Type<PasswordBox>(sender, e)
                 || HitTest4Type<Slider>(sender, e)
+                || HitTest4GridViewColumnHeader(sender, e)
+                || HitTest4DataGridTypes(sender, e)
                 || GetDragSourceIgnore((UIElement)sender))
             {
                 m_DragInfo = null;

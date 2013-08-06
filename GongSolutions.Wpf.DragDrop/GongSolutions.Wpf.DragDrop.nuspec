@@ -1,25 +1,30 @@
 <?xml version="1.0"?>
-<package >
-  <metadata>
-    <id>gong-wpf-dragdrop</id>
-    <version>0.1.3.8</version>
-    <title>gong-wpf-dragdrop</title>
-    <authors>Jan Karger (punker76), Steven Kirk, mitchell.jon</authors>
-    <owners>Jan Karger (punker76), Steven Kirk</owners>
-    <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
-    <projectUrl>http://punker76.github.io/gong-wpf-dragdrop</projectUrl>
-    <iconUrl>https://raw.github.com/punker76/gong-wpf-dragdrop/master/GongSolutions.Wpf.DragDrop.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A Drag'n'Drap Framework for WPF</description>
-    <copyright>Copyright 2013</copyright>
-    <tags>WPF UI Lib</tags>
-  </metadata>
-  <files>
-    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35\GongSolutions.Wpf.DragDrop.dll" />
-    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35\GongSolutions.Wpf.DragDrop.xml" />
-    <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35\GongSolutions.Wpf.DragDrop.pdb" />
-    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll" />
-    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml" />
-    <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb" />
-  </files>
+<package>
+    <metadata>
+        <id>gong-wpf-dragdrop</id>
+        <version>0.1.3.8</version>
+        <title>gong-wpf-dragdrop</title>
+        <authors>Jan Karger (punker76), Steven Kirk, mitchell.jon</authors>
+        <owners>Jan Karger (punker76), Steven Kirk</owners>
+        <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
+        <projectUrl>http://punker76.github.io/gong-wpf-dragdrop</projectUrl>
+        <iconUrl>https://raw.github.com/punker76/gong-wpf-dragdrop/master/GongSolutions.Wpf.DragDrop.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A Drag'n'Drap Framework for WPF</description>
+        <copyright>Copyright 2013</copyright>
+        <tags>WPF UI Lib</tags>
+        <dependencies>
+            <group targetFramework="net35">
+                <dependency id="WPFToolkit" version="3.5.50211.1"/>
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35\GongSolutions.Wpf.DragDrop.dll"/>
+        <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35\GongSolutions.Wpf.DragDrop.xml"/>
+        <file src="bin\Release\NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35\GongSolutions.Wpf.DragDrop.pdb"/>
+        <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll"/>
+        <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml"/>
+        <file src="bin\Release\NET4\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb"/>
+    </files>
 </package>
