@@ -76,7 +76,9 @@
     <Compile Include="DropTargetHighlightAdorner.cs" />
     <Compile Include="DropTargetInsertionAdorner.cs" />
     <Compile Include="Icons\IconFactory.cs" />
+    <Compile Include="IDragInfo.cs" />
     <Compile Include="IDragSource.cs" />
+    <Compile Include="IDropInfo.cs" />
     <Compile Include="IDropTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
