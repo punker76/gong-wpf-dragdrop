@@ -712,5 +712,37 @@
                 </TreeView>
             </Grid>
         </TabItem>
+
+        <TabItem Header="Issue #30">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Margin="0,8,0,8"
+                           TextWrapping="Wrap">
+                    Support for derived item container classes
+                </TextBlock>
+
+                <local:CustomListBox Grid.Column="0"
+                                     Grid.Row="1"
+                                     ItemsSource="{Binding Collection1}"
+                                     SelectionMode="Extended"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True" />
+                <local:CustomListBox Grid.Column="1"
+                                     Grid.Row="1"
+                                     ItemsSource="{Binding Collection2}"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True" />
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

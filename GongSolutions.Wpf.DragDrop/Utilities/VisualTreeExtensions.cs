@@ -57,7 +57,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
             while (item != null)
             {
-                if (item.GetType() == type)
+                if (item.GetType() == type || item.GetType().IsSubclassOf(type))
                 {
                     return item;
                 }
@@ -81,7 +81,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return lastFoundItemByType;
                 }
-                if (item.GetType() == type)
+                if (item.GetType() == type || item.GetType().IsSubclassOf(type))
                 {
                     lastFoundItemByType = item;
                 }
