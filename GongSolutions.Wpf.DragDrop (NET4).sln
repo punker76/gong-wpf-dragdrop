@@ -9,18 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.Wpf.DragDrop (NET4)", "GongSolutions.Wpf.DragDrop\GongSolutions.Wpf.DragDrop (NET4).csproj", "{0C6674CC-6D49-414A-9B41-D4E175028FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindExample (NET4)", "Examples\NorthwindExample\NorthwindExample (NET4).csproj", "{6200FA9D-0590-4E44-82DD-E90C529124A3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.Wpf.DragDrop.UnitTests (NET4)", "GongSolutions.Wpf.DragDrop.UnitTests\GongSolutions.Wpf.DragDrop.UnitTests (NET4).csproj", "{27DB2F6D-D0F3-47CA-BBE7-7FF7C868C791}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{96F74036-17C4-470A-B820-1B0653472F61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultsExample (NET4)", "Examples\DefaultsExample\DefaultsExample (NET4).csproj", "{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9D527223-ED58-4EFB-AF28-43A61A2ECE1F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindExample (NET4)", "Examples\NorthwindExample\NorthwindExample (NET4).csproj", "{6200FA9D-0590-4E44-82DD-E90C529124A3}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -35,17 +30,23 @@ Global
 		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27DB2F6D-D0F3-47CA-BBE7-7FF7C868C791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27DB2F6D-D0F3-47CA-BBE7-7FF7C868C791}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27DB2F6D-D0F3-47CA-BBE7-7FF7C868C791}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0} = {96F74036-17C4-470A-B820-1B0653472F61}
+		{6200FA9D-0590-4E44-82DD-E90C529124A3} = {96F74036-17C4-470A-B820-1B0653472F61}
 	EndGlobalSection
 EndGlobal
