@@ -19,6 +19,11 @@ namespace GongSolutions.Wpf.DragDrop
 {
   public static class DragDrop
   {
+    public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
+
+    public static readonly DependencyProperty DragAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("DragAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
+
     public static DataTemplate GetDragAdornerTemplate(UIElement target)
     {
       return (DataTemplate)target.GetValue(DragAdornerTemplateProperty);
@@ -28,6 +33,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(DragAdornerTemplateProperty, value);
     }
+
+    public static readonly DependencyProperty UseDefaultDragAdornerProperty =
+      DependencyProperty.RegisterAttached("UseDefaultDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
     public static bool GetUseDefaultDragAdorner(UIElement target)
     {
@@ -39,6 +47,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(UseDefaultDragAdornerProperty, value);
     }
 
+    public static readonly DependencyProperty UseDefaultEffectDataTemplateProperty =
+      DependencyProperty.RegisterAttached("UseDefaultEffectDataTemplate", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
     public static bool GetUseDefaultEffectDataTemplate(UIElement target)
     {
       return (bool)target.GetValue(UseDefaultEffectDataTemplateProperty);
@@ -48,6 +59,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(UseDefaultEffectDataTemplateProperty, value);
     }
+
+    public static readonly DependencyProperty EffectNoneAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectNoneAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
 
     public static DataTemplate GetEffectNoneAdornerTemplate(UIElement target)
     {
@@ -75,6 +89,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(EffectNoneAdornerTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty EffectCopyAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectCopyAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
+
     public static DataTemplate GetEffectCopyAdornerTemplate(UIElement target, string destinationText)
     {
       var template = (DataTemplate)target.GetValue(EffectCopyAdornerTemplateProperty);
@@ -90,6 +107,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(EffectCopyAdornerTemplateProperty, value);
     }
+
+    public static readonly DependencyProperty EffectMoveAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectMoveAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
 
     public static DataTemplate GetEffectMoveAdornerTemplate(UIElement target, string destinationText)
     {
@@ -107,6 +127,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(EffectMoveAdornerTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty EffectLinkAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectLinkAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
+
     public static DataTemplate GetEffectLinkAdornerTemplate(UIElement target, string destinationText)
     {
       var template = (DataTemplate)target.GetValue(EffectLinkAdornerTemplateProperty);
@@ -123,6 +146,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(EffectLinkAdornerTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty EffectAllAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectAllAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
+
     public static DataTemplate GetEffectAllAdornerTemplate(UIElement target)
     {
       var template = (DataTemplate)target.GetValue(EffectAllAdornerTemplateProperty);
@@ -136,6 +162,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(EffectAllAdornerTemplateProperty, value);
     }
+
+    public static readonly DependencyProperty EffectScrollAdornerTemplateProperty =
+      DependencyProperty.RegisterAttached("EffectScrollAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
 
     public static DataTemplate GetEffectScrollAdornerTemplate(UIElement target)
     {
@@ -151,6 +180,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(EffectScrollAdornerTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty IsDragSourceProperty =
+      DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDragSourceChanged));
+
     public static bool GetIsDragSource(UIElement target)
     {
       return (bool)target.GetValue(IsDragSourceProperty);
@@ -160,6 +192,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(IsDragSourceProperty, value);
     }
+
+    public static readonly DependencyProperty IsDropTargetProperty =
+      DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDropTargetChanged));
 
     public static bool GetIsDropTarget(UIElement target)
     {
@@ -171,6 +206,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(IsDropTargetProperty, value);
     }
 
+    public static readonly DependencyProperty DragHandlerProperty =
+      DependencyProperty.RegisterAttached("DragHandler", typeof(IDragSource), typeof(DragDrop));
+
     public static IDragSource GetDragHandler(UIElement target)
     {
       return (IDragSource)target.GetValue(DragHandlerProperty);
@@ -180,6 +218,9 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(DragHandlerProperty, value);
     }
+
+    public static readonly DependencyProperty DropHandlerProperty =
+      DependencyProperty.RegisterAttached("DropHandler", typeof(IDropTarget), typeof(DragDrop));
 
     public static IDropTarget GetDropHandler(UIElement target)
     {
@@ -191,6 +232,9 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(DropHandlerProperty, value);
     }
 
+    public static readonly DependencyProperty DragSourceIgnoreProperty =
+      DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
     public static bool GetDragSourceIgnore(UIElement target)
     {
       return (bool)target.GetValue(DragSourceIgnoreProperty);
@@ -200,6 +244,12 @@ namespace GongSolutions.Wpf.DragDrop
     {
       target.SetValue(DragSourceIgnoreProperty, value);
     }
+
+    /// <summary>
+    /// DragMouseAnchorPoint defines the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
+    /// </summary>
+    public static readonly DependencyProperty DragMouseAnchorPointProperty =
+      DependencyProperty.RegisterAttached("DragMouseAnchorPoint", typeof(Point), typeof(DragDrop), new PropertyMetadata(new Point(0, 1)));
 
     public static Point GetDragMouseAnchorPoint(UIElement target)
     {
@@ -236,56 +286,6 @@ namespace GongSolutions.Wpf.DragDrop
       }
       set { m_DefaultDropHandler = value; }
     }
-
-    public static readonly DependencyProperty EffectNoneAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectNoneAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty EffectCopyAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectCopyAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty EffectMoveAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectMoveAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty EffectLinkAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectLinkAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty EffectAllAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectAllAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty EffectScrollAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("EffectScrollAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty DragAdornerTemplateProperty =
-      DependencyProperty.RegisterAttached("DragAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
-
-    public static readonly DependencyProperty UseDefaultDragAdornerProperty =
-      DependencyProperty.RegisterAttached("UseDefaultDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty UseDefaultEffectDataTemplateProperty =
-      DependencyProperty.RegisterAttached("UseDefaultEffectDataTemplate", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty DragHandlerProperty =
-      DependencyProperty.RegisterAttached("DragHandler", typeof(IDragSource), typeof(DragDrop));
-
-    public static readonly DependencyProperty DropHandlerProperty =
-      DependencyProperty.RegisterAttached("DropHandler", typeof(IDropTarget), typeof(DragDrop));
-
-    public static readonly DependencyProperty DragSourceIgnoreProperty =
-      DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty IsDragSourceProperty =
-      DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDragSourceChanged));
-
-    public static readonly DependencyProperty IsDropTargetProperty =
-      DependencyProperty.RegisterAttached("IsDropTarget", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, IsDropTargetChanged));
-
-    /// <summary>
-    /// DragMouseAnchorPoint defines the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
-    /// </summary>
-    public static readonly DependencyProperty DragMouseAnchorPointProperty =
-      DependencyProperty.RegisterAttached("DragMouseAnchorPoint", typeof(Point), typeof(DragDrop), new PropertyMetadata(new Point(0, 1)));
-
-    public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
 
     private static void IsDragSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
