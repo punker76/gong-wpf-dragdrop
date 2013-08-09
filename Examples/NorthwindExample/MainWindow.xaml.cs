@@ -15,12 +15,12 @@ using NorthwindExample.ViewModels;
 
 namespace NorthwindExample
 {
-    public partial class MainWindow : Window
+  public partial class MainWindow : Window
+  {
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            this.InitializeComponent();
-            this.DataContext = new ApplicationViewModel(new NorthwindDataClassesDataContext());
-        }
+      this.InitializeComponent();
+      this.DataContext = new ApplicationViewModel(new NorthwindDataClassesDataContext());
     }
+  }
 }

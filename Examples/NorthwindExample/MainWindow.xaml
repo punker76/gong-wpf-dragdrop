@@ -7,9 +7,9 @@
         Height="520"
         Width="620">
 
-    <TabControl>
-        <TabItem Header="Employees">
-            <views:EmployeesTabView DataContext="{Binding EmployeesTab}" />
-        </TabItem>
-    </TabControl>
+  <TabControl>
+    <TabItem Header="Employees">
+      <views:EmployeesTabView DataContext="{Binding EmployeesTab}" />
+    </TabItem>
+  </TabControl>
 </Window>

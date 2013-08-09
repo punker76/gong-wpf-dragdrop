@@ -14,14 +14,14 @@ using System.Windows.Shapes;
 
 namespace NorthwindExample.Views
 {
-    /// <summary>
-    /// Interaction logic for EmployeesTabView.xaml
-    /// </summary>
-    public partial class EmployeesTabView : UserControl
+  /// <summary>
+  /// Interaction logic for EmployeesTabView.xaml
+  /// </summary>
+  public partial class EmployeesTabView : UserControl
+  {
+    public EmployeesTabView()
     {
-        public EmployeesTabView()
-        {
-            this.InitializeComponent();
-        }
+      this.InitializeComponent();
     }
+  }
 }

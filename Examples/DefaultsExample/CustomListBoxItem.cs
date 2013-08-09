@@ -2,11 +2,12 @@
 
 namespace DefaultsExample
 {
-    public class CustomListBoxItem : ListBoxItem
+  public class CustomListBoxItem : ListBoxItem
+  {
+    public CustomListBoxItem()
     {
-        public CustomListBoxItem() {
-            // debug ctor
-            var debug = "it works";
-        }
+      // debug ctor
+      var debug = "it works";
     }
+  }
 }

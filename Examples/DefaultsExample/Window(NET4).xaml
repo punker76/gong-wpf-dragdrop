@@ -7,376 +7,377 @@
         Height="500"
         Width="800">
 
-    <Window.Resources>
-        <DataTemplate x:Key="DragAdorner">
-            <Border Background="Silver"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    CornerRadius="2"
-                    Margin="1">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/icon.png"
-                           Width="16"
-                           Margin="0,0,2,0"
-                           VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding}"
-                               Margin="0,0,2,0"
-                               VerticalAlignment="Center" />
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+  <Window.Resources>
+    <DataTemplate x:Key="DragAdorner">
+      <Border Background="Silver"
+              BorderBrush="Gray"
+              BorderThickness="1"
+              CornerRadius="2"
+              Margin="1">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="/icon.png"
+                 Width="16"
+                 Margin="0,0,2,0"
+                 VerticalAlignment="Center" />
+          <TextBlock Text="{Binding}"
+                     Margin="0,0,2,0"
+                     VerticalAlignment="Center" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
 
-        <CollectionViewSource x:Key="GroupedCollectionViewSource"
-                              Source="{Binding GroupedCollection}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Group" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-    </Window.Resources>
+    <CollectionViewSource x:Key="GroupedCollectionViewSource"
+                          Source="{Binding GroupedCollection}">
+      <CollectionViewSource.GroupDescriptions>
+        <PropertyGroupDescription PropertyName="Group" />
+      </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+  </Window.Resources>
 
-    <Window.DataContext>
-        <local:Data />
-    </Window.DataContext>
+  <Window.DataContext>
+    <local:Data />
+  </Window.DataContext>
 
-    <TabControl TabStripPlacement="Left">
-        <TabItem Header="Issue 42">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+  <TabControl TabStripPlacement="Left">
+    <TabItem Header="Issue 42">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Test for Issue 42: Crash when using items deriving from ContentControl
-                </TextBlock>
+        </TextBlock>
 
-                <ItemsControl Grid.Column="0"
-                              Grid.Row="1"
-                              ItemsSource="{Binding Collection1}"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
-                              dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Label Content="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+        <ItemsControl Grid.Column="0"
+                      Grid.Row="1"
+                      ItemsSource="{Binding Collection1}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Label Content="{Binding}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-                <ListBox Grid.Column="1"
-                         Grid.Row="1"
-                         ItemsSource="{Binding Collection2}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label Content="{Binding}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </TabItem>
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Label Content="{Binding}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Show Messagebox on Doubleclick">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Show Messagebox on Doubleclick">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Test for MouseDoubleClick Issue 45
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Column="0"
-                         Grid.Row="1"
-                         ItemsSource="{Binding Collection1}"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
-                         MouseDoubleClick="Control_OnMouseDoubleClick"/>
-                <ListBox Grid.Column="1"
-                         Grid.Row="1"
-                         ItemsSource="{Binding Collection2}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
-            </Grid>
-        </TabItem>
+        <ListBox Grid.Column="0"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                 MouseDoubleClick="Control_OnMouseDoubleClick" />
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Bound ListBoxes">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Bound ListBoxes">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with two ListBoxes bound to two collections of the same type.
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Column="0"
-                         Grid.Row="1"
-                         ItemsSource="{Binding Collection1}"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
-                <ListBox Grid.Column="1"
-                         Grid.Row="1"
-                         ItemsSource="{Binding Collection2}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
-            </Grid>
-        </TabItem>
+        <ListBox Grid.Column="0"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Unbound ListBoxes">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Unbound ListBoxes">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with ListBoxes and unbound collections.
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Column="0"
-                         Grid.Row="1"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                         dd:DragDrop.UseDefaultDragAdorner="True">
-                    <ListBoxItem>Item1</ListBoxItem>
-                    <ListBoxItem>Item2</ListBoxItem>
-                    <ListBoxItem>Item3</ListBoxItem>
-                    <ListBoxItem>Item4</ListBoxItem>
-                    <ListBoxItem>Item5</ListBoxItem>
-                </ListBox>
-                <ListBox Grid.Column="1"
-                         Grid.Row="1"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
-                    <ListBoxItem>Item6</ListBoxItem>
-                    <ListBoxItem>Item7</ListBoxItem>
-                    <ListBoxItem>Item8</ListBoxItem>
-                    <ListBoxItem>Item9</ListBoxItem>
-                    <ListBoxItem>Item10</ListBoxItem>
-                </ListBox>
-            </Grid>
-        </TabItem>
+        <ListBox Grid.Column="0"
+                 Grid.Row="1"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.UseDefaultDragAdorner="True">
+          <ListBoxItem>Item1</ListBoxItem>
+          <ListBoxItem>Item2</ListBoxItem>
+          <ListBoxItem>Item3</ListBoxItem>
+          <ListBoxItem>Item4</ListBoxItem>
+          <ListBoxItem>Item5</ListBoxItem>
+        </ListBox>
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBoxItem>Item6</ListBoxItem>
+          <ListBoxItem>Item7</ListBoxItem>
+          <ListBoxItem>Item8</ListBoxItem>
+          <ListBoxItem>Item9</ListBoxItem>
+          <ListBoxItem>Item10</ListBoxItem>
+        </ListBox>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Horizontal ListBox">
-            <Grid>
-                <Grid.Resources>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="FontSize" Value="20" />
-                    </Style>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+    <TabItem Header="Horizontal ListBox">
+      <Grid>
+        <Grid.Resources>
+          <Style TargetType="ListBoxItem">
+            <Setter Property="FontSize"
+                    Value="20" />
+          </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with a horizontal ListBox.
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Row="1"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBoxItem>Item1</ListBoxItem>
-                    <ListBoxItem>Item2</ListBoxItem>
-                    <ListBoxItem>Item3</ListBoxItem>
-                    <ListBoxItem>Item4</ListBoxItem>
-                    <ListBoxItem>Item5</ListBoxItem>
-                </ListBox>
+        <ListBox Grid.Row="1"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBoxItem>Item1</ListBoxItem>
+          <ListBoxItem>Item2</ListBoxItem>
+          <ListBoxItem>Item3</ListBoxItem>
+          <ListBoxItem>Item4</ListBoxItem>
+          <ListBoxItem>Item5</ListBoxItem>
+        </ListBox>
 
-                <TextBlock Grid.Row="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with a horizontal ListBox with right to left flow direction.
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Row="3"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        FlowDirection="RightToLeft" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBoxItem>Item1</ListBoxItem>
-                    <ListBoxItem>Item2</ListBoxItem>
-                    <ListBoxItem>Item3</ListBoxItem>
-                    <ListBoxItem>Item4</ListBoxItem>
-                    <ListBoxItem>Item5</ListBoxItem>
-                </ListBox>
+        <ListBox Grid.Row="3"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"
+                          FlowDirection="RightToLeft" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBoxItem>Item1</ListBoxItem>
+          <ListBoxItem>Item2</ListBoxItem>
+          <ListBoxItem>Item3</ListBoxItem>
+          <ListBoxItem>Item4</ListBoxItem>
+          <ListBoxItem>Item5</ListBoxItem>
+        </ListBox>
 
-                <TextBlock Grid.Row="4"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="4"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     This doesn't works! (FlowDirection="RightToLeft")
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Row="5"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        FlowDirection="RightToLeft" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <Rectangle Width="100"
-                               Height="60"
-                               Fill="LightCoral"
-                               Stroke="Black" />
-                    <Rectangle Width="120"
-                               Height="60"
-                               Fill="LightCyan"
-                               Stroke="Black" />
-                    <Rectangle Width="140"
-                               Height="60"
-                               Fill="LightGreen"
-                               Stroke="Black" />
-                    <Rectangle Width="160"
-                               Height="60"
-                               Fill="LightPink"
-                               Stroke="Black" />
-                </ListBox>
+        <ListBox Grid.Row="5"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"
+                          FlowDirection="RightToLeft" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <Rectangle Width="100"
+                     Height="60"
+                     Fill="LightCoral"
+                     Stroke="Black" />
+          <Rectangle Width="120"
+                     Height="60"
+                     Fill="LightCyan"
+                     Stroke="Black" />
+          <Rectangle Width="140"
+                     Height="60"
+                     Fill="LightGreen"
+                     Stroke="Black" />
+          <Rectangle Width="160"
+                     Height="60"
+                     Fill="LightPink"
+                     Stroke="Black" />
+        </ListBox>
 
-                <TextBlock Grid.Row="6"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="6"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     This works!!! (RotateTransform Angle="180")
-                </TextBlock>
+        </TextBlock>
 
-                <ListBox Grid.Row="7"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         RenderTransformOrigin="0.5,0.5">
-                    <ListBox.RenderTransform>
-                        <RotateTransform Angle="180" />
-                    </ListBox.RenderTransform>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <Rectangle Width="100"
-                               Height="60"
-                               Fill="LightCoral"
-                               Stroke="Black" />
-                    <Rectangle Width="120"
-                               Height="60"
-                               Fill="LightCyan"
-                               Stroke="Black" />
-                    <Rectangle Width="140"
-                               Height="60"
-                               Fill="LightGreen"
-                               Stroke="Black" />
-                    <Rectangle Width="160"
-                               Height="60"
-                               Fill="LightPink"
-                               Stroke="Black" />
-                </ListBox>
-            </Grid>
-        </TabItem>
+        <ListBox Grid.Row="7"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 RenderTransformOrigin="0.5,0.5">
+          <ListBox.RenderTransform>
+            <RotateTransform Angle="180" />
+          </ListBox.RenderTransform>
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <Rectangle Width="100"
+                     Height="60"
+                     Fill="LightCoral"
+                     Stroke="Black" />
+          <Rectangle Width="120"
+                     Height="60"
+                     Fill="LightCyan"
+                     Stroke="Black" />
+          <Rectangle Width="140"
+                     Height="60"
+                     Fill="LightGreen"
+                     Stroke="Black" />
+          <Rectangle Width="160"
+                     Height="60"
+                     Fill="LightPink"
+                     Stroke="Black" />
+        </ListBox>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Bound ListViews">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Bound ListViews">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with two ListViews bound to two collections of the same type.
-                </TextBlock>
+        </TextBlock>
 
-                <ListView Grid.Column="0"
-                          Grid.Row="1"
-                          ItemsSource="{Binding Collection1}"
-                          SelectionMode="Extended"
-                          dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image Source="/icon.png"
-                                               Width="16" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}">
+        <ListView Grid.Column="0"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Collection1}"
+                  SelectionMode="Extended"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ListView.View>
+            <GridView>
+              <GridViewColumn>
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <Image Source="/icon.png"
+                           Width="16" />
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+              <GridViewColumn>
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}">
                                             <TextBlock.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Header="Item 1" />
@@ -384,365 +385,366 @@
                                                     <MenuItem Header="Item 3" />
                                                 </ContextMenu>
                                             </TextBlock.ContextMenu>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <ListView Grid.Column="1"
-                          Grid.Row="1"
-                          ItemsSource="{Binding Collection2}"
-                          dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/icon.png"
-                                       Width="16"
-                                       Margin="4" />
-                                <TextBlock Text="{Binding}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"
-                                       Grid.IsSharedSizeScope="True"
-                                       Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </Grid>
-        </TabItem>
+                    </TextBlock>
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+            </GridView>
+          </ListView.View>
+        </ListView>
+        <ListView Grid.Column="1"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Collection2}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Image Source="/icon.png"
+                       Width="16"
+                       Margin="4" />
+                <TextBlock Text="{Binding}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+          <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal"
+                         Grid.IsSharedSizeScope="True"
+                         Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
+            </ItemsPanelTemplate>
+          </ListView.ItemsPanel>
+        </ListView>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="DataGrid">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="DataGrid">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with DataGrids.
-                </TextBlock>
+        </TextBlock>
 
-                <DataGrid Grid.Row="1"
-                             Grid.Column="0"
-                             AutoGenerateColumns="False"
-                             ItemsSource="{Binding Collection1}"
-                             GridLinesVisibility="None"
-                             dd:DragDrop.IsDragSource="True"
-                             dd:DragDrop.IsDropTarget="True"
-                             dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Mode=OneWay}"
-                                               Header="Value" />
-                    </DataGrid.Columns>
-                </DataGrid>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Collection1}"
+                  GridLinesVisibility="None"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding Mode=OneWay}"
+                                Header="Value" />
+          </DataGrid.Columns>
+        </DataGrid>
 
-                <DataGrid Grid.Row="1"
-                             Grid.Column="1"
-                             AutoGenerateColumns="False"
-                             ItemsSource="{Binding Collection2}"
-                             GridLinesVisibility="None"
-                             dd:DragDrop.IsDragSource="True"
-                             dd:DragDrop.IsDropTarget="True"
-                             dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Mode=OneWay}"
-                                               Header="Value" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </TabItem>
+        <DataGrid Grid.Row="1"
+                  Grid.Column="1"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Collection2}"
+                  GridLinesVisibility="None"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding Mode=OneWay}"
+                                Header="Value" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Bound TreeViews">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Bound TreeViews">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with TreeViews and bound collections.
-                </TextBlock>
+        </TextBlock>
 
-                <TreeView Grid.Column="0"
-                          Grid.Row="1"
-                          ItemsSource="{Binding TreeCollection}"
-                          dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True">
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Caption}" />
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </Grid>
-        </TabItem>
+        <TreeView Grid.Column="0"
+                  Grid.Row="1"
+                  ItemsSource="{Binding TreeCollection}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True">
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="Unbound TreeViews">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+    <TabItem Header="Unbound TreeViews">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Demonstrates the default behaviour with TreeViews and unbound collections.
-                </TextBlock>
+        </TextBlock>
 
-                <TreeView Grid.Column="0"
-                          Grid.Row="1"
-                          dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.IsDropTarget="True">
-                    <TreeViewItem Header="Root1"
-                                  IsExpanded="True">
-                        <TreeViewItem Header="Item1" />
-                        <TreeViewItem Header="Item2" />
-                        <TreeViewItem Header="Item3" />
-                        <TreeViewItem Header="Item4" />
-                        <TreeViewItem Header="Item5" />
-                    </TreeViewItem>
-                    <TreeViewItem Header="Root2"
-                                  IsExpanded="True">
-                        <TreeViewItem Header="Item6" />
-                        <TreeViewItem Header="Item7" />
-                        <TreeViewItem Header="Item8" />
-                    </TreeViewItem>
-                </TreeView>
-            </Grid>
-        </TabItem>
+        <TreeView Grid.Column="0"
+                  Grid.Row="1"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True">
+          <TreeViewItem Header="Root1"
+                        IsExpanded="True">
+            <TreeViewItem Header="Item1" />
+            <TreeViewItem Header="Item2" />
+            <TreeViewItem Header="Item3" />
+            <TreeViewItem Header="Item4" />
+            <TreeViewItem Header="Item5" />
+          </TreeViewItem>
+          <TreeViewItem Header="Root2"
+                        IsExpanded="True">
+            <TreeViewItem Header="Item6" />
+            <TreeViewItem Header="Item7" />
+            <TreeViewItem Header="Item8" />
+          </TreeViewItem>
+        </TreeView>
+      </Grid>
+    </TabItem>
 
-        <TabItem Header="ListBox with Groups">
-            <ListBox ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}"
-                     DisplayMemberPath="Caption"
-                     dd:DragDrop.IsDragSource="True"
-                     dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding}">
-                <ListBox.GroupStyle>
-                    <x:Static Member="GroupStyle.Default" />
-                </ListBox.GroupStyle>
-            </ListBox>
-        </TabItem>
+    <TabItem Header="ListBox with Groups">
+      <ListBox ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}"
+               DisplayMemberPath="Caption"
+               dd:DragDrop.IsDragSource="True"
+               dd:DragDrop.IsDropTarget="True"
+               dd:DragDrop.DropHandler="{Binding}">
+        <ListBox.GroupStyle>
+          <x:Static Member="GroupStyle.Default" />
+        </ListBox.GroupStyle>
+      </ListBox>
+    </TabItem>
 
-        <TabItem Header="Issue #37">
-            <Grid>
+    <TabItem Header="Issue #37">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Margin="2"
+                           Text="{Binding Mode=OneWay}"></TextBlock>
+                <TextBox Grid.Column="1"
+                         Margin="2"
+                         Text="{Binding Mode=OneWay}"></TextBox>
+                <Slider Grid.Column="2"
+                        Margin="2"
+                        Width="50"></Slider>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True" />
+      </Grid>
+    </TabItem>
 
-                <ListBox Grid.Column="0"
-                         ItemsSource="{Binding Collection1}"
-                         SelectionMode="Extended"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                           Margin="2"
-                                           Text="{Binding Mode=OneWay}"></TextBlock>
-                                <TextBox Grid.Column="1"
-                                         Margin="2"
-                                         Text="{Binding Mode=OneWay}"></TextBox>
-                                <Slider Grid.Column="2"
-                                        Margin="2"
-                                        Width="50"></Slider>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <ListBox Grid.Column="1"
-                         ItemsSource="{Binding Collection2}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True" />
-            </Grid>
-        </TabItem>
+    <TabItem Header="Issue #15">
+      <Grid>
+        <Grid.Resources>
+          <DataTemplate x:Key="CustomTemplate">
+            <TextBlock Text="{Binding Name}"
+                       Background="Transparent"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DropHandler="{Binding}" />
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-        <TabItem Header="Issue #15">
-            <Grid>
-                <Grid.Resources>
-                    <DataTemplate x:Key="CustomTemplate">
-                        <TextBlock Text="{Binding Name}" Background="Transparent"
-                                   dd:DragDrop.IsDropTarget="True"
-                                   dd:DragDrop.DropHandler="{Binding}" />
-                    </DataTemplate>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding CustomCollection1}"
+                 SelectionMode="Extended"
+                 ItemTemplate="{StaticResource CustomTemplate}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True" />
+        <ListBox Grid.Column="1"
+                 ItemsSource="{Binding CustomCollection2}"
+                 ItemTemplate="{StaticResource CustomTemplate}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+      </Grid>
+    </TabItem>
 
-                <ListBox Grid.Column="0"
-                         ItemsSource="{Binding CustomCollection1}"
-                         SelectionMode="Extended"
-                         ItemTemplate="{StaticResource CustomTemplate}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True" />
-                <ListBox Grid.Column="1"
-                         ItemsSource="{Binding CustomCollection2}"
-                         ItemTemplate="{StaticResource CustomTemplate}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
-            </Grid>
-        </TabItem>
+    <TabItem Header="Issue #64">
+      <Grid>
+        <ItemsControl Margin="1"
+                      ItemsSource="{Binding CustomCollection1}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True"
+                      Grid.IsSharedSizeScope="True">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Background="Transparent">
 
-        <TabItem Header="Issue #64">
-            <Grid>
-                <ItemsControl Margin="1"
-                              ItemsSource="{Binding CustomCollection1}"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
-                              Grid.IsSharedSizeScope="True">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Background="Transparent">
+                <Border BorderThickness="1"
+                        BorderBrush="#FFF3EDED"
+                        Background="#FFF3EDED"
+                        Margin="1"
+                        Padding="1 1 1 4"
+                        SnapsToDevicePixels="True">
+                  <Grid>
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="Bold"
+                               FontSize="14" />
 
-                                <Border BorderThickness="1"
-                                        BorderBrush="#FFF3EDED"
-                                        Background="#FFF3EDED"
-                                        Margin="1"
-                                        Padding="1 1 1 4"
-                                        SnapsToDevicePixels="True">
-                                    <Grid>
-                                        <TextBlock Text="{Binding Name}"
-                                                   FontWeight="Bold"
-                                                   FontSize="14" />
+                    <Border Background="Silver"
+                            Margin="10 0"
+                            Opacity="0">
+                      <Border.Style>
+                        <Style>
+                          <Style.Triggers>
+                            <EventTrigger RoutedEvent="Control.MouseEnter">
+                              <BeginStoryboard>
+                                <Storyboard>
+                                  <DoubleAnimation Duration="0:0:0.3"
+                                                   To="0.8"
+                                                   Storyboard.TargetProperty="Opacity" />
+                                </Storyboard>
+                              </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Control.MouseLeave">
+                              <BeginStoryboard>
+                                <Storyboard>
+                                  <DoubleAnimation Duration="0:0:0.3"
+                                                   To="0"
+                                                   Storyboard.TargetProperty="Opacity" />
+                                </Storyboard>
+                              </BeginStoryboard>
+                            </EventTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Border.Style>
+                    </Border>
+                  </Grid>
+                </Border>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Grid>
+    </TabItem>
 
-                                        <Border Background="Silver"
-                                                Margin="10 0"
-                                                Opacity="0">
-                                            <Border.Style>
-                                                <Style>
-                                                    <Style.Triggers>
-                                                        <EventTrigger RoutedEvent="Control.MouseEnter">
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="0:0:0.3"
-                                                                                     To="0.8"
-                                                                                     Storyboard.TargetProperty="Opacity" />
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                        <EventTrigger RoutedEvent="Control.MouseLeave">
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="0:0:0.3"
-                                                                                     To="0"
-                                                                                     Storyboard.TargetProperty="Opacity" />
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-        </TabItem>
+    <TabItem Header="Issue #65">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <TabItem Header="Issue #65">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap"
+                   Text="DragDrop doesn't working on treeview subitems" />
 
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap"
-                           Text="DragDrop doesn't working on treeview subitems" />
+        <TreeView Grid.Column="0"
+                  Grid.Row="1"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True">
+          <TreeViewItem Header="Groups"
+                        ItemsSource="{Binding TreeCollection}">
+            <TreeViewItem.ItemTemplate>
+              <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                <TextBlock Text="{Binding Caption}" />
+              </HierarchicalDataTemplate>
+            </TreeViewItem.ItemTemplate>
+          </TreeViewItem>
+        </TreeView>
+      </Grid>
+    </TabItem>
 
-                <TreeView Grid.Column="0"
-                          Grid.Row="1"
-                          dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.IsDragSource="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True">
-                    <TreeViewItem Header="Groups"
-                                  ItemsSource="{Binding TreeCollection}">
-                        <TreeViewItem.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                <TextBlock Text="{Binding Caption}" />
-                            </HierarchicalDataTemplate>
-                        </TreeViewItem.ItemTemplate>
-                    </TreeViewItem>
-                </TreeView>
-            </Grid>
-        </TabItem>
+    <TabItem Header="Issue #30">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <TabItem Header="Issue #30">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,8,0,8"
-                           TextWrapping="Wrap">
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
                     Support for derived item container classes
-                </TextBlock>
+        </TextBlock>
 
-                <local:CustomListBox Grid.Column="0"
-                                     Grid.Row="1"
-                                     ItemsSource="{Binding Collection1}"
-                                     SelectionMode="Extended"
-                                     dd:DragDrop.IsDragSource="True"
-                                     dd:DragDrop.IsDropTarget="True" />
-                <local:CustomListBox Grid.Column="1"
-                                     Grid.Row="1"
-                                     ItemsSource="{Binding Collection2}"
-                                     dd:DragDrop.IsDragSource="True"
-                                     dd:DragDrop.IsDropTarget="True" />
-            </Grid>
-        </TabItem>
-    </TabControl>
+        <local:CustomListBox Grid.Column="0"
+                             Grid.Row="1"
+                             ItemsSource="{Binding Collection1}"
+                             SelectionMode="Extended"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True" />
+        <local:CustomListBox Grid.Column="1"
+                             Grid.Row="1"
+                             ItemsSource="{Binding Collection2}"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True" />
+      </Grid>
+    </TabItem>
+  </TabControl>
 </Window>
