@@ -703,8 +703,14 @@ namespace GongSolutions.Wpf.DragDrop
 
         if (m_DragInfo != null) {
           // move the adorner
-          _adornerPos.Offset(_adornerSize.Width * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).X,
-                             _adornerSize.Height * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).Y);
+          var offsetX = _adornerSize.Width * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).X;
+          var offsetY = _adornerSize.Height * -GetDragMouseAnchorPoint(m_DragInfo.VisualSource).Y;
+          _adornerPos.Offset(offsetX, offsetY);
+          var maxAdornerPosX = DragAdorner.AdornedElement.RenderSize.Width;
+          var adornerPosRightX = (_adornerPos.X + _adornerSize.Width);
+          if (adornerPosRightX > maxAdornerPosX) {
+            _adornerPos.Offset(-adornerPosRightX + maxAdornerPosX, 0);
+          }
         }
 
         DragAdorner.MousePosition = _adornerPos;
