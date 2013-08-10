@@ -14,11 +14,21 @@ It has the following features:
 
 #Installation
 
-Try to download or fork the source code and compile it.
+Try to download or fork the source code and compile it.  
 Or: You can download the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
 
 #Release History
 
++ **0.1.3.9** (11 Aug, 2013)
+	- minor change to default insertion adorner (bigger triangle size)
+	- nuget package for NET 3.5 should be working (DataGrid)
+	- Issue [#62](https://github.com/punker76/gong-wpf-dragdrop/issues/62): Now we can resize GridView and DataGrid columns.
+	- Issue [#25](https://github.com/punker76/gong-wpf-dragdrop/issues/25): Don't allow dragging item onto scroll bars.
+	- Issue [#30](https://github.com/punker76/gong-wpf-dragdrop/issues/30): Add support for derived item container classes.
+	- Issue [#69](https://github.com/punker76/gong-wpf-dragdrop/issues/69): Don't clip Drag Adorner.
+	- Issue [#33](https://github.com/punker76/gong-wpf-dragdrop/issues/33): Dragging a single item from a grouped datagrid will often return CollectionViewGroupInternal rather than the item.
+	- Issue [#70](https://github.com/punker76/gong-wpf-dragdrop/issues/70): Fix Drag&Drop to empty DataGrid.
+	- Issue [#14](https://github.com/punker76/gong-wpf-dragdrop/issues/14): Raise DropCompleted / DragCompleted
 + **0.1.3.8** (20 July, 2013)
 	- Issue [#38](https://github.com/punker76/gong-wpf-dragdrop/issues/38):
 		- add DragMouseAnchorPoint dependency property for drag adorner positioning
