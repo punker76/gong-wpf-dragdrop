@@ -13,7 +13,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
   public static class HitTestUtilities
   {
-    public static bool HitTest4Type<T>(object sender, Point elementPosition) where T : UIElement {
+    public static bool HitTest4Type<T>(object sender, Point elementPosition) where T : UIElement
+    {
       var uiElement = GetHitTestElement4Type<T>(sender, elementPosition);
       return uiElement != null && uiElement.Visibility == Visibility.Visible;
     }
@@ -57,6 +58,18 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         // drag&drop only for data grid row
         var dataRow = GetHitTestElement4Type<DataGridRow>(sender, elementPosition);
         return dataRow == null;
+      }
+      return false;
+    }
+
+    public static bool HitTest4DataGridTypesOnDragOver(object sender, Point elementPosition)
+    {
+      if (sender is DataGrid) {
+        // no drag&drop on column header
+        var columnHeader = GetHitTestElement4Type<DataGridColumnHeader>(sender, elementPosition);
+        if (columnHeader != null && columnHeader.Visibility == Visibility.Visible) {
+          return true;
+        }
       }
       return false;
     }

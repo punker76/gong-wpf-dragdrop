@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Reflection;
 using System.Collections;
 using System.Windows.Controls.Primitives;
+
+#if NET35
+using Microsoft.Windows.Controls;
+using Microsoft.Windows.Controls.Primitives;
+#endif
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
@@ -98,6 +102,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
       // determines if the itemsControl is not a ListView, ListBox or TreeView
       isItemContainer = false;
+
+      if (typeof(DataGrid).IsAssignableFrom(itemsControl.GetType())) {
+        return typeof(DataGridRow);
+      }
 
       // There is no safe way to get the item container type for an ItemsControl. 
       // First hard-code the types for the common ItemsControls.

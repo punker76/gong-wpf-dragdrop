@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
@@ -673,7 +674,7 @@ namespace GongSolutions.Wpf.DragDrop
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
-          || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)) {
+          || HitTestUtilities.HitTest4DataGridTypesOnDragOver(sender, elementPosition)) {
         e.Effects = DragDropEffects.None;
         e.Handled = true;
         return;
