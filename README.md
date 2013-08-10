@@ -19,7 +19,7 @@ Or: You can download the latest version via NuGet: [https://nuget.org/packages/g
 
 #Release History
 
-+ **0.1.3.9** (11 Aug, 2013)
++ **0.1.3.10** (11 Aug, 2013)
 	- minor change to default insertion adorner (bigger triangle size)
 	- nuget package for NET 3.5 should be working (DataGrid)
 	- Issue [#62](https://github.com/punker76/gong-wpf-dragdrop/issues/62): Now we can resize GridView and DataGrid columns.
