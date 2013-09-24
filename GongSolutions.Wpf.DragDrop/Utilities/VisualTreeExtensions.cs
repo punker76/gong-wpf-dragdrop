@@ -49,7 +49,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
       var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
 
-      while (item != null) {
+      while (item != null && type != null) {
         if (item.GetType() == type || item.GetType().IsSubclassOf(type)) {
           return item;
         }
