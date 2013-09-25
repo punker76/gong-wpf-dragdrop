@@ -746,5 +746,71 @@
                              dd:DragDrop.IsDropTarget="True" />
       </Grid>
     </TabItem>
+
+    <TabItem Header="Empty ItemsControl">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    Example for PR #73: Crash on click inside ItemsControl where ItemsSource.Count == 0
+        </TextBlock>
+
+        <Grid Grid.Column="0"
+              Grid.Row="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <ItemsControl Grid.Row="0"
+                        Margin="0,0,0,2"
+                        ItemsSource="{Binding Collection3}"
+                        Background="Beige"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Label Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <ListBox Grid.Row="1"
+                        ItemsSource="{Binding Collection3}"
+                        Background="Beige"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Label Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ListBox>
+        </Grid>
+
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection1}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Label Content="{Binding}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>
