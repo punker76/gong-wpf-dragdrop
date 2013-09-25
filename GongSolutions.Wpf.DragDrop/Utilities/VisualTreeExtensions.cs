@@ -67,7 +67,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
       DependencyObject lastFoundItemByType = null;
 
-      while (item != null) {
+      while (item != null && type != null) {
         if (item == itemsControl) {
           return lastFoundItemByType;
         }
