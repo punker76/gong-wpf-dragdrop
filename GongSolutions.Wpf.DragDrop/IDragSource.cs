@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -32,5 +33,10 @@ namespace GongSolutions.Wpf.DragDrop
     ///   Information about the drop.
     /// </param>
     void Dropped(IDropInfo dropInfo);
+
+    /// <summary>
+    /// Notifies the drag handler that a drag has been aborted.
+    /// </summary>
+    void DragCancelled();
   }
 }
