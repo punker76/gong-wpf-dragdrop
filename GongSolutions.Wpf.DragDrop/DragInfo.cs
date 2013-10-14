@@ -62,7 +62,10 @@ namespace GongSolutions.Wpf.DragDrop
 
           if (itemParent != null) {
             this.SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
+            this.SourceIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
             this.SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
+          } else {
+            this.SourceIndex = -1;
           }
           this.SourceItems = itemsControl.GetSelectedItems();
 
@@ -131,6 +134,12 @@ namespace GongSolutions.Wpf.DragDrop
     /// If the control that initated the drag is unbound or not an ItemsControl, this will be null.
     /// </remarks>
     public IEnumerable SourceCollection { get; private set; }
+
+    /// <summary>
+    /// Gets the position from where the item was dragged.
+    /// </summary>
+    /// <value>The index of the source.</value>
+    public int SourceIndex { get; private set; }
 
     /// <summary>
     /// Gets the object that a dragged item is bound to.
