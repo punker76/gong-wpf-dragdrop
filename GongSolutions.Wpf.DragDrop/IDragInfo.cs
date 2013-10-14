@@ -50,6 +50,11 @@ namespace GongSolutions.Wpf.DragDrop
     IEnumerable SourceCollection { get; }
 
     /// <summary>
+    /// Gets the position from where the item was dragged.
+    /// </summary>
+    int SourceIndex { get; }
+
+    /// <summary>
     /// Gets the object that a dragged item is bound to.
     /// </summary>
     /// 
