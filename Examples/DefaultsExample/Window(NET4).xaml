@@ -229,6 +229,8 @@
 
         <ListBox Grid.Row="1"
                  SelectionMode="Extended"
+                 dd:DragDrop.UseDefaultDragAdorner="True"
+                 dd:DragDrop.DefaultDragAdornerOpacity="0.5"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True">
           <ListBox.ItemsPanel>
@@ -251,6 +253,7 @@
 
         <ListBox Grid.Row="3"
                  SelectionMode="Extended"
+                 dd:DragDrop.UseDefaultDragAdorner="True"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True">
           <ListBox.ItemsPanel>

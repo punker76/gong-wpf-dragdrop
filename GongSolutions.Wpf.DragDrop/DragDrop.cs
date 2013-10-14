@@ -43,6 +43,19 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(UseDefaultDragAdornerProperty, value);
     }
 
+    public static readonly DependencyProperty DefaultDragAdornerOpacityProperty =
+      DependencyProperty.RegisterAttached("DefaultDragAdornerOpacity", typeof(double), typeof(DragDrop), new PropertyMetadata(0.8));
+
+    public static double GetDefaultDragAdornerOpacity(UIElement target)
+    {
+      return (double)target.GetValue(DefaultDragAdornerOpacityProperty);
+    }
+
+    public static void SetDefaultDragAdornerOpacity(UIElement target, double value)
+    {
+      target.SetValue(DefaultDragAdornerOpacityProperty, value);
+    }
+
     public static readonly DependencyProperty UseDefaultEffectDataTemplateProperty =
       DependencyProperty.RegisterAttached("UseDefaultEffectDataTemplate", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
@@ -346,8 +359,10 @@ namespace GongSolutions.Wpf.DragDrop
 
         var factory = new FrameworkElementFactory(typeof(Image));
 
-        var bs = CaptureScreen(m_DragInfo.VisualSourceItem);
+        var bs = CaptureScreen(m_DragInfo.VisualSourceItem, m_DragInfo.VisualSourceFlowDirection);
         factory.SetValue(Image.SourceProperty, bs);
+        factory.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+        factory.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
         if (m_DragInfo.VisualSourceItem is FrameworkElement) {
           factory.SetValue(FrameworkElement.WidthProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualWidth);
           factory.SetValue(FrameworkElement.HeightProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualHeight);
@@ -380,7 +395,7 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (adornment != null) {
         if (useDefaultDragAdorner) {
-          adornment.Opacity = 0.5;
+          adornment.Opacity = GetDefaultDragAdornerOpacity(m_DragInfo.VisualSource);
         }
 
         var parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
@@ -403,7 +418,7 @@ namespace GongSolutions.Wpf.DragDrop
 
     // Helper to generate the image - I grabbed this off Google 
     // somewhere. -- Chris Bordeman cbordeman@gmail.com
-    private static BitmapSource CaptureScreen(Visual target, double dpiX = 96.0, double dpiY = 96.0)
+    private static BitmapSource CaptureScreen(Visual target, FlowDirection flowDirection, double dpiX = 96.0, double dpiY = 96.0)
     {
       if (target == null) {
         return null;
@@ -420,11 +435,17 @@ namespace GongSolutions.Wpf.DragDrop
       var dv = new DrawingVisual();
       using (var ctx = dv.RenderOpen()) {
         var vb = new VisualBrush(target);
+        if (flowDirection == FlowDirection.RightToLeft) {
+          var transformGroup = new TransformGroup();
+          transformGroup.Children.Add(new ScaleTransform(-1, 1));
+          transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width - 1, 0));
+          ctx.PushTransform(transformGroup);
+        }
         ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
       }
 
       rtb.Render(dv);
-
+      
       return rtb;
     }
 

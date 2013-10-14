@@ -84,6 +84,11 @@ namespace GongSolutions.Wpf.DragDrop
     UIElement VisualSourceItem { get; }
 
     /// <summary>
+    /// Gets the FlowDirection of the current drag source.
+    /// </summary>
+    FlowDirection VisualSourceFlowDirection { get; }
+
+    /// <summary>
     /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
     /// a custom instance if custom drag and drop behavior is needed.
     /// </summary>
