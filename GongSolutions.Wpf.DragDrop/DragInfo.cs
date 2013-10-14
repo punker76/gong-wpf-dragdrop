@@ -40,6 +40,8 @@ namespace GongSolutions.Wpf.DragDrop
       if (sender is ItemsControl) {
         var itemsControl = (ItemsControl)sender;
 
+        this.VisualSourceFlowDirection = itemsControl.GetItemsPanelFlowDirection();
+
         var sourceItem = e.OriginalSource as UIElement; // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
         if (sourceItem == null && e.OriginalSource is FrameworkContentElement) {
           sourceItem = ((FrameworkContentElement)e.OriginalSource).Parent as UIElement;
@@ -163,6 +165,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// will hold a ListBoxItem.
     /// </remarks>
     public UIElement VisualSourceItem { get; private set; }
+
+    /// <summary>
+    /// Gets the FlowDirection of the current drag source.
+    /// </summary>
+    public FlowDirection VisualSourceFlowDirection { get; private set; }
 
     /// <summary>
     /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
