@@ -24,5 +24,9 @@ namespace GongSolutions.Wpf.DragDrop
     public virtual void Dropped(IDropInfo dropInfo)
     {
     }
+
+    public virtual void DragCancelled()
+    {
+    }
   }
 }
