@@ -346,7 +346,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         var factory = new FrameworkElementFactory(typeof(Image));
 
-        var bs = CaptureScreen(m_DragInfo.VisualSourceItem);
+        var bs = CaptureScreen(m_DragInfo.VisualSourceItem, m_DragInfo.VisualSourceFlowDirection);
         factory.SetValue(Image.SourceProperty, bs);
         if (m_DragInfo.VisualSourceItem is FrameworkElement) {
           factory.SetValue(FrameworkElement.WidthProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualWidth);
@@ -403,7 +403,7 @@ namespace GongSolutions.Wpf.DragDrop
 
     // Helper to generate the image - I grabbed this off Google 
     // somewhere. -- Chris Bordeman cbordeman@gmail.com
-    private static BitmapSource CaptureScreen(Visual target, double dpiX = 96.0, double dpiY = 96.0)
+    private static BitmapSource CaptureScreen(Visual target, FlowDirection flowDirection, double dpiX = 96.0, double dpiY = 96.0)
     {
       if (target == null) {
         return null;
@@ -420,6 +420,12 @@ namespace GongSolutions.Wpf.DragDrop
       var dv = new DrawingVisual();
       using (var ctx = dv.RenderOpen()) {
         var vb = new VisualBrush(target);
+        if (flowDirection == FlowDirection.RightToLeft) {
+          var transformGroup = new TransformGroup();
+          transformGroup.Children.Add(new ScaleTransform(-1, 1));
+          transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width - 1, 0));
+          ctx.PushTransform(transformGroup);
+        }
         ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
       }
 
