@@ -14,11 +14,17 @@ It has the following features:
 
 #Installation
 
-Try to download or fork the source code and compile it.  
-Or: You can download the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
+You can download or fork the source code and compile it.  
+Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
 
 #Release History
 
++ **0.1.3.11** (14 Oct, 2013)
+	- Issue [#73](https://github.com/punker76/gong-wpf-dragdrop/issues/73): Fix crash on click inside ItemsControl where ItemsSource.Count == 0.
+	- Issue [#76](https://github.com/punker76/gong-wpf-dragdrop/issues/76): Allowed drops to main window where the visual parent would be null.
+	- Issue [#77](https://github.com/punker76/gong-wpf-dragdrop/issues/77): Extended IDragSource for drag cancellation.
+	- Issue [#78](https://github.com/punker76/gong-wpf-dragdrop/issues/78): Fix default drag adorner with right to left option.
+	- Issue [#79](https://github.com/punker76/gong-wpf-dragdrop/issues/79): Add Property "SourceIndex" also to IDragInfo (same as in IDropInfo).
 + **0.1.3.10** (11 Aug, 2013)
 	- minor change to default insertion adorner (bigger triangle size)
 	- nuget package for NET 3.5 should be working (DataGrid)
