@@ -2,6 +2,8 @@
 
 The GongSolutions.Wpf.DragDrop library is a drag'n'drop framework for WPF.
 
+The original source is from http://code.google.com/p/gong-wpf-dragdrop (but this git repository is now the main source).
+
 It has the following features:
 
 + Works with MVVM : the logic for the drag and drop can be placed in a ViewModel. No code needs to be placed in codebehind, instead attached properties are used to bind to a drag handler/drop handler in a ViewModel.
