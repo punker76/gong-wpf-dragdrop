@@ -57,6 +57,8 @@ namespace GongSolutions.Wpf.DragDrop
         return GetList(dropInfo.TargetCollection) != null;
       } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
         return false;
+      } else if (dropInfo.TargetCollection == null) {
+        return false;
       } else {
         if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data)) {
           return !IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
