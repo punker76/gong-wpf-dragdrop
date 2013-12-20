@@ -815,5 +815,45 @@
         </ListBox>
       </Grid>
     </TabItem>
+    
+    <TabItem Header="with DataTemplateSelector">
+      <TabItem.Resources>
+        <DataTemplate x:Key="Even">
+          <TextBlock Text="{Binding}" Foreground="Blue"/>
+        </DataTemplate>
+        <DataTemplate x:Key="Odd">
+          <TextBlock Text="{Binding}" Foreground="Green"/>
+        </DataTemplate>
+        <local:DemoDataTemplateSelector 
+          x:Key="DemoDataTemplateSelector"
+          TemplateEven="{StaticResource Even}"
+          TemplateOdd="{StaticResource Odd}"
+          />
+      </TabItem.Resources>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2">This example uses a DataTemplateSelector for the drag adorner.</TextBlock>
+        <ListBox 
+          Grid.Row="1" Grid.Column="0"
+          SelectionMode="Extended"
+          dd:DragDrop.IsDragSource="True"
+          dd:DragDrop.IsDropTarget="True"
+          dd:DragDrop.DragAdornerTemplateSelector="{StaticResource DemoDataTemplateSelector}"
+          ItemsSource="{Binding Collection1}" />
+        <ListBox 
+          Grid.Row="1" Grid.Column="1"
+          SelectionMode="Extended"
+          dd:DragDrop.IsDragSource="True"
+          dd:DragDrop.IsDropTarget="True"
+          ItemsSource="{Binding Collection3}" />
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>
