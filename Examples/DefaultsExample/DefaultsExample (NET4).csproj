@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="CustomListBox.cs" />
     <Compile Include="CustomListBoxItem.cs" />
+    <Compile Include="DemoDataTemplateSelector.cs" />
     <Compile Include="Window%28NET4%29.xaml.cs">
       <DependentUpon>Window%28NET4%29.xaml</DependentUpon>
     </Compile>

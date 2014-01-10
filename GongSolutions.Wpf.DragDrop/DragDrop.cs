@@ -30,6 +30,19 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(DragAdornerTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty DragAdornerTemplateSelectorProperty = DependencyProperty.RegisterAttached(
+      "DragAdornerTemplateSelector", typeof (DataTemplateSelector), typeof (DragDrop), new PropertyMetadata(default(DataTemplateSelector)));
+
+    public static void SetDragAdornerTemplateSelector(DependencyObject element, DataTemplateSelector value) 
+    {
+      element.SetValue(DragAdornerTemplateSelectorProperty, value);
+    }
+
+    public static DataTemplateSelector GetDragAdornerTemplateSelector(DependencyObject element) 
+    {
+      return (DataTemplateSelector) element.GetValue(DragAdornerTemplateSelectorProperty);
+    }
+
     public static readonly DependencyProperty UseDefaultDragAdornerProperty =
       DependencyProperty.RegisterAttached("UseDefaultDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
@@ -349,12 +362,13 @@ namespace GongSolutions.Wpf.DragDrop
     private static void CreateDragAdorner()
     {
       var template = GetDragAdornerTemplate(m_DragInfo.VisualSource);
+      var templateSelector = GetDragAdornerTemplateSelector(m_DragInfo.VisualSource);
 
       UIElement adornment = null;
 
       var useDefaultDragAdorner = GetUseDefaultDragAdorner(m_DragInfo.VisualSource);
 
-      if (template == null && useDefaultDragAdorner) {
+      if (template == null && templateSelector == null && useDefaultDragAdorner) {
         template = new DataTemplate();
 
         var factory = new FrameworkElementFactory(typeof(Image));
@@ -372,12 +386,13 @@ namespace GongSolutions.Wpf.DragDrop
         template.VisualTree = factory;
       }
 
-      if (template != null) {
+      if (template != null || templateSelector != null) {
         if (m_DragInfo.Data is IEnumerable && !(m_DragInfo.Data is string)) {
           if (((IEnumerable)m_DragInfo.Data).Cast<object>().Count() <= 10) {
             var itemsControl = new ItemsControl();
             itemsControl.ItemsSource = (IEnumerable)m_DragInfo.Data;
             itemsControl.ItemTemplate = template;
+            itemsControl.ItemTemplateSelector = templateSelector;
 
             // The ItemsControl doesn't display unless we create a border to contain it.
             // Not quite sure why this is...
@@ -389,6 +404,7 @@ namespace GongSolutions.Wpf.DragDrop
           var contentPresenter = new ContentPresenter();
           contentPresenter.Content = m_DragInfo.Data;
           contentPresenter.ContentTemplate = template;
+          contentPresenter.ContentTemplateSelector = templateSelector;
           adornment = contentPresenter;
         }
       }
