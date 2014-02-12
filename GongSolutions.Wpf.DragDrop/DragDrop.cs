@@ -332,28 +332,38 @@ namespace GongSolutions.Wpf.DragDrop
 
       if ((bool)e.NewValue == true) {
         uiElement.AllowDrop = true;
-        //uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
-        //uiElement.PreviewDragLeave += DropTarget_PreviewDragLeave;
-        //uiElement.PreviewDragOver += DropTarget_PreviewDragOver;
-        //uiElement.PreviewDrop += DropTarget_PreviewDrop;
 
-        uiElement.DragEnter += DropTarget_PreviewDragEnter;
-        uiElement.DragLeave += DropTarget_PreviewDragLeave;
-        uiElement.DragOver += DropTarget_PreviewDragOver;
-        uiElement.Drop += DropTarget_PreviewDrop;
-        uiElement.GiveFeedback += DropTarget_GiveFeedback;
+        if (uiElement is ItemsControl) {
+          // use normal events for ItemsControls
+          uiElement.DragEnter += DropTarget_PreviewDragEnter;
+          uiElement.DragLeave += DropTarget_PreviewDragLeave;
+          uiElement.DragOver += DropTarget_PreviewDragOver;
+          uiElement.Drop += DropTarget_PreviewDrop;
+          uiElement.GiveFeedback += DropTarget_GiveFeedback;
+        } else {
+          // issue #85: try using preview events for all other elements than ItemsControls
+          uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
+          uiElement.PreviewDragLeave += DropTarget_PreviewDragLeave;
+          uiElement.PreviewDragOver += DropTarget_PreviewDragOver;
+          uiElement.PreviewDrop += DropTarget_PreviewDrop;
+          uiElement.PreviewGiveFeedback += DropTarget_GiveFeedback;
+        }
       } else {
         uiElement.AllowDrop = false;
-        //uiElement.PreviewDragEnter -= DropTarget_PreviewDragEnter;
-        //uiElement.PreviewDragLeave -= DropTarget_PreviewDragLeave;
-        //uiElement.PreviewDragOver -= DropTarget_PreviewDragOver;
-        //uiElement.PreviewDrop -= DropTarget_PreviewDropTest;
 
-        uiElement.DragEnter -= DropTarget_PreviewDragEnter;
-        uiElement.DragLeave -= DropTarget_PreviewDragLeave;
-        uiElement.DragOver -= DropTarget_PreviewDragOver;
-        uiElement.Drop -= DropTarget_PreviewDrop;
-        uiElement.GiveFeedback -= DropTarget_GiveFeedback;
+        if (uiElement is ItemsControl) {
+          uiElement.DragEnter -= DropTarget_PreviewDragEnter;
+          uiElement.DragLeave -= DropTarget_PreviewDragLeave;
+          uiElement.DragOver -= DropTarget_PreviewDragOver;
+          uiElement.Drop -= DropTarget_PreviewDrop;
+          uiElement.GiveFeedback -= DropTarget_GiveFeedback;
+        } else {
+          uiElement.PreviewDragEnter -= DropTarget_PreviewDragEnter;
+          uiElement.PreviewDragLeave -= DropTarget_PreviewDragLeave;
+          uiElement.PreviewDragOver -= DropTarget_PreviewDragOver;
+          uiElement.PreviewDrop -= DropTarget_PreviewDrop;
+          uiElement.PreviewGiveFeedback -= DropTarget_GiveFeedback;
+        }
 
         Mouse.OverrideCursor = null;
       }

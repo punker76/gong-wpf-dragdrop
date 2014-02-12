@@ -43,9 +43,17 @@ namespace GongSolutions.Wpf.DragDrop
       this.VisualTarget = sender as UIElement;
       // if drop target isn't a ItemsControl
       if (!(this.VisualTarget is ItemsControl)) {
-        this.VisualTarget = VisualTreeExtensions.GetVisualAncestor<ItemsControl>(this.VisualTarget) ?? this.VisualTarget;
+        // try to find next ItemsControl
+        var itemsControl = VisualTreeExtensions.GetVisualAncestor<ItemsControl>(this.VisualTarget);
+        if (itemsControl != null) {
+          // now check if this ItemsControl is a drop target
+          if (DragDrop.GetIsDropTarget(itemsControl)) {
+            this.VisualTarget = itemsControl;
+          }
+        }
       }
-      this.DropPosition = e.GetPosition(this.VisualTarget);
+      // visual target can be null, so give us a point...
+      this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
       if (this.VisualTarget is ItemsControl) {
         var itemsControl = (ItemsControl)this.VisualTarget;

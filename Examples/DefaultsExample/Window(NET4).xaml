@@ -621,7 +621,7 @@
                  ItemTemplate="{StaticResource CustomTemplate}"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True"
-                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource CustomTemplate}" />
       </Grid>
     </TabItem>
 
@@ -853,6 +853,25 @@
           dd:DragDrop.IsDragSource="True"
           dd:DragDrop.IsDropTarget="True"
           ItemsSource="{Binding Collection3}" />
+      </Grid>
+    </TabItem>
+
+    <TabItem Header="Drop to TextBox, issue #85">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="2">This example uses a DataTemplateSelector for the drag adorner.</TextBlock>
+        <ListBox ItemsSource="{Binding Collection1}"
+                 Grid.Column="0"
+                 dd:DragDrop.IsDragSource="True"></ListBox>
+        <TextBox Text="Drop the item here"
+                 IsReadOnly="True"
+                 Grid.Column="1"
+                 Height="30"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DropHandler="{Binding CustomDropHandler}" />
       </Grid>
     </TabItem>
   </TabControl>
