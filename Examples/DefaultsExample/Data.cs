@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -13,6 +14,20 @@ using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace DefaultsExample
 {
+  public class CustomDropHandlerForIssue85 : IDropTarget
+  {
+    public void DragOver(IDropInfo dropInfo)
+    {
+      dropInfo.Effects = DragDropEffects.Copy;
+    }
+
+    public void Drop(IDropInfo dropInfo)
+    {
+      MessageBox.Show("He, now it works :-D");
+      ((TextBox)dropInfo.VisualTarget).Text = (string)dropInfo.Data;
+    }
+  }
+
   internal class Data : IDropTarget
   {
     public Data()
@@ -22,6 +37,8 @@ namespace DefaultsExample
       this.Collection3 = new ObservableCollection<string>();
       this.CustomCollection1 = new ObservableCollection<CustomDataModel>();
       this.CustomCollection2 = new ObservableCollection<CustomDataModel>();
+
+      this.CustomDropHandler = new CustomDropHandlerForIssue85();
 
       for (var n = 0; n < 100; ++n) {
         this.Collection1.Add("Item " + n);
@@ -57,6 +74,8 @@ namespace DefaultsExample
     public ObservableCollection<CustomDataModel> CustomCollection2 { get; private set; }
     public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
     public ObservableCollection<TreeNode> TreeCollection { get; private set; }
+
+    public CustomDropHandlerForIssue85 CustomDropHandler { get; private set; }
 
     //
     // The drop handler is only used for the grouping example.
