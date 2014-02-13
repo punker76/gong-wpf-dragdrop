@@ -21,6 +21,11 @@ namespace GongSolutions.Wpf.DragDrop
                            DragDropEffects.None;
     }
 
+    public bool CanStartDrag(IDragInfo dragInfo)
+    {
+      return true;
+    }
+
     public virtual void Dropped(IDropInfo dropInfo)
     {
     }

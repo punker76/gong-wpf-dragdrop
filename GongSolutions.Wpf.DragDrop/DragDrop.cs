@@ -592,23 +592,42 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
+    private static IDragSource TryGetDragHandler(DragInfo dragInfo, UIElement sender)
+    {
+      IDragSource dragHandler = null;
+      if (dragInfo != null && dragInfo.VisualSource != null) {
+        dragHandler = GetDragHandler(m_DragInfo.VisualSource);
+      }
+      if (dragHandler == null && sender != null) {
+        dragHandler = GetDragHandler(sender);
+      }
+      return dragHandler ?? DefaultDragHandler;
+    }
+
     private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
       // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (e.ClickCount != 1
-          || HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
+          || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
-          || HitTestUtilities.HitTest4Type<Slider>(sender, elementPosition)
+          || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
           || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
+          || HitTestUtilities.IsNotPartOfSender(sender, e)
           || GetDragSourceIgnore((UIElement)sender)) {
         m_DragInfo = null;
         return;
       }
 
       m_DragInfo = new DragInfo(sender, e);
+
+      var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
+      if (!dragHandler.CanStartDrag(m_DragInfo)) {
+        m_DragInfo = null;
+        return;
+      }
 
       // If the sender is a list box that allows multiple selections, ensure that clicking on an 
       // already selected item does not change the selection, otherwise dragging multiple items 
@@ -646,18 +665,6 @@ namespace GongSolutions.Wpf.DragDrop
       m_ClickSupressItem = null;
     }
 
-    private static IDragSource TryGetDragHandler(DragInfo dragInfo, UIElement sender)
-    {
-      IDragSource dragHandler = null;
-      if (dragInfo != null && dragInfo.VisualSource != null) {
-        dragHandler = GetDragHandler(m_DragInfo.VisualSource);
-      }
-      if (dragHandler == null && sender != null) {
-        dragHandler = GetDragHandler(sender);
-      }
-      return dragHandler ?? DefaultDragHandler;
-    }
-
     private static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
     {
       if (m_DragInfo != null && !m_DragInProgress) {
@@ -667,26 +674,30 @@ namespace GongSolutions.Wpf.DragDrop
         if (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
             Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance) {
           var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
-          dragHandler.StartDrag(m_DragInfo);
+          if (dragHandler.CanStartDrag(m_DragInfo)) {
+            dragHandler.StartDrag(m_DragInfo);
 
-          if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null) {
-            var data = m_DragInfo.DataObject;
+            if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null) {
+              var data = m_DragInfo.DataObject;
 
-            if (data == null) {
-              data = new DataObject(DataFormat.Name, m_DragInfo.Data);
-            } else {
-              data.SetData(DataFormat.Name, m_DragInfo.Data);
+              if (data == null) {
+                data = new DataObject(DataFormat.Name, m_DragInfo.Data);
+              } else {
+                data.SetData(DataFormat.Name, m_DragInfo.Data);
+              }
+
+              try {
+                m_DragInProgress = true;
+                var result = System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
+                if (result == DragDropEffects.None)
+                  dragHandler.DragCancelled();
+              }
+              finally {
+                m_DragInProgress = false;
+              }
+
+              m_DragInfo = null;
             }
-
-            try {
-              m_DragInProgress = true;
-              var result = System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
-              if (result == DragDropEffects.None) dragHandler.DragCancelled();
-            } finally {
-              m_DragInProgress = false;
-            }
-
-            m_DragInfo = null;
           }
         }
       }
