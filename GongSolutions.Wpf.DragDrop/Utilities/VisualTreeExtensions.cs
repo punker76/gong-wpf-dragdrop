@@ -10,7 +10,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
   public static class VisualTreeExtensions
   {
-    private static DependencyObject FindVisualTreeRoot(this DependencyObject d)
+    internal static DependencyObject FindVisualTreeRoot(this DependencyObject d)
     {
       var current = d;
       var result = d;

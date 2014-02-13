@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Collections;
+using GongSolutions.Wpf.DragDrop.Utilities;
 using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace DefaultsExample
@@ -28,6 +29,34 @@ namespace DefaultsExample
     }
   }
 
+  public class CustomDragHandlerForIssue84 : IDragSource
+  {
+    public virtual void StartDrag(IDragInfo dragInfo)
+    {
+      // nothing special here, use the default way
+      DragDrop.DefaultDragHandler.StartDrag(dragInfo);
+    }
+
+    public bool CanStartDrag(IDragInfo dragInfo)
+    {
+      // so here is the magic
+      if (dragInfo != null) {
+        if ((dragInfo.SourceIndex % 2) == 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    public virtual void Dropped(IDropInfo dropInfo)
+    {
+    }
+
+    public virtual void DragCancelled()
+    {
+    }
+  }
+
   internal class Data : IDropTarget
   {
     public Data()
@@ -39,6 +68,7 @@ namespace DefaultsExample
       this.CustomCollection2 = new ObservableCollection<CustomDataModel>();
 
       this.CustomDropHandler = new CustomDropHandlerForIssue85();
+      this.CustomDragHandler = new CustomDragHandlerForIssue84();
 
       for (var n = 0; n < 100; ++n) {
         this.Collection1.Add("Item " + n);
@@ -76,6 +106,7 @@ namespace DefaultsExample
     public ObservableCollection<TreeNode> TreeCollection { get; private set; }
 
     public CustomDropHandlerForIssue85 CustomDropHandler { get; private set; }
+    public CustomDragHandlerForIssue84 CustomDragHandler { get; private set; }
 
     //
     // The drop handler is only used for the grouping example.

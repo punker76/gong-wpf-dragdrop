@@ -874,5 +874,47 @@
                  dd:DragDrop.DropHandler="{Binding CustomDropHandler}" />
       </Grid>
     </TabItem>
+
+    <TabItem Header="Issue #84">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.DragHandler="{Binding CustomDragHandler}"
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Margin="2"
+                           Text="{Binding Mode=OneWay}"></TextBlock>
+                <TextBox Grid.Column="1"
+                         Margin="2"
+                         Text="{Binding Mode=OneWay}"></TextBox>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.Collection1, Mode=OneWay}"
+                          Margin="2"
+                          Width="80"></ComboBox>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True" />
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>
