@@ -22,13 +22,16 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
     private static T GetHitTestElement4Type<T>(object sender, Point elementPosition) where T : UIElement
     {
-      var hit = VisualTreeHelper.HitTest((Visual)sender, elementPosition);
+      var visual = sender as Visual;
+      if (visual == null) {
+        return null;
+      }
+      var hit = VisualTreeHelper.HitTest(visual, elementPosition);
       if (hit == null) {
         return null;
-      } else {
-        var uiElement = hit.VisualHit.GetVisualAncestor<T>();
-        return uiElement;
       }
+      var uiElement = hit.VisualHit.GetVisualAncestor<T>();
+      return uiElement;
     }
 
     public static bool HitTest4GridViewColumnHeader(object sender, Point elementPosition)
@@ -84,7 +87,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     /// </summary>
     public static bool IsNotPartOfSender(object sender, MouseButtonEventArgs e)
     {
-      var hit = VisualTreeHelper.HitTest((Visual)e.OriginalSource, e.GetPosition((IInputElement)e.OriginalSource));
+      var visual = e.OriginalSource as Visual;
+      if (visual == null) {
+        return false;
+      }
+      var hit = VisualTreeHelper.HitTest(visual, e.GetPosition((IInputElement)visual));
 
       if (hit == null) {
         return false;
