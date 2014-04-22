@@ -25,7 +25,7 @@ namespace GongSolutions.Wpf.DragDrop
             rect = new Rect(tvItem.TranslatePoint(new Point(), this.AdornedElement), new Size(descendant.Width + 4, grid.RowDefinitions[0].ActualHeight));
           }
         }
-        if (rect.IsEmpty) {
+        if (tvItem.IsExpanded) {
           rect = new Rect(visualTargetItem.TranslatePoint(new Point(), this.AdornedElement), VisualTreeHelper.GetDescendantBounds(visualTargetItem).Size);
         }
         drawingContext.DrawRoundedRectangle(null, new Pen(Brushes.Gray, 2), rect, 2, 2);
