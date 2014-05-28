@@ -592,16 +592,44 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
+    /// <summary>
+    /// Gets the drag handler from the drag info or from the sender, if the drag info is null
+    /// </summary>
+    /// <param name="dragInfo">the drag info object</param>
+    /// <param name="sender">the sender from an event, e.g. mouse down, mouse move</param>
+    /// <returns></returns>
     private static IDragSource TryGetDragHandler(DragInfo dragInfo, UIElement sender)
     {
       IDragSource dragHandler = null;
-      if (dragInfo != null && dragInfo.VisualSource != null) {
-        dragHandler = GetDragHandler(m_DragInfo.VisualSource);
+      if (dragInfo != null && dragInfo.VisualSource != null)
+      {
+        dragHandler = GetDragHandler(dragInfo.VisualSource);
       }
-      if (dragHandler == null && sender != null) {
+      if (dragHandler == null && sender != null)
+      {
         dragHandler = GetDragHandler(sender);
       }
       return dragHandler ?? DefaultDragHandler;
+    }
+
+    /// <summary>
+    /// Gets the drop handler from the drop info or from the sender, if the drop info is null
+    /// </summary>
+    /// <param name="dropInfo">the drop info object</param>
+    /// <param name="sender">the sender from an event, e.g. drag over</param>
+    /// <returns></returns>
+    private static IDropTarget TryGetDropHandler(DropInfo dropInfo, UIElement sender)
+    {
+      IDropTarget dropHandler = null;
+      if (dropInfo != null && dropInfo.VisualTarget != null)
+      {
+        dropHandler = GetDropHandler(dropInfo.VisualTarget);
+      }
+      if (dropHandler == null && sender != null)
+      {
+        dropHandler = GetDropHandler(sender);
+      }
+      return dropHandler ?? DefaultDropHandler;
     }
 
     private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -748,7 +776,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       var dropInfo = new DropInfo(sender, e, m_DragInfo);
-      var dropHandler = GetDropHandler((UIElement)sender) ?? DefaultDropHandler;
+      var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
       var itemsControl = dropInfo.VisualTarget;
 
       dropHandler.DragOver(dropInfo);
@@ -829,7 +857,7 @@ namespace GongSolutions.Wpf.DragDrop
     private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
     {
       var dropInfo = new DropInfo(sender, e, m_DragInfo);
-      var dropHandler = GetDropHandler((UIElement)sender) ?? DefaultDropHandler;
+      var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
       var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
 
       DragAdorner = null;
@@ -840,7 +868,7 @@ namespace GongSolutions.Wpf.DragDrop
       dragHandler.Dropped(dropInfo);
 
       Mouse.OverrideCursor = null;
-      e.Handled = true;
+      e.Handled = !dropInfo.NotHandled;
     }
 
     private static void DropTarget_GiveFeedback(object sender, GiveFeedbackEventArgs e)
