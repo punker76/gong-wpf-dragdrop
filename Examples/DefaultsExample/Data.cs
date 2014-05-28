@@ -151,7 +151,9 @@ namespace DefaultsExample
 
     public void Drop(IDropInfo dropInfo)
     {
-      DragDrop.DefaultDropHandler.Drop(dropInfo);
+      if (dropInfo.DragInfo.Data is CustomDataModel) {
+        dropInfo.NotHandled = true; // now the DefaultDropHandler should work
+      }
     }
   }
 
