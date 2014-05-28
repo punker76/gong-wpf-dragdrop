@@ -668,6 +668,14 @@ namespace GongSolutions.Wpf.DragDrop
     private static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
     {
       if (m_DragInfo != null && !m_DragInProgress) {
+
+        // do nothing if mouse left button is released
+        if (e.LeftButton == MouseButtonState.Released)
+        {
+          m_DragInfo = null;
+          return;
+        } 
+
         var dragStart = m_DragInfo.DragStartPosition;
         var position = e.GetPosition((IInputElement)sender);
 
