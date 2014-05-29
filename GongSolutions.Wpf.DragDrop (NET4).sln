@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1D14F10-00C7-4BE6-9A49-D2B5C950DE34}"
 	ProjectSection(SolutionItems) = preProject
 		GongSolutions.Wpf.DragDrop (NET4)1.vsmdi = GongSolutions.Wpf.DragDrop (NET4)1.vsmdi
@@ -18,9 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindExample (NET4)", "Examples\NorthwindExample\NorthwindExample (NET4).csproj", "{6200FA9D-0590-4E44-82DD-E90C529124A3}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = GongSolutions.Wpf.DragDrop (NET4).vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -36,11 +35,9 @@ Global
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6200FA9D-0590-4E44-82DD-E90C529124A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +45,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{310992A5-1F59-472C-A6BB-8CFDA2FE1EA0} = {96F74036-17C4-470A-B820-1B0653472F61}
 		{6200FA9D-0590-4E44-82DD-E90C529124A3} = {96F74036-17C4-470A-B820-1B0653472F61}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = GongSolutions.Wpf.DragDrop (NET4).vsmdi
 	EndGlobalSection
 EndGlobal
