@@ -21,6 +21,17 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 
 #Release History
 
++ **0.1.4** (30 May, 2014)
+	- [#80](https://github.com/punker76/gong-wpf-dragdrop/pull/80): Handle non-collection targets (DefaultDropHandler was trying to dereference null when the drop target
+wasn't a collection).
+	- [#81](https://github.com/punker76/gong-wpf-dragdrop/pull/81): Added DragAdornerTemplateSelector.
+	- [#82](https://github.com/punker76/gong-wpf-dragdrop/issues/82): Drop Event does not properly bubble. (PR #101)
+	- [#83](https://github.com/punker76/gong-wpf-dragdrop/issues/83): DragDrop initiated a Messagebox (left mouse button release bug). (PR #100)
+	- [#84](https://github.com/punker76/gong-wpf-dragdrop/issues/84): Listview datatemplate with combobox has drag issues. (PR #87 #94)
+	- [#85](https://github.com/punker76/gong-wpf-dragdrop/issues/85): Drop to TextBox no longer working. (PR #86)
+	- [#92](https://github.com/punker76/gong-wpf-dragdrop/issues/92): Unable to cast object of type 'System.Windows.Documents.Run' to type 'System.Windows.Media.Visual'. (PR #94)
+	- [#97](https://github.com/punker76/gong-wpf-dragdrop/issues/97): Highlight adorner not outlining everything. (PR #99)
+	- [#98](https://github.com/punker76/gong-wpf-dragdrop/issues/98): Assembly is not signed.
 + **0.1.3.11** (14 Oct, 2013)
 	- Issue [#73](https://github.com/punker76/gong-wpf-dragdrop/issues/73): Fix crash on click inside ItemsControl where ItemsSource.Count == 0.
 	- Issue [#76](https://github.com/punker76/gong-wpf-dragdrop/issues/76): Allowed drops to main window where the visual parent would be null.
