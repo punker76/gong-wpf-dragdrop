@@ -21,7 +21,7 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 
 #Release History
 
-+ **0.1.4.1** (20 June, 2014)
++ **0.1.4.1** (20 June, 2014), **0.1.4.2** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
 	- [#80](https://github.com/punker76/gong-wpf-dragdrop/pull/80): Handle non-collection targets (DefaultDropHandler was trying to dereference null when the drop target
