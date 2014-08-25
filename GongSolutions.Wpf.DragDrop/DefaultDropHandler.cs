@@ -26,6 +26,13 @@ namespace GongSolutions.Wpf.DragDrop
       var destinationList = GetList(dropInfo.TargetCollection);
       var data = ExtractData(dropInfo.Data);
 
+      var ic = dropInfo.VisualTarget as ItemsControl;
+      if (ic != null && ic.Items.Count != destinationList.Count) { //then the Items are filtered
+        if (insertIndex >= 0 && insertIndex < ic.Items.Count) {
+          insertIndex = destinationList.IndexOf(ic.Items[insertIndex]);
+        }
+      }
+
       if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget) {
         var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
 
