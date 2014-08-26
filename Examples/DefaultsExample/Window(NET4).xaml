@@ -39,6 +39,66 @@
   </Window.DataContext>
 
   <TabControl TabStripPlacement="Left">
+    <TabItem Header="Mixed Types, Filtering">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    Demonstrates custom behaviour with an itemscontrol and a listbox bound to two collections of different types. Filtering too! Either control can be reordered, and items from the right can be copied to the left.
+        </TextBlock>
+
+        <ListBox Grid.Row="1"
+                 x:Name="MastersList"
+                 ItemsSource="{Binding Masters}"
+                 IsSynchronizedWithCurrentItem="True"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DropHandler="{Binding MasterDropHandler}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}"
+                                       Background="Transparent"/>
+                <TextBlock Margin="3" Text="{Binding Models.Count}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+          <CheckBox x:Name="FilterCheck" Click="FilterCheckBox_Clicked" Background="AliceBlue">Filter by 3's</CheckBox>
+          <ItemsControl x:Name="SlavesList"
+                        DataContext="{Binding ElementName=MastersList,Path=SelectedItem}"
+                        ItemsSource="{Binding Models}"
+                        BorderBrush="Black" BorderThickness="1"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Border BorderBrush="#40000000" BorderThickness="0,0,0,0.5"  Grid.ColumnSpan="2" Margin="-1"><Rectangle Fill="Transparent"/></Border>
+                  <TextBlock Text="{Binding Name}" Background="Bisque" Width="55" />
+                  <TextBlock Grid.Column="1" Text="{Binding VarText}" Background="Transparent" TextWrapping="Wrap"/> <!--wanted to test drag/drop with variable height-->
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Grid>
+    </TabItem>
     <TabItem Header="Issue 42">
       <Grid>
         <Grid.ColumnDefinitions>

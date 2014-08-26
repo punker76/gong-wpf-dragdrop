@@ -29,5 +29,19 @@ namespace DefaultsExample
     {
       MessageBox.Show(this, "Got the double click.");
     }
+
+    private void FilterCheckBox_Clicked(object sender, RoutedEventArgs e)
+    {
+      var cv = (CollectionView)CollectionViewSource.GetDefaultView(SlavesList.ItemsSource);
+      cv.Filter = ThreeFilter; //setting each time, since the Slaves list can be reset
+      cv.Refresh();
+    }
+
+    private bool ThreeFilter(object item)
+    {
+      if (FilterCheck.IsChecked == true)
+        return (item as SlaveDataModel).Number % 3 == 0;
+      return true;
+    }
   }
 }

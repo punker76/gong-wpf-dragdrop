@@ -70,6 +70,12 @@ namespace DefaultsExample
       this.CustomDropHandler = new CustomDropHandlerForIssue85();
       this.CustomDragHandler = new CustomDragHandlerForIssue84();
 
+      this.Masters = new ObservableCollection<MasterDataModel>();
+      this.Masters.Add(new MasterDataModel("Fizz",3));
+      this.Masters.Add(new MasterDataModel("Buzz", 5));
+      this.Masters.Add(new MasterDataModel("FizzBuzz", 15));
+      this.MasterDropHandler = new MasterDropHandler();
+
       for (var n = 0; n < 100; ++n) {
         this.Collection1.Add("Item " + n);
         this.CustomCollection1.Add(new CustomDataModel { Name = "Custom Item " + n });
@@ -104,9 +110,11 @@ namespace DefaultsExample
     public ObservableCollection<CustomDataModel> CustomCollection2 { get; private set; }
     public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
     public ObservableCollection<TreeNode> TreeCollection { get; private set; }
+    public ObservableCollection<MasterDataModel> Masters { get; private set; }
 
     public CustomDropHandlerForIssue85 CustomDropHandler { get; private set; }
     public CustomDragHandlerForIssue84 CustomDragHandler { get; private set; }
+    public MasterDropHandler MasterDropHandler { get; private set; }
 
     //
     // The drop handler is only used for the grouping example.
@@ -154,6 +162,54 @@ namespace DefaultsExample
       if (dropInfo.DragInfo.Data is CustomDataModel) {
         dropInfo.NotHandled = true; // now the DefaultDropHandler should work
       }
+    }
+  }
+
+  internal class SlaveDataModel
+  {
+    public string Name { get; set; }
+    public int Number { get; set; }
+    public string VarText { get; set; }
+  }
+
+  internal class MasterDataModel
+  {
+    public MasterDataModel(string n, int initialNumSlaves)
+    {
+      Name = n;
+      Models = new ObservableCollection<SlaveDataModel>();
+
+      string text = "";
+      for (int i = 0; i < initialNumSlaves; i++) {
+        text += n + " ";
+        Models.Add(new SlaveDataModel() { Name = string.Format("Num {0}", i), Number = i, VarText = text });
+      }
+    }
+    public string Name { get; set; }
+    public ObservableCollection<SlaveDataModel> Models { get; set; }
+  }
+
+  internal class MasterDropHandler: DefaultDropHandler
+  {
+    public override void DragOver(IDropInfo dropInfo)
+    {
+      if (dropInfo.Data.GetType() == typeof(SlaveDataModel)) {
+        dropInfo.Effects = DragDropEffects.Copy;
+        dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+      }
+      else
+        base.DragOver(dropInfo);
+    }
+
+    public override void Drop(IDropInfo dropInfo)
+    {
+      if (dropInfo.Data.GetType() == typeof(SlaveDataModel)) {
+        var holder = dropInfo.TargetItem as MasterDataModel;
+        var dropped = dropInfo.Data as SlaveDataModel;
+        holder.Models.Add(dropped);
+      }
+      else
+        base.Drop(dropInfo);
     }
   }
 

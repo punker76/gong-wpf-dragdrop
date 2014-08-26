@@ -26,6 +26,13 @@ namespace GongSolutions.Wpf.DragDrop
       var destinationList = GetList(dropInfo.TargetCollection);
       var data = ExtractData(dropInfo.Data);
 
+      var ic = dropInfo.VisualTarget as ItemsControl;
+      if (ic != null && ic.Items.Count != destinationList.Count) { //then the Items are filtered
+        if (insertIndex >= 0 && insertIndex < ic.Items.Count) {
+          insertIndex = destinationList.IndexOf(ic.Items[insertIndex]);
+        }
+      }
+
       if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget) {
         var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
 
@@ -41,6 +48,16 @@ namespace GongSolutions.Wpf.DragDrop
           }
         }
       }
+      else {
+        var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
+        if (sourceList[0] is ICloneable) {
+          var clones = new ArrayList();
+          foreach (ICloneable o in data) {
+            clones.Add(o.Clone());
+          }
+          data = clones;
+        }
+      }
 
       foreach (var o in data) {
         destinationList.Insert(insertIndex++, o);
@@ -51,6 +68,16 @@ namespace GongSolutions.Wpf.DragDrop
     {
       if (dropInfo == null || dropInfo.DragInfo == null) {
         return false;
+      }
+
+      if (!String.IsNullOrEmpty((string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty)))
+      {
+          //Source element has a drag context constraint, we need to check the target property matches.
+          var sourceContext = (string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty);
+          var targetContext = (string)dropInfo.VisualTarget.GetValue(DragDrop.DragDropContextProperty);
+
+          if (!string.Equals(sourceContext, targetContext))
+              return false;
       }
 
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
