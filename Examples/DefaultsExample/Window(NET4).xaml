@@ -86,10 +86,11 @@
               <DataTemplate>
                 <Grid>
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
-                  <TextBlock Text="{Binding Name}" Background="Bisque" />
+                  <Border BorderBrush="#40000000" BorderThickness="0,0,0,0.5"  Grid.ColumnSpan="2" Margin="-1"><Rectangle Fill="Transparent"/></Border>
+                  <TextBlock Text="{Binding Name}" Background="Bisque" Width="55" />
                   <TextBlock Grid.Column="1" Text="{Binding VarText}" Background="Transparent" TextWrapping="Wrap"/> <!--wanted to test drag/drop with variable height-->
                 </Grid>
               </DataTemplate>
