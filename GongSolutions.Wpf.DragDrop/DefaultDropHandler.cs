@@ -48,6 +48,16 @@ namespace GongSolutions.Wpf.DragDrop
           }
         }
       }
+      else {
+        var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
+        if (sourceList[0] is ICloneable) {
+          var clones = new ArrayList();
+          foreach (ICloneable o in data) {
+            clones.Add(o.Clone());
+          }
+          data = clones;
+        }
+      }
 
       foreach (var o in data) {
         destinationList.Insert(insertIndex++, o);
