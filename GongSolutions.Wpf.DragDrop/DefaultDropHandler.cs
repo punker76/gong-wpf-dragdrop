@@ -60,6 +60,16 @@ namespace GongSolutions.Wpf.DragDrop
         return false;
       }
 
+      if (!String.IsNullOrEmpty((string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty)))
+      {
+          //Source element has a drag context constraint, we need to check the target property matches.
+          var sourceContext = (string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty);
+          var targetContext = (string)dropInfo.VisualTarget.GetValue(DragDrop.DragDropContextProperty);
+
+          if (!string.Equals(sourceContext, targetContext))
+              return false;
+      }
+
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
         return GetList(dropInfo.TargetCollection) != null;
       } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {

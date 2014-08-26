@@ -228,6 +228,19 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(IsDropTargetProperty, value);
     }
 
+    public static readonly DependencyProperty DragDropContextProperty = 
+        DependencyProperty.RegisterAttached("DragDropContext", typeof(string), typeof(DragDrop), new UIPropertyMetadata(string.Empty));
+
+    public static string GetDragDropContext(UIElement target)
+    {
+        return (string)target.GetValue(DragDropContextProperty);
+    }
+
+    public static void SetDragDropContext(UIElement target, string value)
+    {
+        target.SetValue(DragDropContextProperty, value);
+    }
+
     public static readonly DependencyProperty DragHandlerProperty =
       DependencyProperty.RegisterAttached("DragHandler", typeof(IDragSource), typeof(DragDrop));
 
@@ -850,6 +863,17 @@ namespace GongSolutions.Wpf.DragDrop
 
       e.Effects = dropInfo.Effects;
       e.Handled = !dropInfo.NotHandled;
+
+      if (!string.IsNullOrEmpty((string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty)))
+      {
+          var sourceContext = (string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty);
+          var targetContext = (string)dropInfo.VisualTarget.GetValue(DragDrop.DragDropContextProperty);
+
+          if (!string.IsNullOrEmpty(targetContext) && !string.Equals(sourceContext, targetContext))
+          {
+              e.Effects = DragDropEffects.None;
+          }
+      }
 
       Scroll((DependencyObject)dropInfo.VisualTarget, e);
     }

@@ -37,6 +37,7 @@
               dd:DragDrop.IsDropTarget="True"
               dd:DragDrop.DropHandler="{Binding}"
               dd:DragDrop.DragAdornerTemplate="{x:Null}"
+              dd:DragDrop.DragDropContext="Employees"
               dd:DragDrop.EffectNoneAdornerTemplate="{x:Null}">
       <DataGrid.Columns>
         <DataGridTextColumn Header="First Name"
@@ -54,6 +55,8 @@
              dd:DragDrop.IsDragSource="True"
              dd:DragDrop.IsDropTarget="True"
              dd:DragDrop.DropHandler="{Binding}"
-             dd:DragDrop.DragAdornerTemplate="{x:Null}" />
+             dd:DragDrop.DragAdornerTemplate="{x:Null}"  
+             dd:DragDrop.DragDropContext="EmployeesNotDroppableFromOther"
+             />
   </Grid>
 </UserControl>
