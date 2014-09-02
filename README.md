@@ -1,6 +1,8 @@
 #Introduction
 
-The GongSolutions.Wpf.DragDrop library is a drag'n'drop framework for WPF.
+The **GongSolutions.Wpf.DragDrop** library is a drag'n'drop framework for WPF.
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=punker76&url=https://github.com/punker76/gong-wpf-dragdrop&title=GongSolutions.Wpf.DragDrop&language=&tags=github&category=software)
 
 The original source is from http://code.google.com/p/gong-wpf-dragdrop (but this git repository is now the main source).
 
