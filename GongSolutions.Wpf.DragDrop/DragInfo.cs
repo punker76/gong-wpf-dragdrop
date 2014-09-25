@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop.Utilities;
 
@@ -40,6 +41,7 @@ namespace GongSolutions.Wpf.DragDrop
       if (sender is ItemsControl) {
         var itemsControl = (ItemsControl)sender;
 
+        this.SourceGroup = itemsControl.FindGroup(this.DragStartPosition);
         this.VisualSourceFlowDirection = itemsControl.GetItemsPanelFlowDirection();
 
         var sourceItem = e.OriginalSource as UIElement; // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
@@ -158,6 +160,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// If the control that initated the drag is unbound or not an ItemsControl, this will be empty.
     /// </remarks>
     public IEnumerable SourceItems { get; private set; }
+
+    /// <summary>
+    /// Gets the group from a dragged item if the drag is currently from an ItemsControl with groups.
+    /// </summary>
+    public CollectionViewGroup SourceGroup { get; private set; }
 
     /// <summary>
     /// Gets the control that initiated the drag.
