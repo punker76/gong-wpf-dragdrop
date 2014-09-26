@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Reflection;
 using System.Collections;
@@ -17,6 +18,21 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
   public static class ItemsControlExtensions
   {
+    public static CollectionViewGroup FindGroup(this ItemsControl itemsControl, Point position)
+    {
+      var element = itemsControl.InputHitTest(position) as DependencyObject;
+
+      if (element != null) {
+        var groupItem = element.GetVisualAncestor<GroupItem>();
+
+        if (groupItem != null) {
+          return groupItem.Content as CollectionViewGroup;
+        }
+      }
+
+      return null;
+    }
+
     public static bool CanSelectMultipleItems(this ItemsControl itemsControl)
     {
       if (itemsControl is MultiSelector) {

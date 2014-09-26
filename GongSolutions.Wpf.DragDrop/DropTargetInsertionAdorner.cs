@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Collections;
@@ -33,6 +35,17 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         var index = Math.Min(this.DropInfo.InsertIndex, itemParent.Items.Count - 1);
+
+        var lastItemInGroup = false;
+        var targetGroup = this.DropInfo.TargetGroup;
+        if (targetGroup != null && targetGroup.IsBottomLevel && this.DropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem)) {
+          var indexOf = targetGroup.Items.IndexOf(this.DropInfo.TargetItem);
+          lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
+          if (lastItemInGroup) {
+            index--;
+          }
+        }
+
         var itemContainer = (UIElement)itemParent.ItemContainerGenerator.ContainerFromIndex(index);
 
         if (itemContainer != null) {
@@ -41,7 +54,7 @@ namespace GongSolutions.Wpf.DragDrop
           double rotation = 0;
 
           if (this.DropInfo.VisualTargetOrientation == Orientation.Vertical) {
-            if (this.DropInfo.InsertIndex == itemParent.Items.Count) {
+            if (this.DropInfo.InsertIndex == itemParent.Items.Count || lastItemInGroup) {
               itemRect.Y += itemContainer.RenderSize.Height;
             }
 

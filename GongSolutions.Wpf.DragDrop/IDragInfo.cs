@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace GongSolutions.Wpf.DragDrop
@@ -71,6 +72,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// If the control that initated the drag is unbound or not an ItemsControl, this will be empty.
     /// </remarks>
     IEnumerable SourceItems { get; }
+
+    /// <summary>
+    /// Gets the group from a dragged item if the drag is currently from an ItemsControl with groups.
+    /// </summary>
+    CollectionViewGroup SourceGroup { get; }
 
     /// <summary>
     /// Gets the control that initiated the drag.
