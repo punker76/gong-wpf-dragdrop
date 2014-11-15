@@ -788,7 +788,7 @@ namespace GongSolutions.Wpf.DragDrop
       if (DragAdorner != null) {
         var tempAdornerPos = e.GetPosition(DragAdorner.AdornedElement);
 
-        if (tempAdornerPos.X > 0 && tempAdornerPos.Y > 0) {
+        if (tempAdornerPos.X >= 0 && tempAdornerPos.Y >= 0) {
           _adornerPos = tempAdornerPos;
         }
 
