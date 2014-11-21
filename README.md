@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/20ueh8xqu0xje94v/branch/master?svg=true)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
 
-The **GongSolutions.Wpf.DragDrop** library is a drag'n'drop framework for WPF.
+The **GongSolutions.WPF.DragDrop** library is a drag'n'drop framework for WPF.
 
 The original source is from http://code.google.com/p/gong-wpf-dragdrop (but this git repository is now the main source).
 
