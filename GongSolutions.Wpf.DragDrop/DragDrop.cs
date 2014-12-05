@@ -638,6 +638,7 @@ namespace GongSolutions.Wpf.DragDrop
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (e.ClickCount != 1
           || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
+          || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
