@@ -155,6 +155,85 @@
       </Grid>
     </TabItem>
 
+    <TabItem Header="ListBoxes and DragDropContext">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto"/>
+          <RowDefinition />
+          <RowDefinition Height="Auto"/>
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    Demonstrates the DragDropContext behaviour.
+        </TextBlock>
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="1"
+                   Margin="2"
+                   Text="DragDropContext=MainContext"/>
+        <ListBox Grid.Column="0"
+                 Grid.Row="2"
+                 Margin="2"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragDropContext="MainContext"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+
+        <TextBlock Grid.Column="1"
+                   Grid.Row="1"
+                   Margin="2"
+                   Text="DragDropContext=MainContext"/>
+        <ListBox Grid.Column="1"
+                 Grid.Row="2"
+                 Margin="2"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragDropContext="MainContext"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="3"
+                   Margin="2"
+                   Text="DragDropContext=DifferentContext"/>
+        <ListBox Grid.Column="0"
+                 Grid.Row="4"
+                 Margin="2"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragDropContext="DifferentContext"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+
+        <TextBlock Grid.Column="1"
+                   Grid.Row="3"
+                   Margin="2"
+                   Text="No DragDropContext"/>
+        <ListBox Grid.Column="1"
+                 Grid.Row="4"
+                 Margin="2"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+      </Grid>
+    </TabItem>
+
     <TabItem Header="Unbound ListBoxes">
       <Grid>
         <Grid.ColumnDefinitions>
