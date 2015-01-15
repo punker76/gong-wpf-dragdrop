@@ -238,6 +238,32 @@ namespace GongSolutions.Wpf.DragDrop
     public DragDropKeyStates KeyStates { get; private set; }
 
     public bool NotHandled { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the target is in the same context as the source, <see cref="DragDrop.DragDropContextProperty" />.
+    /// </summary>
+    public bool IsSameDragDropContextAsSource
+    {
+        get
+        {
+            // Check if DragInfo stuff exists
+            if (this.DragInfo == null || this.DragInfo.VisualSource == null) {
+                return true;
+            }
+            // A target should be exists
+            if (this.VisualTarget == null) {
+                return true;
+            }
+
+            // Source element has a drag context constraint, we need to check the target property matches.
+            var sourceContext = this.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty) as string;
+            if (String.IsNullOrEmpty(sourceContext)) {
+                return true;
+            }
+            var targetContext = this.VisualTarget.GetValue(DragDrop.DragDropContextProperty) as string;
+            return string.Equals(sourceContext, targetContext);
+        }
+    }
   }
 
   [Flags]

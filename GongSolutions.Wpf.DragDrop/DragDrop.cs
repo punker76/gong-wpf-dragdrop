@@ -878,15 +878,9 @@ namespace GongSolutions.Wpf.DragDrop
       e.Effects = dropInfo.Effects;
       e.Handled = !dropInfo.NotHandled;
 
-      if (!string.IsNullOrEmpty((string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty)))
+      if (!dropInfo.IsSameDragDropContextAsSource)
       {
-          var sourceContext = (string)dropInfo.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty);
-          var targetContext = (string)dropInfo.VisualTarget.GetValue(DragDrop.DragDropContextProperty);
-
-          if (!string.IsNullOrEmpty(targetContext) && !string.Equals(sourceContext, targetContext))
-          {
-              e.Effects = DragDropEffects.None;
-          }
+          e.Effects = DragDropEffects.None;
       }
 
       Scroll((DependencyObject)dropInfo.VisualTarget, e);

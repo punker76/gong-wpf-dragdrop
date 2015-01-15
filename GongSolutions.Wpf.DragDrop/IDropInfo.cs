@@ -127,5 +127,10 @@ namespace GongSolutions.Wpf.DragDrop
     /// Indicates if the drop info should be handled by itself (useful for child elements)
     /// </summary>
     bool NotHandled { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the target is in the same context as the source, <see cref="DragDrop.DragDropContextProperty" />.
+    /// </summary>
+    bool IsSameDragDropContextAsSource { get; }
   }
 }
