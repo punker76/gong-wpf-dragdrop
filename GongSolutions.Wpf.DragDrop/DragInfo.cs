@@ -52,8 +52,12 @@ namespace GongSolutions.Wpf.DragDrop
         if (sourceItem != null) {
           item = itemsControl.GetItemContainer(sourceItem);
         }
+          
         if (item == null) {
-          item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl), itemsControl.GetItemsPanelOrientation());
+          if (DragDrop.GetDragDirectlySelectedOnly(VisualSource))
+            item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl));
+          else
+            item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl), itemsControl.GetItemsPanelOrientation());
         }
 
         if (item != null) {

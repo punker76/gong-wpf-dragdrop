@@ -267,6 +267,19 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(DragSourceIgnoreProperty, value);
     }
 
+    public static readonly DependencyProperty DragDirectlySelectedOnlyProperty =
+      DependencyProperty.RegisterAttached("DragDirectlySelectedOnly", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+      
+    public static bool GetDragDirectlySelectedOnly(DependencyObject obj)
+    {
+      return (bool)obj.GetValue(DragDirectlySelectedOnlyProperty);
+    }
+
+    public static void SetDragDirectlySelectedOnly(DependencyObject obj, bool value)
+    {
+      obj.SetValue(DragDirectlySelectedOnlyProperty, value);
+    }
+
     /// <summary>
     /// DragMouseAnchorPoint defines the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
     /// </summary>

@@ -546,6 +546,7 @@
     <TabItem Header="ListBox with Groups">
       <ListBox ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}"
                DisplayMemberPath="Caption"
+               dd:DragDrop.DragDirectlySelectedOnly="True"
                dd:DragDrop.IsDragSource="True"
                dd:DragDrop.IsDropTarget="True"
                dd:DragDrop.DropHandler="{Binding}">
