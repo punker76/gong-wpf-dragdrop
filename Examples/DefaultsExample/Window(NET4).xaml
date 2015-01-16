@@ -278,6 +278,49 @@
       </Grid>
     </TabItem>
 
+    <TabItem Header="Filtered ListBoxes">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    Demonstrates the behaviour with a filtered and unfiltered ListBox bound to two collections of the same type.
+        </TextBlock>
+
+        <CheckBox Grid.Column="0"
+                  Grid.Row="1"
+                  x:Name="FilterCheck"
+                  Click="FilterCheckBox_Clicked">Filter by %2</CheckBox>
+        
+        <ListBox Grid.Column="0"
+                 Grid.Row="2"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+        <ListBox Grid.Column="1"
+                 Grid.Row="2"
+                 ItemsSource="{Binding Collection2}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+      </Grid>
+    </TabItem>
+
     <TabItem Header="Horizontal ListBox">
       <Grid>
         <Grid.Resources>
