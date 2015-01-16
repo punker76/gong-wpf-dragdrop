@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Controls;
-using System.ComponentModel;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -22,12 +20,12 @@ namespace GongSolutions.Wpf.DragDrop
 
     public virtual void Drop(IDropInfo dropInfo)
     {
-      var insertIndex = dropInfo.InsertIndex;
-      var destinationList = GetList(dropInfo.TargetCollection);
+      var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
+      var destinationList = dropInfo.TargetCollection.ToList();
       var data = ExtractData(dropInfo.Data);
 
       if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget) {
-        var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
+        var sourceList = dropInfo.DragInfo.SourceCollection.ToList();
 
         foreach (var o in data) {
           var index = sourceList.IndexOf(o);
@@ -35,7 +33,7 @@ namespace GongSolutions.Wpf.DragDrop
           if (index != -1) {
             sourceList.RemoveAt(index);
 
-            if (sourceList == destinationList && index < insertIndex) {
+            if (Equals(sourceList, destinationList) && index < insertIndex) {
               --insertIndex;
             }
           }
@@ -59,7 +57,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
-        return GetList(dropInfo.TargetCollection) != null;
+        return dropInfo.TargetCollection.ToList() != null;
       } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
         return false;
       } else if (dropInfo.TargetCollection == null) {
@@ -79,15 +77,6 @@ namespace GongSolutions.Wpf.DragDrop
         return (IEnumerable)data;
       } else {
         return Enumerable.Repeat(data, 1);
-      }
-    }
-
-    public static IList GetList(IEnumerable enumerable)
-    {
-      if (enumerable is ICollectionView) {
-        return ((ICollectionView)enumerable).SourceCollection as IList;
-      } else {
-        return enumerable as IList;
       }
     }
 

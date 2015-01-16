@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop.Utilities;
@@ -18,6 +19,9 @@ namespace GongSolutions.Wpf.DragDrop
   /// </remarks>
   public class DropInfo : IDropInfo
   {
+    private ItemsControl itemParent = null;
+    private UIElement item = null;
+    
     /// <summary>
     /// Initializes a new instance of the DropInfo class.
     /// </summary>
@@ -57,7 +61,7 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (this.VisualTarget is ItemsControl) {
         var itemsControl = (ItemsControl)this.VisualTarget;
-        var item = itemsControl.GetItemContainerAt(this.DropPosition);
+        item = itemsControl.GetItemContainerAt(this.DropPosition);
         var directlyOverItem = item != null;
 
         this.TargetGroup = itemsControl.FindGroup(this.DropPosition);
@@ -70,7 +74,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         if (item != null) {
-          var itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+          itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
           this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
           this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
@@ -169,6 +173,33 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the current insert position within <see cref="TargetCollection"/>.
     /// </summary>
     public int InsertIndex { get; private set; }
+
+    /// <summary>
+    /// Gets the current insert position within the source (unfiltered) <see cref="TargetCollection"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should be only used in a Drop action.
+    /// This works only correct with different objects (string, int, etc won't work correct).
+    /// </remarks>
+    public int UnfilteredInsertIndex
+    {
+      get
+      {
+        var insertIndex = this.InsertIndex;
+        if (itemParent != null) {
+          var itemSourceAsList = itemParent.ItemsSource.ToList();
+          if (itemSourceAsList != null && itemParent.Items != null && itemParent.Items.Count != itemSourceAsList.Count) {
+            if (insertIndex >= 0 && insertIndex < itemParent.Items.Count) {
+              var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex]);
+              if (indexOf >= 0) {
+                return indexOf;
+              }
+            }
+          }
+        }
+        return insertIndex;
+      }
+    }
 
     /// <summary>
     /// Gets the collection that the target ItemsControl is bound to.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Collections;
 
@@ -73,6 +74,21 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       }
 
       return ret;
+    }
+
+    /// <summary>
+    /// Gets the enumerable as list.
+    /// If enumerable is an ICollectionView then it returns the SourceCollection as list.
+    /// </summary>
+    /// <param name="enumerable">The enumerable.</param>
+    /// <returns>Returns a list.</returns>
+    public static IList ToList(this IEnumerable enumerable)
+    {
+      if (enumerable is ICollectionView) {
+        return ((ICollectionView)enumerable).SourceCollection as IList;
+      } else {
+        return enumerable as IList;
+      }
     }
   }
 }

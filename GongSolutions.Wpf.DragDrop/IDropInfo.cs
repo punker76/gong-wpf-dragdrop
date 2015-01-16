@@ -57,6 +57,15 @@ namespace GongSolutions.Wpf.DragDrop
     int InsertIndex { get; }
 
     /// <summary>
+    /// Gets the current insert position within the source (unfiltered) <see cref="TargetCollection"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should be only used in a Drop action.
+    /// This works only correct with different objects (string, int, etc won't work correct).
+    /// </remarks>
+    int UnfilteredInsertIndex { get; }
+
+    /// <summary>
     /// Gets the collection that the target ItemsControl is bound to.
     /// </summary>
     /// 
