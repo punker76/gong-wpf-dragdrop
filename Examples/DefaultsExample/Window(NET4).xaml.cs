@@ -45,5 +45,10 @@ namespace DefaultsExample
                                return (number & 0x01) == 0;
                            };
     }
+
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+      MessageBox.Show(this, "Got the click.");
+    }
   }
 }

@@ -64,6 +64,7 @@ namespace DefaultsExample
       this.Collection1 = new ObservableCollection<string>();
       this.Collection2 = new ObservableCollection<string>();
       this.Collection3 = new ObservableCollection<string>();
+      this.Collection4 = new ObservableCollection<string>();
       this.CustomCollection1 = new ObservableCollection<CustomDataModel>();
       this.CustomCollection2 = new ObservableCollection<CustomDataModel>();
 
@@ -73,6 +74,10 @@ namespace DefaultsExample
       for (var n = 0; n < 100; ++n) {
         this.Collection1.Add("Item " + n);
         this.CustomCollection1.Add(new CustomDataModel { Name = "Custom Item " + n });
+      }
+
+      for (var n = 0; n < 4; ++n) {
+        this.Collection4.Add("Content " + n);
       }
 
       this.GroupedCollection = new ObservableCollection<GroupedItem>();
@@ -100,6 +105,7 @@ namespace DefaultsExample
     public ObservableCollection<string> Collection1 { get; private set; }
     public ObservableCollection<string> Collection2 { get; private set; }
     public ObservableCollection<string> Collection3 { get; private set; }
+    public ObservableCollection<string> Collection4 { get; private set; }
     public ObservableCollection<CustomDataModel> CustomCollection1 { get; private set; }
     public ObservableCollection<CustomDataModel> CustomCollection2 { get; private set; }
     public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
