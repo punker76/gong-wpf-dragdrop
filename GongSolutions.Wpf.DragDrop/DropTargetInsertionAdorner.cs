@@ -38,7 +38,7 @@ namespace GongSolutions.Wpf.DragDrop
         if (targetGroup != null && targetGroup.IsBottomLevel && this.DropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem)) {
           var indexOf = targetGroup.Items.IndexOf(this.DropInfo.TargetItem);
           lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
-          if (lastItemInGroup) {
+          if (lastItemInGroup && this.DropInfo.InsertIndex != itemParent.Items.Count) {
             index--;
           }
         }
