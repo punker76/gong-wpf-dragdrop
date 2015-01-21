@@ -25,6 +25,26 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (element != null) {
         var groupItem = element.GetVisualAncestor<GroupItem>();
 
+        // drag after last item - get group of it
+        if (itemsControl.Items.Groups != null && groupItem == null && itemsControl.Items.Count > 0)
+        {
+          var lastItem = itemsControl.ItemContainerGenerator.ContainerFromItem(itemsControl.Items.GetItemAt(itemsControl.Items.Count - 1)) as FrameworkElement;
+          if (lastItem != null)
+          {
+            var itemEndpoint = lastItem.PointToScreen(new Point(lastItem.ActualWidth, lastItem.ActualHeight));
+            var positionToScreen = itemsControl.PointToScreen(position);
+            switch (itemsControl.GetItemsPanelOrientation())
+            {
+              case Orientation.Horizontal:
+                // assume LeftToRight
+                groupItem = itemEndpoint.X <= positionToScreen.X ? lastItem.GetVisualAncestor<GroupItem>() : null;
+                break;
+              case Orientation.Vertical:
+                groupItem = itemEndpoint.Y <= positionToScreen.Y ? lastItem.GetVisualAncestor<GroupItem>() : null;
+                break;
+            }
+          }
+        }
         if (groupItem != null) {
           return groupItem.Content as CollectionViewGroup;
         }
