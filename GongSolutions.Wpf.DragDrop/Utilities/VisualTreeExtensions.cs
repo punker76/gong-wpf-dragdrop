@@ -71,7 +71,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         if (item == itemsControl) {
           return lastFoundItemByType;
         }
-        if (item.GetType() == type || item.GetType().IsSubclassOf(type)) {
+        if ((item.GetType() == type || item.GetType().IsSubclassOf(type))
+            && (itemsControl == null || itemsControl.ItemContainerGenerator.IndexFromContainer(item) >= 0)) {
           lastFoundItemByType = item;
         }
         item = VisualTreeHelper.GetParent(item);
