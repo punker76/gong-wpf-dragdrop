@@ -1,6 +1,11 @@
 #Introduction
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/punker76/gong-wpf-dragdrop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/20ueh8xqu0xje94v/branch/master?svg=true)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
+[![Release](https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/releases/latest)
+[![Downloads](https://img.shields.io/nuget/dt/gong-wpf-dragdrop.svg?style=flat-square)](http://www.nuget.org/packages/gong-wpf-dragdrop/)
+[![Issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
 
 The **GongSolutions.WPF.DragDrop** library is a drag'n'drop framework for WPF.
 
