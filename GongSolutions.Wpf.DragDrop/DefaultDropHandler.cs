@@ -26,6 +26,7 @@ namespace GongSolutions.Wpf.DragDrop
     public virtual void DragOver(IDropInfo dropInfo)
     {
       if (CanAcceptData(dropInfo)) {
+        // when source is the same as the target set the move effect otherwise set the copy effect
         dropInfo.Effects = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget ? DragDropEffects.Move : DragDropEffects.Copy;
         dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
       }
@@ -45,6 +46,7 @@ namespace GongSolutions.Wpf.DragDrop
       var destinationList = dropInfo.TargetCollection.TryGetList();
       var data = ExtractData(dropInfo.Data);
 
+      // when source is the same as the target remove the data from source and fix the insertion index
       if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget) {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
 
@@ -53,7 +55,7 @@ namespace GongSolutions.Wpf.DragDrop
 
           if (index != -1) {
             sourceList.RemoveAt(index);
-
+            // so, is the source list the destination list too ?
             if (Equals(sourceList, destinationList) && index < insertIndex) {
               --insertIndex;
             }
@@ -61,6 +63,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
       }
 
+      // check for cloning
       var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
       foreach (var o in data) {
         var obj2Insert = o;
