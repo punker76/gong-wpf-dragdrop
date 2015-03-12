@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop;
 using System.ComponentModel;
-using System.Windows.Data;
 using System.Windows.Controls;
-using System.Collections;
-using GongSolutions.Wpf.DragDrop.Utilities;
 using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace DefaultsExample
@@ -67,6 +60,8 @@ namespace DefaultsExample
       this.Collection4 = new ObservableCollection<string>();
       this.CustomCollection1 = new ObservableCollection<CustomDataModel>();
       this.CustomCollection2 = new ObservableCollection<CustomDataModel>();
+      this.ClonableCollection1 = new ObservableCollection<ClonableDataModel>();
+      this.ClonableCollection2 = new ObservableCollection<ClonableDataModel>();
 
       this.CustomDropHandler = new CustomDropHandlerForIssue85();
       this.CustomDragHandler = new CustomDragHandlerForIssue84();
@@ -74,6 +69,7 @@ namespace DefaultsExample
       for (var n = 0; n < 100; ++n) {
         this.Collection1.Add("Item " + n);
         this.CustomCollection1.Add(new CustomDataModel { Name = "Custom Item " + n });
+        this.ClonableCollection1.Add(new ClonableDataModel("Clonable Item " + n ));
       }
 
       for (var n = 0; n < 4; ++n) {
@@ -108,6 +104,8 @@ namespace DefaultsExample
     public ObservableCollection<string> Collection4 { get; private set; }
     public ObservableCollection<CustomDataModel> CustomCollection1 { get; private set; }
     public ObservableCollection<CustomDataModel> CustomCollection2 { get; private set; }
+    public ObservableCollection<ClonableDataModel> ClonableCollection1 { get; private set; }
+    public ObservableCollection<ClonableDataModel> ClonableCollection2 { get; private set; }
     public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
     public ObservableCollection<TreeNode> TreeCollection { get; private set; }
 
@@ -160,6 +158,41 @@ namespace DefaultsExample
       if (dropInfo.DragInfo.Data is CustomDataModel) {
         dropInfo.NotHandled = true; // now the DefaultDropHandler should work
       }
+    }
+  }
+
+  internal class ClonableDataModel : ICloneable, INotifyPropertyChanged
+  {
+    public ClonableDataModel(string name)
+    {
+      Name = name;
+    }
+
+    private string _name;
+    public string Name
+    {
+      get { return this._name; }
+      set
+      {
+        if (this._name != value)
+        {
+          this._name = value;
+          this.OnPropertyChanged("Name");
+        }
+      }
+    }
+
+    public object Clone()
+    {
+      return new ClonableDataModel(Name + ", now cloned");
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+      var handler = PropertyChanged;
+      if (handler != null) { handler(this, new PropertyChangedEventArgs(propertyName)); }
     }
   }
 

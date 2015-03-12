@@ -896,6 +896,7 @@ namespace GongSolutions.Wpf.DragDrop
       EffectAdorner = null;
       DropTargetAdorner = null;
 
+      dropHandler.DragOver(dropInfo);
       dropHandler.Drop(dropInfo);
       dragHandler.Dropped(dropInfo);
 

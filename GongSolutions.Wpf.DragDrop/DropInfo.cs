@@ -187,7 +187,7 @@ namespace GongSolutions.Wpf.DragDrop
       {
         var insertIndex = this.InsertIndex;
         if (itemParent != null) {
-          var itemSourceAsList = itemParent.ItemsSource.ToList();
+          var itemSourceAsList = itemParent.ItemsSource.TryGetList();
           if (itemSourceAsList != null && itemParent.Items != null && itemParent.Items.Count != itemSourceAsList.Count) {
             if (insertIndex >= 0 && insertIndex < itemParent.Items.Count) {
               var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex]);

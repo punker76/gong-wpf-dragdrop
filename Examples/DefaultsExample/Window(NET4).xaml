@@ -464,6 +464,54 @@
       </Grid>
     </TabItem>
 
+    <TabItem Header="Cloning">
+      <Grid>
+        <Grid.Resources>
+          <DataTemplate x:Key="CloningTemplate"
+                        DataType="{x:Type local:ClonableDataModel}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="::" FontWeight="Bold" Grid.Column="0" />
+              <TextBox Grid.Column="1"
+                       Text="{Binding Name}"
+                       Margin="5 1 5 1" />
+            </Grid>
+          </DataTemplate>
+          <DataTemplate x:Key="CloningAdornerTemplate"
+                        DataType="{x:Type local:ClonableDataModel}">
+            <TextBlock Text="{Binding Name}" />
+          </DataTemplate>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding ClonableCollection1}"
+                 SelectionMode="Extended"
+                 HorizontalContentAlignment="Stretch"
+                 ItemTemplate="{StaticResource CloningTemplate}"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource CloningAdornerTemplate}"
+                 dd:DragDrop.UseDefaultDragAdorner="True"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True" />
+        <ListBox Grid.Column="1"
+                 ItemsSource="{Binding ClonableCollection2}"
+                 SelectionMode="Extended"
+                 HorizontalContentAlignment="Stretch"
+                 ItemTemplate="{StaticResource CloningTemplate}"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource CloningAdornerTemplate}"
+                 dd:DragDrop.UseDefaultDragAdorner="True"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True" />
+      </Grid>
+    </TabItem>
+
     <TabItem Header="Bound ListViews">
       <Grid>
         <Grid.ColumnDefinitions>

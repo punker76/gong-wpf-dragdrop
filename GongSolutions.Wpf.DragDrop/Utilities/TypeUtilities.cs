@@ -82,12 +82,13 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     /// </summary>
     /// <param name="enumerable">The enumerable.</param>
     /// <returns>Returns a list.</returns>
-    public static IList ToList(this IEnumerable enumerable)
+    public static IList TryGetList(this IEnumerable enumerable)
     {
       if (enumerable is ICollectionView) {
         return ((ICollectionView)enumerable).SourceCollection as IList;
       } else {
-        return enumerable as IList;
+        var list = enumerable as IList;
+        return list ?? (enumerable != null ? enumerable.OfType<object>().ToList() : null);
       }
     }
   }
