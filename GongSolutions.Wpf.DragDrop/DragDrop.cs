@@ -713,10 +713,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
       }
 
-      if (m_DragInfo != null) {
-        m_DragInfo = null;
-      }
-
+      m_DragInfo = null;
       m_ClickSupressItem = null;
     }
 
