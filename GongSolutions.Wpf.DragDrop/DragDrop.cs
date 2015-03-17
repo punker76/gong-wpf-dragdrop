@@ -270,14 +270,19 @@ namespace GongSolutions.Wpf.DragDrop
     public static readonly DependencyProperty DragSourceIgnoreProperty =
       DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
-    public static bool GetDragSourceIgnore(UIElement target)
+    public static bool GetDragSourceIgnore(UIElement source)
     {
-      return (bool)target.GetValue(DragSourceIgnoreProperty);
+      return (bool)source.GetValue(DragSourceIgnoreProperty);
     }
 
-    public static void SetDragSourceIgnore(UIElement target, bool value)
+    public static void SetDragSourceIgnore(UIElement source, bool value)
     {
-      target.SetValue(DragSourceIgnoreProperty, value);
+      source.SetValue(DragSourceIgnoreProperty, value);
+    }
+
+    private static bool IsDragSourceIgnored(UIElement source)
+    {
+      return source != null && GetDragSourceIgnore(source);
     }
 
     public static readonly DependencyProperty DragDirectlySelectedOnlyProperty =
@@ -663,6 +668,9 @@ namespace GongSolutions.Wpf.DragDrop
       // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (e.ClickCount != 1
+          || IsDragSourceIgnored(sender as UIElement)
+          || IsDragSourceIgnored(e.Source as UIElement)
+          || IsDragSourceIgnored(e.OriginalSource as UIElement)
           || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
@@ -670,8 +678,7 @@ namespace GongSolutions.Wpf.DragDrop
           || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
           || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
-          || HitTestUtilities.IsNotPartOfSender(sender, e)
-          || GetDragSourceIgnore((UIElement)sender)) {
+          || HitTestUtilities.IsNotPartOfSender(sender, e)) {
         m_DragInfo = null;
         return;
       }
