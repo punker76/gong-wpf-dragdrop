@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
@@ -278,11 +277,6 @@ namespace GongSolutions.Wpf.DragDrop
     public static void SetDragSourceIgnore(UIElement source, bool value)
     {
       source.SetValue(DragSourceIgnoreProperty, value);
-    }
-
-    private static bool IsDragSourceIgnored(UIElement source)
-    {
-      return source != null && GetDragSourceIgnore(source);
     }
 
     public static readonly DependencyProperty DragDirectlySelectedOnlyProperty =
@@ -668,9 +662,9 @@ namespace GongSolutions.Wpf.DragDrop
       // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (e.ClickCount != 1
-          || IsDragSourceIgnored(sender as UIElement)
-          || IsDragSourceIgnored(e.Source as UIElement)
-          || IsDragSourceIgnored(e.OriginalSource as UIElement)
+          || (sender as UIElement).IsDragSourceIgnored()
+          || (e.Source as UIElement).IsDragSourceIgnored()
+          || (e.OriginalSource as UIElement).IsDragSourceIgnored()
           || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
