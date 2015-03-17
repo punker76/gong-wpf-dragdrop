@@ -10,6 +10,29 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
   public static class VisualTreeExtensions
   {
+    /// <summary>
+    /// Gets the next ancestor element which is a drop target.
+    /// </summary>
+    /// <param name="element">The start element.</param>
+    /// <returns>The first element which is a drop target.</returns>
+    public static UIElement TryGetNextAncestorDropTargetElement(this UIElement element)
+    {
+      if (element == null)
+      {
+        return null;
+      }
+      var ancestor = element.GetVisualAncestor<UIElement>();
+      while (ancestor != null)
+      {
+        if (ancestor.IsDropTarget())
+        {
+          return ancestor;
+        }
+        ancestor = ancestor.GetVisualAncestor<UIElement>();
+      }
+      return null;
+    }
+
     internal static DependencyObject FindVisualTreeRoot(this DependencyObject d)
     {
       var current = d;
