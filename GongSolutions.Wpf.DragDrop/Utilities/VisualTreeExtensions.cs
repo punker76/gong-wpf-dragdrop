@@ -95,7 +95,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           return lastFoundItemByType;
         }
         if ((item.GetType() == type || item.GetType().IsSubclassOf(type))
-            && (itemsControl == null || itemsControl.ItemContainerGenerator.IndexFromContainer(item) >= 0)) {
+            && (itemsControl == null || itemsControl.ItemContainerGenerator.IndexFromContainer(item) != -1)) {
           lastFoundItemByType = item;
         }
         item = VisualTreeHelper.GetParent(item);

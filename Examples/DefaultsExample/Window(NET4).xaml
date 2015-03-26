@@ -1145,5 +1145,55 @@
         </ScrollViewer>
       </Grid>
     </TabItem>
+    <TabItem Header="Custom styled ItemsControl">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl Grid.Column="0"
+                      ItemsSource="{Binding Collection1}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.UseDefaultDragAdorner="True">
+          <ItemsControl.Style>
+            <Style TargetType="{x:Type ItemsControl}">
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <Border Background="WhiteSmoke">
+                      <ScrollViewer>
+                        <ItemsPresenter />
+                      </ScrollViewer>
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ItemsControl.Style>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Background="Bisque"
+                      Margin="4">
+                <TextBlock Text="{Binding}" />
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ListBox Grid.Column="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultDragAdorner="True">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Label Content="{Binding}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>
