@@ -17,11 +17,11 @@ using System.Collections.ObjectModel;
 namespace DefaultsExample
 {
   /// <summary>
-  /// Interaction logic for Window1.xaml
+  /// Interaction logic for Window.xaml
   /// </summary>
-  public partial class Window1 : Window
+  public partial class MainWindow : Window
   {
-    public Window1()
+    public MainWindow()
     {
       this.InitializeComponent();
     }

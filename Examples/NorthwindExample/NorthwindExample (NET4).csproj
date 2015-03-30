@@ -95,9 +95,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\EmployeesTabView%28NET4%29.xaml.cs">
-      <DependentUpon>EmployeesTabView%28NET4%29.xaml</DependentUpon>
+    <Compile Include="Views\EmployeesTabView.xaml.cs">
+      <DependentUpon>EmployeesTabView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPFDataGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">
@@ -205,7 +206,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\EmployeesTabView%28NET4%29.xaml">
+    <Page Include="Views\EmployeesTabView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

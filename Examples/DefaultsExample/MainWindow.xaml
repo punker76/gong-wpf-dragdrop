@@ -1,4 +1,4 @@
-﻿<Window x:Class="DefaultsExample.Window1"
+﻿<Window x:Class="DefaultsExample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
@@ -610,7 +610,7 @@
                     Demonstrates the default behaviour with DataGrids.
         </TextBlock>
 
-        <DataGrid Grid.Row="1"
+        <local:WPFDataGrid Grid.Row="1"
                   Grid.Column="0"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Collection1}"
@@ -618,13 +618,12 @@
                   dd:DragDrop.IsDragSource="True"
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-          <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Mode=OneWay}"
-                                Header="Value" />
-          </DataGrid.Columns>
-        </DataGrid>
+          <local:WPFDataGrid.Columns>
+            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value" />
+          </local:WPFDataGrid.Columns>
+        </local:WPFDataGrid>
 
-        <DataGrid Grid.Row="1"
+        <local:WPFDataGrid Grid.Row="1"
                   Grid.Column="1"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Collection2}"
@@ -632,11 +631,10 @@
                   dd:DragDrop.IsDragSource="True"
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
-          <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Mode=OneWay}"
-                                Header="Value" />
-          </DataGrid.Columns>
-        </DataGrid>
+          <local:WPFDataGrid.Columns>
+            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value" />
+          </local:WPFDataGrid.Columns>
+        </local:WPFDataGrid>
       </Grid>
     </TabItem>
 

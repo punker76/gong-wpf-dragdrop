@@ -79,7 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Window%28NET4%29.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -90,9 +90,10 @@
     <Compile Include="CustomListBox.cs" />
     <Compile Include="CustomListBoxItem.cs" />
     <Compile Include="DemoDataTemplateSelector.cs" />
-    <Compile Include="Window%28NET4%29.xaml.cs">
-      <DependentUpon>Window%28NET4%29.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPFDataGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />

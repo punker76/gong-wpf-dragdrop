@@ -61,6 +61,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -83,20 +84,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomListBox.cs" />
-    <Compile Include="CustomListBoxItem.cs" />
-    <Compile Include="DemoDataTemplateSelector.cs" />
-    <Compile Include="Window%28NET35%29.xaml.cs">
-      <DependentUpon>Window%28NET35%29.xaml</DependentUpon>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Window%28NET35%29.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="CustomListBox.cs" />
+    <Compile Include="CustomListBoxItem.cs" />
+    <Compile Include="DemoDataTemplateSelector.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDataGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />
