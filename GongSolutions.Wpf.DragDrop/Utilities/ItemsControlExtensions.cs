@@ -20,13 +20,18 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
   {
     public static CollectionViewGroup FindGroup(this ItemsControl itemsControl, Point position)
     {
-      var element = itemsControl.InputHitTest(position) as DependencyObject;
+      if (itemsControl.Items.Groups == null || itemsControl.Items.Groups.Count == 0)
+      {
+        return null;
+      }
 
-      if (element != null) {
+      var element = itemsControl.InputHitTest(position) as DependencyObject;
+      if (element != null)
+      {
         var groupItem = element.GetVisualAncestor<GroupItem>();
 
         // drag after last item - get group of it
-        if (itemsControl.Items.Groups != null && groupItem == null && itemsControl.Items.Count > 0)
+        if (groupItem == null && itemsControl.Items.Count > 0)
         {
           var lastItem = itemsControl.ItemContainerGenerator.ContainerFromItem(itemsControl.Items.GetItemAt(itemsControl.Items.Count - 1)) as FrameworkElement;
           if (lastItem != null)
@@ -45,7 +50,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
           }
         }
-        if (groupItem != null) {
+        if (groupItem != null)
+        {
           return groupItem.Content as CollectionViewGroup;
         }
       }

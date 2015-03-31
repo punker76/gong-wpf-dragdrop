@@ -72,6 +72,16 @@ namespace GongSolutions.Wpf.DragDrop
           directlyOverItem = false;
         }
 
+        if (item == null && this.TargetGroup != null && this.TargetGroup.IsBottomLevel)
+        {
+          var itemData = this.TargetGroup.Items.FirstOrDefault();
+          if (itemData != null)
+          {
+            item = itemsControl.ItemContainerGenerator.ContainerFromItem(itemData) as UIElement;
+            directlyOverItem = false;
+          }
+        }
+
         if (item != null) {
           itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
