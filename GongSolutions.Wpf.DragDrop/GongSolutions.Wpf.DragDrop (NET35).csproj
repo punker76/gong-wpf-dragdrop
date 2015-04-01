@@ -33,6 +33,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>gong-wpf-dragdrop.pfx</AssemblyOriginatorKeyFile>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\NET35\</OutputPath>
@@ -98,6 +100,7 @@
     <Resource Include="Icons\EffectNone.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="gong-wpf-dragdrop.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

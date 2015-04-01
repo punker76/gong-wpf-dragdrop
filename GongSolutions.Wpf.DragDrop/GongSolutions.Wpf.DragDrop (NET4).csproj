@@ -31,6 +31,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>gong-wpf-dragdrop.pfx</AssemblyOriginatorKeyFile>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\NET4\</OutputPath>
@@ -92,6 +94,9 @@
     <Resource Include="Icons\EffectLink.png" />
     <Resource Include="Icons\EffectMove.png" />
     <Resource Include="Icons\EffectNone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gong-wpf-dragdrop.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
