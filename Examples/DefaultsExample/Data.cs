@@ -96,6 +96,7 @@ namespace DefaultsExample
       this.TreeCollection = new ObservableCollection<TreeNode> {
                                                                  root1, root2
                                                                };
+      this.TreeCollection2 = new ObservableCollection<TreeNode>();
     }
 
     public ObservableCollection<string> Collection1 { get; private set; }
@@ -108,6 +109,7 @@ namespace DefaultsExample
     public ObservableCollection<ClonableDataModel> ClonableCollection2 { get; private set; }
     public ObservableCollection<GroupedItem> GroupedCollection { get; private set; }
     public ObservableCollection<TreeNode> TreeCollection { get; private set; }
+    public ObservableCollection<TreeNode> TreeCollection2 { get; private set; }
 
     public CustomDropHandlerForIssue85 CustomDropHandler { get; private set; }
     public CustomDragHandlerForIssue84 CustomDragHandler { get; private set; }
@@ -196,7 +198,7 @@ namespace DefaultsExample
     }
   }
 
-  internal class TreeNode
+  internal class TreeNode : ICloneable
   {
     public TreeNode(string caption)
     {
@@ -210,6 +212,16 @@ namespace DefaultsExample
     public override string ToString()
     {
       return this.Caption;
+    }
+
+    public object Clone()
+    {
+      var treeNode = new TreeNode(this.Caption);
+      foreach (var child in this.Children)
+      {
+        treeNode.Children.Add((TreeNode) child.Clone());
+      }
+      return treeNode;
     }
   }
 
