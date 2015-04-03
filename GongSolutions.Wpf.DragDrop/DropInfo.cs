@@ -88,7 +88,10 @@ namespace GongSolutions.Wpf.DragDrop
           this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
           this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
 
-          if (directlyOverItem || typeof(TreeViewItem).IsAssignableFrom(item.GetType())) {
+          var tvItem = item as TreeViewItem;
+          
+          if (directlyOverItem || tvItem != null)
+          {
             this.TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
             this.VisualTargetItem = item;
           }
@@ -107,9 +110,19 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             if (currentYPos > targetHeight * 0.25 && currentYPos < targetHeight * 0.75) {
+              if (tvItem != null)
+              {
+                this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
+                this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;
+              }
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
-          } else {
+#if DEBUG
+            Console.WriteLine("==> DropInfo: {0}, {1}, {2}, Y={3}", this.InsertPosition, item, this.InsertIndex, currentYPos);
+#endif            
+          }
+          else
+          {
             var currentXPos = e.GetPosition(item).X;
             var targetWidth = itemRenderSize.Width;
 
@@ -122,15 +135,25 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75) {
+              if (tvItem != null)
+              {
+                this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
+                this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;
+              }
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
 #if DEBUG
             Console.WriteLine("==> DropInfo: {0}, {1}, {2}, X={3}", this.InsertPosition, item, this.InsertIndex, currentXPos);
 #endif
           }
-        } else {
+        }
+        else
+        {
           this.TargetCollection = itemsControl.ItemsSource ?? itemsControl.Items;
           this.InsertIndex = itemsControl.Items.Count;
+#if DEBUG
+          Console.WriteLine("==> DropInfo: {0}, item=NULL, {1}", this.InsertPosition, this.InsertIndex);
+#endif
         }
       }
     }
