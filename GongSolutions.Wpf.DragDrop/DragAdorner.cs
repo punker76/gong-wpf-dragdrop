@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Documents;
+﻿using System.Windows.Documents;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,14 +6,17 @@ namespace GongSolutions.Wpf.DragDrop
 {
   internal class DragAdorner : Adorner
   {
-    public DragAdorner(UIElement adornedElement, UIElement adornment)
+    public DragAdorner(UIElement adornedElement, UIElement adornment, DragDropEffects effects = DragDropEffects.None)
       : base(adornedElement)
     {
       this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
       this.m_AdornerLayer.Add(this);
       this.m_Adornment = adornment;
       this.IsHitTestVisible = false;
+      this.Effects = effects;
     }
+
+    public DragDropEffects Effects { get; private set; }
 
     public Point MousePosition
     {

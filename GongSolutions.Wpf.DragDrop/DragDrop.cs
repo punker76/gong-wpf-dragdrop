@@ -514,7 +514,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         adornment = contentPresenter;
 
-        EffectAdorner = new DragAdorner(rootElement, adornment);
+        EffectAdorner = new DragAdorner(rootElement, adornment, dropInfo.Effects);
       }
     }
 
@@ -862,7 +862,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       // Set the drag effect adorner if there is one
-      if (EffectAdorner == null && m_DragInfo != null) {
+      if (m_DragInfo != null && (EffectAdorner == null || EffectAdorner.Effects != dropInfo.Effects)) {
         CreateEffectAdorner(dropInfo);
       }
 
