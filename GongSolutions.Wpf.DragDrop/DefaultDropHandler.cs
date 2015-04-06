@@ -97,15 +97,24 @@ namespace GongSolutions.Wpf.DragDrop
         return false;
       }
 
+      // do not drop on itself
+      var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
+                           && dropInfo.VisualTargetItem is TreeViewItem;
+      if (isTreeViewItem && dropInfo.VisualTargetItem == dropInfo.DragInfo.VisualSourceItem) {
+        return false;
+      }
+
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
-        return dropInfo.TargetCollection.TryGetList() != null;
+        var targetList = dropInfo.TargetCollection.TryGetList();
+        return targetList != null;
       } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
         return false;
       } else if (dropInfo.TargetCollection == null) {
         return false;
       } else {
         if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data)) {
-          return !IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
+          var isChildOf = IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
+          return !isChildOf;
         } else {
           return false;
         }
