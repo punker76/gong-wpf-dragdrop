@@ -888,7 +888,7 @@
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.IsDragSource="True"
                   dd:DragDrop.UseDefaultDragAdorner="True">
-          <TreeViewItem Header="Groups"
+          <TreeViewItem Header="A TreeViewItem with ItemsSource"
                         ItemsSource="{Binding TreeCollection}">
             <TreeViewItem.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding Children}">
@@ -896,6 +896,24 @@
               </HierarchicalDataTemplate>
             </TreeViewItem.ItemTemplate>
           </TreeViewItem>
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+
+        <TreeView Grid.Column="1"
+                  Grid.Row="1"
+                  ItemsSource="{Binding TreeCollection2}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True">
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
         </TreeView>
       </Grid>
     </TabItem>
