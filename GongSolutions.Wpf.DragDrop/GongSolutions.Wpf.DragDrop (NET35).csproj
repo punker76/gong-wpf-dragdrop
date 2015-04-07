@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0C6674CC-6D49-414A-9B41-D4E175028FFB}</ProjectGuid>
+    <ProjectGuid>{F4562C4B-9D6F-4C80-9C75-BF194A3D7CCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GongSolutions.Wpf.DragDrop</RootNamespace>
@@ -26,6 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\NET35\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET35\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -38,6 +39,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\NET35\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET35\</IntermediateOutputPath>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
