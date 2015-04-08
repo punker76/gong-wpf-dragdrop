@@ -213,6 +213,8 @@ For more information, check out the full [DropHandlerExample](Examples).
 
 # License
 
+### BSD 3-Clause License
+
 Copyright (c) 2015, Jan Karger (Steven Kirk)  
 All rights reserved.  
 
