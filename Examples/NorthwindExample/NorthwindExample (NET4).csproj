@@ -40,6 +40,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\NET4\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\NET4\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,6 +50,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\NET4\</OutputPath>
+    <IntermediateOutputPath>obj\Release\NET4\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -212,9 +214,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GongSolutions.Wpf.DragDrop\GongSolutions.Wpf.DragDrop (NET4).csproj">
-      <Project>{0C6674CC-6D49-414A-9B41-D4E175028FFB}</Project>
-      <Name>GongSolutions.Wpf.DragDrop (NET4)</Name>
+    <ProjectReference Include="..\..\GongSolutions.Wpf.DragDrop\GongSolutions.Wpf.DragDrop %28NET4%29.csproj">
+      <Project>{0c6674cc-6d49-414a-9b41-d4e175028ffb}</Project>
+      <Name>GongSolutions.Wpf.DragDrop %28NET4%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

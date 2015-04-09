@@ -37,6 +37,7 @@ namespace GongSolutions.Wpf.DragDrop
       this.Effects = DragDropEffects.None;
       this.MouseButton = e.ChangedButton;
       this.VisualSource = sender as UIElement;
+      this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
 
       if (sender is ItemsControl) {
         var itemsControl = (ItemsControl)sender;
@@ -196,5 +197,10 @@ namespace GongSolutions.Wpf.DragDrop
     /// a custom instance if custom drag and drop behavior is needed.
     /// </summary>
     public IDataObject DataObject { get; set; }
+
+    /// <summary>
+    /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
+    /// </summary>
+    public DragDropKeyStates DragDropCopyKeyState { get; private set; }
   }
 }

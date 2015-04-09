@@ -27,8 +27,10 @@ namespace GongSolutions.Wpf.DragDrop
     {
       if (CanAcceptData(dropInfo)) {
         // when source is the same as the target set the move effect otherwise set the copy effect
-        dropInfo.Effects = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget ? DragDropEffects.Move : DragDropEffects.Copy;
-        dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+        dropInfo.Effects = moveData ? DragDropEffects.Move : DragDropEffects.Copy;
+        var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
+        dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
       }
     }
 
@@ -47,7 +49,9 @@ namespace GongSolutions.Wpf.DragDrop
       var data = ExtractData(dropInfo.Data);
 
       // when source is the same as the target remove the data from source and fix the insertion index
-      if (dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget) {
+      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+      if (moveData)
+      {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
 
         foreach (var o in data) {
@@ -91,15 +95,24 @@ namespace GongSolutions.Wpf.DragDrop
         return false;
       }
 
+      // do not drop on itself
+      var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
+                           && dropInfo.VisualTargetItem is TreeViewItem;
+      if (isTreeViewItem && dropInfo.VisualTargetItem == dropInfo.DragInfo.VisualSourceItem) {
+        return false;
+      }
+
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
-        return dropInfo.TargetCollection.TryGetList() != null;
+        var targetList = dropInfo.TargetCollection.TryGetList();
+        return targetList != null;
       } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
         return false;
       } else if (dropInfo.TargetCollection == null) {
         return false;
       } else {
         if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data)) {
-          return !IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
+          var isChildOf = IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
+          return !isChildOf;
         } else {
           return false;
         }

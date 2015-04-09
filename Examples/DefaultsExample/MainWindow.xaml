@@ -129,6 +129,8 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
           <RowDefinition />
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -148,9 +150,26 @@
                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
         <ListBox Grid.Column="1"
                  Grid.Row="1"
+                 Grid.RowSpan="3"
                  ItemsSource="{Binding Collection2}"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+
+        <TextBlock Grid.Row="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    DragDropCopyKeyState = ControlKey
+        </TextBlock>
+
+        <ListBox Grid.Column="0"
+                 Grid.Row="3"
+                 ItemsSource="{Binding Collection1}"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragDropCopyKeyState="ControlKey"
+                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
       </Grid>
     </TabItem>
@@ -668,6 +687,19 @@
             </HierarchicalDataTemplate>
           </TreeView.ItemTemplate>
         </TreeView>
+
+        <TreeView Grid.Column="1"
+                  Grid.Row="1"
+                  ItemsSource="{Binding TreeCollection2}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True">
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
       </Grid>
     </TabItem>
 
@@ -875,7 +907,7 @@
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.IsDragSource="True"
                   dd:DragDrop.UseDefaultDragAdorner="True">
-          <TreeViewItem Header="Groups"
+          <TreeViewItem Header="A TreeViewItem with ItemsSource"
                         ItemsSource="{Binding TreeCollection}">
             <TreeViewItem.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding Children}">
@@ -883,6 +915,24 @@
               </HierarchicalDataTemplate>
             </TreeViewItem.ItemTemplate>
           </TreeViewItem>
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+
+        <TreeView Grid.Column="1"
+                  Grid.Row="1"
+                  ItemsSource="{Binding TreeCollection2}"
+                  dd:DragDrop.IsDragSource="True"
+                  dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.UseDefaultDragAdorner="True">
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
         </TreeView>
       </Grid>
     </TabItem>

@@ -20,7 +20,10 @@ namespace GongSolutions.Wpf.DragDrop
         var tvItem = visualTargetItem as TreeViewItem;
         if (tvItem != null && VisualTreeHelper.GetChildrenCount(tvItem) > 0) {
           var descendant = VisualTreeHelper.GetDescendantBounds(tvItem);
-          rect = new Rect(tvItem.TranslatePoint(new Point(), this.AdornedElement), new Size(descendant.Width + 4, tvItem.ActualHeight));
+          var translatePoint = tvItem.TranslatePoint(new Point(), this.AdornedElement);
+          var itemRect = new Rect(translatePoint, tvItem.RenderSize);
+          descendant.Union(itemRect);
+          rect = new Rect(translatePoint, new Size(descendant.Width - translatePoint.X, tvItem.ActualHeight));
         }
         if (rect.IsEmpty) {
           rect = new Rect(visualTargetItem.TranslatePoint(new Point(), this.AdornedElement), VisualTreeHelper.GetDescendantBounds(visualTargetItem).Size);
