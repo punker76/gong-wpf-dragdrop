@@ -27,13 +27,10 @@ namespace GongSolutions.Wpf.DragDrop
     {
       if (CanAcceptData(dropInfo)) {
         // when source is the same as the target set the move effect otherwise set the copy effect
-        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || dropInfo.KeyStates.HasFlag(DragDropKeyStates.AltKey);
+        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
         dropInfo.Effects = moveData ? DragDropEffects.Move : DragDropEffects.Copy;
-        var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
-                                  && dropInfo.VisualTargetItem is TreeViewItem;
-        dropInfo.DropTargetAdorner = isTreeViewItem
-          ? DropTargetAdorners.Highlight
-          : DropTargetAdorners.Insert;
+        var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
+        dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
       }
     }
 
@@ -52,8 +49,9 @@ namespace GongSolutions.Wpf.DragDrop
       var data = ExtractData(dropInfo.Data);
 
       // when source is the same as the target remove the data from source and fix the insertion index
-      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || dropInfo.KeyStates.HasFlag(DragDropKeyStates.AltKey);
-      if (moveData) {
+      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+      if (moveData)
+      {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
 
         foreach (var o in data) {

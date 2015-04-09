@@ -104,5 +104,10 @@ namespace GongSolutions.Wpf.DragDrop
     /// a custom instance if custom drag and drop behavior is needed.
     /// </summary>
     IDataObject DataObject { get; set; }
+
+    /// <summary>
+    /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
+    /// </summary>
+    DragDropKeyStates DragDropCopyKeyState { get; }
   }
 }

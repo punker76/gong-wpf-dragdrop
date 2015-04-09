@@ -16,6 +16,31 @@ namespace GongSolutions.Wpf.DragDrop
   {
     public static readonly DataFormat DataFormat = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
 
+    /// <summary>
+    /// The drag drop copy key state property (default None).
+    /// So the drag drop action is
+    /// - Move, within the same control or from one to another, if the drag drop key state is None
+    /// - Copy, from one to another control with the given drag drop copy key state
+    /// </summary>
+    public static readonly DependencyProperty DragDropCopyKeyStateProperty =
+      DependencyProperty.RegisterAttached("DragDropCopyKeyState", typeof(DragDropKeyStates), typeof(DragDrop), new PropertyMetadata(default(DragDropKeyStates)));
+
+    /// <summary>
+    /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
+    /// </summary>
+    public static DragDropKeyStates GetDragDropCopyKeyState(UIElement target)
+    {
+      return (DragDropKeyStates)target.GetValue(DragDropCopyKeyStateProperty);
+    }
+
+    /// <summary>
+    /// Sets the drag drop copy key state indicating the effect of the drag drop operation.
+    /// </summary>
+    public static void SetDragDropCopyKeyState(UIElement target, DragDropKeyStates value)
+    {
+      target.SetValue(DragDropCopyKeyStateProperty, value);
+    }
+
     public static readonly DependencyProperty DragAdornerTemplateProperty =
       DependencyProperty.RegisterAttached("DragAdornerTemplate", typeof(DataTemplate), typeof(DragDrop));
 
