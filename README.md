@@ -28,6 +28,25 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 
 #Release History
 
++ **1.0.0** (tba April 2015)
+	- [#107](https://github.com/punker76/gong-wpf-dragdrop/pull/107), [#108](https://github.com/punker76/gong-wpf-dragdrop/pull/108): Fixed Group insertion adorner
+	- [#116](https://github.com/punker76/gong-wpf-dragdrop/issues/116), [#117](https://github.com/punker76/gong-wpf-dragdrop/pull/117): Fixed weird behavior of Drag Adorner when dragging to window border
+	- [#118](https://github.com/punker76/gong-wpf-dragdrop/pull/118): Added HitTest4Type for ButtonBase (@toengi)
+	- [#120](https://github.com/punker76/gong-wpf-dragdrop/pull/120): Added DragDirectlySelectedOnly. Don't search for closest item. This allows to start selection when drag starts on empty space inside ListBox. (@sm-g)
+	- [#89](https://github.com/punker76/gong-wpf-dragdrop/issues/89), [#91](https://github.com/punker76/gong-wpf-dragdrop/pull/91): Support for DragDropContext. Added optional DragDropContext dependency property for declarative of DragDrop operations. (@abbottdev)
+	- SHA 65679a37: New IsSameDragDropContextAsSource property
+	- SHA 51933a63: Add UnfilteredInsertIndex to DropInfo
+	- [#122](https://github.com/punker76/gong-wpf-dragdrop/pull/122): Support drag after last item in grouped list (@sm-g)
+	- [#106](https://github.com/punker76/gong-wpf-dragdrop/issues/106), [#126](https://github.com/punker76/gong-wpf-dragdrop/pull/126): Default drop handler changes
+		* Call DragOver in drop event too
+		* ICloneable support for copy or link effect
+	- [#125](https://github.com/punker76/gong-wpf-dragdrop/pull/125): Fixed an issue when the ItemPresenter contains more ContentControls (@gerritvanroekel)
+	- SHA 0e8526bb: Fixed more grouping usage
+	- [#128](https://github.com/punker76/gong-wpf-dragdrop/pull/128): Empty TreeViewItem and common/default moving support
+		* it's now possible to drop data on empty treeview items
+		* re-create the `EffectAdorner` if drag&drop `Effects` are changed
+		* the drop target adorner is now expanded to the right
+		* change default behavior (move or copy, now default is copy)
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
