@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1D14F10-00C7-4BE6-9A49-D2B5C950DE34}"
-	ProjectSection(SolutionItems) = preProject
-		GongSolutions.Wpf.DragDrop (NET4)1.vsmdi = GongSolutions.Wpf.DragDrop (NET4)1.vsmdi
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.Wpf.DragDrop (NET4)", "GongSolutions.Wpf.DragDrop\GongSolutions.Wpf.DragDrop (NET4).csproj", "{0C6674CC-6D49-414A-9B41-D4E175028FFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{96F74036-17C4-470A-B820-1B0653472F61}"
