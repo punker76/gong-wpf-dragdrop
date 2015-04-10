@@ -233,8 +233,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         ((ListBox)itemsControl).SelectedItem = null;
         ((ListBox)itemsControl).SelectedItem = item;
       } else if (itemsControl is TreeView) {
-        // TODO: Select the TreeViewItem
-        //((TreeView)itemsControl)
+        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, null);
+        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, item);
       } else if (itemsControl is Selector) {
         ((Selector)itemsControl).SelectedItem = null;
         ((Selector)itemsControl).SelectedItem = item;
