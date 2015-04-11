@@ -40,6 +40,59 @@
   </Window.Resources>
 
   <TabControl TabStripPlacement="Left">
+    <TabItem Header="FlowDocument in ItemTemplate #123">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Column="0"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection1}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <FlowDocumentScrollViewer IsSelectionEnabled="False"
+                                        IsHitTestVisible="False">
+                <FlowDocument>
+                  <Paragraph>
+                    <TextBlock Text="{Binding}" />
+                  </Paragraph>
+                </FlowDocument>
+              </FlowDocumentScrollViewer>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ListBox>
+
+        <ListBox Grid.Column="1"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <FlowDocumentScrollViewer IsSelectionEnabled="False"
+                                        IsHitTestVisible="False">
+                <FlowDocument>
+                  <Paragraph>
+                    <TextBlock Text="{Binding}" />
+                  </Paragraph>
+                </FlowDocument>
+              </FlowDocumentScrollViewer>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </TabItem>
+
     <TabItem Header="Issue 42">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -183,9 +236,9 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto" />
           <RowDefinition />
-          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto" />
           <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -199,7 +252,7 @@
         <TextBlock Grid.Column="0"
                    Grid.Row="1"
                    Margin="2"
-                   Text="DragDropContext=MainContext"/>
+                   Text="DragDropContext=MainContext" />
         <ListBox Grid.Column="0"
                  Grid.Row="2"
                  Margin="2"
@@ -214,7 +267,7 @@
         <TextBlock Grid.Column="1"
                    Grid.Row="1"
                    Margin="2"
-                   Text="DragDropContext=MainContext"/>
+                   Text="DragDropContext=MainContext" />
         <ListBox Grid.Column="1"
                  Grid.Row="2"
                  Margin="2"
@@ -228,7 +281,7 @@
         <TextBlock Grid.Column="0"
                    Grid.Row="3"
                    Margin="2"
-                   Text="DragDropContext=DifferentContext"/>
+                   Text="DragDropContext=DifferentContext" />
         <ListBox Grid.Column="0"
                  Grid.Row="4"
                  Margin="2"
@@ -242,7 +295,7 @@
         <TextBlock Grid.Column="1"
                    Grid.Row="3"
                    Margin="2"
-                   Text="No DragDropContext"/>
+                   Text="No DragDropContext" />
         <ListBox Grid.Column="1"
                  Grid.Row="4"
                  Margin="2"
@@ -321,7 +374,7 @@
                   Grid.Row="1"
                   x:Name="FilterCheck"
                   Click="FilterCheckBox_Clicked">Filter by %2</CheckBox>
-        
+
         <ListBox Grid.Column="0"
                  Grid.Row="2"
                  ItemsSource="{Binding Collection1}"
@@ -494,7 +547,9 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
-              <TextBlock Text="::" FontWeight="Bold" Grid.Column="0" />
+              <TextBlock Text="::"
+                         FontWeight="Bold"
+                         Grid.Column="0" />
               <TextBox Grid.Column="1"
                        Text="{Binding Name}"
                        Margin="5 1 5 1" />
@@ -571,13 +626,13 @@
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
                     <TextBlock Text="{Binding}">
-                                            <TextBlock.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="Item 1" />
-                                                    <MenuItem Header="Item 2" />
-                                                    <MenuItem Header="Item 3" />
-                                                </ContextMenu>
-                                            </TextBlock.ContextMenu>
+                      <TextBlock.ContextMenu>
+                        <ContextMenu>
+                          <MenuItem Header="Item 1" />
+                          <MenuItem Header="Item 2" />
+                          <MenuItem Header="Item 3" />
+                        </ContextMenu>
+                      </TextBlock.ContextMenu>
                     </TextBlock>
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
@@ -631,28 +686,30 @@
         </TextBlock>
 
         <local:WPFDataGrid Grid.Row="1"
-                  Grid.Column="0"
-                  AutoGenerateColumns="False"
-                  ItemsSource="{Binding Collection1}"
-                  GridLinesVisibility="None"
-                  dd:DragDrop.IsDragSource="True"
-                  dd:DragDrop.IsDropTarget="True"
-                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                           Grid.Column="0"
+                           AutoGenerateColumns="False"
+                           ItemsSource="{Binding Collection1}"
+                           GridLinesVisibility="None"
+                           dd:DragDrop.IsDragSource="True"
+                           dd:DragDrop.IsDropTarget="True"
+                           dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
           <local:WPFDataGrid.Columns>
-            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value" />
+            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}"
+                                         Header="Value" />
           </local:WPFDataGrid.Columns>
         </local:WPFDataGrid>
 
         <local:WPFDataGrid Grid.Row="1"
-                  Grid.Column="1"
-                  AutoGenerateColumns="False"
-                  ItemsSource="{Binding Collection2}"
-                  GridLinesVisibility="None"
-                  dd:DragDrop.IsDragSource="True"
-                  dd:DragDrop.IsDropTarget="True"
-                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                           Grid.Column="1"
+                           AutoGenerateColumns="False"
+                           ItemsSource="{Binding Collection2}"
+                           GridLinesVisibility="None"
+                           dd:DragDrop.IsDragSource="True"
+                           dd:DragDrop.IsDropTarget="True"
+                           dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
           <local:WPFDataGrid.Columns>
-            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}" Header="Value" />
+            <local:WPFDataGridTextColumn Binding="{Binding Mode=OneWay}"
+                                         Header="Value" />
           </local:WPFDataGrid.Columns>
         </local:WPFDataGrid>
       </Grid>
@@ -1008,11 +1065,11 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
           <ListBox Grid.Row="1"
-                        ItemsSource="{Binding Collection3}"
-                        Background="Beige"
-                        dd:DragDrop.IsDragSource="True"
-                        dd:DragDrop.IsDropTarget="True"
-                        dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                   ItemsSource="{Binding Collection3}"
+                   Background="Beige"
+                   dd:DragDrop.IsDragSource="True"
+                   dd:DragDrop.IsDropTarget="True"
+                   dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Label Content="{Binding}" />
@@ -1035,20 +1092,20 @@
         </ListBox>
       </Grid>
     </TabItem>
-    
+
     <TabItem Header="with DataTemplateSelector">
       <TabItem.Resources>
         <DataTemplate x:Key="Even">
-          <TextBlock Text="{Binding}" Foreground="Blue"/>
+          <TextBlock Text="{Binding}"
+                     Foreground="Blue" />
         </DataTemplate>
         <DataTemplate x:Key="Odd">
-          <TextBlock Text="{Binding}" Foreground="Green"/>
+          <TextBlock Text="{Binding}"
+                     Foreground="Green" />
         </DataTemplate>
-        <local:DemoDataTemplateSelector 
-          x:Key="DemoDataTemplateSelector"
-          TemplateEven="{StaticResource Even}"
-          TemplateOdd="{StaticResource Odd}"
-          />
+        <local:DemoDataTemplateSelector x:Key="DemoDataTemplateSelector"
+                                        TemplateEven="{StaticResource Even}"
+                                        TemplateOdd="{StaticResource Odd}" />
       </TabItem.Resources>
       <Grid>
         <Grid.ColumnDefinitions>
@@ -1060,19 +1117,19 @@
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.ColumnSpan="2">This example uses a DataTemplateSelector for the drag adorner.</TextBlock>
-        <ListBox 
-          Grid.Row="1" Grid.Column="0"
-          SelectionMode="Extended"
-          dd:DragDrop.IsDragSource="True"
-          dd:DragDrop.IsDropTarget="True"
-          dd:DragDrop.DragAdornerTemplateSelector="{StaticResource DemoDataTemplateSelector}"
-          ItemsSource="{Binding Collection1}" />
-        <ListBox 
-          Grid.Row="1" Grid.Column="1"
-          SelectionMode="Extended"
-          dd:DragDrop.IsDragSource="True"
-          dd:DragDrop.IsDropTarget="True"
-          ItemsSource="{Binding Collection3}" />
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.DragAdornerTemplateSelector="{StaticResource DemoDataTemplateSelector}"
+                 ItemsSource="{Binding Collection1}" />
+        <ListBox Grid.Row="1"
+                 Grid.Column="1"
+                 SelectionMode="Extended"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 ItemsSource="{Binding Collection3}" />
       </Grid>
     </TabItem>
 
