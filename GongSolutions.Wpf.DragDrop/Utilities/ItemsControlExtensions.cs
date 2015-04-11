@@ -230,8 +230,15 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         ((MultiSelector)itemsControl).SelectedItem = null;
         ((MultiSelector)itemsControl).SelectedItem = item;
       } else if (itemsControl is ListBox) {
-        ((ListBox)itemsControl).SelectedItem = null;
-        ((ListBox)itemsControl).SelectedItem = item;
+        var selectionMode = ((ListBox)itemsControl).SelectionMode;
+        try {
+          // change SelectionMode for UpdateAnchorAndActionItem
+          ((ListBox)itemsControl).SelectionMode = SelectionMode.Single;
+          ((ListBox)itemsControl).SelectedItem = null;
+          ((ListBox)itemsControl).SelectedItem = item;
+        } finally {
+          ((ListBox)itemsControl).SelectionMode = selectionMode;
+        }
       } else if (itemsControl is TreeView) {
         ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, null);
         ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, item);
@@ -239,6 +246,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         ((Selector)itemsControl).SelectedItem = null;
         ((Selector)itemsControl).SelectedItem = item;
       }
+    }
+
+    public static object GetSelectedItem(this ItemsControl itemsControl)
+    {
+      if (itemsControl is MultiSelector) {
+        return ((MultiSelector)itemsControl).SelectedItem;
+      } else if (itemsControl is ListBox) {
+        return ((ListBox)itemsControl).SelectedItem;
+      } else if (itemsControl is TreeView) {
+        return ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+      } else if (itemsControl is Selector) {
+        return ((Selector)itemsControl).SelectedItem;
+      }
+      return null;
     }
 
     public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)

@@ -716,9 +716,8 @@ namespace GongSolutions.Wpf.DragDrop
       var itemsControl = sender as ItemsControl;
 
       if (m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems()) {
-        var selectedItems = itemsControl.GetSelectedItems().Cast<object>();
-
-        if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem)) {
+        var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
+        if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem) && (Keyboard.Modifiers & ModifierKeys.Shift) == 0) {
           m_ClickSupressItem = m_DragInfo.SourceItem;
           e.Handled = true;
         }
@@ -734,7 +733,7 @@ namespace GongSolutions.Wpf.DragDrop
       if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem == m_DragInfo.SourceItem) {
         if ((Keyboard.Modifiers & ModifierKeys.Control) != 0) {
           itemsControl.SetItemSelected(m_DragInfo.SourceItem, false);
-        } else {
+        } else if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) {
           itemsControl.SetSelectedItem(m_DragInfo.SourceItem);
         }
       }
