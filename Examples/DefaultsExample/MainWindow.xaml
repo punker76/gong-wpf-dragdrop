@@ -4,7 +4,8 @@
         xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:local="clr-namespace:DefaultsExample"
         Title="Gong Solutions Drag'n'Drop: Defaults Example"
-        Height="500"
+        WindowStartupLocation="CenterScreen"
+        Height="600"
         Width="800">
 
   <Window.DataContext>
