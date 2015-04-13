@@ -853,6 +853,9 @@ namespace GongSolutions.Wpf.DragDrop
           if (adornerPosRightX > maxAdornerPosX) {
             _adornerPos.Offset(-adornerPosRightX + maxAdornerPosX, 0);
           }
+          if (_adornerPos.Y < 0) {
+            _adornerPos.Y = 0;
+          }
         }
 
         DragAdorner.MousePosition = _adornerPos;
