@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
 using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
@@ -131,7 +132,10 @@ namespace DefaultsExample
       // I know this example is called DefaultsExample, but the default handlers don't know how
       // to set an item's group. You need to explicitly set the group on the dropped item like this.
       DragDrop.DefaultDropHandler.Drop(dropInfo);
-      ((GroupedItem)dropInfo.Data).Group = dropInfo.TargetGroup.Name.ToString();
+      var data = DefaultDropHandler.ExtractData(dropInfo.Data).OfType<GroupedItem>().ToList();
+      foreach (var groupedItem in data) {
+        groupedItem.Group = dropInfo.TargetGroup.Name.ToString();
+      }
 
       // Changing group data at runtime isn't handled well: force a refresh on the collection view.
       if (dropInfo.TargetCollection is ICollectionView) {

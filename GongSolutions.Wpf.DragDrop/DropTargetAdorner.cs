@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Documents;
 using System.Windows;
-using System.Windows.Media;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -16,6 +12,7 @@ namespace GongSolutions.Wpf.DragDrop
       this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
       this.m_AdornerLayer.Add(this);
       this.IsHitTestVisible = false;
+      this.SnapsToDevicePixels = true;
     }
 
     public void Detatch()

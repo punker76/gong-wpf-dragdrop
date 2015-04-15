@@ -429,21 +429,18 @@ namespace GongSolutions.Wpf.DragDrop
       var useDefaultDragAdorner = GetUseDefaultDragAdorner(m_DragInfo.VisualSource);
 
       if (template == null && templateSelector == null && useDefaultDragAdorner) {
-        template = new DataTemplate();
-
-        var factory = new FrameworkElementFactory(typeof(Image));
-
         var bs = CaptureScreen(m_DragInfo.VisualSourceItem, m_DragInfo.VisualSourceFlowDirection);
-        factory.SetValue(Image.SourceProperty, bs);
-        factory.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-        factory.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
-        if (m_DragInfo.VisualSourceItem is FrameworkElement) {
-          factory.SetValue(FrameworkElement.WidthProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualWidth);
-          factory.SetValue(FrameworkElement.HeightProperty, ((FrameworkElement)m_DragInfo.VisualSourceItem).ActualHeight);
+        if (bs != null) {
+          var factory = new FrameworkElementFactory(typeof(Image));
+          factory.SetValue(Image.SourceProperty, bs);
+          factory.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+          factory.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
+          factory.SetValue(FrameworkElement.WidthProperty, bs.Width);
+          factory.SetValue(FrameworkElement.HeightProperty, bs.Height);
           factory.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Left);
           factory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Top);
+          template = new DataTemplate { VisualTree = factory };
         }
-        template.VisualTree = factory;
       }
 
       if (template != null || templateSelector != null) {
@@ -855,6 +852,9 @@ namespace GongSolutions.Wpf.DragDrop
           var adornerPosRightX = (_adornerPos.X + _adornerSize.Width);
           if (adornerPosRightX > maxAdornerPosX) {
             _adornerPos.Offset(-adornerPosRightX + maxAdornerPosX, 0);
+          }
+          if (_adornerPos.Y < 0) {
+            _adornerPos.Y = 0;
           }
         }
 
