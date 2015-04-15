@@ -12,7 +12,6 @@ namespace GongSolutions.Wpf.DragDrop
       this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
       this.m_AdornerLayer.Add(this);
       this.IsHitTestVisible = false;
-      this.UseLayoutRounding = true;
       this.SnapsToDevicePixels = true;
     }
 
