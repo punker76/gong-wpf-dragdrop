@@ -39,7 +39,10 @@
     </CollectionViewSource>
   </Window.Resources>
 
-  <TabControl TabStripPlacement="Left">
+  <TabControl TabStripPlacement="Left"
+              dd:DragDrop.IsDragSource="True"
+              dd:DragDrop.IsDropTarget="True"
+              dd:DragDrop.UseDefaultDragAdorner="True">
     <TabItem Header="FlowDocument in ItemTemplate #123">
       <Grid>
         <Grid.ColumnDefinitions>
