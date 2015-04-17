@@ -384,12 +384,18 @@ namespace GongSolutions.Wpf.DragDrop
         uiElement.AllowDrop = true;
 
         if (uiElement is ItemsControl) {
-          // use normal events for ItemsControls
-          uiElement.DragEnter += DropTarget_PreviewDragEnter;
-          uiElement.DragLeave += DropTarget_PreviewDragLeave;
-          uiElement.DragOver += DropTarget_PreviewDragOver;
-          uiElement.Drop += DropTarget_PreviewDrop;
-          uiElement.GiveFeedback += DropTarget_GiveFeedback;
+          ((ItemsControl)uiElement).Loaded += (sender, args) => {
+                                                if (uiElement is TabControl) {
+                                                  var tabPanel = ((TabControl)uiElement).GetVisualDescendent<TabPanel>();
+                                                  //uiElement = tabPanel ?? uiElement;
+                                                }
+                                                // use normal events for ItemsControls
+                                                uiElement.DragEnter += DropTarget_PreviewDragEnter;
+                                                uiElement.DragLeave += DropTarget_PreviewDragLeave;
+                                                uiElement.DragOver += DropTarget_PreviewDragOver;
+                                                uiElement.Drop += DropTarget_PreviewDrop;
+                                                uiElement.GiveFeedback += DropTarget_GiveFeedback;
+                                              };
         } else {
           // issue #85: try using preview events for all other elements than ItemsControls
           uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
@@ -402,6 +408,10 @@ namespace GongSolutions.Wpf.DragDrop
         uiElement.AllowDrop = false;
 
         if (uiElement is ItemsControl) {
+          if (uiElement is TabControl) {
+            var tabPanel = ((TabControl)uiElement).GetVisualDescendent<TabPanel>();
+            //uiElement = tabPanel ?? uiElement;
+          }
           uiElement.DragEnter -= DropTarget_PreviewDragEnter;
           uiElement.DragLeave -= DropTarget_PreviewDragLeave;
           uiElement.DragOver -= DropTarget_PreviewDragOver;
@@ -687,6 +697,7 @@ namespace GongSolutions.Wpf.DragDrop
           || (sender as UIElement).IsDragSourceIgnored()
           || (e.Source as UIElement).IsDragSourceIgnored()
           || (e.OriginalSource as UIElement).IsDragSourceIgnored()
+          || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
@@ -723,11 +734,18 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
+      var elementPosition = e.GetPosition((IInputElement)sender);
+      if ((sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)) {
+        m_DragInfo = null;
+        m_ClickSupressItem = null;
+        return;
+      }
+
       // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
       // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
       var itemsControl = sender as ItemsControl;
 
-      if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem == m_DragInfo.SourceItem) {
+      if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem != null && m_ClickSupressItem == m_DragInfo.SourceItem) {
         if ((Keyboard.Modifiers & ModifierKeys.Control) != 0) {
           itemsControl.SetItemSelected(m_DragInfo.SourceItem, false);
         } else if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0) {
@@ -868,8 +886,9 @@ namespace GongSolutions.Wpf.DragDrop
         // ItemsPresenter provided by the style, try getting hold of a
         // ScrollContentPresenter and using that.
         var adornedElement =
-          (UIElement)itemsControl.GetVisualDescendent<ItemsPresenter>() ??
-          (UIElement)itemsControl.GetVisualDescendent<ScrollContentPresenter>();
+          itemsControl is TabControl
+            ? itemsControl.GetVisualDescendent<TabPanel>()
+            : (itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement);
 
         if (adornedElement != null) {
           if (dropInfo.DropTargetAdorner == null) {

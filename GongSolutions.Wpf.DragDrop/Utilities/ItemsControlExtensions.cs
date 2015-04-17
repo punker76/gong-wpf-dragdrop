@@ -145,6 +145,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       // determines if the itemsControl is not a ListView, ListBox or TreeView
       isItemContainer = false;
 
+      if (typeof(TabControl).IsAssignableFrom(itemsControl.GetType())) {
+        return typeof(TabItem);
+      }
+
       if (typeof(DataGrid).IsAssignableFrom(itemsControl.GetType())) {
         return typeof(DataGridRow);
       }
@@ -172,17 +176,19 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         var itemsPresenters = itemsControl.GetVisualDescendents<ItemsPresenter>();
 
         foreach (var itemsPresenter in itemsPresenters) {
-          var panel = VisualTreeHelper.GetChild(itemsPresenter, 0);
-          var itemContainer = VisualTreeHelper.GetChildrenCount(panel) > 0
-                                ? VisualTreeHelper.GetChild(panel, 0)
-                                : null;
+          if (VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
+            var panel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+            var itemContainer = VisualTreeHelper.GetChildrenCount(panel) > 0
+              ? VisualTreeHelper.GetChild(panel, 0)
+              : null;
 
-          // Ensure that this actually *is* an item container by checking it with
-          // ItemContainerGenerator.
-          if (itemContainer != null &&
-              itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) != -1) {
-            isItemContainer = true;
-            return itemContainer.GetType();
+            // Ensure that this actually *is* an item container by checking it with
+            // ItemContainerGenerator.
+            if (itemContainer != null &&
+                itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) != -1) {
+              isItemContainer = true;
+              return itemContainer.GetType();
+            }
           }
         }
       }
@@ -194,7 +200,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
       var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
 
-      if (itemsPresenter != null) {
+      if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
         var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
         var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
 
@@ -211,7 +217,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
       var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
 
-      if (itemsPresenter != null) {
+      if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
         var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
         var flowDirectionProperty = itemsPanel.GetType().GetProperty("FlowDirection", typeof(FlowDirection));
 
@@ -229,14 +235,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (itemsControl is MultiSelector) {
         ((MultiSelector)itemsControl).SelectedItem = null;
         ((MultiSelector)itemsControl).SelectedItem = item;
-      } else if (itemsControl is ListBox) {
+      } else if (itemsControl is TabControl) {
+        ((TabControl)itemsControl).SelectedItem = null;
+        ((TabControl)itemsControl).SelectedItem = item;
+      }
+      else if (itemsControl is ListBox)
+      {
         var selectionMode = ((ListBox)itemsControl).SelectionMode;
         try {
           // change SelectionMode for UpdateAnchorAndActionItem
           ((ListBox)itemsControl).SelectionMode = SelectionMode.Single;
           ((ListBox)itemsControl).SelectedItem = null;
           ((ListBox)itemsControl).SelectedItem = item;
-        } finally {
+        }
+        finally {
           ((ListBox)itemsControl).SelectionMode = selectionMode;
         }
       } else if (itemsControl is TreeView) {
@@ -267,7 +279,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       //if (itemsControl.GetType().IsAssignableFrom(typeof(MultiSelector)))
       if (typeof(MultiSelector).IsAssignableFrom(itemsControl.GetType())) {
         return ((MultiSelector)itemsControl).SelectedItems;
-      } else if (itemsControl is ListBox) {
+      }
+      else if (typeof(TabControl).IsAssignableFrom(itemsControl.GetType())) {
+        return Enumerable.Repeat(((TabControl)itemsControl).SelectedItem, 1);
+      }
+      else if (itemsControl is ListBox) {
         var listBox = (ListBox)itemsControl;
 
         if (listBox.SelectionMode == SelectionMode.Single) {
@@ -328,6 +344,12 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           }
         } else {
           listBox.SelectedItems.Remove(item);
+        }
+      } else {
+        if (value) {
+          itemsControl.SetSelectedItem(item);
+        } else {
+          itemsControl.SetSelectedItem(null);
         }
       }
     }
