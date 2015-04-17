@@ -19,7 +19,7 @@ namespace DefaultsExample
     public void Drop(IDropInfo dropInfo)
     {
       MessageBox.Show("He, now it works :-D");
-      ((TextBox)dropInfo.VisualTarget).Text = (string)dropInfo.Data;
+      ((TextBox)dropInfo.VisualTarget).Text = dropInfo.Data != null ? dropInfo.Data.ToString() : string.Empty;
     }
   }
 
