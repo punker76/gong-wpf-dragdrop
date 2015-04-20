@@ -198,8 +198,15 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
     public static Orientation GetItemsPanelOrientation(this ItemsControl itemsControl)
     {
-      var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
-
+      if (itemsControl is TabControl)
+      {
+        //HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
+        //var tabPanel = itemsControl.GetVisualDescendent<TabPanel>();
+        var tabControl = (TabControl)itemsControl;
+        return tabControl.TabStripPlacement == Dock.Left || tabControl.TabStripPlacement == Dock.Right ? Orientation.Vertical : Orientation.Horizontal;
+      }
+      
+      var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement;
       if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
         var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
         var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
