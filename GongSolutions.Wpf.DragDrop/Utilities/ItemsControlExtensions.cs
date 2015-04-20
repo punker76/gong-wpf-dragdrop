@@ -235,12 +235,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (itemsControl is MultiSelector) {
         ((MultiSelector)itemsControl).SelectedItem = null;
         ((MultiSelector)itemsControl).SelectedItem = item;
-      } else if (itemsControl is TabControl) {
-        ((TabControl)itemsControl).SelectedItem = null;
-        ((TabControl)itemsControl).SelectedItem = item;
-      }
-      else if (itemsControl is ListBox)
-      {
+      } else if (itemsControl is ListBox) {
         var selectionMode = ((ListBox)itemsControl).SelectionMode;
         try {
           // change SelectionMode for UpdateAnchorAndActionItem
@@ -279,11 +274,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       //if (itemsControl.GetType().IsAssignableFrom(typeof(MultiSelector)))
       if (typeof(MultiSelector).IsAssignableFrom(itemsControl.GetType())) {
         return ((MultiSelector)itemsControl).SelectedItems;
-      }
-      else if (typeof(TabControl).IsAssignableFrom(itemsControl.GetType())) {
-        return Enumerable.Repeat(((TabControl)itemsControl).SelectedItem, 1);
-      }
-      else if (itemsControl is ListBox) {
+      } else if (itemsControl is ListBox) {
         var listBox = (ListBox)itemsControl;
 
         if (listBox.SelectionMode == SelectionMode.Single) {
