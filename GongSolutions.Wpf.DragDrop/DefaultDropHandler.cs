@@ -80,7 +80,8 @@ namespace GongSolutions.Wpf.DragDrop
       var tabControl = dropInfo.VisualTarget as TabControl;
 
       // check for cloning
-      var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+      var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy)
+                      || dropInfo.Effects.HasFlag(DragDropEffects.Link);
       foreach (var o in data) {
         var obj2Insert = o;
         if (cloneData) {
@@ -92,7 +93,23 @@ namespace GongSolutions.Wpf.DragDrop
 
         destinationList.Insert(insertIndex++, obj2Insert);
 
-        tabControl.SetSelectedItem(obj2Insert);
+        if (tabControl != null)
+        {
+          // call ApplyTemplate for TabItem in TabControl to avoid this error:
+          //
+          // System.Windows.Data Error: 4 : Cannot find source for binding with reference
+          // 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''.
+          // BindingExpression:Path=TabStripPlacement; DataItem=null; target element is 'TabItem' (Name='');
+          // target property is 'NoTarget' (type 'Object')
+          var container = tabControl.ItemContainerGenerator.ContainerFromItem(obj2Insert) as TabItem;
+          if (container != null)
+          {
+            container.ApplyTemplate();
+          }
+
+          // for better experience: select the dragged TabItem
+          tabControl.SetSelectedItem(obj2Insert);
+        }
       }
     }
 
