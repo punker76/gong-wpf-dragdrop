@@ -46,8 +46,11 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 		* it's now possible to drop data on empty treeview items
 		* re-create the `EffectAdorner` if drag&drop `Effects` are changed
 		* the drop target adorner is now expanded to the right
-		* change default behavior (move or copy, now default is copy)
+		* change default behavior (move or copy, now default is copy), changable by `DragDropCopyKeyState`
 	- [#127](https://github.com/punker76/gong-wpf-dragdrop/issues/127), [#130](https://github.com/punker76/gong-wpf-dragdrop/pull/130): Fixed Shift+Click of multi-selectable controls (works now as windows file explorer)
+	- [#109](https://github.com/punker76/gong-wpf-dragdrop/issues/109), [#132](https://github.com/punker76/gong-wpf-dragdrop/pull/132): TabControl support and some improvements
+		* support `TabControl` for drag&drop actions
+		* support directly `TabItem`, `ListViewItem`, `ListBoxItem` and `TreeViewItem`
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
