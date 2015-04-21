@@ -445,7 +445,7 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (template != null || templateSelector != null) {
         if (m_DragInfo.Data is IEnumerable && !(m_DragInfo.Data is string)) {
-          if (((IEnumerable)m_DragInfo.Data).Cast<object>().Count() <= 10) {
+          if (!useDefaultDragAdorner && ((IEnumerable)m_DragInfo.Data).Cast<object>().Count() <= 10) {
             var itemsControl = new ItemsControl();
             itemsControl.ItemsSource = (IEnumerable)m_DragInfo.Data;
             itemsControl.ItemTemplate = template;
