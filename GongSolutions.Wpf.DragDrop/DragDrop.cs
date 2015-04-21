@@ -384,18 +384,12 @@ namespace GongSolutions.Wpf.DragDrop
         uiElement.AllowDrop = true;
 
         if (uiElement is ItemsControl) {
-          ((ItemsControl)uiElement).Loaded += (sender, args) => {
-                                                if (uiElement is TabControl) {
-                                                  var tabPanel = ((TabControl)uiElement).GetVisualDescendent<TabPanel>();
-                                                  //uiElement = tabPanel ?? uiElement;
-                                                }
-                                                // use normal events for ItemsControls
-                                                uiElement.DragEnter += DropTarget_PreviewDragEnter;
-                                                uiElement.DragLeave += DropTarget_PreviewDragLeave;
-                                                uiElement.DragOver += DropTarget_PreviewDragOver;
-                                                uiElement.Drop += DropTarget_PreviewDrop;
-                                                uiElement.GiveFeedback += DropTarget_GiveFeedback;
-                                              };
+          // use normal events for ItemsControls
+          uiElement.DragEnter += DropTarget_PreviewDragEnter;
+          uiElement.DragLeave += DropTarget_PreviewDragLeave;
+          uiElement.DragOver += DropTarget_PreviewDragOver;
+          uiElement.Drop += DropTarget_PreviewDrop;
+          uiElement.GiveFeedback += DropTarget_GiveFeedback;
         } else {
           // issue #85: try using preview events for all other elements than ItemsControls
           uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
@@ -408,10 +402,6 @@ namespace GongSolutions.Wpf.DragDrop
         uiElement.AllowDrop = false;
 
         if (uiElement is ItemsControl) {
-          if (uiElement is TabControl) {
-            var tabPanel = ((TabControl)uiElement).GetVisualDescendent<TabPanel>();
-            //uiElement = tabPanel ?? uiElement;
-          }
           uiElement.DragEnter -= DropTarget_PreviewDragEnter;
           uiElement.DragLeave -= DropTarget_PreviewDragLeave;
           uiElement.DragOver -= DropTarget_PreviewDragOver;
