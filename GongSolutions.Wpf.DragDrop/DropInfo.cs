@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Data;
 
@@ -57,6 +58,12 @@ namespace GongSolutions.Wpf.DragDrop
       }
       // visual target can be null, so give us a point...
       this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
+
+      if (this.VisualTarget is TabControl) {
+        if (!HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition)) {
+          return;
+        }
+      }
 
       if (this.VisualTarget is ItemsControl) {
         var itemsControl = (ItemsControl)this.VisualTarget;

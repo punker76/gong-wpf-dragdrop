@@ -27,7 +27,12 @@ namespace GongSolutions.Wpf.DragDrop
     {
       if (CanAcceptData(dropInfo)) {
         // when source is the same as the target set the move effect otherwise set the copy effect
-        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget
+                       || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
+                       || dropInfo.DragInfo.VisualSourceItem is TabItem
+                       || dropInfo.DragInfo.VisualSourceItem is TreeViewItem
+                       || dropInfo.DragInfo.VisualSourceItem is MenuItem
+                       || dropInfo.DragInfo.VisualSourceItem is ListBoxItem;
         dropInfo.Effects = moveData ? DragDropEffects.Move : DragDropEffects.Copy;
         var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
         dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
@@ -49,7 +54,12 @@ namespace GongSolutions.Wpf.DragDrop
       var data = ExtractData(dropInfo.Data);
 
       // when source is the same as the target remove the data from source and fix the insertion index
-      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState);
+      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget
+                     || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
+                     || dropInfo.DragInfo.VisualSourceItem is TabItem
+                     || dropInfo.DragInfo.VisualSourceItem is TreeViewItem
+                     || dropInfo.DragInfo.VisualSourceItem is MenuItem
+                     || dropInfo.DragInfo.VisualSourceItem is ListBoxItem;
       if (moveData)
       {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
@@ -67,8 +77,11 @@ namespace GongSolutions.Wpf.DragDrop
         }
       }
 
+      var tabControl = dropInfo.VisualTarget as TabControl;
+
       // check for cloning
-      var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+      var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy)
+                      || dropInfo.Effects.HasFlag(DragDropEffects.Link);
       foreach (var o in data) {
         var obj2Insert = o;
         if (cloneData) {
@@ -77,7 +90,26 @@ namespace GongSolutions.Wpf.DragDrop
             obj2Insert = cloneable.Clone();
           }
         }
+
         destinationList.Insert(insertIndex++, obj2Insert);
+
+        if (tabControl != null)
+        {
+          // call ApplyTemplate for TabItem in TabControl to avoid this error:
+          //
+          // System.Windows.Data Error: 4 : Cannot find source for binding with reference
+          // 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''.
+          // BindingExpression:Path=TabStripPlacement; DataItem=null; target element is 'TabItem' (Name='');
+          // target property is 'NoTarget' (type 'Object')
+          var container = tabControl.ItemContainerGenerator.ContainerFromItem(obj2Insert) as TabItem;
+          if (container != null)
+          {
+            container.ApplyTemplate();
+          }
+
+          // for better experience: select the dragged TabItem
+          tabControl.SetSelectedItem(obj2Insert);
+        }
       }
     }
 
@@ -105,9 +137,11 @@ namespace GongSolutions.Wpf.DragDrop
       if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection) {
         var targetList = dropInfo.TargetCollection.TryGetList();
         return targetList != null;
-      } else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
-        return false;
-      } else if (dropInfo.TargetCollection == null) {
+      }
+//      else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
+//        return false;
+//      }
+      else if (dropInfo.TargetCollection == null) {
         return false;
       } else {
         if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data)) {
