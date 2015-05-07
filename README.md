@@ -1,3 +1,5 @@
+![logo](GongSolutions.Wpf.DragDrop.Full.png)
+
 #Introduction
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/punker76/gong-wpf-dragdrop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
