@@ -427,6 +427,7 @@
 
         <ListBox Grid.Row="1"
                  SelectionMode="Extended"
+                 dd:DragDrop.DragDropContext="LeftToRight"
                  dd:DragDrop.UseDefaultDragAdorner="True"
                  dd:DragDrop.DefaultDragAdornerOpacity="0.5"
                  dd:DragDrop.IsDragSource="True"
@@ -451,6 +452,7 @@
 
         <ListBox Grid.Row="3"
                  SelectionMode="Extended"
+                 dd:DragDrop.DragDropContext="RightToLeft"
                  dd:DragDrop.UseDefaultDragAdorner="True"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True">

@@ -128,17 +128,24 @@ namespace GongSolutions.Wpf.DragDrop
             Console.WriteLine("==> DropInfo: {0}, {1}, {2}, Y={3}", this.InsertPosition, item, this.InsertIndex, currentYPos);
 #endif            
           }
-          else
-          {
+          else {
             var currentXPos = e.GetPosition(item).X;
             var targetWidth = itemRenderSize.Width;
 
-            if ((this.VisualTargetFlowDirection == FlowDirection.RightToLeft && currentXPos < targetWidth / 2)
-                || (this.VisualTargetFlowDirection == FlowDirection.LeftToRight && currentXPos > targetWidth / 2)) {
-              this.InsertIndex++;
-              this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-            } else {
-              this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+            if (this.VisualTargetFlowDirection == FlowDirection.RightToLeft) {
+              if (currentXPos > targetWidth / 2) {
+                this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+              } else {
+                this.InsertIndex++;
+                this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
+              }
+            } else if (this.VisualTargetFlowDirection == FlowDirection.LeftToRight) {
+              if (currentXPos > targetWidth / 2) {
+                this.InsertIndex++;
+                this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
+              } else {
+                this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+              }
             }
 
             if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75) {
@@ -150,7 +157,7 @@ namespace GongSolutions.Wpf.DragDrop
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
 #if DEBUG
-            Console.WriteLine("==> DropInfo: {0}, {1}, {2}, X={3}", this.InsertPosition, item, this.InsertIndex, currentXPos);
+            Console.WriteLine("==> DropInfo: InsPos={0}, InsIndex={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
 #endif
           }
         }
