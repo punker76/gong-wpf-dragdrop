@@ -31,7 +31,7 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 
 #Release History
 
-+ **1.0.0** (tba April 2015)
++ **1.0.0** (tba Aug-Sep 2015)
 	- [#107](https://github.com/punker76/gong-wpf-dragdrop/pull/107), [#108](https://github.com/punker76/gong-wpf-dragdrop/pull/108): Fixed Group insertion adorner
 	- [#116](https://github.com/punker76/gong-wpf-dragdrop/issues/116), [#117](https://github.com/punker76/gong-wpf-dragdrop/pull/117): Fixed weird behavior of Drag Adorner when dragging to window border
 	- [#118](https://github.com/punker76/gong-wpf-dragdrop/pull/118): Added HitTest4Type for ButtonBase (@toengi)
@@ -54,6 +54,8 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 	- [#109](https://github.com/punker76/gong-wpf-dragdrop/issues/109), [#132](https://github.com/punker76/gong-wpf-dragdrop/pull/132): TabControl support and some improvements
 		* support `TabControl` for drag&drop actions
 		* support directly `TabItem`, `ListViewItem`, `ListBoxItem` and `TreeViewItem`
+	- SHA: 96aad904d1e1ea1321fa01ce863d086248c88ef3 Search in x and y directions for possible items if the items control orientation is horizontal.
+	- SHA: b73562542356e93b32d93c56396fc6d7dd5170c1 Minor drop insertion fix with RightToLeft flow direction.
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
