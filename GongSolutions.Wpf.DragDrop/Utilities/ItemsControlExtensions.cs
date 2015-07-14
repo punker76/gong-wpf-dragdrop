@@ -111,19 +111,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (typeof(TreeViewItem).IsAssignableFrom(itemContainerType)) {
         hitTestGeometry = new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y));
       } else {
-        switch (searchDirection) {
-          case Orientation.Horizontal:
-            var geometryGroup = new GeometryGroup();
-            geometryGroup.Children.Add(new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y)));
-            geometryGroup.Children.Add(new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height)));
-            hitTestGeometry = geometryGroup;
-            break;
-          case Orientation.Vertical:
-            hitTestGeometry = new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height));
-            break;
-          default:
-            throw new ArgumentException("Invalid value for searchDirection");
-        }
+        var geometryGroup = new GeometryGroup();
+        geometryGroup.Children.Add(new LineGeometry(new Point(0, position.Y), new Point(itemsControl.RenderSize.Width, position.Y)));
+        geometryGroup.Children.Add(new LineGeometry(new Point(position.X, 0), new Point(position.X, itemsControl.RenderSize.Height)));
+        hitTestGeometry = geometryGroup;
       }
 
       var hits = new List<DependencyObject>();
