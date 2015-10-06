@@ -727,10 +727,9 @@ namespace GongSolutions.Wpf.DragDrop
       // already selected item does not change the selection, otherwise dragging multiple items 
       // is made impossible.
       var itemsControl = sender as ItemsControl;
-
-      if (m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems()) {
+      if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0 && m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems()) {
         var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
-        if (selectedItems.Count() > 1 && selectedItems.Contains(m_DragInfo.SourceItem) && (Keyboard.Modifiers & ModifierKeys.Shift) == 0) {
+        if (selectedItems.Count > 1 && selectedItems.Contains(m_DragInfo.SourceItem)) {
           m_ClickSupressItem = m_DragInfo.SourceItem;
           e.Handled = true;
         }
@@ -749,7 +748,6 @@ namespace GongSolutions.Wpf.DragDrop
       // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
       // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
       var itemsControl = sender as ItemsControl;
-
       if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem != null && m_ClickSupressItem == m_DragInfo.SourceItem) {
         if ((Keyboard.Modifiers & ModifierKeys.Control) != 0) {
           itemsControl.SetItemSelected(m_DragInfo.SourceItem, false);
