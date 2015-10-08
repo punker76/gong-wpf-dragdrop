@@ -155,9 +155,7 @@ namespace GongSolutions.Wpf.DragDrop
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
             //System.Diagnostics.Debug.WriteLine("==> DropInfo: InsPos={0}, InsIndex={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
-          } else {
-            this.VisualTargetItem = this.VisualTarget; 
-          }
+          } 
         }
         else
         {
@@ -165,6 +163,8 @@ namespace GongSolutions.Wpf.DragDrop
           this.InsertIndex = itemsControl.Items.Count;
           //System.Diagnostics.Debug.WriteLine("==> DropInfo: {0}, item=NULL, {1}", this.InsertPosition, this.InsertIndex);
         }
+      } else {
+            this.VisualTargetItem = this.VisualTarget; 
       }
     }
 
