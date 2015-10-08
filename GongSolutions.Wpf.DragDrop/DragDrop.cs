@@ -891,7 +891,7 @@ namespace GongSolutions.Wpf.DragDrop
         var adornedElement =
           itemsControl is TabControl
             ? itemsControl.GetVisualDescendent<TabPanel>()
-            : (itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement) ?? itemsControl;
+            : (itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement ?? itemsControl);
 
         if (adornedElement != null) {
           if (dropInfo.DropTargetAdorner == null) {
