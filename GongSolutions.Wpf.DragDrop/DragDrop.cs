@@ -703,11 +703,12 @@ namespace GongSolutions.Wpf.DragDrop
           || (e.Source as UIElement).IsDragSourceIgnored()
           || (e.OriginalSource as UIElement).IsDragSourceIgnored()
           || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
-          || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
+          // We can generalize these tests by checking for IsMouseCaptured in PreviewMouseMove...
+          /* || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
-          || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
+          || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition) */
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
           || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
           || HitTestUtilities.IsNotPartOfSender(sender, e)) {
@@ -764,8 +765,8 @@ namespace GongSolutions.Wpf.DragDrop
     {
       if (m_DragInfo != null && !m_DragInProgress) {
 
-        // do nothing if mouse left button is released
-        if (e.LeftButton == MouseButtonState.Released)
+        // do nothing if mouse left button is released or the pointer is captured
+        if (e.LeftButton == MouseButtonState.Released || ((IInputElement)e.OriginalSource).IsMouseCaptured) 
         {
           m_DragInfo = null;
           return;
