@@ -49,7 +49,7 @@ namespace GongSolutions.Wpf.DragDrop
         return;
       }
       
-      var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
+      var insertIndex = dropInfo.UnfilteredInsertIndex;
       var destinationList = dropInfo.TargetCollection.TryGetList();
       var data = ExtractData(dropInfo.Data);
 
