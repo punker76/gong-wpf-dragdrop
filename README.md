@@ -57,6 +57,7 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 	- SHA: 96aad904d1e1ea1321fa01ce863d086248c88ef3 Search in x and y directions for possible items if the items control orientation is horizontal.
 	- SHA: b73562542356e93b32d93c56396fc6d7dd5170c1 Minor drop insertion fix with RightToLeft flow direction.
 	- [#143](https://github.com/punker76/gong-wpf-dragdrop/pull/143): Allow target adorners on non-ItemsControls (@emsaks)
+	- [#139](https://github.com/punker76/gong-wpf-dragdrop/issues/139): Fixed COMException error when dragging over Skype: Provide new method `TryCatchOccurredException` in `IDragSource` to handle exceptions (thx to @Antonyo)
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)

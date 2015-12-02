@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace GongSolutions.Wpf.DragDrop
@@ -44,5 +41,17 @@ namespace GongSolutions.Wpf.DragDrop
     /// Notifies the drag handler that a drag has been aborted.
     /// </summary>
     void DragCancelled();
+
+    /// <summary>
+    /// Notifies that an exception has occurred upon dragging.
+    /// </summary>
+    /// <param name="exception">
+    /// The exception that occurrred.
+    /// </param>
+    /// <returns>
+    /// Boolean indicating whether the exception is handled in the drag handler.
+    /// False will rethrow the exception.
+    /// </returns>
+    bool TryCatchOccurredException(Exception exception);
   }
 }

@@ -795,6 +795,11 @@ namespace GongSolutions.Wpf.DragDrop
                 if (result == DragDropEffects.None)
                   dragHandler.DragCancelled();
               }
+              catch (Exception ex) {
+                if (!dragHandler.TryCatchOccurredException(ex)) {
+                  throw;
+                }
+              }
               finally {
                 m_DragInProgress = false;
               }
