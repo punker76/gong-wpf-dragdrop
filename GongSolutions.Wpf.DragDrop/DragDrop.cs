@@ -797,7 +797,7 @@ namespace GongSolutions.Wpf.DragDrop
                   try{
                     dragHandler.DragCancelled();
                   }
-                  catch (System.Runtime.InteropServices.COMException e){}
+                  catch (System.Runtime.InteropServices.COMException){}
                 }
               }
               finally {
