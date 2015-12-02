@@ -793,7 +793,12 @@ namespace GongSolutions.Wpf.DragDrop
                 m_DragInProgress = true;
                 var result = System.Windows.DragDrop.DoDragDrop(m_DragInfo.VisualSource, data, m_DragInfo.Effects);
                 if (result == DragDropEffects.None)
-                  dragHandler.DragCancelled();
+                {
+                  try{
+                    dragHandler.DragCancelled();
+                  }
+                  catch (System.Runtime.InteropServices.COMException e){}
+                }
               }
               finally {
                 m_DragInProgress = false;
