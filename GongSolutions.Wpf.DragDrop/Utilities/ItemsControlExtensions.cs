@@ -192,6 +192,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
     public static Orientation GetItemsPanelOrientation(this ItemsControl itemsControl)
     {
+      var o = DragDrop.GetDragOrientation(itemsControl);
+
+      if (o.HasValue)
+        return o.Value;
+
       if (itemsControl is TabControl)
       {
         //HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)

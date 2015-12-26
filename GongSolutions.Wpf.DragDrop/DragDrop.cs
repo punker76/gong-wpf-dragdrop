@@ -304,6 +304,19 @@ namespace GongSolutions.Wpf.DragDrop
       source.SetValue(DragSourceIgnoreProperty, value);
     }
 
+    public static readonly DependencyProperty DragOrientationProperty =
+      DependencyProperty.RegisterAttached("DragOrientation", typeof(Orientation?), typeof(DragDrop), new PropertyMetadata(null));
+
+    public static Orientation? GetDragOrientation(UIElement source)
+    {
+        return (Orientation?)source.GetValue(DragOrientationProperty);
+    }
+
+    public static void SetDragOrientation(UIElement source, Orientation? value)
+    {
+        source.SetValue(DragOrientationProperty, value);
+    }
+
     public static readonly DependencyProperty DragDirectlySelectedOnlyProperty =
       DependencyProperty.RegisterAttached("DragDirectlySelectedOnly", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
       
