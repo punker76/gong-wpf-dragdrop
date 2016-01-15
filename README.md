@@ -31,7 +31,7 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 
 #Release History
 
-+ **1.0.0** (tba Nov/Dec 2015)
++ **1.0.0** (tba 2016)
 	- [#107](https://github.com/punker76/gong-wpf-dragdrop/pull/107), [#108](https://github.com/punker76/gong-wpf-dragdrop/pull/108): Fixed Group insertion adorner
 	- [#116](https://github.com/punker76/gong-wpf-dragdrop/issues/116), [#117](https://github.com/punker76/gong-wpf-dragdrop/pull/117): Fixed weird behavior of Drag Adorner when dragging to window border
 	- [#118](https://github.com/punker76/gong-wpf-dragdrop/pull/118): Added HitTest4Type for ButtonBase (@toengi)
@@ -58,6 +58,7 @@ Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragd
 	- SHA: b73562542356e93b32d93c56396fc6d7dd5170c1 Minor drop insertion fix with RightToLeft flow direction.
 	- [#143](https://github.com/punker76/gong-wpf-dragdrop/pull/143): Allow target adorners on non-ItemsControls (@emsaks)
 	- [#139](https://github.com/punker76/gong-wpf-dragdrop/issues/139): Fixed COMException error when dragging over Skype: Provide new method `TryCatchOccurredException` in `IDragSource` to handle exceptions (thx to @Antonyo)
+	- [#161](https://github.com/punker76/gong-wpf-dragdrop/pull/161) Make DefaultDragHandler.CanStartDrag virtual (@Hinidu)
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/pull/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
