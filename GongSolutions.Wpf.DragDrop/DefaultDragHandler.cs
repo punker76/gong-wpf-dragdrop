@@ -38,7 +38,7 @@ namespace GongSolutions.Wpf.DragDrop
     /// </summary>
     /// <param name="dragInfo">The drag information.</param>
     /// <returns></returns>
-    public bool CanStartDrag(IDragInfo dragInfo)
+    public virtual bool CanStartDrag(IDragInfo dragInfo)
     {
       return true;
     }
