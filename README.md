@@ -1,6 +1,6 @@
 ![logo](GongSolutions.Wpf.DragDrop.Full.png)
 
-#Introduction
+## Introduction
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/punker76/gong-wpf-dragdrop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -24,12 +24,16 @@ It has the following features:
 + Can display Adorners to give the user visual feedback of the operation in progress.
 + Has sensible defaults so that you have to write less code for common operations.
 
-#Installation
+## Want to say thanks?
+ * Hit the :star: Star :star: button
+ * <a href='https://pledgie.com/campaigns/31030'><img alt='Click here to lend your support to: GongSolutions.WPF.DragDrop and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/31030.png?skin_name=chrome' border='0' ></a>
+
+## Installation
 
 You can download or fork the source code and compile it.  
 Or: Get the latest version via NuGet: [https://nuget.org/packages/gong-wpf-dragdrop](https://nuget.org/packages/gong-wpf-dragdrop/)
 
-#Release History
+## Release History
 
 + **1.0.0** (tba 2016)
 	- [#107](https://github.com/punker76/gong-wpf-dragdrop/pull/107), [#108](https://github.com/punker76/gong-wpf-dragdrop/pull/108): Fixed Group insertion adorner
@@ -178,9 +182,9 @@ wasn't a collection).
 + **0.1.0** (11 Nov, 2009)
 	- Initial Release.
 
-#Examples
+# Examples
 
-###Default Behaviour
+## Default Behaviour
 
 A simple example of adding drag/drop to a ListBox:
 
@@ -194,7 +198,7 @@ Setting the IsDragSource and IsDropTarget attached propeties to True on an Items
 
 If your project contains another ItemsControl with drag/drop enabled in this manner, and it is bound to a collection of the same type, then items can also be dragged and dropped between the controls.
 
-###Adding a Drop Handler
+## Adding a Drop Handler
 
 While the defaults can be useful in simple cases, you will usually want more control of what happens when data is dragged/dropped onto your control. You can delegate that responsibility to your ViewModel by setting the DropHandler attached property:
 
@@ -244,7 +248,7 @@ For more information, check out the full [DropHandlerExample](Examples).
 
 # License
 
-### BSD 3-Clause License
+## BSD 3-Clause License
 
 Copyright (c) 2015, Jan Karger (Steven Kirk)  
 All rights reserved.  
