@@ -26,14 +26,13 @@ namespace GongSolutions.Wpf.DragDrop
     public virtual void DragOver(IDropInfo dropInfo)
     {
       if (CanAcceptData(dropInfo)) {
-        // when source is the same as the target set the move effect otherwise set the copy effect
-        var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget
-                       || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
-                       || dropInfo.DragInfo.VisualSourceItem is TabItem
-                       || dropInfo.DragInfo.VisualSourceItem is TreeViewItem
-                       || dropInfo.DragInfo.VisualSourceItem is MenuItem
-                       || dropInfo.DragInfo.VisualSourceItem is ListBoxItem;
-        dropInfo.Effects = moveData ? DragDropEffects.Move : DragDropEffects.Copy;
+        // default should always the move action/effect
+        var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
+                       //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
+                       && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
+                       && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
+                       && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+        dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
         var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
         dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
       }
@@ -53,14 +52,13 @@ namespace GongSolutions.Wpf.DragDrop
       var destinationList = dropInfo.TargetCollection.TryGetList();
       var data = ExtractData(dropInfo.Data);
 
-      // when source is the same as the target remove the data from source and fix the insertion index
-      var moveData = dropInfo.DragInfo.VisualSource == dropInfo.VisualTarget
-                     || !dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
-                     || dropInfo.DragInfo.VisualSourceItem is TabItem
-                     || dropInfo.DragInfo.VisualSourceItem is TreeViewItem
-                     || dropInfo.DragInfo.VisualSourceItem is MenuItem
-                     || dropInfo.DragInfo.VisualSourceItem is ListBoxItem;
-      if (moveData)
+      // default should always the move action/effect
+      var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
+                     //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
+                     && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
+                     && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
+                     && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+      if (!copyData)
       {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
 
