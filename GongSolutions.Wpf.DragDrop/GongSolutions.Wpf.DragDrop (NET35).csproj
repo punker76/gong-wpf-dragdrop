@@ -92,6 +92,7 @@
     <Compile Include="Utilities\DragDropExtensions.cs" />
     <Compile Include="Utilities\HitTestUtilities.cs" />
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
+    <Compile Include="Utilities\RootElementFinder.cs" />
     <Compile Include="Utilities\TypeUtilities.cs" />
     <Compile Include="Utilities\VisualTreeExtensions.cs" />
   </ItemGroup>
