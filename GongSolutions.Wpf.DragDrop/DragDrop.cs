@@ -499,8 +499,8 @@ namespace GongSolutions.Wpf.DragDrop
 
       var bounds = VisualTreeHelper.GetDescendantBounds(target);
 
-      var rtb = new RenderTargetBitmap((int)(bounds.Width * dpiX / 96.0),
-                                       (int)(bounds.Height * dpiY / 96.0),
+      var rtb = new RenderTargetBitmap((int)Math.Ceiling(bounds.Width * dpiX / 96.0),
+                                       (int)Math.Ceiling(bounds.Height * dpiY / 96.0),
                                        dpiX,
                                        dpiY,
                                        PixelFormats.Pbgra32);
