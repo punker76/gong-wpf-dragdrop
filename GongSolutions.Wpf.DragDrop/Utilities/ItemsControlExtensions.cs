@@ -369,10 +369,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           } else {
             switch (searchDirection) {
               case Orientation.Horizontal:
-                distance = Math.Abs(position.X - p.X);
+                distance = position.X <= p.X ? p.X - position.X : position.X - uiElement.RenderSize.Width - p.X;
                 break;
               case Orientation.Vertical:
-                distance = Math.Abs(position.Y - p.Y);
+                distance = position.Y <= p.Y ? p.Y - position.Y : position.Y - uiElement.RenderSize.Height - p.Y;
                 break;
             }
           }
