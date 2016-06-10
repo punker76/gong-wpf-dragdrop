@@ -185,6 +185,12 @@ wasn't a collection).
 
 # Examples
 
+All examples use the namespace definition 
+
+```xml
+xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+```
+
 ## Default Behaviour
 
 A simple example of adding drag/drop to a ListBox:
