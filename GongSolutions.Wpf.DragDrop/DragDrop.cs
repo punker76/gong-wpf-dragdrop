@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Net;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -333,7 +335,21 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(DragMouseAnchorPointProperty, value);
     }
 
-    public static IDragSource DefaultDragHandler
+
+      public static readonly DependencyProperty ScrollDelayProperty = DependencyProperty.RegisterAttached(
+          "ScrollDelay", typeof(double), typeof(DragDrop), new PropertyMetadata(default(double)));
+
+      public static void SetScrollDelay(DependencyObject element, double value)
+      {
+          element.SetValue(ScrollDelayProperty, value);
+      }
+
+      public static double GetScrollDelay(DependencyObject element)
+      {
+          return (double) element.GetValue(ScrollDelayProperty);
+      }
+
+        public static IDragSource DefaultDragHandler
     {
       get
       {
@@ -932,7 +948,24 @@ namespace GongSolutions.Wpf.DragDrop
           e.Effects = DragDropEffects.None;
       }
 
-      Scroll(dropInfo.VisualTarget, e);
+
+        if (_canScroll)
+        {
+            _canScroll = false;
+            Scroll(dropInfo.VisualTarget, e);
+            var interval = GetScrollDelay(m_DragInfo.VisualSource);
+            if (interval > 0)
+            {
+                _canScrollDelayTimer.Interval = interval;
+                _canScrollDelayTimer.Start();
+            }
+            else
+            {
+                _canScroll = true;
+            }
+
+        }
+
     }
 
     private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
@@ -1013,5 +1046,13 @@ namespace GongSolutions.Wpf.DragDrop
     private static object m_ClickSupressItem;
     private static Point _adornerPos;
     private static Size _adornerSize;
+
+    private static bool _canScroll = true;
+    private static readonly Timer _canScrollDelayTimer = new Timer();
+
+      static DragDrop()
+      {
+          _canScrollDelayTimer.Elapsed += (sender, args) => _canScroll = true;
+      }
   }
 }
