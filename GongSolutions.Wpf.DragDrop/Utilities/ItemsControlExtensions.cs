@@ -80,9 +80,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       var itemType = GetItemContainerType(itemsControl, out isItemContainer);
 
       if (itemType != null) {
-        return isItemContainer
+        var retVal = isItemContainer
                  ? (UIElement)child.GetVisualAncestor(itemType, itemsControl)
                  : (UIElement)child.GetVisualAncestor(itemType);
+
+           return retVal;
       }
 
       return null;
