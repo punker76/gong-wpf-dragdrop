@@ -68,6 +68,8 @@ namespace GongSolutions.Wpf.DragDrop
       if (this.VisualTarget is ItemsControl) {
         var itemsControl = (ItemsControl)this.VisualTarget;
         item = itemsControl.GetItemContainerAt(this.DropPosition);
+        if (item != null && item.GetVisualAncestor<ItemsControl>() != itemsControl)
+           item = null;
         var directlyOverItem = item != null;
 
         this.TargetGroup = itemsControl.FindGroup(this.DropPosition);
@@ -75,8 +77,13 @@ namespace GongSolutions.Wpf.DragDrop
         this.VisualTargetFlowDirection = itemsControl.GetItemsPanelFlowDirection();
 
         if (item == null) {
-          item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
-          directlyOverItem = false;
+          try
+          {
+            item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
+            directlyOverItem = false;
+          }
+          catch(Exception)
+          { }
         }
 
         if (item == null && this.TargetGroup != null && this.TargetGroup.IsBottomLevel)
