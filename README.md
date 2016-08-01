@@ -65,7 +65,7 @@ Or: Get the latest version via NuGet: [https://www.nuget.org/packages/gong-wpf-d
 	- [#161](https://github.com/punker76/gong-wpf-dragdrop/pull/161) Make DefaultDragHandler.CanStartDrag virtual (@Hinidu)
 	- [#172](https://github.com/punker76/gong-wpf-dragdrop/issues/172) Fix DragAdorner cliping last right and bottom pixels [#173](https://github.com/punker76/gong-wpf-dragdrop/pull/173) (@andrewst)
 	- [#162](https://github.com/punker76/gong-wpf-dragdrop/issues/162) Fix for copy functionallity [#164](https://github.com/punker76/gong-wpf-dragdrop/pull/164)
-	- [#168](https://github.com/punker76/gong-wpf-dragdrop/issues/168), [#193](https://github.com/punker76/gong-wpf-dragdrop/pull/193) Enable drop targets if ItemsControl are in ItemsControl and the ItemsControl is empty
+	- [#168](https://github.com/punker76/gong-wpf-dragdrop/issues/168), [#193](https://github.com/punker76/gong-wpf-dragdrop/pull/193), [#181](https://github.com/punker76/gong-wpf-dragdrop/issues/181), [#182](https://github.com/punker76/gong-wpf-dragdrop/pull/182), [#179](https://github.com/punker76/gong-wpf-dragdrop/issues/179) Enable drop targets if ItemsControl are in ItemsControl and the ItemsControl is empty
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
