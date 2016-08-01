@@ -82,7 +82,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (itemType != null) {
         return isItemContainer
                  ? (UIElement)child.GetVisualAncestor(itemType, itemsControl)
-                 : (UIElement)child.GetVisualAncestor(itemType);
+                 : (UIElement)child.GetVisualAncestor(itemType, itemsControl.GetType());
       }
 
       return null;
@@ -123,7 +123,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                                result => {
                                  var itemContainer = isItemContainer
                                                        ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
-                                                       : result.VisualHit.GetVisualAncestor(itemContainerType);
+                                                       : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl.GetType());
                                  if (itemContainer != null && !hits.Contains(itemContainer) && ((UIElement)itemContainer).IsVisible == true) {
                                    hits.Add(itemContainer);
                                  }

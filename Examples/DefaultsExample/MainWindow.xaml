@@ -1307,5 +1307,40 @@
         </ListBox>
       </Grid>
     </TabItem>
+
+    <TabItem Header="List in List Example">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ItemsControl Grid.Column="0"
+                      ItemsSource="{Binding Collection1}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.UseDefaultDragAdorner="True">
+        </ItemsControl>
+
+        <ListBox Grid.Column="1" x:Name="outer">
+          <Border BorderThickness="1" BorderBrush="Black">
+            <ListBox Height="200" Width="200" x:Name="inner1" Background="Aquamarine"
+                 ItemsSource="{Binding Collection2}"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultDragAdorner="True">
+            </ListBox>
+          </Border>
+          <Border BorderThickness="1" BorderBrush="Black">
+            <ListBox Height="200" Width="200" x:Name="inner2"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.UseDefaultDragAdorner="True">
+              <ListBoxItem Content="Test1"></ListBoxItem>
+            </ListBox>
+          </Border>
+        </ListBox>
+
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>

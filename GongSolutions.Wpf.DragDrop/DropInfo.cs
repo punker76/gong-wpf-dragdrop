@@ -67,6 +67,8 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (this.VisualTarget is ItemsControl) {
         var itemsControl = (ItemsControl)this.VisualTarget;
+        //System.Diagnostics.Debug.WriteLine(">>> Name = {0}", itemsControl.Name);
+        // get item under the mouse
         item = itemsControl.GetItemContainerAt(this.DropPosition);
         var directlyOverItem = item != null;
 
@@ -75,6 +77,7 @@ namespace GongSolutions.Wpf.DragDrop
         this.VisualTargetFlowDirection = itemsControl.GetItemsPanelFlowDirection();
 
         if (item == null) {
+          // ok, no item found, so maybe we can found an item at top, left, right or bottom
           item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
           directlyOverItem = false;
         }
@@ -89,7 +92,8 @@ namespace GongSolutions.Wpf.DragDrop
           }
         }
 
-        if (item != null) {
+        if (item != null)
+        {
           itemParent = ItemsControl.ItemsControlFromItemContainer(item);
 
           this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
