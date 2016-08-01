@@ -10,11 +10,11 @@
 [![Issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
 [![Twitter](https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square)](https://twitter.com/punker76)
 
-The **GongSolutions.WPF.DragDrop** library is a drag'n'drop framework for WPF.
+The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framework for WPF.
 
 The original source is from https://code.google.com/archive/p/gong-wpf-dragdrop (but this git repository is now the main source).
 
-It has the following features:
+## Features
 
 + Works with MVVM : the logic for the drag and drop can be placed in a ViewModel. No code needs to be placed in codebehind, instead attached properties are used to bind to a drag handler/drop handler in a ViewModel.
 + Works with multiple selections.
@@ -25,7 +25,8 @@ It has the following features:
 + Has sensible defaults so that you have to write less code for common operations.
 
 ## Want to say thanks?
- * Hit the :star: Star :star: button
+
++ This framework is free, can be used in commercial applications too, so please hit the :star: Star :star: button, cause this is the only payment (Cash donations are also being accepted ;-P ).
 
 ## Installation
 
@@ -64,6 +65,7 @@ Or: Get the latest version via NuGet: [https://www.nuget.org/packages/gong-wpf-d
 	- [#161](https://github.com/punker76/gong-wpf-dragdrop/pull/161) Make DefaultDragHandler.CanStartDrag virtual (@Hinidu)
 	- [#172](https://github.com/punker76/gong-wpf-dragdrop/issues/172) Fix DragAdorner cliping last right and bottom pixels [#173](https://github.com/punker76/gong-wpf-dragdrop/pull/173) (@andrewst)
 	- [#162](https://github.com/punker76/gong-wpf-dragdrop/issues/162) Fix for copy functionallity [#164](https://github.com/punker76/gong-wpf-dragdrop/pull/164)
+	- [#168](https://github.com/punker76/gong-wpf-dragdrop/issues/168), [#193](https://github.com/punker76/gong-wpf-dragdrop/pull/193) Enable drop targets if ItemsControl are in ItemsControl and the ItemsControl is empty
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
@@ -257,7 +259,7 @@ For more information, check out the full [DropHandlerExample](Examples).
 
 ## BSD 3-Clause License
 
-Copyright (c) 2015, Jan Karger (Steven Kirk)  
+Copyright (c) 2015-16, Jan Karger (Steven Kirk)  
 All rights reserved.  
 
 Redistribution and use in source and binary forms, with or without  
