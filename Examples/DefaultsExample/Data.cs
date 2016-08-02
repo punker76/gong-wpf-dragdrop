@@ -272,4 +272,9 @@ namespace DefaultsExample
 
     private string m_Group;
   }
+
+  internal class ItemViewModel
+  {
+    public int Index { get; set; }
+  }
 }
