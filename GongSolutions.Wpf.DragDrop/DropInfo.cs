@@ -128,7 +128,7 @@ namespace GongSolutions.Wpf.DragDrop
               }
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
-            //System.Diagnostics.Debug.WriteLine("==> DropInfo: {0}, {1}, {2}, Y={3}", this.InsertPosition, item, this.InsertIndex, currentYPos);
+            //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, Y={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentYPos, item);
           }
           else {
             var currentXPos = e.GetPosition(item).X;
@@ -158,17 +158,17 @@ namespace GongSolutions.Wpf.DragDrop
               }
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
-            //System.Diagnostics.Debug.WriteLine("==> DropInfo: InsPos={0}, InsIndex={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
+            //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
           } 
         }
         else
         {
           this.TargetCollection = itemsControl.ItemsSource ?? itemsControl.Items;
           this.InsertIndex = itemsControl.Items.Count;
-          //System.Diagnostics.Debug.WriteLine("==> DropInfo: {0}, item=NULL, {1}", this.InsertPosition, this.InsertIndex);
+          //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, item=NULL, idx={1}", this.InsertPosition, this.InsertIndex);
         }
       } else {
-            this.VisualTargetItem = this.VisualTarget; 
+          this.VisualTargetItem = this.VisualTarget; 
       }
     }
 

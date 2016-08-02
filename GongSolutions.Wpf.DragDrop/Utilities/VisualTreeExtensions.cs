@@ -73,7 +73,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     /// </summary>
     public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, Type itemContainerSearchType)
     {
-      var currentVisual = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
+      var visualTreeRoot = d.FindVisualTreeRoot();
+      var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
 
       while (currentVisual != null && itemSearchType != null) {
         var currentVisualType = currentVisual.GetType();

@@ -1321,7 +1321,7 @@
                       dd:DragDrop.UseDefaultDragAdorner="True">
         </ItemsControl>
 
-        <ListBox Grid.Column="1" x:Name="outer">
+        <ListBox Grid.Column="1" x:Name="outer" dd:DragDrop.IsDropTarget="True">
           <Border BorderThickness="1" BorderBrush="Black">
             <ListBox Height="200" Width="200" x:Name="inner1" Background="Aquamarine"
                  ItemsSource="{Binding Collection2}"

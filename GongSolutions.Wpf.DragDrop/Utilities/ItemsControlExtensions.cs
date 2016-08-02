@@ -117,19 +117,36 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         hitTestGeometry = geometryGroup;
       }
 
-      var hits = new List<DependencyObject>();
+      var hits = new HashSet<DependencyObject>();
 
       VisualTreeHelper.HitTest(itemsControl, null,
-                               result => {
-                                 var itemContainer = isItemContainer
-                                                       ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
-                                                       : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl.GetType());
-                                 if (itemContainer != null && !hits.Contains(itemContainer) && ((UIElement)itemContainer).IsVisible == true) {
-                                   hits.Add(itemContainer);
-                                 }
-                                 return HitTestResultBehavior.Continue;
-                               },
-                               new GeometryHitTestParameters(hitTestGeometry));
+        result =>
+        {
+          var itemContainer = isItemContainer
+            ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
+            : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl.GetType());
+          if (itemContainer != null && ((UIElement) itemContainer).IsVisible == true)
+          {
+            var tvItem = itemContainer as TreeViewItem;
+            if (tvItem != null)
+            {
+              var tv = tvItem.GetVisualAncestor<TreeView>();
+              if (tv == itemsControl)
+              {
+                hits.Add(itemContainer);
+              }
+            }
+            else
+            {
+              if (itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) >= 0)
+              {
+                hits.Add(itemContainer);
+              }
+            }
+          }
+          return HitTestResultBehavior.Continue;
+        },
+        new GeometryHitTestParameters(hitTestGeometry));
 
       return GetClosest(itemsControl, hits, position, searchDirection);
     }
@@ -346,7 +363,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       }
     }
 
-    private static UIElement GetClosest(ItemsControl itemsControl, List<DependencyObject> items,
+    private static UIElement GetClosest(ItemsControl itemsControl, IEnumerable<DependencyObject> items,
                                         Point position, Orientation searchDirection)
     {
       //Console.WriteLine("GetClosest - {0}", itemsControl.ToString());
