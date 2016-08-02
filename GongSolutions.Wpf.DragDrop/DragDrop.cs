@@ -415,7 +415,7 @@ namespace GongSolutions.Wpf.DragDrop
           uiElement.PreviewGiveFeedback -= DropTarget_GiveFeedback;
         }
 
-        Mouse.OverrideCursor = null;
+//        Mouse.OverrideCursor = null;
       }
     }
 
@@ -824,7 +824,7 @@ namespace GongSolutions.Wpf.DragDrop
     {
       DropTarget_PreviewDragOver(sender, e);
 
-      Mouse.OverrideCursor = Cursors.Arrow;
+//      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private static void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
@@ -833,7 +833,7 @@ namespace GongSolutions.Wpf.DragDrop
       EffectAdorner = null;
       DropTargetAdorner = null;
 
-      Mouse.OverrideCursor = null;
+//      Mouse.OverrideCursor = null;
     }
 
     private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
@@ -949,7 +949,7 @@ namespace GongSolutions.Wpf.DragDrop
       dropHandler.Drop(dropInfo);
       dragHandler.Dropped(dropInfo);
 
-      Mouse.OverrideCursor = null;
+//      Mouse.OverrideCursor = null;
       e.Handled = !dropInfo.NotHandled;
     }
 
