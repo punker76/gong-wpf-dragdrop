@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>gong-wpf-dragdrop</id>
-        <version>1.0.0-ALPHA014</version>
+        <version>1.0.0-ALPHA015</version>
         <title>gong-wpf-dragdrop</title>
         <authors>Jan Karger (punker76), Steven Kirk, mitchell.jon</authors>
         <owners>punker76</owners>
