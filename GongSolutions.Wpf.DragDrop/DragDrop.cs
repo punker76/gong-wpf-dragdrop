@@ -701,6 +701,12 @@ namespace GongSolutions.Wpf.DragDrop
 
       m_DragInfo = new DragInfo(sender, e);
 
+      if (m_DragInfo.VisualSourceItem == null)
+      {
+        m_DragInfo = null;
+        return;
+      }
+
       var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
       if (!dragHandler.CanStartDrag(m_DragInfo)) {
         m_DragInfo = null;

@@ -69,6 +69,22 @@ namespace GongSolutions.Wpf.DragDrop
 
           if (itemParent != null) {
             this.SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
+            if (itemParent != itemsControl)
+            {
+              var tvItem = item as TreeViewItem;
+              if (tvItem != null)
+              {
+                var tv = tvItem.GetVisualAncestor<TreeView>();
+                if (tv != null && tv != itemsControl && !tv.IsDragSource())
+                {
+                  return;
+                }
+              }
+              else if (itemsControl.ItemContainerGenerator.IndexFromContainer(itemParent) < 0 && !itemParent.IsDragSource())
+              {
+                return;
+              }
+            }
             this.SourceIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
             this.SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
           } else {

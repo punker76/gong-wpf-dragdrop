@@ -1405,5 +1405,44 @@
         </TreeView>
       </Grid>
     </TabItem>
+
+    <TabItem Header="Issue #146">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" Margin="4" ItemsSource="{Binding TreeCollection}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Grid AllowDrop="True">
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="{Binding Caption}" />
+                <!-- This nested ListView contains some items and problem occurs when I start dragging parent item from position in nested ListView OR dragging other item ovet this item -->
+                <ListView Grid.Row="1" ItemsSource="{Binding Children}" AllowDrop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+              </Grid>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+        <ListView Grid.Row="1" Margin="4" ItemsSource="{Binding TreeCollection2}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Grid AllowDrop="True">
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="{Binding Caption}" />
+                <!-- This nested ListView contains some items and problem occurs when I start dragging parent item from position in nested ListView OR dragging other item ovet this item -->
+                <ListView Grid.Row="1" MinHeight="25" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" ItemsSource="{Binding Children}" AllowDrop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+              </Grid>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>

@@ -15,6 +15,16 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     }
 
     /// <summary>
+    /// Determines whether the given element is ignored on drop action (<see cref="DragDrop.IsDragSource"/>).
+    /// </summary>
+    /// <param name="element">The given element.</param>
+    /// <returns>Element is ignored or not.</returns>
+    public static bool IsDragSource(this UIElement element)
+    {
+      return element != null && DragDrop.GetIsDragSource(element);
+    }
+
+    /// <summary>
     /// Determines whether the given element is ignored on drop action (<see cref="DragDrop.IsDropTarget"/>).
     /// </summary>
     /// <param name="element">The given element.</param>
