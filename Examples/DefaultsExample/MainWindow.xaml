@@ -18,6 +18,7 @@
               BorderBrush="Gray"
               BorderThickness="1"
               CornerRadius="2"
+              SnapsToDevicePixels="True"
               Margin="1">
         <StackPanel Orientation="Horizontal">
           <Image Source="/icon.png"
@@ -204,6 +205,7 @@
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True"
                  dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                 dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                  dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
         <ListBox Grid.Column="1"
                  Grid.Row="1"

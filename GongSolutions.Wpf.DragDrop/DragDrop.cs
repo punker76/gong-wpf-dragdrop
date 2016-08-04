@@ -67,6 +67,19 @@ namespace GongSolutions.Wpf.DragDrop
       return (DataTemplateSelector) element.GetValue(DragAdornerTemplateSelectorProperty);
     }
 
+    public static readonly DependencyProperty UseVisualSourceItemSizeForDragAdornerProperty =
+      DependencyProperty.RegisterAttached("UseVisualSourceItemSizeForDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
+    public static bool GetUseVisualSourceItemSizeForDragAdorner(UIElement target)
+    {
+      return (bool)target.GetValue(UseVisualSourceItemSizeForDragAdornerProperty);
+    }
+
+    public static void SetUseVisualSourceItemSizeForDragAdorner(UIElement target, bool value)
+    {
+      target.SetValue(UseVisualSourceItemSizeForDragAdornerProperty, value);
+    }
+
     public static readonly DependencyProperty UseDefaultDragAdornerProperty =
       DependencyProperty.RegisterAttached("UseDefaultDragAdorner", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
 
@@ -415,7 +428,7 @@ namespace GongSolutions.Wpf.DragDrop
           uiElement.PreviewGiveFeedback -= DropTarget_GiveFeedback;
         }
 
-//        Mouse.OverrideCursor = null;
+        Mouse.OverrideCursor = null;
       }
     }
 
@@ -427,6 +440,7 @@ namespace GongSolutions.Wpf.DragDrop
       UIElement adornment = null;
 
       var useDefaultDragAdorner = GetUseDefaultDragAdorner(m_DragInfo.VisualSource);
+      var useVisualSourceItemSizeForDragAdorner = GetUseVisualSourceItemSizeForDragAdorner(m_DragInfo.VisualSource);
 
       if (template == null && templateSelector == null && useDefaultDragAdorner) {
         var bs = CaptureScreen(m_DragInfo.VisualSourceItem, m_DragInfo.VisualSourceFlowDirection);
@@ -451,17 +465,31 @@ namespace GongSolutions.Wpf.DragDrop
             itemsControl.ItemTemplate = template;
             itemsControl.ItemTemplateSelector = templateSelector;
 
-            // The ItemsControl doesn't display unless we create a border to contain it.
-            // Not quite sure why this is...
-            var border = new Border();
-            border.Child = itemsControl;
-            adornment = border;
+            if (useVisualSourceItemSizeForDragAdorner)
+            {
+              var bounds = VisualTreeHelper.GetDescendantBounds(m_DragInfo.VisualSourceItem);
+              itemsControl.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
+            }
+
+            // The ItemsControl doesn't display unless we create a grid to contain it.
+            // Not quite sure why we need this...
+            var grid = new Grid();
+            grid.Children.Add(itemsControl);
+            adornment = grid;
           }
         } else {
           var contentPresenter = new ContentPresenter();
           contentPresenter.Content = m_DragInfo.Data;
           contentPresenter.ContentTemplate = template;
           contentPresenter.ContentTemplateSelector = templateSelector;
+
+          if (useVisualSourceItemSizeForDragAdorner)
+          {
+            var bounds = VisualTreeHelper.GetDescendantBounds(m_DragInfo.VisualSourceItem);
+            contentPresenter.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
+            contentPresenter.SetValue(FrameworkElement.MinHeightProperty, bounds.Height);
+          }
+
           adornment = contentPresenter;
         }
       }
@@ -807,14 +835,13 @@ namespace GongSolutions.Wpf.DragDrop
         DragAdorner = null;
         EffectAdorner = null;
         DropTargetAdorner = null;
+        Mouse.OverrideCursor = null;
       }
     }
 
     private static void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
     {
       DropTarget_PreviewDragOver(sender, e);
-
-//      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private static void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
@@ -822,8 +849,6 @@ namespace GongSolutions.Wpf.DragDrop
       DragAdorner = null;
       EffectAdorner = null;
       DropTargetAdorner = null;
-
-//      Mouse.OverrideCursor = null;
     }
 
     private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
@@ -939,18 +964,29 @@ namespace GongSolutions.Wpf.DragDrop
       dropHandler.Drop(dropInfo);
       dragHandler.Dropped(dropInfo);
 
-//      Mouse.OverrideCursor = null;
+      Mouse.OverrideCursor = null;
       e.Handled = !dropInfo.NotHandled;
     }
 
     private static void DropTarget_GiveFeedback(object sender, GiveFeedbackEventArgs e)
     {
-      if (EffectAdorner != null) {
+      if (EffectAdorner != null)
+      {
         e.UseDefaultCursors = false;
         e.Handled = true;
-      } else {
+        if (Mouse.OverrideCursor != Cursors.Arrow)
+        {
+          Mouse.OverrideCursor = Cursors.Arrow;
+        }
+      }
+      else
+      {
         e.UseDefaultCursors = true;
         e.Handled = true;
+        if (Mouse.OverrideCursor != null)
+        {
+          Mouse.OverrideCursor = null;
+        }
       }
     }
 
