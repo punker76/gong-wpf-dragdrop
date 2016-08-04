@@ -471,11 +471,7 @@ namespace GongSolutions.Wpf.DragDrop
           adornment.Opacity = GetDefaultDragAdornerOpacity(m_DragInfo.VisualSource);
         }
 
-        var parentWindow = m_DragInfo.VisualSource.GetVisualAncestor<Window>();
-        var rootElement = parentWindow != null ? parentWindow.Content as UIElement : null;
-        if (rootElement == null && Application.Current != null && Application.Current.MainWindow != null) {
-          rootElement = (UIElement)Application.Current.MainWindow.Content;
-        }
+        var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
         //                i don't want the fu... windows forms reference
         //                if (rootElement == null) {
         //                    var elementHost = m_DragInfo.VisualSource.GetVisualAncestor<ElementHost>();
@@ -527,7 +523,7 @@ namespace GongSolutions.Wpf.DragDrop
       var template = GetEffectAdornerTemplate(m_DragInfo.VisualSource, dropInfo.Effects, dropInfo.DestinationText);
 
       if (template != null) {
-        var rootElement = (UIElement)Application.Current.MainWindow.Content;
+        var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
         UIElement adornment = null;
 
         var contentPresenter = new ContentPresenter();
