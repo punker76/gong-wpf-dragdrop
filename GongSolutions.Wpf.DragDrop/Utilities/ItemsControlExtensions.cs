@@ -119,7 +119,15 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
       var hits = new HashSet<DependencyObject>();
 
-      VisualTreeHelper.HitTest(itemsControl, null,
+      VisualTreeHelper.HitTest(itemsControl,
+        obj =>
+        {
+          if (obj is Viewport3D)
+          {
+            return HitTestFilterBehavior.Stop;
+          }
+          return HitTestFilterBehavior.Continue;
+        },
         result =>
         {
           var itemContainer = isItemContainer
