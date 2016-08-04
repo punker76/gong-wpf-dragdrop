@@ -1342,5 +1342,47 @@
 
       </Grid>
     </TabItem>
+    
+    <TabItem Header="Issue #188 wrong item on drag start">
+      <Grid>
+        <ItemsControl
+            dd:DragDrop.IsDropTarget="True"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.UseDefaultDragAdorner="True"
+            dd:DragDrop.DefaultDragAdornerOpacity="0.6"
+            dd:DragDrop.DropHandler="{Binding}"
+            Background="Transparent"
+            >
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type local:ItemViewModel}">
+              <GroupBox Margin="0,0,0,10">
+                <GroupBox.Header>
+                  <TextBlock>
+                    <Run Text="Item " />
+                    <Run Text="{Binding Index, Mode=OneWay, StringFormat={}Index {0}}" />
+                  </TextBlock>
+                </GroupBox.Header>
+                <Grid Margin="10">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+
+                  <ComboBox Grid.Column="0" VerticalAlignment="Center" Height="25" MinWidth="70" Margin="10,0,0,0" />
+                  <Button Grid.Column="1" Margin="30,0,0,0" Content="..." Width="70" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+              </GroupBox>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+          <local:ItemViewModel Index="0" />
+          <local:ItemViewModel Index="1" />
+          <local:ItemViewModel Index="2" />
+          <local:ItemViewModel Index="3" />
+        </ItemsControl>
+      </Grid>
+    </TabItem>
   </TabControl>
 </Window>
