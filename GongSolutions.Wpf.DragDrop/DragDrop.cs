@@ -472,15 +472,6 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
-        //                i don't want the fu... windows forms reference
-        //                if (rootElement == null) {
-        //                    var elementHost = m_DragInfo.VisualSource.GetVisualAncestor<ElementHost>();
-        //                    rootElement = elementHost != null ? elementHost.Child : null;
-        //                }
-        if (rootElement == null) {
-          rootElement = m_DragInfo.VisualSource.GetVisualAncestor<UserControl>();
-        }
-
         DragAdorner = new DragAdorner(rootElement, adornment);
       }
     }
@@ -524,13 +515,10 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (template != null) {
         var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
-        UIElement adornment = null;
 
-        var contentPresenter = new ContentPresenter();
-        contentPresenter.Content = m_DragInfo.Data;
-        contentPresenter.ContentTemplate = template;
-
-        adornment = contentPresenter;
+        var adornment = new ContentPresenter();
+        adornment.Content = m_DragInfo.Data;
+        adornment.ContentTemplate = template;
 
         EffectAdorner = new DragAdorner(rootElement, adornment, dropInfo.Effects);
       }
