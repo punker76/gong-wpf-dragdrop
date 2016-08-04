@@ -555,11 +555,16 @@
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
               <TextBlock Text="::"
+                         dd:DragDrop.DragSourceIgnore="False"
+                         Width="15"
+                         TextAlignment="Center"
+                         Margin="-4 -1 0 -1"
+                         Background="Transparent"
                          FontWeight="Bold"
                          Grid.Column="0" />
               <TextBox Grid.Column="1"
                        Text="{Binding Name}"
-                       Margin="5 1 5 1" />
+                       Margin="0 1 4 1" />
             </Grid>
           </DataTemplate>
           <DataTemplate x:Key="CloningAdornerTemplate"
@@ -581,7 +586,13 @@
                  dd:DragDrop.DragAdornerTemplate="{StaticResource CloningAdornerTemplate}"
                  dd:DragDrop.UseDefaultDragAdorner="True"
                  dd:DragDrop.IsDragSource="True"
-                 dd:DragDrop.IsDropTarget="True" />
+                 dd:DragDrop.IsDropTarget="True">
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+              <Setter Property="dd:DragDrop.DragSourceIgnore" Value="True" />
+            </Style>
+          </ListBox.ItemContainerStyle>
+        </ListBox>
         <ListBox Grid.Column="1"
                  ItemsSource="{Binding ClonableCollection2}"
                  SelectionMode="Extended"

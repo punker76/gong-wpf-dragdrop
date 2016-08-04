@@ -305,7 +305,7 @@ namespace GongSolutions.Wpf.DragDrop
     }
 
     public static readonly DependencyProperty DragSourceIgnoreProperty =
-      DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+      DependencyProperty.RegisterAttached("DragSourceIgnore", typeof(bool), typeof(DragDrop), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
     public static bool GetDragSourceIgnore(UIElement source)
     {

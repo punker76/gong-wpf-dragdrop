@@ -75,6 +75,7 @@ Or: Get the latest version via NuGet: [https://www.nuget.org/packages/gong-wpf-d
 	- [#146](https://github.com/punker76/gong-wpf-dragdrop/issues/146) Fix `The specified Visual is not an ancestor of this Visual` exception
 	- [#167](https://github.com/punker76/gong-wpf-dragdrop/issues/167) Fix `VisualTreeHelper.HitTest` exception with Viewport3D usage (HitTestParameters are not supported on Viewport3DVisual)
 	- [#151](https://github.com/punker76/gong-wpf-dragdrop/issues/151) Add new attached dependency property `UseVisualSourceItemSizeForDragAdorner`, so the `DragAdorner` uses the size of the visual source item as minimum value.
+	- [#187](https://github.com/punker76/gong-wpf-dragdrop/issues/187) Change `DragSourceIgnore` attached property to use `FrameworkPropertyMetadataOptions.Inherits` flag which makes this functionality much more useful and easier to control (thx to @mtdaniels)
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
