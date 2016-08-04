@@ -95,6 +95,8 @@ namespace GongSolutions.Wpf.DragDrop
         if (item != null)
         {
           itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+          this.VisualTargetOrientation = itemParent.GetItemsPanelOrientation();
+          this.VisualTargetFlowDirection = itemParent.GetItemsPanelFlowDirection();
 
           this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
           this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;

@@ -5,8 +5,8 @@
         xmlns:local="clr-namespace:DefaultsExample"
         Title="Gong Solutions Drag'n'Drop: Defaults Example"
         WindowStartupLocation="CenterScreen"
-        Height="600"
-        Width="800">
+        Height="700"
+        Width="900">
 
   <Window.DataContext>
     <local:Data />
@@ -1380,6 +1380,29 @@
           <local:ItemViewModel Index="2" />
           <local:ItemViewModel Index="3" />
         </ItemsControl>
+      </Grid>
+    </TabItem>
+
+    <TabItem Header="Issue #88">
+      <Grid>
+        <TreeView ItemsSource="{Binding TreeCollection}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+              <Setter Property="ItemsPanel">
+                <Setter.Value>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
+                  </ItemsPanelTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </TreeView.ItemContainerStyle>
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+              <TextBlock Text="{Binding Caption}" Margin="2" />
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
       </Grid>
     </TabItem>
   </TabControl>

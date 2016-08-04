@@ -221,7 +221,6 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
         var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
         var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
-
         if (orientationProperty != null) {
           return (Orientation)orientationProperty.GetValue(itemsPanel, null);
         }
@@ -233,12 +232,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
     public static FlowDirection GetItemsPanelFlowDirection(this ItemsControl itemsControl)
     {
-      var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>();
-
+      var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement;
       if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0) {
         var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
         var flowDirectionProperty = itemsPanel.GetType().GetProperty("FlowDirection", typeof(FlowDirection));
-
         if (flowDirectionProperty != null) {
           return (FlowDirection)flowDirectionProperty.GetValue(itemsPanel, null);
         }
@@ -384,6 +381,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             var hyp = Math.Sqrt(Math.Pow(xDiff, 2d) + Math.Pow(yDiff, 2d));
             distance = Math.Abs(hyp);
           } else {
+            var itemParent = ItemsControl.ItemsControlFromItemContainer(uiElement);
+            if (itemParent != null && itemParent != itemsControl)
+            {
+              searchDirection = itemParent.GetItemsPanelOrientation();
+            }
             switch (searchDirection) {
               case Orientation.Horizontal:
                 distance = position.X <= p.X ? p.X - position.X : position.X - uiElement.RenderSize.Width - p.X;
