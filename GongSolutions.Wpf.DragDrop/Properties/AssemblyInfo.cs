@@ -1,6 +1,10 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
+
+[assembly: XmlnsPrefix("urn:gong-wpf-dragdrop", "dd")]
+[assembly: XmlnsDefinition("urn:gong-wpf-dragdrop", "GongSolutions.Wpf.DragDrop")]
+[assembly: XmlnsDefinition("urn:gong-wpf-dragdrop", "GongSolutions.Wpf.DragDrop.Utilities")]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information

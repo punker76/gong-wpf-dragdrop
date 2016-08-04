@@ -71,6 +71,7 @@ Or: Get the latest version via NuGet: [https://www.nuget.org/packages/gong-wpf-d
 	- [#188](https://github.com/punker76/gong-wpf-dragdrop/issues/188) Fix wrong start index with ItemsControl [#196](https://github.com/punker76/gong-wpf-dragdrop/pull/196), [#181](https://github.com/punker76/gong-wpf-dragdrop/issues/181), [#182](https://github.com/punker76/gong-wpf-dragdrop/pull/182) (@faeriedust)
 	- [#165](https://github.com/punker76/gong-wpf-dragdrop/pull/165), [#171](https://github.com/punker76/gong-wpf-dragdrop/issues/171) Find correct current adorner layer (root element) (@starguy)
 	- [#88](https://github.com/punker76/gong-wpf-dragdrop/issues/88) Fix finding target orientaion and flow direction (e.g. for TreeView with WrapPanel)
+	- [#104](https://github.com/punker76/gong-wpf-dragdrop/issues/104) Add XmlnsDefinition to AssemblyInfo, which can be used now in Xaml like this: `xmlns:dd="urn:gong-wpf-dragdrop"`
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
