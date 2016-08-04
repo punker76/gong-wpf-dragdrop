@@ -1350,9 +1350,7 @@
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.UseDefaultDragAdorner="True"
             dd:DragDrop.DefaultDragAdornerOpacity="0.6"
-            dd:DragDrop.DropHandler="{Binding}"
-            Background="Transparent"
-            >
+            Background="Transparent">
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type local:ItemViewModel}">
               <GroupBox Margin="0,0,0,10">
