@@ -1353,7 +1353,7 @@
             Background="Transparent">
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type local:ItemViewModel}">
-              <GroupBox Margin="0,0,0,10">
+              <GroupBox Margin="0,0,0,10" Background="Transparent">
                 <GroupBox.Header>
                   <TextBlock>
                     <Run Text="Item " />
