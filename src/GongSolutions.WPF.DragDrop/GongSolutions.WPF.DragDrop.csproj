@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
     <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -126,6 +127,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultDragHandler.cs" />
+    <Compile Include="DefaultDropHandler.cs" />
+    <Compile Include="DragAdorner.cs" />
+    <Compile Include="DragDrop.cs" />
+    <Compile Include="DragInfo.cs" />
+    <Compile Include="DropInfo.cs" />
+    <Compile Include="DropTargetAdorner.cs" />
+    <Compile Include="DropTargetAdorners.cs" />
+    <Compile Include="DropTargetHighlightAdorner.cs" />
+    <Compile Include="DropTargetInsertionAdorner.cs" />
+    <Compile Include="GlobalAssemblyInfo.cs" />
+    <Compile Include="Icons\IconFactory.cs" />
+    <Compile Include="IDragInfo.cs" />
+    <Compile Include="IDragSource.cs" />
+    <Compile Include="IDropInfo.cs" />
+    <Compile Include="IDropTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,6 +156,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Utilities\DragDropExtensions.cs" />
+    <Compile Include="Utilities\HitTestUtilities.cs" />
+    <Compile Include="Utilities\ItemsControlExtensions.cs" />
+    <Compile Include="Utilities\RootElementFinder.cs" />
+    <Compile Include="Utilities\TypeUtilities.cs" />
+    <Compile Include="Utilities\VisualTreeExtensions.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -149,6 +172,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\EffectCopy.png" />
+    <Resource Include="Icons\EffectLink.png" />
+    <Resource Include="Icons\EffectMove.png" />
+    <Resource Include="Icons\EffectNone.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -157,4 +186,26 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\.paket\paket.targets" />
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="System.Windows.Controls.Input.Toolkit">
+          <HintPath>..\packages\WPFToolkit\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Windows.Controls.Layout.Toolkit">
+          <HintPath>..\packages\WPFToolkit\lib\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="WPFToolkit">
+          <HintPath>..\packages\WPFToolkit\lib\WPFToolkit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
 </Project>

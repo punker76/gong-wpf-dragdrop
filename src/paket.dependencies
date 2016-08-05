@@ -1,0 +1,5 @@
+source https://nuget.org/api/v2
+
+framework: net35
+
+nuget WPFToolkit
