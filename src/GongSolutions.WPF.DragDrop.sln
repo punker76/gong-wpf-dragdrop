@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.WPF.DragDrop", "GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj", "{8A549ADE-DB0A-487F-8B66-EECDD731175D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_NET35|Any CPU = Debug_NET35|Any CPU
+		Debug_NET4|Any CPU = Debug_NET4|Any CPU
+		Debug_NET45|Any CPU = Debug_NET45|Any CPU
+		Debug_NET46|Any CPU = Debug_NET46|Any CPU
+		Release_NET35|Any CPU = Release_NET35|Any CPU
+		Release_NET4|Any CPU = Release_NET4|Any CPU
+		Release_NET45|Any CPU = Release_NET45|Any CPU
+		Release_NET46|Any CPU = Release_NET46|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET35|Any CPU.ActiveCfg = Debug_NET35|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET35|Any CPU.Build.0 = Debug_NET35|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET4|Any CPU.ActiveCfg = Debug_NET4|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET4|Any CPU.Build.0 = Debug_NET4|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET45|Any CPU.ActiveCfg = Debug_NET45|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET45|Any CPU.Build.0 = Debug_NET45|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET46|Any CPU.ActiveCfg = Debug_NET46|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Debug_NET46|Any CPU.Build.0 = Debug_NET46|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET35|Any CPU.ActiveCfg = Release_NET35|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET35|Any CPU.Build.0 = Release_NET35|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET4|Any CPU.ActiveCfg = Release_NET4|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET4|Any CPU.Build.0 = Release_NET4|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET45|Any CPU.ActiveCfg = Release_NET45|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET45|Any CPU.Build.0 = Release_NET45|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET46|Any CPU.ActiveCfg = Release_NET46|Any CPU
+		{8A549ADE-DB0A-487F-8B66-EECDD731175D}.Release_NET46|Any CPU.Build.0 = Release_NET46|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
