@@ -1,0 +1,19 @@
+﻿<Window x:Class="Showcase.WPF.DragDrop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+      
+      <ListBox dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+        <ListBoxItem>Test 1</ListBoxItem>
+        <ListBoxItem>Test 2</ListBoxItem>
+        <ListBoxItem>Test 3</ListBoxItem>
+        <ListBoxItem>Test 4</ListBoxItem>
+      </ListBox>
+        
+    </Grid>
+</Window>

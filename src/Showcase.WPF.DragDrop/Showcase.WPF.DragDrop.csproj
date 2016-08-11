@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug_NET4</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8A549ADE-DB0A-487F-8B66-EECDD731175D}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <ProjectGuid>{25CB3BBA-2D0D-4D40-8DEA-3867F174E3CA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
-    <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
+    <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
+    <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -19,7 +19,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\$(AssemblyName)\Debug_NET35\</OutputPath>
     <IntermediateOutputPath>obj\Debug_NET35\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Debug_NET35\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>DEBUG;TRACE;NET35</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,7 +30,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\$(AssemblyName)\Debug_NET4\</OutputPath>
     <IntermediateOutputPath>obj\Debug_NET4\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Debug_NET4\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,7 +41,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\$(AssemblyName)\Debug_NET45\</OutputPath>
     <IntermediateOutputPath>obj\Debug_NET45\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Debug_NET45\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,7 +52,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\$(AssemblyName)\Debug_NET46\</OutputPath>
     <IntermediateOutputPath>obj\Debug_NET46\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Debug_NET46\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,7 +62,6 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OutputPath>..\bin\$(AssemblyName)\Release_NET35\</OutputPath>
     <IntermediateOutputPath>obj\Release_NET35\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Release_NET35\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -79,7 +74,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OutputPath>..\bin\$(AssemblyName)\Release_NET4\</OutputPath>
     <IntermediateOutputPath>obj\Release_NET4\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Release_NET4\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -92,7 +86,6 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OutputPath>..\bin\$(AssemblyName)\Release_NET45\</OutputPath>
     <IntermediateOutputPath>obj\Release_NET45\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Release_NET45\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -105,7 +98,6 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutputPath>..\bin\$(AssemblyName)\Release_NET46\</OutputPath>
     <IntermediateOutputPath>obj\Release_NET46\</IntermediateOutputPath>
-    <DocumentationFile>..\bin\$(AssemblyName)\Release_NET46\$(AssemblyName).XML</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -116,28 +108,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultDragHandler.cs" />
-    <Compile Include="DefaultDropHandler.cs" />
-    <Compile Include="DragAdorner.cs" />
-    <Compile Include="DragDrop.cs" />
-    <Compile Include="DragInfo.cs" />
-    <Compile Include="DropInfo.cs" />
-    <Compile Include="DropTargetAdorner.cs" />
-    <Compile Include="DropTargetAdorners.cs" />
-    <Compile Include="DropTargetHighlightAdorner.cs" />
-    <Compile Include="DropTargetInsertionAdorner.cs" />
-    <Compile Include="GlobalAssemblyInfo.cs" />
-    <Compile Include="Icons\IconFactory.cs" />
-    <Compile Include="IDragInfo.cs" />
-    <Compile Include="IDragSource.cs" />
-    <Compile Include="IDropInfo.cs" />
-    <Compile Include="IDropTarget.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,12 +149,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Utilities\DragDropExtensions.cs" />
-    <Compile Include="Utilities\HitTestUtilities.cs" />
-    <Compile Include="Utilities\ItemsControlExtensions.cs" />
-    <Compile Include="Utilities\RootElementFinder.cs" />
-    <Compile Include="Utilities\TypeUtilities.cs" />
-    <Compile Include="Utilities\VisualTreeExtensions.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -168,10 +160,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\EffectCopy.png" />
-    <Resource Include="Icons\EffectLink.png" />
-    <Resource Include="Icons\EffectMove.png" />
-    <Resource Include="Icons\EffectNone.png" />
+    <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj">
+      <Project>{8a549ade-db0a-487f-8b66-eecdd731175d}</Project>
+      <Name>GongSolutions.WPF.DragDrop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

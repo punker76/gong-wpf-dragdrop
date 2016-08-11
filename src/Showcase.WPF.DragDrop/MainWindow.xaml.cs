@@ -12,16 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NorthwindExample.Views
+namespace Showcase.WPF.DragDrop
 {
   /// <summary>
-  /// Interaction logic for EmployeesTabView.xaml
+  /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class EmployeesTabView : UserControl
+  public partial class MainWindow : Window
   {
-    public EmployeesTabView()
+    public MainWindow()
     {
-      this.InitializeComponent();
+      InitializeComponent();
     }
   }
 }

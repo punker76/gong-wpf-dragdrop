@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace NorthwindExample
+namespace Showcase.WPF.DragDrop
 {
   /// <summary>
   /// Interaction logic for App.xaml

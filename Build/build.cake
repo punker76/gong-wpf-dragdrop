@@ -30,6 +30,7 @@ Task("GitLink")
   GitLink("../", configGitLink);
   configGitLink.Configuration = "Release_NET46";
   GitLink("../", configGitLink);
+  DeleteFiles("../src/bin/**/*.srcsrv");
 });
 
 Task("GitLink_Debug")
@@ -43,6 +44,7 @@ Task("GitLink_Debug")
   GitLink("../", configGitLink);
   configGitLink.Configuration = "Debug_NET46";
   GitLink("../", configGitLink);
+  DeleteFiles("../src/bin/**/*.srcsrv");
 });
 
 Task("UpdateAssemblyInfo")
@@ -80,7 +82,7 @@ Task("NuGetPack")
   .Does(() =>
 {
   var nuGetPackSettings   = new NuGetPackSettings {
-    BasePath                = "../src/bin/",
+    BasePath                = "../src/bin/GongSolutions.WPF.DragDrop/",
     Id                      = "gong-wpf-dragdrop",
     Version                 = version,
     Title                   = "gong-wpf-dragdrop",
@@ -91,12 +93,33 @@ Task("NuGetPack")
   NuGetPack("./GongSolutions.Wpf.DragDrop.ALPHA.nuspec", nuGetPackSettings);
 });
 
+Task("ZipShowcase")
+  .Does(() =>
+{
+  var files = GetFiles("../src/bin/Showcase.WPF.DragDrop/Release_*/*.*");
+  Zip("../src/bin/Showcase.WPF.DragDrop/", "Showcase.WPF.DragDrop.Release.zip", files);
+});
+
+Task("ZipShowcase_Debug")
+  .Does(() =>
+{
+  var files = GetFiles("../src/bin/Showcase.WPF.DragDrop/Debug_*/*.*");
+  Zip("../src/bin/Showcase.WPF.DragDrop/", "Showcase.WPF.DragDrop.Debug.zip", files);
+});
+
+Task("CleanOutput")
+  .Does(() =>
+{
+  CleanDirectories("../src/bin");
+});
+
 // Task Targets
-Task("Default").IsDependentOn("UpdateAssemblyInfo").IsDependentOn("Build").IsDependentOn("GitLink");
-Task("Debug").IsDependentOn("UpdateAssemblyInfo_Debug").IsDependentOn("Build_Debug").IsDependentOn("GitLink_Debug");
+Task("Default").IsDependentOn("CleanOutput").IsDependentOn("UpdateAssemblyInfo").IsDependentOn("Build").IsDependentOn("GitLink").IsDependentOn("ZipShowcase");
+Task("Debug").IsDependentOn("CleanOutput").IsDependentOn("UpdateAssemblyInfo_Debug").IsDependentOn("Build_Debug").IsDependentOn("GitLink_Debug").IsDependentOn("ZipShowcase_Debug");
 Task("Appveyor")
-	.IsDependentOn("UpdateAssemblyInfo").IsDependentOn("Build").IsDependentOn("GitLink")
-	.IsDependentOn("UpdateAssemblyInfo_Debug").IsDependentOn("Build_Debug").IsDependentOn("GitLink_Debug")
+  .IsDependentOn("CleanOutput")
+	.IsDependentOn("UpdateAssemblyInfo").IsDependentOn("Build").IsDependentOn("GitLink").IsDependentOn("ZipShowcase")
+	.IsDependentOn("UpdateAssemblyInfo_Debug").IsDependentOn("Build_Debug").IsDependentOn("GitLink_Debug").IsDependentOn("ZipShowcase_Debug")
 	.IsDependentOn("NuGetPack");
 
 // Execution
