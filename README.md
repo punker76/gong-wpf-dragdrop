@@ -80,7 +80,8 @@ I will not do this anymore for this packages. If you need this then you should u
 	- [#167](https://github.com/punker76/gong-wpf-dragdrop/issues/167) Fix `VisualTreeHelper.HitTest` exception with Viewport3D usage (HitTestParameters are not supported on Viewport3DVisual)
 	- [#151](https://github.com/punker76/gong-wpf-dragdrop/issues/151) Add new attached dependency property `UseVisualSourceItemSizeForDragAdorner`, so the `DragAdorner` uses the size of the visual source item as minimum value.
 	- [#187](https://github.com/punker76/gong-wpf-dragdrop/issues/187) Change `DragSourceIgnore` attached property to use `FrameworkPropertyMetadataOptions.Inherits` flag which makes this functionality much more useful and easier to control (thx to @mtdaniels)
-	- **BREAKING CHANGE**: I will not do this anymore for this packages. If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+	- [#199](https://github.com/punker76/gong-wpf-dragdrop/pull/199) Use target root element to display adorners (@ltrzesniewski)
+	- **BREAKING CHANGE** for strong naming: I will not do this anymore for this packages. If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
