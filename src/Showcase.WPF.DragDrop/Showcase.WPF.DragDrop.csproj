@@ -122,6 +122,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\DataGridSamples.xaml.cs">
+      <DependentUpon>DataGridSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Issues.xaml.cs">
+      <DependentUpon>Issues.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemsControlSamples.xaml.cs">
+      <DependentUpon>ItemsControlSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListBoxSamples.xaml.cs">
+      <DependentUpon>ListBoxSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListViewSamples.xaml.cs">
+      <DependentUpon>ListViewSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MixedSamples.xaml.cs">
+      <DependentUpon>MixedSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabControlSamples.xaml.cs">
+      <DependentUpon>TabControlSamples.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TreeViewSamples.xaml.cs">
+      <DependentUpon>TreeViewSamples.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -134,6 +158,38 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\DataGridSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Issues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemsControlSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListBoxSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListViewSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MixedSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TabControlSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TreeViewSamples.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

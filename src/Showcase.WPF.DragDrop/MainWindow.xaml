@@ -3,17 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:dd="urn:gong-wpf-dragdrop"
+        xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-      
-      <ListBox dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
-        <ListBoxItem>Test 1</ListBoxItem>
-        <ListBoxItem>Test 2</ListBoxItem>
-        <ListBoxItem>Test 3</ListBoxItem>
-        <ListBoxItem>Test 4</ListBoxItem>
-      </ListBox>
-        
-    </Grid>
+        Title="GongSolutions.WPF.DragDrop"
+        Height="700" Width="1024"
+        WindowStartupLocation="CenterScreen">
+
+  <Grid>
+
+    <TabControl TabStripPlacement="Left">
+      <TabItem Header="ListBox">
+        <views:ListBoxSamples />
+      </TabItem>
+      <TabItem Header="ListView">
+        <views:ListViewSamples />
+      </TabItem>
+      <TabItem Header="TreeView">
+        <views:TreeViewSamples />
+      </TabItem>
+      <TabItem Header="ItemsControl">
+        <views:ItemsControlSamples />
+      </TabItem>
+      <TabItem Header="DataGrid">
+        <views:DataGridSamples />
+      </TabItem>
+      <TabItem Header="TabControl">
+        <views:TabControlSamples />
+      </TabItem>
+      <TabItem Header="Mixed">
+        <views:MixedSamples />
+      </TabItem>
+      <TabItem Header="#Issues">
+        <views:Issues />
+      </TabItem>
+    </TabControl>
+
+  </Grid>
+
 </Window>
