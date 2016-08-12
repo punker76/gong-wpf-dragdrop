@@ -432,7 +432,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void CreateDragAdorner()
+    private static void CreateDragAdorner(DropInfo dropInfo)
     {
       var template = GetDragAdornerTemplate(m_DragInfo.VisualSource);
       var templateSelector = GetDragAdornerTemplateSelector(m_DragInfo.VisualSource);
@@ -499,7 +499,7 @@ namespace GongSolutions.Wpf.DragDrop
           adornment.Opacity = GetDefaultDragAdornerOpacity(m_DragInfo.VisualSource);
         }
 
-        var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
+        var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? m_DragInfo.VisualSource);
         DragAdorner = new DragAdorner(rootElement, adornment);
       }
     }
@@ -542,7 +542,7 @@ namespace GongSolutions.Wpf.DragDrop
       var template = GetEffectAdornerTemplate(m_DragInfo.VisualSource, dropInfo.Effects, dropInfo.DestinationText);
 
       if (template != null) {
-        var rootElement = RootElementFinder.FindRoot(m_DragInfo.VisualSource);
+        var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? m_DragInfo.VisualSource);
 
         var adornment = new ContentPresenter();
         adornment.Content = m_DragInfo.Data;
@@ -869,7 +869,7 @@ namespace GongSolutions.Wpf.DragDrop
       dropHandler.DragOver(dropInfo);
 
       if (DragAdorner == null && m_DragInfo != null) {
-        CreateDragAdorner();
+        CreateDragAdorner(dropInfo);
       }
 
       if (DragAdorner != null) {
