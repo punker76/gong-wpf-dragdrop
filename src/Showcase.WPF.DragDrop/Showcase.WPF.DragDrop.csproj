@@ -122,14 +122,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\DataGridSamples.xaml.cs">
       <DependentUpon>DataGridSamples.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Issues.xaml.cs">
       <DependentUpon>Issues.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemsControlSamples.xaml.cs">
-      <DependentUpon>ItemsControlSamples.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListBoxSamples.xaml.cs">
       <DependentUpon>ListBoxSamples.xaml</DependentUpon>
@@ -163,10 +161,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Issues.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemsControlSamples.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,28 +225,20 @@
   -->
   <Import Project="..\.paket\paket.targets" />
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="System.Windows.Controls.Input.Toolkit">
-          <HintPath>..\packages\WPFToolkit\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Windows.Controls.Layout.Toolkit">
-          <HintPath>..\packages\WPFToolkit\lib\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="WPFToolkit">
-          <HintPath>..\packages\WPFToolkit\lib\WPFToolkit.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
         <Reference Include="System.Xaml" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v3.5' Or $(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2' Or $(TargetFrameworkVersion) == 'v4.6.3')">
+      <ItemGroup>
+        <Reference Include="JetBrains.Annotations">
+          <HintPath>..\packages\JetBrains.Annotations\lib\net\JetBrains.Annotations.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
       </ItemGroup>
     </When>
   </Choose>

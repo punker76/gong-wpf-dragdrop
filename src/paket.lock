@@ -1,4 +1,4 @@
-FRAMEWORK: NET35
 NUGET
   remote: https://www.nuget.org/api/v2
-    WPFToolkit (3.5.50211.1)
+    JetBrains.Annotations (10.1.5) - framework: >= net35
+    WPFToolkit (3.5.50211.1) - framework: net35
