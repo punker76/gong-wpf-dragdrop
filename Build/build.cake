@@ -22,13 +22,7 @@ var newAssemblyInfoSettings = new AssemblyInfoSettings {
 Task("GitLink")
   .Does(() =>
 {
-  configGitLink.Configuration = "Release_NET35";
-  GitLink("../", configGitLink);
-  configGitLink.Configuration = "Release_NET4";
-  GitLink("../", configGitLink);
-  configGitLink.Configuration = "Release_NET45";
-  GitLink("../", configGitLink);
-  configGitLink.Configuration = "Release_NET46";
+  configGitLink.Configuration = "Release";
   GitLink("../", configGitLink);
   DeleteFiles("../src/bin/**/*.srcsrv");
 });
@@ -36,13 +30,7 @@ Task("GitLink")
 Task("GitLink_Debug")
   .Does(() =>
 {
-  configGitLink.Configuration = "Debug_NET35";
-  GitLink("../", configGitLink);
-  configGitLink.Configuration = "Debug_NET4";
-  GitLink("../", configGitLink);	
-  configGitLink.Configuration = "Debug_NET45";
-  GitLink("../", configGitLink);
-  configGitLink.Configuration = "Debug_NET46";
+  configGitLink.Configuration = "Debug";
   GitLink("../", configGitLink);
   DeleteFiles("../src/bin/**/*.srcsrv");
 });
@@ -63,19 +51,13 @@ Task("UpdateAssemblyInfo_Debug")
 Task("Build")
   .Does(() =>
 {
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release_NET35").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release_NET4").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release_NET45").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release_NET46").UseToolVersion(MSBuildToolVersion.VS2015));
+  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2015));
 });
 
 Task("Build_Debug")
   .Does(() =>
 {
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug_NET35").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug_NET4").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug_NET45").UseToolVersion(MSBuildToolVersion.VS2015));
-  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug_NET46").UseToolVersion(MSBuildToolVersion.VS2015));
+  MSBuild("../src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2015));
 });
 
 Task("NuGetPack")
@@ -96,15 +78,13 @@ Task("NuGetPack")
 Task("ZipShowcase")
   .Does(() =>
 {
-  var files = GetFiles("../src/bin/Showcase.WPF.DragDrop/Release_*/*.*");
-  Zip("../src/bin/Showcase.WPF.DragDrop/", "Showcase.WPF.DragDrop.Release.zip", files);
+  Zip("../src/bin/Showcase.WPF.DragDrop/Release_NET45/", "Showcase.WPF.DragDrop.Release.zip");
 });
 
 Task("ZipShowcase_Debug")
   .Does(() =>
 {
-  var files = GetFiles("../src/bin/Showcase.WPF.DragDrop/Debug_*/*.*");
-  Zip("../src/bin/Showcase.WPF.DragDrop/", "Showcase.WPF.DragDrop.Debug.zip", files);
+  Zip("../src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "Showcase.WPF.DragDrop.Debug.zip");
 });
 
 Task("CleanOutput")

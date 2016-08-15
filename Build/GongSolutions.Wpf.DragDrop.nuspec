@@ -26,9 +26,9 @@
         <file src="Debug_NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35\GongSolutions.Wpf.DragDrop.dll"/>
         <file src="Debug_NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35\GongSolutions.Wpf.DragDrop.xml"/>
         <file src="Debug_NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35\GongSolutions.Wpf.DragDrop.pdb"/>
-        <file src="Debug_NET4\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll"/>
-        <file src="Debug_NET4\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml"/>
-        <file src="Debug_NET4\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb"/>
+        <file src="Debug_NET40\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll"/>
+        <file src="Debug_NET40\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml"/>
+        <file src="Debug_NET40\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb"/>
         <file src="Debug_NET45\GongSolutions.Wpf.DragDrop.dll" target="lib\net45\GongSolutions.Wpf.DragDrop.dll"/>
         <file src="Debug_NET45\GongSolutions.Wpf.DragDrop.xml" target="lib\net45\GongSolutions.Wpf.DragDrop.xml"/>
         <file src="Debug_NET45\GongSolutions.Wpf.DragDrop.pdb" target="lib\net45\GongSolutions.Wpf.DragDrop.pdb"/>
