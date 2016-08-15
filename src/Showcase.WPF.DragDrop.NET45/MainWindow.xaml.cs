@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Showcase.WPF.DragDrop.ViewModels;
 
 namespace Showcase.WPF.DragDrop
 {
@@ -10,6 +11,7 @@ namespace Showcase.WPF.DragDrop
     public MainWindow()
     {
       InitializeComponent();
+      this.DataContext = new MainViewModel();
     }
   }
 }

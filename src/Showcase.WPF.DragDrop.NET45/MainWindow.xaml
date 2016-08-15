@@ -8,12 +8,12 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         Title="GongSolutions.WPF.DragDrop"
-        Height="700" Width="1024"
+        Height="600" Width="900"
         WindowStartupLocation="CenterScreen">
 
   <Grid>
 
-    <TabControl TabStripPlacement="Left">
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
       <TabItem Header="ListBox">
         <views:ListBoxSamples />
       </TabItem>

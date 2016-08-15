@@ -11,7 +11,7 @@
 
   <Grid>
 
-    <TabControl TabStripPlacement="Left">
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
       <TabItem Header="Bound" />
       <TabItem Header="Unbound" />
     </TabControl>
