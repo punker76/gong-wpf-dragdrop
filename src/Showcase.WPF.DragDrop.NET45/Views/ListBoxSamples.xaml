@@ -8,7 +8,7 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="600">
 
   <Grid>
     <Grid.Resources>
@@ -21,7 +21,7 @@
                       VerticalScrollBarVisibility="Auto">
           <StackPanel>
             <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                       Text="Demonstrates the default behaviour with two ListBoxes bound to two collections of the same type." />
+                       Text="Demonstrates the default behaviour with two ListBoxes bound to two collections of the same type. Just try drag and drop some Items from left ListBox to right ListBox." />
             <Grid>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
