@@ -34,6 +34,7 @@ namespace GongSolutions.Wpf.DragDrop
     public DragInfo(object sender, MouseButtonEventArgs e)
     {
       this.DragStartPosition = e.GetPosition((IInputElement)sender);
+      this.DragStartAbsolutePosition = MouseUtilities.GetCursorPosition();
       this.Effects = DragDropEffects.None;
       this.MouseButton = e.ChangedButton;
       this.VisualSource = sender as UIElement;
@@ -112,6 +113,9 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the position of the click that initiated the drag, relative to <see cref="VisualSource"/>.
     /// </summary>
     public Point DragStartPosition { get; private set; }
+
+
+    public Point DragStartAbsolutePosition { get; private set; }
 
     /// <summary>
     /// Gets the point where the cursor was relative to the item being dragged when the drag was started.
@@ -202,5 +206,8 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
     /// </summary>
     public DragDropKeyStates DragDropCopyKeyState { get; private set; }
+
+
+    public Cursor StaticCursor { get; set; }
   }
 }

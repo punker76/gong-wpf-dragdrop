@@ -22,11 +22,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// </remarks>
     void StartDrag(IDragInfo dragInfo);
 
-        /// <summary>
-        /// With this action it's possible to check if the drag&amp;drop operation is allowed to start
-        /// e.g. check for a UIElement inside a list view item, that should not start a drag&amp;drop operation
-        /// </summary>
-        bool CanStartDrag(IDragInfo dragInfo);
+    /// <summary>
+    /// With this action it's possible to check if the drag&amp;drop operation is allowed to start
+    /// e.g. check for a UIElement inside a list view item, that should not start a drag&amp;drop operation
+    /// </summary>
+    bool CanStartDrag(IDragInfo dragInfo);
 
     /// <summary>
     /// Notifies the drag handler that a drop has occurred.
@@ -41,6 +41,9 @@ namespace GongSolutions.Wpf.DragDrop
     /// Notifies the drag handler that a drag has been aborted.
     /// </summary>
     void DragCancelled();
+
+
+    void Dragging(IDraggingInfo draggingInfo);
 
     /// <summary>
     /// Notifies that an exception has occurred upon dragging.

@@ -381,6 +381,7 @@ namespace GongSolutions.Wpf.DragDrop
         uiElement.PreviewMouseLeftButtonUp += DragSource_PreviewMouseLeftButtonUp;
         uiElement.PreviewMouseMove += DragSource_PreviewMouseMove;
         uiElement.QueryContinueDrag += DragSource_QueryContinueDrag;
+        uiElement.GiveFeedback += DragSource_GiveFeedback;
       } else {
         uiElement.PreviewMouseLeftButtonDown -= DragSource_PreviewMouseLeftButtonDown;
         uiElement.PreviewMouseLeftButtonUp -= DragSource_PreviewMouseLeftButtonUp;
@@ -389,7 +390,18 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void IsDropTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+      private static void DragSource_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+      {
+         if (m_DragInfo.StaticCursor != null)
+         {
+            Mouse.SetCursor(m_DragInfo.StaticCursor);
+            e.Handled = true;
+         }
+      }
+
+
+      private static void IsDropTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
       var uiElement = (UIElement)d;
 
@@ -428,7 +440,8 @@ namespace GongSolutions.Wpf.DragDrop
           uiElement.PreviewGiveFeedback -= DropTarget_GiveFeedback;
         }
 
-        Mouse.OverrideCursor = null;
+        if (m_DragInfo.StaticCursor == null)
+            Mouse.OverrideCursor = null;
       }
     }
 
@@ -790,7 +803,8 @@ namespace GongSolutions.Wpf.DragDrop
         if (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
             Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance) {
           var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
-          if (dragHandler.CanStartDrag(m_DragInfo)) {
+          if (dragHandler.CanStartDrag(m_DragInfo))
+          {
             dragHandler.StartDrag(m_DragInfo);
 
             if (m_DragInfo.Effects != DragDropEffects.None && m_DragInfo.Data != null) {
@@ -826,18 +840,27 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void DragSource_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
     {
-      if (e.Action == DragAction.Cancel || e.EscapePressed) {
-        DragAdorner = null;
-        EffectAdorner = null;
-        DropTargetAdorner = null;
-      }
+        if (e.Action == DragAction.Cancel || e.EscapePressed)
+        {
+            DragAdorner = null;
+            EffectAdorner = null;
+            DropTargetAdorner = null;
+        }
+        else
+        {
+            
+            var draggingInfo = new DraggingInfo(m_DragInfo, e.KeyStates == DragDropKeyStates.None);
+            var source = TryGetDragHandler(m_DragInfo, null);
+            source.Dragging(draggingInfo);
+        }
     }
 
     private static void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
     {
       DropTarget_PreviewDragOver(sender, e);
 
-      Mouse.OverrideCursor = Cursors.Arrow;
+      if(m_DragInfo.StaticCursor == null)
+        Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private static void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
@@ -846,7 +869,8 @@ namespace GongSolutions.Wpf.DragDrop
       EffectAdorner = null;
       DropTargetAdorner = null;
 
-      Mouse.OverrideCursor = null;
+      if (m_DragInfo.StaticCursor == null)
+        Mouse.OverrideCursor = null;
     }
 
     private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
@@ -963,6 +987,7 @@ namespace GongSolutions.Wpf.DragDrop
       dragHandler.Dropped(dropInfo);
 
       Mouse.OverrideCursor = null;
+
       e.Handled = !dropInfo.NotHandled;
     }
 

@@ -58,7 +58,13 @@ namespace GongSolutions.Wpf.DragDrop
     {
     }
 
-    /// <summary>
+
+    public void Dragging(IDraggingInfo draggingInfo)
+    {
+    }
+
+
+      /// <summary>
     /// Notifies that an exception has occurred upon dragging.
     /// </summary>
     /// <param name="exception">The exception that occurrred.</param>
