@@ -102,6 +102,13 @@
         <Setter Property="TextWrapping" Value="Wrap" />
       </Style>
 
+      <Style x:Key="SampleHeaderTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="Gray" />
+        <Setter Property="Background" Value="Gainsboro" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="14" />
+      </Style>
+
       <Style x:Key="DefaultListBoxStyle" TargetType="{x:Type ListBox}">
         <Setter Property="Margin" Value="4" />
         <Setter Property="Height" Value="300" />

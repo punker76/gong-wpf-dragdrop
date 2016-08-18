@@ -12,8 +12,17 @@
   <Grid>
 
     <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
-      <TabItem Header="Bound" />
-      <TabItem Header="Unbound" />
+      <TabItem Header="Bound">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="TreeView Unbound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Unbound">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="TreeView Unbound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+        </DockPanel>
+      </TabItem>
     </TabControl>
 
   </Grid>
