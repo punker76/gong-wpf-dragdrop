@@ -109,26 +109,241 @@
       <TabItem Header="Horizontal">
         <DockPanel LastChildFill="True">
           <TextBlock Text="ListBox Horizontal" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the default behaviour with horizontal ListBoxes and right to left flow direction." />
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Unbound ListBox" />
+              <ListBox SelectionMode="Extended"
+                       Height="Auto"
+                       dd:DragDrop.UseDefaultDragAdorner="True"
+                       dd:DragDrop.DefaultDragAdornerOpacity="0.5"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="1" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBoxItem>ListBoxItem1</ListBoxItem>
+                <ListBoxItem>ListBoxItem2</ListBoxItem>
+                <ListBoxItem>ListBoxItem3</ListBoxItem>
+                <ListBoxItem>ListBoxItem4</ListBoxItem>
+                <ListBoxItem>ListBoxItem5</ListBoxItem>
+              </ListBox>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox bound to a collection" />
+              <ListBox SelectionMode="Extended"
+                       Height="Auto"
+                       ItemsSource="{Binding Data.Collection1}"
+                       dd:DragDrop.UseDefaultDragAdorner="True"
+                       dd:DragDrop.DefaultDragAdornerOpacity="0.5"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="1" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox with right to left flow direction for the ItemsPanel" />
+              <ListBox SelectionMode="Extended"
+                       Height="Auto"
+                       dd:DragDrop.UseDefaultDragAdorner="True"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="1"
+                                FlowDirection="RightToLeft" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBoxItem>ListBoxItem6</ListBoxItem>
+                <ListBoxItem>ListBoxItem7</ListBoxItem>
+                <ListBoxItem>ListBoxItem8</ListBoxItem>
+                <ListBoxItem>ListBoxItem9</ListBoxItem>
+                <ListBoxItem>ListBoxItem10</ListBoxItem>
+              </ListBox>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Margin="4 8 4 4"
+                         Text="FlowDirection=&quot;RightToLeft&quot; for the ItemsPanel doesn't work in this case! The insertion adorner will be wrong calculated." />
+              <ListBox SelectionMode="Extended"
+                       Height="Auto"
+                       ItemContainerStyle="{x:Null}"
+                       dd:DragDrop.UseDefaultDragAdorner="True"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="1"
+                                FlowDirection="RightToLeft" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <Rectangle Width="100"
+                           Height="60"
+                           Fill="LightCoral"
+                           Stroke="Black" />
+                <Rectangle Width="120"
+                           Height="60"
+                           Fill="LightCyan"
+                           Stroke="Black" />
+                <Rectangle Width="140"
+                           Height="60"
+                           Fill="LightGreen"
+                           Stroke="Black" />
+                <Rectangle Width="160"
+                           Height="60"
+                           Fill="LightPink"
+                           Stroke="Black" />
+              </ListBox>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Set RotateTransform of ListBox to ScaleTransform ScaleX=&quot;-1&quot;." />
+              <ListBox SelectionMode="Extended"
+                       Height="Auto"
+                       ItemContainerStyle="{x:Null}"
+                       RenderTransformOrigin="0.5,0.5"
+                       dd:DragDrop.UseDefaultDragAdorner="True"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.RenderTransform>
+                  <ScaleTransform ScaleX="-1" />
+                </ListBox.RenderTransform>
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="1" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <Rectangle Width="100"
+                           Height="60"
+                           Fill="LightCoral"
+                           Stroke="Black" />
+                <Rectangle Width="120"
+                           Height="60"
+                           Fill="LightCyan"
+                           Stroke="Black" />
+                <Rectangle Width="140"
+                           Height="60"
+                           Fill="LightGreen"
+                           Stroke="Black" />
+                <Rectangle Width="160"
+                           Height="60"
+                           Fill="LightPink"
+                           Stroke="Black" />
+              </ListBox>
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </TabItem>
 
       <TabItem Header="Grouping">
+        <TabItem.Resources>
+          <CollectionViewSource x:Key="GroupedCollectionViewSource"
+                                Source="{Binding Data.GroupedCollection}">
+            <CollectionViewSource.GroupDescriptions>
+              <PropertyGroupDescription PropertyName="Group" />
+            </CollectionViewSource.GroupDescriptions>
+          </CollectionViewSource>
+        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <TextBlock Text="ListBox Grouping" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the behaviour with a ListBox which is bound to a grouped collection (CollectionViewSource). The ListBox uses also a custom DropHandler to handle the drop action." />
+              <ListBox x:Name="GroupedListBox"
+                       ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}"
+                       DisplayMemberPath="Caption"
+                       SelectionMode="Extended"
+                       dd:DragDrop.DropHandler="{Binding Data.GroupedDropHandler}"
+                       dd:DragDrop.DragDirectlySelectedOnly="True"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True">
+                <ListBox.GroupStyle>
+                  <x:Static Member="GroupStyle.Default" />
+                </ListBox.GroupStyle>
+              </ListBox>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=GroupedListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=GroupedListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=GroupedListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=GroupedListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </TabItem>
 
       <TabItem Header="List in List">
         <DockPanel LastChildFill="True">
-          <TextBlock Text="ListBox List in List" Style="{StaticResource SampleHeaderTextBlockStyle}"
-                     DockPanel.Dock="Top" />
+          <TextBlock Text="ListBox List in List" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="This sample comes from an issue and demonstrates the behaviour of nested ListBoxes." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         Height="450"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+                <ListBox Grid.Column="1"
+                         Height="450"
+                         x:Name="Outer"
+                         dd:DragDrop.IsDropTarget="True">
+                  <Border BorderThickness="1" BorderBrush="Silver">
+                    <ListBox x:Name="Inner1"
+                             Height="150"
+                             Width="200"
+                             HorizontalContentAlignment="Stretch"
+                             Background="DarkOrange"
+                             ItemsSource="{Binding Data.Collection2}"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.UseDefaultDragAdorner="True" />
+                  </Border>
+                  <Border BorderThickness="1" BorderBrush="Silver">
+                    <ListBox x:Name="Inner2"
+                             Height="150"
+                             Width="200"
+                             HorizontalContentAlignment="Stretch"
+                             Background="DarkSeaGreen"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.UseDefaultDragAdorner="True">
+                      <ListBoxItem Content="ListBoxItem1" />
+                      <ListBoxItem Content="ListBoxItem2" />
+                    </ListBox>
+                  </Border>
+                </ListBox>
+              </Grid>
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </TabItem>
 
       <TabItem Header="DragDropKeyStates">
         <DockPanel LastChildFill="True">
-          <TextBlock Text="ListBox DragDropKeyStates" Style="{StaticResource SampleHeaderTextBlockStyle}"
-                     DockPanel.Dock="Top" />
+          <TextBlock Text="ListBox DragDropKeyStates" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
         </DockPanel>
       </TabItem>
     </TabControl>
