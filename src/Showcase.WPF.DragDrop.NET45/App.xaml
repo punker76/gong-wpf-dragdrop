@@ -7,6 +7,23 @@
 
     <ResourceDictionary>
 
+      <SolidColorBrush x:Key="TabItemPanelBackgroundBrush" Color="Silver" />
+      <SolidColorBrush x:Key="TabItemBackgroundIsSelectedBrush" Color="Gray" />
+      <SolidColorBrush x:Key="TabItemBackgroundIsMouseOverBrush" Color="#A5A5A5" />
+      <SolidColorBrush x:Key="TabItemForegroundIsSelectedBrush" Color="White" />
+      <SolidColorBrush x:Key="TabItemSelectorBrush" Color="LawnGreen" />
+
+      <Viewbox x:Key="FileIcon" x:Shared="False" Width="22" Height="22">
+        <Canvas Width="24" Height="24">
+          <Path Data="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z" Fill="Gray" />
+        </Canvas>
+      </Viewbox>
+      <Viewbox x:Key="FileDocumentIcon" x:Shared="False" Width="22" Height="22">
+        <Canvas Width="24" Height="24">
+          <Path Data="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M15,18V16H6V18H15M18,14V12H6V14H18Z" Fill="Gray" />
+        </Canvas>
+      </Viewbox>
+
       <Style x:Key="ShowcaseTabItemStyle" TargetType="{x:Type TabItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -32,19 +49,19 @@
                            HorizontalAlignment="Left"
                            Width="4"
                            Visibility="Collapsed"
-                           Fill="LawnGreen" />
+                           Fill="{StaticResource TabItemSelectorBrush}" />
               </Grid>
               <ControlTemplate.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                   <Trigger.Setters>
-                    <Setter Property="Background" Value="Gray" />
-                    <Setter TargetName="PART_Text" Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="{StaticResource TabItemBackgroundIsSelectedBrush}" />
+                    <Setter TargetName="PART_Text" Property="Foreground" Value="{StaticResource TabItemForegroundIsSelectedBrush}" />
                     <Setter TargetName="PART_Selector" Property="Visibility" Value="Visible" />
                   </Trigger.Setters>
                 </Trigger>
                 <Trigger SourceName="PART_Grid" Property="IsMouseOver" Value="True">
                   <Trigger.Setters>
-                    <Setter Property="Background" Value="#A5A5A5" />
+                    <Setter Property="Background" Value="{StaticResource TabItemBackgroundIsMouseOverBrush}" />
                   </Trigger.Setters>
                 </Trigger>
               </ControlTemplate.Triggers>
@@ -66,7 +83,7 @@
                 <WrapPanel x:Name="HeaderPanel"
                            Orientation="Vertical"
                            DockPanel.Dock="Left"
-                           Background="Silver"
+                           Background="{StaticResource TabItemPanelBackgroundBrush}"
                            Panel.ZIndex="1"
                            IsItemsHost="True"
                            KeyboardNavigation.TabIndex="1" />
@@ -117,6 +134,17 @@
         <Setter Property="Height" Value="300" />
         <Setter Property="SelectionMode" Value="Extended" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListBoxItemStyle}" />
+      </Style>
+
+      <Style x:Key="DefaultListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Padding" Value="2" />
+      </Style>
+
+      <Style x:Key="DefaultListViewStyle" TargetType="{x:Type ListView}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Height" Value="300" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListViewItemStyle}" />
       </Style>
 
     </ResourceDictionary>

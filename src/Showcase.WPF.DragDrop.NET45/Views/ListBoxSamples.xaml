@@ -380,10 +380,10 @@
                          Text="Customization (for left ListBox)" />
               <StackPanel Margin="10 5" Orientation="Horizontal">
                 <TextBlock Text="DragDropCopyKeyState"
-                           HorizontalAlignment="Center" />
+                           VerticalAlignment="Center" />
                 <ComboBox Width="200"
                           Margin="5 0 0 0"
-                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
                           ItemsSource="{Binding Source={StaticResource DragDropKeyStatesEnumValues}}"
                           SelectedItem="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.DragDropCopyKeyState), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               </StackPanel>
