@@ -342,8 +342,61 @@
       </TabItem>
 
       <TabItem Header="DragDropKeyStates">
+        <TabItem.Resources>
+          <ObjectDataProvider x:Key="DragDropKeyStatesEnumValues"
+                              MethodName="GetValues"
+                              ObjectType="{x:Type DragDropKeyStates}">
+            <ObjectDataProvider.MethodParameters>
+              <x:Type TypeName="DragDropKeyStates" />
+            </ObjectDataProvider.MethodParameters>
+          </ObjectDataProvider>
+        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <TextBlock Text="ListBox DragDropKeyStates" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the DragDropCopyKeyState behaviour with two ListBoxes bound to two collections of the same type. Try changing the DragDropCopyKeyState for the left ListBox and see what happens." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftListBoxOfDragDropKeyStatesSample"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                         dd:DragDrop.DragDropCopyKeyState="ControlKey" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <StackPanel Margin="10 5" Orientation="Horizontal">
+                <TextBlock Text="DragDropCopyKeyState"
+                           HorizontalAlignment="Center" />
+                <ComboBox Width="200"
+                          Margin="5 0 0 0"
+                          HorizontalAlignment="Center"
+                          ItemsSource="{Binding Source={StaticResource DragDropKeyStatesEnumValues}}"
+                          SelectedItem="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.DragDropCopyKeyState), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftListBoxOfDragDropKeyStatesSample, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </TabItem>
     </TabControl>
