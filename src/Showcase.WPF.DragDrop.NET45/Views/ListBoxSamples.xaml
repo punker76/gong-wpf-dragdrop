@@ -63,7 +63,7 @@
                         VerticalScrollBarVisibility="Auto">
             <StackPanel>
               <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                         Text="Demonstrates the default behaviour with two ListBoxes and unbound collections (e.g. direct usage of ListBoxItem). Just try drag and drop some Items from left ListBox to right ListBox." />
+                         Text="Demonstrates the default behaviour with two ListBoxes and unbound items (e.g. direct usage of ListBoxItem). Just try drag and drop some Items from left ListBox to right ListBox." />
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*" />

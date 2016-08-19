@@ -128,6 +128,7 @@
       <Style x:Key="DefaultListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Padding" Value="2" />
       </Style>
+      <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}" />
 
       <Style x:Key="DefaultListBoxStyle" TargetType="{x:Type ListBox}">
         <Setter Property="Margin" Value="4" />
@@ -139,12 +140,31 @@
       <Style x:Key="DefaultListViewItemStyle" TargetType="{x:Type ListViewItem}">
         <Setter Property="Padding" Value="2" />
       </Style>
+      <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource DefaultListViewItemStyle}" />
 
       <Style x:Key="DefaultListViewStyle" TargetType="{x:Type ListView}">
         <Setter Property="Margin" Value="4" />
         <Setter Property="Height" Value="300" />
         <Setter Property="SelectionMode" Value="Extended" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListViewItemStyle}" />
+      </Style>
+
+      <Style x:Key="DefaultTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="HeaderTemplate">
+          <Setter.Value>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" Margin="2" />
+            </DataTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DefaultTreeViewItemStyle}" />
+
+      <Style x:Key="DefaultTreeViewStyle" TargetType="{x:Type TreeView}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Height" Value="300" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultTreeViewItemStyle}" />
       </Style>
 
     </ResourceDictionary>

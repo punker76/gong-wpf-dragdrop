@@ -89,7 +89,7 @@
               </Grid>
 
               <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                         Text="Customization (for left ListBox)" />
+                         Text="Customization (for left ListView)" />
               <CheckBox Margin="10 5" Content="IsDragSource"
                         IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="IsDropTarget"
@@ -146,7 +146,7 @@
                         VerticalScrollBarVisibility="Auto">
             <StackPanel>
               <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                         Text="Demonstrates the default behaviour with two ListViews and unbound collections (e.g. direct usage of ListViewItem). Just try drag and drop some Items from left ListView to right ListView." />
+                         Text="Demonstrates the default behaviour with two ListViews and unbound items (e.g. direct usage of ListViewItem). Just try drag and drop some Items from left ListView to right ListView." />
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*" />
@@ -177,7 +177,7 @@
               </Grid>
 
               <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                         Text="Customization (for left ListBox)" />
+                         Text="Customization (for left ListView)" />
               <CheckBox Margin="10 5" Content="IsDragSource"
                         IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="IsDropTarget"
