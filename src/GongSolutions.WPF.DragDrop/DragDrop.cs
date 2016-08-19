@@ -854,13 +854,6 @@ namespace GongSolutions.Wpf.DragDrop
     private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
     {
       var elementPosition = e.GetPosition((IInputElement)sender);
-      if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
-          || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
-          || HitTestUtilities.HitTest4DataGridTypesOnDragOver(sender, elementPosition)) {
-        e.Effects = DragDropEffects.None;
-        e.Handled = true;
-        return;
-      }
 
       var dropInfo = new DropInfo(sender, e, m_DragInfo);
       var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
@@ -901,6 +894,15 @@ namespace GongSolutions.Wpf.DragDrop
 
         DragAdorner.MousePosition = _adornerPos;
         DragAdorner.InvalidateVisual();
+      }
+
+      if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
+          || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
+          || HitTestUtilities.HitTest4DataGridTypesOnDragOver(sender, elementPosition))
+      {
+        e.Effects = DragDropEffects.None;
+        e.Handled = true;
+        return;
       }
 
       // If the target is an ItemsControl then update the drop target adorner.
