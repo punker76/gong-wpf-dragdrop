@@ -506,16 +506,20 @@ namespace GongSolutions.Wpf.DragDrop
 
     // Helper to generate the image - I grabbed this off Google 
     // somewhere. -- Chris Bordeman cbordeman@gmail.com
-    private static BitmapSource CaptureScreen(Visual target, FlowDirection flowDirection, double dpiX = 96.0, double dpiY = 96.0)
+    private static BitmapSource CaptureScreen(Visual target, FlowDirection flowDirection)
     {
       if (target == null) {
         return null;
       }
 
-      var bounds = VisualTreeHelper.GetDescendantBounds(target);
+      var dpiX = DpiHelper.DpiX;
+      var dpiY = DpiHelper.DpiY;
 
-      var rtb = new RenderTargetBitmap((int)Math.Ceiling(bounds.Width * dpiX / 96.0),
-                                       (int)Math.Ceiling(bounds.Height * dpiY / 96.0),
+      var bounds = VisualTreeHelper.GetDescendantBounds(target);
+      var dpiBounds = DpiHelper.LogicalRectToDevice(bounds);
+
+      var rtb = new RenderTargetBitmap((int)Math.Ceiling(dpiBounds.Width),
+                                       (int)Math.Ceiling(dpiBounds.Height),
                                        dpiX,
                                        dpiY,
                                        PixelFormats.Pbgra32);

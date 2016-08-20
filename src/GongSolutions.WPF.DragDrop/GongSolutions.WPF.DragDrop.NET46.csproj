@@ -73,6 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <Compile Include="Utilities\DpiHelper.cs" />
     <Compile Include="Utilities\DragDropExtensions.cs" />
     <Compile Include="Utilities\HitTestUtilities.cs" />
     <Compile Include="Utilities\ItemsControlExtensions.cs" />
