@@ -633,25 +633,8 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void Scroll(DependencyObject visualTarget, DragEventArgs e)
+    private static void Scroll(ScrollViewer scrollViewer, DragEventArgs e)
     {
-      ScrollViewer scrollViewer = null;
-
-      if (visualTarget is TabControl)
-      {
-        var tabPanel = visualTarget.GetVisualDescendent<TabPanel>();
-        if (tabPanel != null)
-        {
-          scrollViewer = tabPanel.GetVisualAncestor<ScrollViewer>();
-          if (scrollViewer == null)
-          {
-            return;
-          }
-        }
-      }
-
-      scrollViewer = scrollViewer ?? visualTarget.GetVisualDescendent<ScrollViewer>();
-      
       if (scrollViewer != null) {
         var position = e.GetPosition(scrollViewer);
         var scrollMargin = Math.Min(scrollViewer.FontSize * 2, scrollViewer.ActualHeight / 2);
@@ -917,7 +900,7 @@ namespace GongSolutions.Wpf.DragDrop
         var adornedElement =
           itemsControl is TabControl
             ? itemsControl.GetVisualDescendent<TabPanel>()
-            : (itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement ?? itemsControl);
+            : (itemsControl.GetVisualDescendent<ScrollContentPresenter>() ?? itemsControl.GetVisualDescendent<ItemsPresenter>() as UIElement ?? itemsControl);
 
         if (adornedElement != null) {
           if (dropInfo.DropTargetAdorner == null) {
@@ -953,7 +936,7 @@ namespace GongSolutions.Wpf.DragDrop
           e.Effects = DragDropEffects.None;
       }
 
-      Scroll(dropInfo.VisualTarget, e);
+      Scroll(dropInfo.TargetScrollViewer, e);
     }
 
     private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)

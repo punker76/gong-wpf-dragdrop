@@ -56,6 +56,18 @@ namespace GongSolutions.Wpf.DragDrop
           this.VisualTarget = element;
         }
       }
+
+      // try find ScrollViewer
+      if (this.VisualTarget is TabControl)
+      {
+        var tabPanel = this.VisualTarget.GetVisualDescendent<TabPanel>();
+        this.TargetScrollViewer = tabPanel?.GetVisualAncestor<ScrollViewer>();
+      }
+      else
+      {
+        this.TargetScrollViewer = this.VisualTarget?.GetVisualDescendent<ScrollViewer>();
+      }
+
       // visual target can be null, so give us a point...
       this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
@@ -276,6 +288,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// the drag is currently over.
     /// </remarks>
     public CollectionViewGroup TargetGroup { get; private set; }
+
+    /// <summary>
+    /// Gets the ScrollViewer control for the visual target.
+    /// </summary>
+    public ScrollViewer TargetScrollViewer { get; private set; }
 
     /// <summary>
     /// Gets the control that is the current drop target.

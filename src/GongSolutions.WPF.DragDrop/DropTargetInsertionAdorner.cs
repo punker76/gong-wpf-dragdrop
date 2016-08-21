@@ -50,13 +50,18 @@ namespace GongSolutions.Wpf.DragDrop
           Point point1, point2;
           double rotation = 0;
 
+          var viewportWidth = DropInfo.TargetScrollViewer?.ViewportWidth ?? double.MaxValue;
+          var viewportHeight = DropInfo.TargetScrollViewer?.ViewportHeight ?? double.MaxValue;
+
           if (this.DropInfo.VisualTargetOrientation == Orientation.Vertical) {
             if (this.DropInfo.InsertIndex == itemParent.Items.Count || lastItemInGroup) {
               itemRect.Y += itemContainer.RenderSize.Height;
             }
 
-            point1 = new Point(itemRect.X, itemRect.Y);
-            point2 = new Point(itemRect.Right, itemRect.Y);
+            var itemRectRight = Math.Min(itemRect.Right, viewportWidth);
+            var itemRectLeft = itemRect.X < 0 ? 0 : itemRect.X;
+            point1 = new Point(itemRectLeft, itemRect.Y);
+            point2 = new Point(itemRectRight, itemRect.Y);
           } else {
             var itemRectX = itemRect.X;
 
