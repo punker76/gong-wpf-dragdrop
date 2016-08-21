@@ -9,6 +9,7 @@ namespace Showcase.WPF.DragDrop.Models
       for (var n = 0; n < 50; ++n)
       {
         this.Collection1.Add($"Item {(n + 1)}");
+        this.DataGridCollection1.Add(new DataGridRowModel());
       }
 
       for (var g = 0; g < 4; ++g)
@@ -43,5 +44,8 @@ namespace Showcase.WPF.DragDrop.Models
 
     public GroupedDropHandler GroupedDropHandler { get; set; } = new GroupedDropHandler();
     public ObservableCollection<GroupedItem> GroupedCollection { get; set; } = new ObservableCollection<GroupedItem>();
+
+    public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } = new ObservableCollection<DataGridRowModel>();
+    public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } = new ObservableCollection<DataGridRowModel>();
   }
 }

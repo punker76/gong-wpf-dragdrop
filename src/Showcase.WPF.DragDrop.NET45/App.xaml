@@ -167,6 +167,14 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultTreeViewItemStyle}" />
       </Style>
 
+      <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Height" Value="300" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Silver" />
+        <Setter Property="VerticalGridLinesBrush" Value="Silver" />
+      </Style>
+
     </ResourceDictionary>
 
   </Application.Resources>
