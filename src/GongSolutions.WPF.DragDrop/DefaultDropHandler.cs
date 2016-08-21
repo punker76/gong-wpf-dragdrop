@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -49,6 +50,25 @@ namespace GongSolutions.Wpf.DragDrop
       }
       
       var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
+
+      var itemsControl = dropInfo.VisualTarget as ItemsControl;
+      if (itemsControl != null)
+      {
+        var editableItems = itemsControl.Items as IEditableCollectionView;
+        if (editableItems != null)
+        {
+          var newItemPlaceholderPosition = editableItems.NewItemPlaceholderPosition;
+          if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtBeginning && insertIndex == 0)
+          {
+            ++insertIndex;
+          }
+          else if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtEnd && insertIndex == itemsControl.Items.Count)
+          {
+            --insertIndex;
+          }
+        }
+      }
+
       var destinationList = dropInfo.TargetCollection.TryGetList();
       var data = ExtractData(dropInfo.Data);
 

@@ -161,7 +161,7 @@ namespace GongSolutions.Wpf.DragDrop
               this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
             }
             //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
-          } 
+          }
         }
         else
         {
