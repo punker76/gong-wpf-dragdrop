@@ -88,6 +88,7 @@ Task("ZipShowcase_Debug")
 });
 
 Task("CleanOutput")
+  .ContinueOnError()
   .Does(() =>
 {
   CleanDirectories("../src/bin");
