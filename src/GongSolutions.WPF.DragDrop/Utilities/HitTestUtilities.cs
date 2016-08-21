@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -61,7 +62,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         }
         // drag&drop only for data grid row
         var dataRow = GetHitTestElement4Type<DataGridRow>(sender, elementPosition);
-        return dataRow == null;
+        return dataRow == null || Equals(dataRow.DataContext, CollectionView.NewItemPlaceholder);
       }
       return false;
     }
