@@ -91,8 +91,10 @@ namespace GongSolutions.Wpf.DragDrop
 
         if (item != null) {
           itemParent = ItemsControl.ItemsControlFromItemContainer(item);
+          
+          this.TargetIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
 
-          this.InsertIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
+          this.InsertIndex = this.TargetIndex;
           this.TargetCollection = itemParent.ItemsSource ?? itemParent.Items;
 
           var tvItem = item as TreeViewItem;
@@ -215,7 +217,12 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the current insert position within <see cref="TargetCollection"/>.
     /// </summary>
     public int InsertIndex { get; private set; }
-
+    
+    /// <summary>
+    /// Gets the index of the target item within <see cref="TargetCollection"/>.
+    /// </summary>
+    public int TargetIndex { get; private set; }
+    
     /// <summary>
     /// Gets the current insert position within the source (unfiltered) <see cref="TargetCollection"/>.
     /// </summary>

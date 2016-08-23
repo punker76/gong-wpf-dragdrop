@@ -57,6 +57,11 @@ namespace GongSolutions.Wpf.DragDrop
     int InsertIndex { get; }
 
     /// <summary>
+    /// Gets the index of the target item within <see cref="TargetCollection"/>.
+    /// </summary>
+    int TargetIndex { get; }
+    
+    /// <summary>
     /// Gets the current insert position within the source (unfiltered) <see cref="TargetCollection"/>.
     /// </summary>
     /// <remarks>
