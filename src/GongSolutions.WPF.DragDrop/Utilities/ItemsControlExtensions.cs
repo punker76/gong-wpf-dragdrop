@@ -215,8 +215,22 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       return null;
     }
 
+    /// <summary>
+    /// Gets the Orientation which will be used for the drag drop action.
+    /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
+    /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+    /// If so, the ItemsPanelOrientation value is taken.
+    /// </summary>
+    /// <param name="itemsControl">The ItemsControl for the look up.</param>
+    /// <returns>Orientation for the given ItemsControl.</returns>
     public static Orientation GetItemsPanelOrientation(this ItemsControl itemsControl)
     {
+      var itemsPanelOrientation = DragDrop.GetItemsPanelOrientation(itemsControl);
+      if (itemsPanelOrientation.HasValue)
+      {
+        return itemsPanelOrientation.Value;
+      }
+
       if (itemsControl is TabControl)
       {
         //HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
@@ -238,6 +252,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       return Orientation.Vertical;
     }
 
+    /// <summary>
+    /// Gets the FlowDirection which will be used for the drag drop action.
+    /// </summary>
+    /// <param name="itemsControl">The ItemsControl for the look up.</param>
+    /// <returns>FlowDirection for the given ItemsControl.</returns>
     public static FlowDirection GetItemsPanelFlowDirection(this ItemsControl itemsControl)
     {
       var itemsPresenter = itemsControl.GetVisualDescendent<ItemsPresenter>() ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement;

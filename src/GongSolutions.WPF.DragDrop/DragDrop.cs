@@ -346,7 +346,29 @@ namespace GongSolutions.Wpf.DragDrop
       target.SetValue(DragMouseAnchorPointProperty, value);
     }
 
-    public static IDragSource DefaultDragHandler
+    public static readonly DependencyProperty ItemsPanelOrientationProperty =
+      DependencyProperty.RegisterAttached("ItemsPanelOrientation", typeof(Orientation?), typeof(DragDrop), new PropertyMetadata(null));
+
+    /// <summary>
+    /// Gets the Orientation which should be used for the drag drop action (default null).
+    /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
+    /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+    /// </summary>
+    public static Orientation? GetItemsPanelOrientation(UIElement source)
+    {
+        return (Orientation?)source.GetValue(ItemsPanelOrientationProperty);
+    }
+
+    /// <summary>
+    /// Sets the Orientation which should be used for the drag drop action (default null). Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
+    /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+    /// </summary>
+    public static void SetItemsPanelOrientation(UIElement source, Orientation? value)
+    {
+        source.SetValue(ItemsPanelOrientationProperty, value);
+    }
+
+public static IDragSource DefaultDragHandler
     {
       get
       {
