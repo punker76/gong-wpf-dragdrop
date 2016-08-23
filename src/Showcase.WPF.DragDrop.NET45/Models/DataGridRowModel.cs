@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Faker;
+﻿using Faker;
 
 namespace Showcase.WPF.DragDrop.Models
 {

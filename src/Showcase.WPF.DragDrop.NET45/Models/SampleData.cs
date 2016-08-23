@@ -33,6 +33,12 @@ namespace Showcase.WPF.DragDrop.Models
           root.IsExpanded = true;
         }
       }
+
+      for (int i = 0; i < 5; i++)
+      {
+        this.TabItemCollection1.Add(new TabItemModel(i + 1));
+      }
+      this.TabItemCollection2.Add(new TabItemModel(1));
     }
 
     public ObservableCollection<string> Collection1 { get; set; } = new ObservableCollection<string>();
@@ -47,5 +53,8 @@ namespace Showcase.WPF.DragDrop.Models
 
     public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } = new ObservableCollection<DataGridRowModel>();
     public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } = new ObservableCollection<DataGridRowModel>();
+
+    public ObservableCollection<TabItemModel> TabItemCollection1 { get; set; } = new ObservableCollection<TabItemModel>();
+    public ObservableCollection<TabItemModel> TabItemCollection2 { get; set; } = new ObservableCollection<TabItemModel>();
   }
 }

@@ -24,6 +24,14 @@
         </Canvas>
       </Viewbox>
 
+      <Style x:Key="DefaultTabItemStyle" TargetType="{x:Type TabItem}" />
+      <Style x:Key="DefaultTabControlStyle" TargetType="{x:Type TabControl}">
+        <Setter Property="TabStripPlacement" Value="Top" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Height" Value="100" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultTabItemStyle}" />
+      </Style>
+
       <Style x:Key="ShowcaseTabItemStyle" TargetType="{x:Type TabItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
