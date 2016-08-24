@@ -8,7 +8,7 @@ namespace Showcase.WPF.DragDrop.Models
     {
       for (var n = 0; n < 50; ++n)
       {
-        this.Collection1.Add($"Item {(n + 1)}");
+        this.Collection1.Add(new ItemModel(n + 1));
         this.DataGridCollection1.Add(new DataGridRowModel());
       }
 
@@ -41,9 +41,8 @@ namespace Showcase.WPF.DragDrop.Models
       this.TabItemCollection2.Add(new TabItemModel(1));
     }
 
-    public ObservableCollection<string> Collection1 { get; set; } = new ObservableCollection<string>();
-    public ObservableCollection<string> Collection2 { get; set; } = new ObservableCollection<string>();
-    public ObservableCollection<string> Collection3 { get; set; } = new ObservableCollection<string>();
+    public ObservableCollection<ItemModel> Collection1 { get; set; } = new ObservableCollection<ItemModel>();
+    public ObservableCollection<ItemModel> Collection2 { get; set; } = new ObservableCollection<ItemModel>();
 
     public ObservableCollection<TreeNode> TreeCollection1 { get; set; } = new ObservableCollection<TreeNode>();
     public ObservableCollection<TreeNode> TreeCollection2 { get; set; } = new ObservableCollection<TreeNode>();
@@ -51,10 +50,16 @@ namespace Showcase.WPF.DragDrop.Models
     public GroupedDropHandler GroupedDropHandler { get; set; } = new GroupedDropHandler();
     public ObservableCollection<GroupedItem> GroupedCollection { get; set; } = new ObservableCollection<GroupedItem>();
 
-    public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } = new ObservableCollection<DataGridRowModel>();
-    public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } = new ObservableCollection<DataGridRowModel>();
+    public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } =
+      new ObservableCollection<DataGridRowModel>();
 
-    public ObservableCollection<TabItemModel> TabItemCollection1 { get; set; } = new ObservableCollection<TabItemModel>();
-    public ObservableCollection<TabItemModel> TabItemCollection2 { get; set; } = new ObservableCollection<TabItemModel>();
+    public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } =
+      new ObservableCollection<DataGridRowModel>();
+
+    public ObservableCollection<TabItemModel> TabItemCollection1 { get; set; } =
+      new ObservableCollection<TabItemModel>();
+
+    public ObservableCollection<TabItemModel> TabItemCollection2 { get; set; } =
+      new ObservableCollection<TabItemModel>();
   }
 }

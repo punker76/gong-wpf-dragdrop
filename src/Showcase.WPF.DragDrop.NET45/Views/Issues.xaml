@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400" d:DesignWidth="600">
@@ -123,6 +124,78 @@
                         IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
                         IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="#37">
+        <TabItem.Resources>
+          <DataTemplate x:Key="Issue37DataTemplate" DataType="{x:Type models:ItemModel}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Col01" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Col02" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0"
+                         Margin="2"
+                         Text="{Binding Path=Caption, Mode=OneWay}" />
+              <TextBox Grid.Column="1"
+                       Margin="2"
+                       MinWidth="60"
+                       Text="{Binding Path=BindableDoubleValue, Mode=OneWay, StringFormat={}{0:n2} %}" />
+              <Slider Grid.Column="2"
+                      Value="{Binding Path=BindableDoubleValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Minimum="0"
+                      Maximum="100"
+                      SmallChange="5"
+                      LargeChange="10"
+                      Margin="2" />
+            </Grid>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Crash when using items deriving from ContentControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="37" ToolTip="Open #37 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox with ItemTemplate which contains other controls. This controls also gets the mouse input, so drag action should not be started." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         Grid.IsSharedSizeScope="True"
+                         x:Name="LeftIssue37ListBox"
+                         HorizontalContentAlignment="Stretch"
+                         ItemTemplate="{StaticResource Issue37DataTemplate}"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="False" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
         </DockPanel>

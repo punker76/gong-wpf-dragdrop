@@ -66,6 +66,7 @@
     <Compile Include="Models\DataGridRowModel.cs" />
     <Compile Include="Models\GroupedDropHandler.cs" />
     <Compile Include="Models\GroupedItem.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\SampleData.cs" />
     <Compile Include="Models\TabItemModel.cs" />
     <Compile Include="Models\TreeNode.cs" />
