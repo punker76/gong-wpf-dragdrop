@@ -32,7 +32,7 @@
       <TabItem Header="Mixed">
         <views:MixedSamples />
       </TabItem>
-      <TabItem Header="#Issues">
+      <TabItem Header="Fixed #Issues">
         <views:Issues />
       </TabItem>
     </TabControl>

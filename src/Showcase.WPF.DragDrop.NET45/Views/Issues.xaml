@@ -5,12 +5,85 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="600">
   <Grid>
-    <DockPanel LastChildFill="True">
-      <TextBlock Text="Issues" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
-    </DockPanel>
+    <Grid.Resources>
+      <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+    </Grid.Resources>
+
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+      <TabItem Header="#123">
+        <TabItem.Resources>
+          <DataTemplate x:Key="FlowDocDataTemplate">
+            <FlowDocumentScrollViewer IsSelectionEnabled="False"
+                                      IsHitTestVisible="False"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Disabled">
+              <FlowDocument PagePadding="0">
+                <Paragraph>
+                  <TextBlock Text="FlowDocument for" />
+                  <LineBreak />
+                  <TextBlock Text="{Binding}" />
+                </Paragraph>
+              </FlowDocument>
+            </FlowDocumentScrollViewer>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="FlowDocument in ItemTemplate" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="123" ToolTip="Open #123 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox with ItemTemplate which contains a FlowDocument." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftIssue123ListBox"
+                         ItemTemplate="{StaticResource FlowDocDataTemplate}"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="False" />
+                <ListBox Grid.Column="1"
+                         ItemTemplate="{StaticResource FlowDocDataTemplate}"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="False" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftIssue123ListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftIssue123ListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftIssue123ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftIssue123ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Issue xyz">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="ListBox Unbound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+        </DockPanel>
+      </TabItem>
+
+    </TabControl>
+
   </Grid>
 </UserControl>
