@@ -77,9 +77,54 @@
         </DockPanel>
       </TabItem>
 
-      <TabItem Header="Issue xyz">
+      <TabItem Header="#42">
+        <TabItem.Resources>
+          <DataTemplate x:Key="LabelDataTemplate">
+            <Label Content="{Binding}" />
+          </DataTemplate>
+        </TabItem.Resources>
         <DockPanel LastChildFill="True">
-          <TextBlock Text="ListBox Unbound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Crash when using items deriving from ContentControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="42" ToolTip="Open #42 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox with ItemTemplate which contains a Label." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftIssue42ListBox"
+                         ItemTemplate="{StaticResource LabelDataTemplate}"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+                <ListBox Grid.Column="1"
+                         ItemTemplate="{StaticResource LabelDataTemplate}"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="False" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftIssue42ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </TabItem>
 
