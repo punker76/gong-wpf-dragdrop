@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400" d:DesignWidth="600">
@@ -39,7 +40,7 @@
                       <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                           <DataTemplate>
-                            <ContentControl Focusable="False" Content="{StaticResource FileIcon}" />
+                            <iconPacks:PackIconMaterial Focusable="False" Kind="File" Foreground="Gray" />
                           </DataTemplate>
                         </GridViewColumn.CellTemplate>
                       </GridViewColumn>
@@ -73,7 +74,7 @@
                           <ColumnDefinition Width="Auto" />
                           <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
                         </Grid.ColumnDefinitions>
-                        <ContentControl Grid.Column="0" Focusable="False" Content="{StaticResource FileDocumentIcon}" />
+                        <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="FileDocument" Foreground="Gray" />
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
                       </Grid>
                     </DataTemplate>
@@ -115,7 +116,7 @@
                       <ColumnDefinition Width="Auto" />
                       <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
                     </Grid.ColumnDefinitions>
-                    <ContentControl Grid.Column="0" Focusable="False" Content="{StaticResource FileIcon}" />
+                    <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="File" Foreground="Gray" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
                   </Grid>
                 </DataTemplate>
@@ -132,7 +133,7 @@
                       <ColumnDefinition Width="Auto" />
                       <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
                     </Grid.ColumnDefinitions>
-                    <ContentControl Grid.Column="0" Focusable="False" Content="{StaticResource FileDocumentIcon}" />
+                    <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="FileDocument" Foreground="Gray" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
                   </Grid>
                 </DataTemplate>
