@@ -13,6 +13,7 @@
   <Grid>
     <Grid.Resources>
       <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+      <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
     </Grid.Resources>
 
     <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
@@ -157,7 +158,7 @@
         </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <Grid DockPanel.Dock="Top">
-            <TextBlock Text="Crash when using items deriving from ContentControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <TextBlock Text="Slider in list item can't be changed" Style="{StaticResource SampleHeaderTextBlockStyle}" />
             <Button CommandParameter="37" ToolTip="Open #37 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
           </Grid>
           <ScrollViewer HorizontalScrollBarVisibility="Disabled"
@@ -196,6 +197,77 @@
                         IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
                         IsChecked="{Binding ElementName=LeftIssue37ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="#65">
+        <TabItem.Resources>
+          <Style x:Key="CustomTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+          </Style>
+          <HierarchicalDataTemplate x:Key="CustomTreeViewItemTemplate" DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Children}">
+            <TextBlock Text="{Binding Caption}" />
+          </HierarchicalDataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="TreeViewItem with ItemSource" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="65" ToolTip="Open #65 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="TreeView with a TreeViewItem which binds the ItemSource to a Collection." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TreeView Grid.Column="0"
+                          Grid.IsSharedSizeScope="True"
+                          x:Name="LeftIssue65TreeView"
+                          ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                          ItemTemplate="{StaticResource CustomTreeViewItemTemplate}"
+                          HorizontalContentAlignment="Stretch"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultDragAdorner="True">
+                  <TreeViewItem Header="A TreeViewItem with ItemsSource"
+                                ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                                ItemTemplate="{StaticResource CustomTreeViewItemTemplate}"
+                                ItemsSource="{Binding Data.TreeCollection1}" />
+                </TreeView>
+                <TreeView Grid.Column="1"
+                          ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                          ItemTemplate="{StaticResource CustomTreeViewItemTemplate}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultDragAdorner="False">
+                  <TreeViewItem Header="A TreeViewItem with sub item"
+                                ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                                ItemTemplate="{StaticResource CustomTreeViewItemTemplate}">
+                    <TreeViewItem Header="Another TreeViewItem with ItemsSource"
+                                  ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                                  ItemTemplate="{StaticResource CustomTreeViewItemTemplate}"
+                                  ItemsSource="{Binding Data.TreeCollection2}" />
+                  </TreeViewItem>
+                </TreeView>
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left TreeView)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftIssue65TreeView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftIssue65TreeView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftIssue65TreeView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftIssue65TreeView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
         </DockPanel>

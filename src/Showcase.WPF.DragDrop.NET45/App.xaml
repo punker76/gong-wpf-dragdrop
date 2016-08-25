@@ -14,7 +14,7 @@
       <SolidColorBrush x:Key="TabItemForegroundIsSelectedBrush" Color="White" />
       <SolidColorBrush x:Key="TabItemSelectorBrush" Color="LawnGreen" />
 
-      <Style x:Key="GitHubIssueButtonStyle" TargetType="{x:Type Button}">
+      <Style x:Key="GitHubIssueButtonStyle" TargetType="{x:Type Button}" x:Shared="False">
         <Setter Property="Command" Value="{Binding OpenIssueCommand}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Cursor" Value="Hand" />
