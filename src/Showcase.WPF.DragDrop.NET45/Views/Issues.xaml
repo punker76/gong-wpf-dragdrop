@@ -398,6 +398,89 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="#64">
+        <TabItem.Resources>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="ItemsControl itself doesn't work" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="64" ToolTip="Open #64 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="An ItemsControl with a trigger for mouse over." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ItemsControl Grid.Column="0"
+                              x:Name="LeftItemsControlIssue64"
+                              ItemsSource="{Binding Data.Collection1}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid Background="Transparent">
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                          <iconPacks:PackIconMaterial Kind="EmoticonCool" VerticalAlignment="Center" />
+                          <Label Content="{Binding}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Grid x:Name="SpecialMouseOver" Background="Silver"
+                              HorizontalAlignment="Right"
+                              Opacity="0">
+                          <iconPacks:PackIconMaterial Kind="ThumbUp" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10 0 10 0" />
+                        </Grid>
+                      </Grid>
+                      <DataTemplate.Triggers>
+                        <EventTrigger RoutedEvent="Control.MouseEnter">
+                          <BeginStoryboard>
+                            <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.3"
+                                               To="0.8"
+                                               Storyboard.TargetName="SpecialMouseOver"
+                                               Storyboard.TargetProperty="Opacity" />
+                            </Storyboard>
+                          </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Control.MouseLeave">
+                          <BeginStoryboard>
+                            <Storyboard>
+                              <DoubleAnimation Duration="0:0:0.3"
+                                               To="0"
+                                               Storyboard.TargetName="SpecialMouseOver"
+                                               Storyboard.TargetProperty="Opacity" />
+                            </Storyboard>
+                          </BeginStoryboard>
+                        </EventTrigger>
+                      </DataTemplate.Triggers>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ItemsControl)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>

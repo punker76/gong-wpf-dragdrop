@@ -11,7 +11,6 @@ namespace Showcase.WPF.DragDrop.Models
         this.Collection1.Add(new ItemModel(n + 1));
         this.DataGridCollection1.Add(new DataGridRowModel());
       }
-      this.Collection2.Add(new ItemModel(1));
 
       for (var g = 0; g < 4; ++g)
       {
