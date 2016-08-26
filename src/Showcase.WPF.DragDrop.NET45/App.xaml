@@ -54,6 +54,10 @@
         </Setter>
       </Style>
 
+      <Style x:Key="GitHubPullRequestButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource GitHubIssueButtonStyle}" x:Shared="False">
+        <Setter Property="Command" Value="{Binding OpenPullRequestCommand}" />
+      </Style>
+
       <Style x:Key="DefaultTabItemStyle" TargetType="{x:Type TabItem}" />
       <Style x:Key="DefaultTabControlStyle" TargetType="{x:Type TabControl}">
         <Setter Property="TabStripPlacement" Value="Top" />
@@ -173,6 +177,14 @@
         <Setter Property="Height" Value="300" />
         <Setter Property="SelectionMode" Value="Extended" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListBoxItemStyle}" />
+      </Style>
+
+      <Style x:Key="DefaultItemsControl" TargetType="{x:Type ItemsControl}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Height" Value="300" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#FF888888" />
+        <Setter Property="Background" Value="Transparent" />
       </Style>
 
       <Style x:Key="DefaultListViewItemStyle" TargetType="{x:Type ListViewItem}">

@@ -44,6 +44,7 @@ namespace Showcase.WPF.DragDrop.Models
 
     public ObservableCollection<ItemModel> Collection1 { get; set; } = new ObservableCollection<ItemModel>();
     public ObservableCollection<ItemModel> Collection2 { get; set; } = new ObservableCollection<ItemModel>();
+    public ObservableCollection<ItemModel> Collection3 { get; set; } = new ObservableCollection<ItemModel>();
 
     public ObservableCollection<TreeNode> TreeCollection1 { get; set; } = new ObservableCollection<TreeNode>();
     public ObservableCollection<TreeNode> TreeCollection2 { get; set; } = new ObservableCollection<TreeNode>();

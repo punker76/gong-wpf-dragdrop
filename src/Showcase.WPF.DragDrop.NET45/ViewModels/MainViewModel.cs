@@ -8,6 +8,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
   {
     private SampleData _data;
     private ICommand _openIssueCommand;
+    private ICommand _openPullRequestCommand;
 
     /// <summary>
     /// Initializes a new instance of the MainViewModel class.
@@ -25,6 +26,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
 
       this.Data = new SampleData();
       this.OpenIssueCommand = new SimpleCommand(issue => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}"); });
+      this.OpenPullRequestCommand = new SimpleCommand(pr => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/pull/{pr}"); });
     }
 
     public SampleData Data
@@ -45,6 +47,17 @@ namespace Showcase.WPF.DragDrop.ViewModels
       {
         if (Equals(value, _openIssueCommand)) return;
         _openIssueCommand = value;
+        OnPropertyChanged();
+      }
+    }
+
+    public ICommand OpenPullRequestCommand
+    {
+      get { return _openIssueCommand; }
+      set
+      {
+        if (Equals(value, _openPullRequestCommand)) return;
+        _openPullRequestCommand = value;
         OnPropertyChanged();
       }
     }

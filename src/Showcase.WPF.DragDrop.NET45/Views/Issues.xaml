@@ -14,6 +14,7 @@
              d:DesignHeight="400" d:DesignWidth="600">
   <Grid>
     <Grid.Resources>
+      <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}" />
       <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
       <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
       <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
@@ -337,6 +338,61 @@
                         IsChecked="{Binding ElementName=LeftIssue30ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
                         IsChecked="{Binding ElementName=LeftIssue30ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="#73">
+        <TabItem.Resources>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Crash on click inside empty ItemsControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="73" ToolTip="Open #73 on Github" Style="{StaticResource GitHubPullRequestButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Empty ItemsControl with custom template on left side and a ListBox on the right side." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ItemsControl Grid.Column="0"
+                              x:Name="LeftItemsControlIssue73"
+                              ItemsSource="{Binding Data.Collection3}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.UseDefaultDragAdorner="True">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal" Margin="2" Background="Transparent">
+                        <iconPacks:PackIconMaterial Kind="Cart" VerticalAlignment="Center" />
+                        <Label Content="{Binding}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ItemsControl)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue73, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue73, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue73, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue73, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
         </DockPanel>
