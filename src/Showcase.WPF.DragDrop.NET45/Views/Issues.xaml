@@ -496,10 +496,12 @@
                          ItemsSource="{Binding Data.Collection1}"
                          dd:DragDrop.IsDragSource="True"
                          dd:DragDrop.IsDropTarget="True" />
-                <Grid Grid.Column="1">
-                  <TextBox Text="Drop any item here..."
-                           IsReadOnly="True"
-                           Height="30"
+                <Grid Grid.Column="1"
+                      Margin="4">
+                  <TextBox Text="Drop any item on this TextBox..."
+                           Height="150"
+                           TextWrapping="Wrap"
+                           VerticalScrollBarVisibility="Auto"
                            dd:DragDrop.IsDropTarget="True"
                            dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}" />
                 </Grid>
