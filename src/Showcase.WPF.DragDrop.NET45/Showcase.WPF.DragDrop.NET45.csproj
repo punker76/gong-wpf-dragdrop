@@ -70,6 +70,7 @@
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\SampleData.cs" />
     <Compile Include="Models\TabItemModel.cs" />
+    <Compile Include="Models\TextBoxCustomDropHandler.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -51,16 +51,12 @@ namespace Showcase.WPF.DragDrop.Models
     public GroupedDropHandler GroupedDropHandler { get; set; } = new GroupedDropHandler();
     public ObservableCollection<GroupedItem> GroupedCollection { get; set; } = new ObservableCollection<GroupedItem>();
 
-    public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } =
-      new ObservableCollection<DataGridRowModel>();
+    public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } = new ObservableCollection<DataGridRowModel>();
+    public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } = new ObservableCollection<DataGridRowModel>();
 
-    public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } =
-      new ObservableCollection<DataGridRowModel>();
+    public ObservableCollection<TabItemModel> TabItemCollection1 { get; set; } = new ObservableCollection<TabItemModel>();
+    public ObservableCollection<TabItemModel> TabItemCollection2 { get; set; } = new ObservableCollection<TabItemModel>();
 
-    public ObservableCollection<TabItemModel> TabItemCollection1 { get; set; } =
-      new ObservableCollection<TabItemModel>();
-
-    public ObservableCollection<TabItemModel> TabItemCollection2 { get; set; } =
-      new ObservableCollection<TabItemModel>();
+    public TextBoxCustomDropHandler TextBoxCustomDropHandler { get; set; } = new TextBoxCustomDropHandler();
   }
 }

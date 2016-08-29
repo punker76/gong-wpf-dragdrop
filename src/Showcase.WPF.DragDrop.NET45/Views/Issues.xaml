@@ -278,8 +278,6 @@
       </TabItem>
 
       <TabItem Header="#30">
-        <TabItem.Resources>
-        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <Grid DockPanel.Dock="Top">
             <TextBlock Text="No support for derived item container classes" Style="{StaticResource SampleHeaderTextBlockStyle}" />
@@ -344,8 +342,6 @@
       </TabItem>
 
       <TabItem Header="#73">
-        <TabItem.Resources>
-        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <Grid DockPanel.Dock="Top">
             <TextBlock Text="Crash on click inside empty ItemsControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
@@ -399,8 +395,6 @@
       </TabItem>
 
       <TabItem Header="#64">
-        <TabItem.Resources>
-        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <Grid DockPanel.Dock="Top">
             <TextBlock Text="ItemsControl itself doesn't work" Style="{StaticResource SampleHeaderTextBlockStyle}" />
@@ -476,6 +470,40 @@
                         IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
                         IsChecked="{Binding ElementName=LeftItemsControlIssue64, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="#85">
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Drop to Control which is not an ItemsControl" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="85" ToolTip="Open #85 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="You can drag and drop items to any other Control with a custom DropHandler." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftIssue85ListBox"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True" />
+                <Grid Grid.Column="1">
+                  <TextBox Text="Drop any item here..."
+                           IsReadOnly="True"
+                           Height="30"
+                           dd:DragDrop.IsDropTarget="True"
+                           dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}" />
+                </Grid>
+              </Grid>
             </StackPanel>
           </ScrollViewer>
         </DockPanel>
