@@ -145,12 +145,15 @@
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0"
                          Margin="2"
+                         VerticalAlignment="Center"
                          Text="{Binding Path=Caption, Mode=OneWay}" />
               <TextBox Grid.Column="1"
                        Margin="2"
                        MinWidth="60"
+                       VerticalAlignment="Center"
                        Text="{Binding Path=BindableDoubleValue, Mode=OneWay, StringFormat={}{0:n2} %}" />
               <Slider Grid.Column="2"
+                      VerticalAlignment="Center"
                       Value="{Binding Path=BindableDoubleValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Minimum="0"
                       Maximum="100"
@@ -506,6 +509,78 @@
                            dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}" />
                 </Grid>
               </Grid>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="#84">
+        <TabItem.Resources>
+          <DataTemplate x:Key="Issue84DataTemplate" DataType="{x:Type models:ItemModel}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Col01" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Col02" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0"
+                         Margin="2"
+                         VerticalAlignment="Center"
+                         Text="{Binding Path=Caption, Mode=OneWay}" />
+              <TextBox Grid.Column="1"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       MinWidth="70"
+                       Text="{Binding Path=SelectedSubItem, Mode=OneWay}" />
+              <ComboBox Grid.Column="2"
+                        VerticalAlignment="Center"
+                        SelectedValue="{Binding Path=SelectedSubItem, TargetNullValue={x:Null}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding Path=SubItemCollection, Mode=OneWay}"
+                        Margin="2" />
+            </Grid>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="ComboBox in list item can't be used" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="84" ToolTip="Open #84 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox with ItemTemplate which contains other controls. This controls also gets the mouse input, so drag action should not be started." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         Grid.IsSharedSizeScope="True"
+                         x:Name="LeftIssue84ListBox"
+                         HorizontalContentAlignment="Stretch"
+                         ItemTemplate="{StaticResource Issue84DataTemplate}"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="False" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftIssue84ListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftIssue84ListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftIssue84ListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftIssue84ListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
         </DockPanel>
