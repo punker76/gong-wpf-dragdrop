@@ -74,7 +74,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       }
     }
 
-    public static UIElement GetItemContainer(this ItemsControl itemsControl, UIElement child)
+    public static UIElement GetItemContainer(this ItemsControl itemsControl, DependencyObject child)
     {
       bool isItemContainer;
       var itemType = GetItemContainerType(itemsControl, out isItemContainer);
@@ -95,6 +95,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
       if (uiElement != null) {
         return GetItemContainer(itemsControl, uiElement);
+      }
+
+      var contentElement = inputElement as ContentElement;
+      if (contentElement != null) {
+        return GetItemContainer(itemsControl, contentElement);
       }
 
       return null;
