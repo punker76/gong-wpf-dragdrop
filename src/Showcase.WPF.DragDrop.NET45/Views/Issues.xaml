@@ -680,6 +680,86 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="#146">
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Library throws 'The specified Visual is not an ancestor of this Visual'" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="146" ToolTip="Open #146 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="This is a more complex sample with nested controls." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListView Grid.Column="0"
+                          Margin="4"
+                          Height="450"
+                          ItemsSource="{Binding Data.TreeCollection1}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.DragDropContext="OuterContext">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.RowDefinitions>
+                          <RowDefinition />
+                          <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Caption}" />
+                        <!-- This nested ListView contains some items and problem occurs when I start dragging parent item from position in nested ListView OR dragging other item ovet this item -->
+                        <ListView Grid.Row="1"
+                                  Height="NaN"
+                                  MinHeight="25"
+                                  MinWidth="100"
+                                  AllowDrop="False"
+                                  ItemsSource="{Binding Children}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                      </Grid>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                </ListView>
+                <ListView Grid.Column="1"
+                          Margin="4"
+                          Height="450"
+                          ItemsSource="{Binding Data.TreeCollection2}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.DragDropContext="OuterContext">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid AllowDrop="True">
+                        <Grid.RowDefinitions>
+                          <RowDefinition />
+                          <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Caption}" />
+                        <ListView Grid.Row="1"
+                                  Height="NaN"
+                                  MinHeight="25"
+                                  MinWidth="100"
+                                  dd:DragDrop.IsDragSource="True"
+                                  dd:DragDrop.IsDropTarget="True"
+                                  dd:DragDrop.DragDropContext="InnerContext"
+                                  ItemsSource="{Binding Children}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                      </Grid>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                </ListView>
+              </Grid>
+
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>
