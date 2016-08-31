@@ -5,12 +5,81 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="600">
   <Grid>
-    <DockPanel LastChildFill="True">
-      <TextBlock Text="Mixed" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
-    </DockPanel>
+    <Grid.Resources>
+      <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}" />
+      <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+      <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
+      <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
+    </Grid.Resources>
+
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+      <TabItem Header="DragDropContext">
+        <TabItem.Resources>
+          <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}">
+            <Setter Property="Height" Value="Auto" />
+          </Style>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragDropContext sample" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <UniformGrid Columns="2" Rows="2">
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = MainContext" />
+              <ListBox ItemsSource="{Binding Data.Collection1}"
+                       SelectionMode="Extended"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="MainContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = MainContext" />
+              <ListBox ItemsSource="{Binding Data.Collection2}"
+                       SelectionMode="Extended"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="MainContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = DifferentContext" />
+              <ListBox ItemsSource="{Binding Data.Collection2}"
+                       SelectionMode="Extended"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="DifferentContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="No DragDropContext" />
+              <ListBox ItemsSource="{Binding Data.Collection4}"
+                       SelectionMode="Extended"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+          </UniformGrid>
+        </DockPanel>
+      </TabItem>
+
+    </TabControl>
+
   </Grid>
 </UserControl>
