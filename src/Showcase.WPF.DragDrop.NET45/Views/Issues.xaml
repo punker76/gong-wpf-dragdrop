@@ -586,6 +586,46 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="#88">
+        <TabItem.Resources>
+          <Style x:Key="CustomTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="ItemsPanel">
+              <Setter.Value>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ItemsPresenter}}" />
+                </ItemsPanelTemplate>
+              </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+          </Style>
+          <HierarchicalDataTemplate x:Key="CustomTreeViewItemTemplate" DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Children}">
+            <TextBlock Text="{Binding Caption}" />
+          </HierarchicalDataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Complex ItemsPanel inside TreeViewItem" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="88" ToolTip="Open #88 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="TreeView with a TreeViewItem which binds the ItemSource to a Collection." />
+              <TreeView ItemsSource="{Binding Data.TreeCollection1}"
+                        ItemContainerStyle="{StaticResource CustomTreeViewItemStyle}"
+                        ItemTemplate="{StaticResource CustomTreeViewItemTemplate}"
+                        HorizontalContentAlignment="Stretch"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.UseDefaultDragAdorner="True" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>
