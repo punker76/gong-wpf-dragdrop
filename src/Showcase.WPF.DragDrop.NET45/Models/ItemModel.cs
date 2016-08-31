@@ -10,14 +10,18 @@ namespace Showcase.WPF.DragDrop.Models
     private double _bindableDoubleValue;
     private string _selectedSubItem;
 
-    public ItemModel(int itemIndex)
+    public ItemModel()
     {
-      this.Caption = $"Item {itemIndex}";
       this.BindableDoubleValue = Faker.RandomNumber.Next(0, 100);
       for (int i = 0; i < Faker.RandomNumber.Next(2, 20); i++)
       {
         SubItemCollection.Add($"Sub item {i}");
       }
+    }
+
+    public ItemModel(int itemIndex) : this()
+    {
+      this.Caption = $"Item {itemIndex}";
     }
 
     public string Caption { get; set; }

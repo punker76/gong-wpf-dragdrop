@@ -626,6 +626,60 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="#188">
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Wrong item gets dragged on drag start" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="188" ToolTip="Open #188 on Github" Style="{StaticResource GitHubIssueButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Wrong (next) item gets dragged when starting dragging in lower half of item." />
+              <ItemsControl Height="NaN"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            dd:DragDrop.UseDefaultDragAdorner="True"
+                            dd:DragDrop.DefaultDragAdornerOpacity="0.6">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type models:ItemModel}">
+                    <GroupBox Margin="0,5,0,5" Background="Transparent">
+                      <GroupBox.Header>
+                        <TextBlock>
+                          <Run Text="Item " />
+                          <Run Text="{Binding Caption, Mode=OneWay}" />
+                        </TextBlock>
+                      </GroupBox.Header>
+                      <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*" />
+                          <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0" VerticalAlignment="Center" Height="25" MinWidth="70" Margin="10,0,0,0"
+                                  ItemsSource="{Binding SubItemCollection, Mode=OneWay}"
+                                  SelectedValue="{Binding Path=SelectedSubItem, TargetNullValue={x:Null}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Column="1" Margin="30,0,0,0" Content="..." Width="70" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                      </Grid>
+                    </GroupBox>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <models:ItemModel Caption="1" />
+                <models:ItemModel Caption="2" />
+                <models:ItemModel Caption="3" />
+                <models:ItemModel Caption="4" />
+
+              </ItemsControl>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>
