@@ -120,6 +120,59 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="Custom styled ItemsControl">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Custom styled ItemsControl" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="A custom styles ItemsControl on the left side. It's here to check if it works... yes, really." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ItemsControl Grid.Column="0"
+                              ItemsSource="{Binding Data.Collection1}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.UseDefaultDragAdorner="True">
+                  <ItemsControl.Style>
+                    <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type ItemsControl}">
+                            <Border Background="WhiteSmoke">
+                              <ScrollViewer>
+                                <ItemsPresenter />
+                              </ScrollViewer>
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </ItemsControl.Style>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="Bisque"
+                              Margin="4">
+                        <TextBlock Text="{Binding}" />
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>
