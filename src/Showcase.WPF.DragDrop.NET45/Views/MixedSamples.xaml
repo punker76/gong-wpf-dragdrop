@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400" d:DesignWidth="600">
@@ -168,6 +169,67 @@
                          dd:DragDrop.IsDropTarget="True"
                          dd:DragDrop.UseDefaultDragAdorner="True" />
               </Grid>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="DragAdornerTemplateSelector">
+        <TabItem.Resources>
+          <DataTemplate x:Key="Even">
+            <Border BorderThickness="1" BorderBrush="Silver" Background="Gainsboro" CornerRadius="2">
+              <TextBlock Text="{Binding}"
+                         FontWeight="Bold"
+                         Margin="2"
+                         Foreground="Green" />
+            </Border>
+          </DataTemplate>
+          <DataTemplate x:Key="Odd">
+            <Border BorderThickness="1" BorderBrush="Silver" Background="Gainsboro" CornerRadius="2">
+              <TextBlock Text="{Binding}"
+                         FontWeight="Bold"
+                         Margin="2"
+                         Foreground="DodgerBlue" />
+            </Border>
+          </DataTemplate>
+          <models:DragAdornerTemplateSelector x:Key="DragAdornerTemplateSelector"
+                                              TemplateEven="{StaticResource Even}"
+                                              TemplateOdd="{StaticResource Odd}" />
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragAdornerTemplateSelector" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the usage of a DataTemplateSelector for the drag adorner." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftDataTemplateSelectorSampleListBox"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplateSelector="{StaticResource DragAdornerTemplateSelector}"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
         </DockPanel>
