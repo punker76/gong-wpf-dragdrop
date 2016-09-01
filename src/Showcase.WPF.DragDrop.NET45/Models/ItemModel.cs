@@ -21,9 +21,11 @@ namespace Showcase.WPF.DragDrop.Models
 
     public ItemModel(int itemIndex) : this()
     {
+      this.Index = itemIndex;
       this.Caption = $"Item {itemIndex}";
     }
 
+    public int Index { get; set; }
     public string Caption { get; set; }
 
     public ObservableCollection<string> SubItemCollection { get; set; } = new ObservableCollection<string>();

@@ -9,6 +9,7 @@ namespace Showcase.WPF.DragDrop.Models
       for (var n = 0; n < 50; ++n)
       {
         this.Collection1.Add(new ItemModel(n + 1));
+        this.FilterCollection1.Add(new ItemModel(n + 1));
         this.DataGridCollection1.Add(new DataGridRowModel());
       }
       for (var n = 0; n < 10; ++n)
@@ -49,6 +50,9 @@ namespace Showcase.WPF.DragDrop.Models
     public ObservableCollection<ItemModel> Collection2 { get; set; } = new ObservableCollection<ItemModel>();
     public ObservableCollection<ItemModel> Collection3 { get; set; } = new ObservableCollection<ItemModel>();
     public ObservableCollection<ItemModel> Collection4 { get; set; } = new ObservableCollection<ItemModel>();
+
+    public ObservableCollection<ItemModel> FilterCollection1 { get; set; } = new ObservableCollection<ItemModel>();
+    public ObservableCollection<ItemModel> FilterCollection2 { get; set; } = new ObservableCollection<ItemModel>();
 
     public ObservableCollection<TreeNode> TreeCollection1 { get; set; } = new ObservableCollection<TreeNode>();
     public ObservableCollection<TreeNode> TreeCollection2 { get; set; } = new ObservableCollection<TreeNode>();
