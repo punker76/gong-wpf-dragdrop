@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400" d:DesignWidth="600">
@@ -19,6 +20,57 @@
     </Grid.Resources>
 
     <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+
+      <TabItem Header="DragAdorner">
+        <TabItem.Resources>
+          <DataTemplate x:Key="DragAdorner">
+            <Border Background="Silver"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    SnapsToDevicePixels="True">
+              <StackPanel Orientation="Horizontal" Margin="4">
+                <iconPacks:PackIconMaterial Kind="MoveResizeVariant"
+                                            VerticalAlignment="Center" />
+                <TextBlock Text="{Binding}"
+                           Margin="6 0 0 0"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragAdorner" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <UniformGrid Columns="2" Rows="1">
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox" />
+              <ListBox ItemsSource="{Binding Data.Collection1}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListView" />
+              <ListView ItemsSource="{Binding Data.Collection2}"
+                        Height="Auto"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                        dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+          </UniformGrid>
+        </DockPanel>
+      </TabItem>
+
       <TabItem Header="DragDropContext">
         <TabItem.Resources>
           <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}">
@@ -34,7 +86,7 @@
                          Style="{StaticResource DefaultTextBlockStyle}"
                          Text="DragDropContext = MainContext" />
               <ListBox ItemsSource="{Binding Data.Collection1}"
-                       SelectionMode="Extended"
+                       Height="Auto"
                        dd:DragDrop.IsDragSource="True"
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.DragDropContext="MainContext"
@@ -46,7 +98,7 @@
                          Style="{StaticResource DefaultTextBlockStyle}"
                          Text="DragDropContext = MainContext" />
               <ListBox ItemsSource="{Binding Data.Collection2}"
-                       SelectionMode="Extended"
+                       Height="Auto"
                        dd:DragDrop.IsDragSource="True"
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.DragDropContext="MainContext"
@@ -58,7 +110,7 @@
                          Style="{StaticResource DefaultTextBlockStyle}"
                          Text="DragDropContext = DifferentContext" />
               <ListBox ItemsSource="{Binding Data.Collection2}"
-                       SelectionMode="Extended"
+                       Height="Auto"
                        dd:DragDrop.IsDragSource="True"
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.DragDropContext="DifferentContext"
@@ -70,7 +122,7 @@
                          Style="{StaticResource DefaultTextBlockStyle}"
                          Text="No DragDropContext" />
               <ListBox ItemsSource="{Binding Data.Collection4}"
-                       SelectionMode="Extended"
+                       Height="Auto"
                        dd:DragDrop.IsDragSource="True"
                        dd:DragDrop.IsDropTarget="True"
                        dd:DragDrop.UseDefaultEffectDataTemplate="True" />
