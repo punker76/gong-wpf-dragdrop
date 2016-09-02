@@ -37,7 +37,7 @@ I will not do this anymore for this packages (started with v1.0). If you need th
 
 ## Namespace
 
-To use `GongSolutions.WPF.DragDrop` in your application you need to at the namespace to your Xaml files.
+To use `GongSolutions.WPF.DragDrop` in your application you need to add the namespace to your Xaml files.
 
 ```xaml
 xmlns:dd="urn:gong-wpf-dragdrop"
