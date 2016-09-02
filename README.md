@@ -12,15 +12,13 @@
 
 The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framework for WPF.
 
-The original source is from https://code.google.com/archive/p/gong-wpf-dragdrop (but this git repository is now the main source).
-
 ## Features
 
 + Works with MVVM : the logic for the drag and drop can be placed in a ViewModel. No code needs to be placed in codebehind, instead attached properties are used to bind to a drag handler/drop handler in a ViewModel.
 + Works with multiple selections.
 + Can drag data within the same control to re-order, or between controls.
-+ Works with TreeViews.
-+ Can insert an item into a collection, or drop one item onto another.
++ Works with `ListBox`, `ListView`, `TreeView`, `DataGrid` and any other `ItemsControl`.
++ Can insert, move or copy an item into a collection of the same control or into another.
 + Can display Adorners to give the user visual feedback of the operation in progress.
 + Has sensible defaults so that you have to write less code for common operations.
 
@@ -30,12 +28,88 @@ The original source is from https://code.google.com/archive/p/gong-wpf-dragdrop 
 
 ## Installation
 
-You can download or fork the source code and compile it.  
-Or: Get the latest version via NuGet: [https://www.nuget.org/packages/gong-wpf-dragdrop](https://www.nuget.org/packages/gong-wpf-dragdrop/)
+You can download or fork the source code and compile it. You need at least VS Community 2015 or higher.  
+Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong-wpf-dragdrop](https://www.nuget.org/packages/gong-wpf-dragdrop/)
 
 ## Strong naming
 
-I will not do this anymore for this packages. If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+I will not do this anymore for this packages (started with v1.0). If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+
+# Namespace
+
+To use `GongSolutions.WPF.DragDrop` in your application you need to at the namespace to your Xaml files.
+
+```xaml
+xmlns:dd="urn:gong-wpf-dragdrop"
+```
+
+or
+
+```xaml
+xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+```
+
+## Default Behaviour
+
+A simple example of adding drag/drop to a ListBox:
+
+```xml
+<ListBox ItemsSource="{Binding Collection}"
+         dd:DragDrop.IsDragSource="True"
+         dd:DragDrop.IsDropTarget="True" />
+```
+
+Setting the IsDragSource and IsDropTarget attached propeties to True on an ItemsControl such as ListBox enables drag and drop. The default behaviour is to allow re-ordering of items within the control.
+
+If your project contains another ItemsControl with drag/drop enabled in this manner, and it is bound to a collection of the same type, then items can also be dragged and dropped between the controls.
+
+## Adding a Drop Handler
+
+While the defaults can be useful in simple cases, you will usually want more control of what happens when data is dragged/dropped onto your control. You can delegate that responsibility to your ViewModel by setting the DropHandler attached property:
+
+```xml
+<ListBox ItemsSource="{Binding Collection}"
+         dd:DragDrop.IsDragSource="True"
+         dd:DragDrop.IsDropTarget="True"
+         dd:DragDrop.DropHandler="{Binding}" />
+```
+
+In this example, we're binding the drop handler to the current DataContext, which will usually be your ViewModel.
+
+You handle the drop in your ViewModel by implementing the IDropTarget interface:
+
+```csharp
+class ExampleViewModel : IDropTarget
+{
+	public ObservableCollection<ExampleItemViewModel> Items;
+	
+	void IDropTarget.DragOver(IDropInfo dropInfo) {
+		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
+		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
+		
+		if (sourceItem != null && targetItem != null && targetItem.CanAcceptChildren) {
+			dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+			dropInfo.Effects = DragDropEffects.Copy;
+		}
+	}
+	
+	void IDropTarget.Drop(IDropInfo dropInfo) {
+		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
+		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
+		targetItem.Children.Add(sourceItem);
+	}
+}
+
+class ExampleItemViewModel
+{
+	public bool CanAcceptChildren { get; set; }
+	public ObservableCollection<ExampleItemViewModel> Children { get; private set; }
+}
+```
+
+In this example, we're checking that the item being dragged and the item being dropped onto are both ExampleItemViewModels and that the target item allows items to be added to its Children collection. If the drag satisfies both of these conditions, then the function tells the framework to display a Copy mouse pointer, and to use a Highlight drop target adorner.
+
+For more information, check out the full [DropHandlerExample](Examples).
 
 ## Release History
 
@@ -82,6 +156,13 @@ I will not do this anymore for this packages. If you need this then you should u
 	- [#187](https://github.com/punker76/gong-wpf-dragdrop/issues/187) Change `DragSourceIgnore` attached property to use `FrameworkPropertyMetadataOptions.Inherits` flag which makes this functionality much more useful and easier to control (thx to @mtdaniels)
 	- [#199](https://github.com/punker76/gong-wpf-dragdrop/pull/199) Use target root element to display adorners (@ltrzesniewski)
 	- **BREAKING CHANGE** for strong naming: I will not do this anymore for this packages. If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+	- [#198](https://github.com/punker76/gong-wpf-dragdrop/pull/198)
+		+ Capture the items with right Dpi. Add a DpiHelper class, cause Microsoft hides this relevant helper class and it's methods.
+		+ Show DragAdorner also on elements which are not allowed for hit test.
+		+ No Drag&Drop for NewItemPlaceholder in `DataGrid` and consider NewItemPlaceholderPosition to insert items at DefaultDropHandler.
+		+ Add new `TargetScrollViewer` property to DropInfo.
+		+ Check for ViewPort size on target insertion adorner.
+		+ Add new attached property `ItemsPanelOrientation`. This property allows the user to force the Orientation of the ItemsControl (ItemsPanel). Changes taken from #155 by @jankrib.
 + **0.1.4.1** (20 June, 2014), **0.1.4.3** (11 Aug, 2014)
 	- [#102](https://github.com/punker76/gong-wpf-dragdrop/issues/102): All assemblies in Nuget Package 0.1.4 are compiled against v4 runtime.
 + **0.1.4** (30 May, 2014)
@@ -201,75 +282,7 @@ wasn't a collection).
 + **0.1.0** (11 Nov, 2009)
 	- Initial Release.
 
-# Examples
-
-All examples use the namespace definition 
-
-```xml
-xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-```
-
-## Default Behaviour
-
-A simple example of adding drag/drop to a ListBox:
-
-```xml
-<ListBox ItemsSource="{Binding Collection}"
-         dd:DragDrop.IsDragSource="True"
-         dd:DragDrop.IsDropTarget="True" />
-```
-
-Setting the IsDragSource and IsDropTarget attached propeties to True on an ItemsControl such as ListBox enables drag and drop. The default behaviour is to allow re-ordering of items within the control.
-
-If your project contains another ItemsControl with drag/drop enabled in this manner, and it is bound to a collection of the same type, then items can also be dragged and dropped between the controls.
-
-## Adding a Drop Handler
-
-While the defaults can be useful in simple cases, you will usually want more control of what happens when data is dragged/dropped onto your control. You can delegate that responsibility to your ViewModel by setting the DropHandler attached property:
-
-```xml
-<ListBox ItemsSource="{Binding Collection}"
-         dd:DragDrop.IsDragSource="True"
-         dd:DragDrop.IsDropTarget="True"
-         dd:DragDrop.DropHandler="{Binding}" />
-```
-
-In this example, we're binding the drop handler to the current DataContext, which will usually be your ViewModel.
-
-You handle the drop in your ViewModel by implementing the IDropTarget interface:
-
-```csharp
-class ExampleViewModel : IDropTarget
-{
-	public ObservableCollection<ExampleItemViewModel> Items;
-	
-	void IDropTarget.DragOver(IDropInfo dropInfo) {
-		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
-		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
-		
-		if (sourceItem != null && targetItem != null && targetItem.CanAcceptChildren) {
-			dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-			dropInfo.Effects = DragDropEffects.Copy;
-		}
-	}
-	
-	void IDropTarget.Drop(IDropInfo dropInfo) {
-		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
-		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
-		targetItem.Children.Add(sourceItem);
-	}
-}
-
-class ExampleItemViewModel
-{
-	public bool CanAcceptChildren { get; set; }
-	public ObservableCollection<ExampleItemViewModel> Children { get; private set; }
-}
-```
-
-In this example, we're checking that the item being dragged and the item being dropped onto are both ExampleItemViewModels and that the target item allows items to be added to its Children collection. If the drag satisfies both of these conditions, then the function tells the framework to display a Copy mouse pointer, and to use a Highlight drop target adorner.
-
-For more information, check out the full [DropHandlerExample](Examples).
+The original source is from https://code.google.com/archive/p/gong-wpf-dragdrop (but this git repository is now the main source).
 
 # License
 
