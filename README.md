@@ -35,7 +35,7 @@ Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong
 
 I will not do this anymore for this packages (started with v1.0). If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
 
-# Namespace
+## Namespace
 
 To use `GongSolutions.WPF.DragDrop` in your application you need to at the namespace to your Xaml files.
 
@@ -48,6 +48,18 @@ or
 ```xaml
 xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 ```
+
+## In action
+
+![screenshot01](./screenshots/2016-09-03_00h51_35.png)
+
+![screenshot02](./screenshots/2016-09-03_00h52_20.png)
+
+![screenshot03](./screenshots/2016-09-03_00h53_03.png)
+
+![screenshot04](./screenshots/2016-09-03_00h53_21.png)
+
+![gif01](./screenshots/DragDropSample01.gif)
 
 ## Default Behaviour
 
