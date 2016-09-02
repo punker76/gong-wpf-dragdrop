@@ -21,24 +21,25 @@
 
     <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
 
+      <TabControl.Resources>
+        <DataTemplate x:Key="DragAdorner">
+          <Border Background="Silver"
+                  BorderBrush="Gray"
+                  BorderThickness="1"
+                  CornerRadius="2"
+                  SnapsToDevicePixels="True">
+            <StackPanel Orientation="Horizontal" Margin="4">
+              <iconPacks:PackIconMaterial Kind="MoveResizeVariant"
+                                          VerticalAlignment="Center" />
+              <TextBlock Text="{Binding}"
+                         Margin="6 0 0 0"
+                         VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </TabControl.Resources>
+
       <TabItem Header="DragAdorner">
-        <TabItem.Resources>
-          <DataTemplate x:Key="DragAdorner">
-            <Border Background="Silver"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    CornerRadius="2"
-                    SnapsToDevicePixels="True">
-              <StackPanel Orientation="Horizontal" Margin="4">
-                <iconPacks:PackIconMaterial Kind="MoveResizeVariant"
-                                            VerticalAlignment="Center" />
-                <TextBlock Text="{Binding}"
-                           Margin="6 0 0 0"
-                           VerticalAlignment="Center" />
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </TabItem.Resources>
         <DockPanel LastChildFill="True">
           <TextBlock Text="DragAdorner" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
           <UniformGrid Columns="2" Rows="1">
@@ -355,6 +356,61 @@
                         IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
           </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="ItemsControl">
+        <TabItem.Resources>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Another ItemsControl sample" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <DockPanel LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top"
+                       Style="{StaticResource DefaultTextBlockStyle}"
+                       Text="Demonstrates the behaviour with an ItemsControl that has a DataTemplate with an ItemsControl and Buttons inside." />
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+              <ItemsControl ItemsSource="{Binding Data.Collection1}"
+                            Height="Auto"
+                            dd:DragDrop.DragDropContext="OuterContext"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                            dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid Background="Coral"
+                          Margin="0,1,0,1">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                      </Grid.RowDefinitions>
+                      <TextBlock Grid.Row="0"
+                                 Margin="2"
+                                 FontSize="16"
+                                 Text="{Binding}" />
+                      <ItemsControl Grid.Row="1"
+                                    Height="Auto"
+                                    dd:DragDrop.DragDropContext="InnerContext"
+                                    dd:DragDrop.IsDragSource="True"
+                                    dd:DragDrop.IsDropTarget="True"
+                                    ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <Grid Background="#FDA07E">
+                              <Button Content="{Binding}"
+                                      HorizontalAlignment="Left"
+                                      Margin="20,1,1,1" />
+                            </Grid>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
         </DockPanel>
       </TabItem>
 
