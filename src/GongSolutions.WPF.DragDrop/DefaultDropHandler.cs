@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GongSolutions.Wpf.DragDrop
 {

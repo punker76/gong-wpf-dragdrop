@@ -64,6 +64,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClonableItemModel.cs" />
     <Compile Include="Models\DataGridRowModel.cs" />
     <Compile Include="Models\DragAdornerTemplateSelector.cs" />
     <Compile Include="Models\GroupedDropHandler.cs" />

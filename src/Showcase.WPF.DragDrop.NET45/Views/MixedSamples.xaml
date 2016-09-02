@@ -287,6 +287,77 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="Cloning">
+        <TabItem.Resources>
+          <Style x:Key="ClonableListBoxItemStyle" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+            <Setter Property="dd:DragDrop.DragSourceIgnore" Value="True" />
+          </Style>
+          <DataTemplate x:Key="CloningTemplate"
+                        DataType="{x:Type models:ClonableItemModel}">
+            <Border Background="Gainsboro"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    SnapsToDevicePixels="True">
+              <StackPanel Orientation="Horizontal" Margin="4">
+                <iconPacks:PackIconMaterial Kind="Drag"
+                                            Background="Transparent"
+                                            Cursor="SizeAll"
+                                            dd:DragDrop.DragSourceIgnore="False" />
+                <TextBlock Text="{Binding Caption}"
+                           Margin="6 0 0 0"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Cloning" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the cloning behaviour with 2 ListBoxes bound to collections of the same type. The Model of the collections implements the ICloneable interface. You can clone an Item by holding the CTRL key while drag and drop." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftClonableListBox"
+                         ItemContainerStyle="{StaticResource ClonableListBoxItemStyle}"
+                         HorizontalContentAlignment="Stretch"
+                         ItemsSource="{Binding Data.ClonableCollection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragDropCopyKeyState="ControlKey"
+                         ItemTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+                <ListBox Grid.Column="1"
+                         ItemContainerStyle="{StaticResource ClonableListBoxItemStyle}"
+                         HorizontalContentAlignment="Stretch"
+                         ItemsSource="{Binding Data.ClonableCollection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragDropCopyKeyState="ControlKey"
+                         ItemTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource CloningTemplate}" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>
