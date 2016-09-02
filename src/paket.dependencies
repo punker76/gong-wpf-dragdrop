@@ -1,0 +1,6 @@
+source https://nuget.org/api/v2
+
+nuget JetBrains.Annotations framework: >= net35
+nuget MahApps.Metro.IconPacks.Material framework: >= net35
+nuget Faker.Net framework: >= net35
+nuget WPFToolkit framework: net35

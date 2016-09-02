@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Showcase.WPF.DragDrop.Views.DataGridSamples"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
+             xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.Resources>
+      <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DefaultDataGridStyle}" />
+    </Grid.Resources>
+
+    <DockPanel LastChildFill="True">
+      <TextBlock Text="DataGrid" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                     Text="Demonstrates the default behaviour with two DataGrids bound to two collections of the same type. Just try drag and drop some Rows from left DataGrid to right DataGrid." />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      x:Name="LeftBoundDataGrid"
+                      ItemsSource="{Binding Data.DataGridCollection1}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            <DataGrid Grid.Column="1"
+                      CanUserAddRows="True"
+                      CanUserDeleteRows="True"
+                      ItemsSource="{Binding Data.DataGridCollection2}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True" />
+          </Grid>
+
+          <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                     Text="Customization (for left DataGrid)" />
+          <CheckBox Margin="10 5" Content="IsDragSource"
+                    IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+          <CheckBox Margin="10 5" Content="IsDropTarget"
+                    IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+          <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                    IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+          <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                    IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+      </ScrollViewer>
+    </DockPanel>
+  </Grid>
+</UserControl>

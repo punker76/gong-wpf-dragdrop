@@ -1,0 +1,198 @@
+﻿<UserControl x:Class="Showcase.WPF.DragDrop.Views.ListViewSamples"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
+             xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+             d:DesignHeight="400" d:DesignWidth="600">
+
+  <Grid>
+    <Grid.Resources>
+      <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
+    </Grid.Resources>
+
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+      <TabItem Header="Bound">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="ListView Bound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the default behaviour with two ListViews bound to two collections of the same type. Just try drag and drop some Items from left ListView to right ListView." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListView Grid.Column="0"
+                          x:Name="LeftBoundListView"
+                          ItemsSource="{Binding Data.Collection1}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True">
+                  <ListView.View>
+                    <GridView>
+                      <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                          <DataTemplate>
+                            <iconPacks:PackIconMaterial Focusable="False" Kind="File" Foreground="Gray" />
+                          </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                      </GridViewColumn>
+                      <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                          <DataTemplate>
+                            <TextBlock Text="{Binding}">
+                              <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                  <MenuItem Header="ContextMenu Item 1" />
+                                  <MenuItem Header="ContextMenu Item 2" />
+                                  <MenuItem Header="ContextMenu Item 3" />
+                                </ContextMenu>
+                              </TextBlock.ContextMenu>
+                            </TextBlock>
+                          </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                      </GridViewColumn>
+                    </GridView>
+                  </ListView.View>
+                </ListView>
+                <ListView Grid.Column="1"
+                          ItemsSource="{Binding Data.Collection2}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultDragAdorner="True">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto" />
+                          <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
+                        </Grid.ColumnDefinitions>
+                        <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="FileDocument" Foreground="Gray" />
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                  <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <WrapPanel Orientation="Horizontal"
+                                 Grid.IsSharedSizeScope="True"
+                                 Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}" />
+                    </ItemsPanelTemplate>
+                  </ListView.ItemsPanel>
+                </ListView>
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListView)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Unbound">
+        <TabItem.Resources>
+          <Style x:Key="CustomLeftUnboundListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="ContentTemplate">
+              <Setter.Value>
+                <DataTemplate>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
+                    </Grid.ColumnDefinitions>
+                    <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="File" Foreground="Gray" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
+                  </Grid>
+                </DataTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+          <Style x:Key="CustomRightUnboundListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="ContentTemplate">
+              <Setter.Value>
+                <DataTemplate>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" SharedSizeGroup="CaptionColum" />
+                    </Grid.ColumnDefinitions>
+                    <iconPacks:PackIconMaterial Grid.Column="0" Focusable="False" Kind="FileDocument" Foreground="Gray" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding}" />
+                  </Grid>
+                </DataTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="ListView Unbound" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the default behaviour with two ListViews and unbound items (e.g. direct usage of ListViewItem). Just try drag and drop some Items from left ListView to right ListView." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListView Grid.Column="0"
+                          x:Name="LeftUnboundListView"
+                          ItemContainerStyle="{StaticResource CustomLeftUnboundListViewItemStyle}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultEffectDataTemplate="True">
+                  <ListViewItem>Unbound Item1</ListViewItem>
+                  <ListViewItem>Unbound Item2</ListViewItem>
+                  <ListViewItem>Unbound Item3</ListViewItem>
+                  <ListViewItem>Unbound Item4</ListViewItem>
+                  <ListViewItem>Unbound Item5</ListViewItem>
+                </ListView>
+                <ListView Grid.Column="1"
+                          ItemContainerStyle="{StaticResource CustomRightUnboundListViewItemStyle}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True">
+                  <ListViewItem>Unbound Item6</ListViewItem>
+                  <ListViewItem>Unbound Item7</ListViewItem>
+                  <ListViewItem>Unbound Item8</ListViewItem>
+                  <ListViewItem>Unbound Item9</ListViewItem>
+                  <ListViewItem>Unbound Item10</ListViewItem>
+                </ListView>
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListView)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+    </TabControl>
+
+  </Grid>
+
+</UserControl>

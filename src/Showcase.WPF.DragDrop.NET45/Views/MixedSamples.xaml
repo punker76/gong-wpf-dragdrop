@@ -1,0 +1,420 @@
+﻿<UserControl x:Class="Showcase.WPF.DragDrop.Views.MixedSamples"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Showcase.WPF.DragDrop.Views"
+             xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+             d:DesignHeight="400" d:DesignWidth="600">
+  <Grid>
+    <Grid.Resources>
+      <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}" />
+      <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+      <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
+      <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
+    </Grid.Resources>
+
+    <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+
+      <TabControl.Resources>
+        <DataTemplate x:Key="DragAdorner">
+          <Border Background="Silver"
+                  BorderBrush="Gray"
+                  BorderThickness="1"
+                  CornerRadius="2"
+                  SnapsToDevicePixels="True">
+            <StackPanel Orientation="Horizontal" Margin="4">
+              <iconPacks:PackIconMaterial Kind="MoveResizeVariant"
+                                          VerticalAlignment="Center" />
+              <TextBlock Text="{Binding}"
+                         Margin="6 0 0 0"
+                         VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </TabControl.Resources>
+
+      <TabItem Header="DragAdorner">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragAdorner" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <UniformGrid Columns="2" Rows="1">
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListBox" />
+              <ListBox ItemsSource="{Binding Data.Collection1}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="ListView" />
+              <ListView ItemsSource="{Binding Data.Collection2}"
+                        Height="Auto"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                        dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+          </UniformGrid>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="DragDropContext">
+        <TabItem.Resources>
+          <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}">
+            <Setter Property="Height" Value="Auto" />
+          </Style>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragDropContext sample" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <UniformGrid Columns="2" Rows="2">
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = MainContext" />
+              <ListBox ItemsSource="{Binding Data.Collection1}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="MainContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = MainContext" />
+              <ListBox ItemsSource="{Binding Data.Collection2}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="MainContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="DragDropContext = DifferentContext" />
+              <ListBox ItemsSource="{Binding Data.Collection2}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.DragDropContext="DifferentContext"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="True">
+              <TextBlock DockPanel.Dock="Top"
+                         Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="No DragDropContext" />
+              <ListBox ItemsSource="{Binding Data.Collection4}"
+                       Height="Auto"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+            </DockPanel>
+
+          </UniformGrid>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Filtered">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Filtered ListBox" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the behaviour with a filtered and unfiltered ListBox bound to two collections of the same type." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftFilterListBox"
+                         ItemsSource="{Binding Data.FilterCollection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.FilterCollection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="Filter by %2" Command="{Binding FilterCollectionCommand, Mode=OneWay}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftFilterListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftFilterListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftFilterListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftFilterListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Custom styled ItemsControl">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Custom styled ItemsControl" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="A custom styles ItemsControl on the left side. It's here to check if it works... yes, really." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ItemsControl Grid.Column="0"
+                              ItemsSource="{Binding Data.Collection1}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.UseDefaultDragAdorner="True">
+                  <ItemsControl.Style>
+                    <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type ItemsControl}">
+                            <Border Background="WhiteSmoke">
+                              <ScrollViewer>
+                                <ItemsPresenter />
+                              </ScrollViewer>
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </ItemsControl.Style>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="Bisque"
+                              Margin="4">
+                        <TextBlock Text="{Binding}" />
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="DragAdornerTemplateSelector">
+        <TabItem.Resources>
+          <DataTemplate x:Key="Even">
+            <Border BorderThickness="1" BorderBrush="Silver" Background="Gainsboro" CornerRadius="2">
+              <TextBlock Text="{Binding}"
+                         FontWeight="Bold"
+                         Margin="2"
+                         Foreground="Green" />
+            </Border>
+          </DataTemplate>
+          <DataTemplate x:Key="Odd">
+            <Border BorderThickness="1" BorderBrush="Silver" Background="Gainsboro" CornerRadius="2">
+              <TextBlock Text="{Binding}"
+                         FontWeight="Bold"
+                         Margin="2"
+                         Foreground="DodgerBlue" />
+            </Border>
+          </DataTemplate>
+          <models:DragAdornerTemplateSelector x:Key="DragAdornerTemplateSelector"
+                                              TemplateEven="{StaticResource Even}"
+                                              TemplateOdd="{StaticResource Odd}" />
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="DragAdornerTemplateSelector" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the usage of a DataTemplateSelector for the drag adorner." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftDataTemplateSelectorSampleListBox"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragAdornerTemplateSelector="{StaticResource DragAdornerTemplateSelector}"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+                <ListBox Grid.Column="1"
+                         ItemsSource="{Binding Data.Collection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftDataTemplateSelectorSampleListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Cloning">
+        <TabItem.Resources>
+          <Style x:Key="ClonableListBoxItemStyle" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+            <Setter Property="dd:DragDrop.DragSourceIgnore" Value="True" />
+          </Style>
+          <DataTemplate x:Key="CloningTemplate"
+                        DataType="{x:Type models:ClonableItemModel}">
+            <Border Background="Gainsboro"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    SnapsToDevicePixels="True">
+              <StackPanel Orientation="Horizontal" Margin="4">
+                <iconPacks:PackIconMaterial Kind="Drag"
+                                            Background="Transparent"
+                                            Cursor="SizeAll"
+                                            dd:DragDrop.DragSourceIgnore="False" />
+                <TextBlock Text="{Binding Caption}"
+                           Margin="6 0 0 0"
+                           VerticalAlignment="Center" />
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Cloning" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Demonstrates the cloning behaviour with 2 ListBoxes bound to collections of the same type. The Model of the collections implements the ICloneable interface. You can clone an Item by holding the CTRL key while drag and drop." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         x:Name="LeftClonableListBox"
+                         ItemContainerStyle="{StaticResource ClonableListBoxItemStyle}"
+                         HorizontalContentAlignment="Stretch"
+                         ItemsSource="{Binding Data.ClonableCollection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragDropCopyKeyState="ControlKey"
+                         ItemTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True" />
+                <ListBox Grid.Column="1"
+                         ItemContainerStyle="{StaticResource ClonableListBoxItemStyle}"
+                         HorizontalContentAlignment="Stretch"
+                         ItemsSource="{Binding Data.ClonableCollection2}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DragDropCopyKeyState="ControlKey"
+                         ItemTemplate="{StaticResource CloningTemplate}"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource CloningTemplate}" />
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization (for left ListBox)" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftClonableListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="ItemsControl">
+        <TabItem.Resources>
+        </TabItem.Resources>
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="Another ItemsControl sample" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
+          <DockPanel LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top"
+                       Style="{StaticResource DefaultTextBlockStyle}"
+                       Text="Demonstrates the behaviour with an ItemsControl that has a DataTemplate with an ItemsControl and Buttons inside." />
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+              <ItemsControl ItemsSource="{Binding Data.Collection1}"
+                            Height="Auto"
+                            dd:DragDrop.DragDropContext="OuterContext"
+                            dd:DragDrop.IsDragSource="True"
+                            dd:DragDrop.IsDropTarget="True"
+                            dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                            dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid Background="Coral"
+                          Margin="0,1,0,1">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                      </Grid.RowDefinitions>
+                      <TextBlock Grid.Row="0"
+                                 Margin="2"
+                                 FontSize="16"
+                                 Text="{Binding}" />
+                      <ItemsControl Grid.Row="1"
+                                    Height="Auto"
+                                    dd:DragDrop.DragDropContext="InnerContext"
+                                    dd:DragDrop.IsDragSource="True"
+                                    dd:DragDrop.IsDropTarget="True"
+                                    ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <Grid Background="#FDA07E">
+                              <Button Content="{Binding}"
+                                      HorizontalAlignment="Left"
+                                      Margin="20,1,1,1" />
+                            </Grid>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
+        </DockPanel>
+      </TabItem>
+
+    </TabControl>
+
+  </Grid>
+</UserControl>
