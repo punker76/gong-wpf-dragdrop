@@ -725,7 +725,6 @@ public static IDragSource DefaultDragHandler
           || (e.OriginalSource as UIElement).IsDragSourceIgnored()
           || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
-          || HitTestUtilities.HitTest4Type<ButtonBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
           || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
@@ -791,18 +790,22 @@ public static IDragSource DefaultDragHandler
     {
       if (m_DragInfo != null && !m_DragInProgress) {
 
-        // do nothing if mouse left button is released
-        if (e.LeftButton == MouseButtonState.Released)
-        {
+        // the start from the source
+        var dragStart = m_DragInfo.DragStartPosition;
+
+        // do nothing if mouse left button is released or the pointer is captured
+        if (e.LeftButton == MouseButtonState.Released) {
           m_DragInfo = null;
           return;
-        } 
+        }
 
-        var dragStart = m_DragInfo.DragStartPosition;
+        // current mouse position
         var position = e.GetPosition((IInputElement)sender);
 
-        if (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
-            Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance) {
+        // only if the sender is the source control and the mouse point differs from an offset
+        if (m_DragInfo.VisualSource == sender
+            && (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance)) {
           var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
           if (dragHandler.CanStartDrag(m_DragInfo)) {
             dragHandler.StartDrag(m_DragInfo);
