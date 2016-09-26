@@ -14,4 +14,3 @@ using System.Windows.Markup;
 
 [assembly: AssemblyTitle("GongSolutions.WPF.DragDrop")]
 [assembly: AssemblyDescription("An easy to use drag'n'drop framework for WPF applications.")]
-[assembly: AssemblyCopyright("Copyright © GongSolutions.WPF.DragDrop 2013 - 2016")]

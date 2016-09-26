@@ -49,6 +49,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DefaultDragHandler.cs" />
     <Compile Include="DefaultDropHandler.cs" />
     <Compile Include="DragAdorner.cs" />
@@ -59,7 +62,6 @@
     <Compile Include="DropTargetAdorners.cs" />
     <Compile Include="DropTargetHighlightAdorner.cs" />
     <Compile Include="DropTargetInsertionAdorner.cs" />
-    <Compile Include="GlobalAssemblyInfo.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="IDragInfo.cs" />
     <Compile Include="IDragSource.cs" />

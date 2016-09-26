@@ -2,9 +2,8 @@
 <package>
     <metadata>
         <id>gong-wpf-dragdrop</id>
-        <version>1.0.0-ALPHA017</version>
         <title>gong-wpf-dragdrop</title>
-        <authors>Jan Karger (punker76), Steven Kirk, mitchell.jon</authors>
+        <authors>Jan Karger (Steven Kirk, mitchell.jon)</authors>
         <owners>punker76</owners>
         <licenseUrl>https://github.com/punker76/gong-wpf-dragdrop#license</licenseUrl>
         <projectUrl>https://github.com/punker76/gong-wpf-dragdrop</projectUrl>

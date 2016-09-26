@@ -1,0 +1,46 @@
+# http://www.appveyor.com/docs/appveyor-yml
+
+# configuration for dev
+-
+  branches:
+    only:
+      - dev
+
+  version: 1.1.0-alpha{build}
+  pull_requests:
+    do_not_increment_build_number: true
+  skip_tags: true
+  image: Visual Studio 2015
+  configuration: Release
+
+  platform: Any CPU
+
+  build_script:
+  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target AppveyorDev
+
+  artifacts:
+  - path: Build\gong-wpf-dragdrop.*.nupkg
+  - path: Build\Showcase.WPF.DragDrop.*.zip-
+
+# configuration for master
+-
+  branches:
+    only:
+      - master
+
+  version: 1.1.0.0
+  pull_requests:
+    do_not_increment_build_number: true
+  skip_tags: true
+  image: Visual Studio 2015
+  configuration: Release
+
+  platform: Any CPU
+
+  build_script:
+  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target Appveyor
+
+  artifacts:
+  - path: Build\gong-wpf-dragdrop.*.nupkg
+  - path: Build\Showcase.WPF.DragDrop.*.zip
+  
