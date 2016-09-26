@@ -20,7 +20,7 @@
 
   artifacts:
   - path: Build\gong-wpf-dragdrop.*.nupkg
-  - path: Build\Showcase.WPF.DragDrop.*.zip-
+  - path: Build\Showcase.WPF.DragDrop.*.zip
 
 # configuration for master
 -
@@ -43,4 +43,3 @@
   artifacts:
   - path: Build\gong-wpf-dragdrop.*.nupkg
   - path: Build\Showcase.WPF.DragDrop.*.zip
-  
