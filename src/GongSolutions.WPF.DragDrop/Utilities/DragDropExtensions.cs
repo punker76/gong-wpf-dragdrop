@@ -33,5 +33,16 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
       return element != null && DragDrop.GetIsDropTarget(element);
     }
+
+        /// <summary>
+        /// Determines whether the given element can be dragged with the mouse right button (<see cref="DragDrop.CanDragWithMouseRightButton"/> --sulinke1133@gmail.com 
+        /// </summary>
+        /// <param name="element">The given element</param>
+        /// <returns>Element can be dragged by right mouse button or not</returns>
+        public static bool CanDragWithMouseRightButton(this UIElement element)
+        {
+            return element != null && DragDrop.GetCanDragWithMouseRightButton(element);
+        }
+
   }
 }
