@@ -28,15 +28,17 @@ namespace GongSolutions.Wpf.DragDrop
     public virtual void DragOver(IDropInfo dropInfo)
     {
       if (CanAcceptData(dropInfo)) {
-        // default should always the move action/effect
-        var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
-                       //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
-                       && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
-        dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
-        var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
-        dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
+        // default keep dropinfo Effects that are set from event data because mouse button is already released and not set as KeyState
+        if (!dropInfo.DragInfo.DragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton)) {
+          var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
+                         //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
+                         && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
+                         && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
+                         && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+          dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
+          var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
+          dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
+        }
       }
     }
 
