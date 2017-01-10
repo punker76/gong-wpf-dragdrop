@@ -13,7 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.WPF.DragDrop.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Showcase.WPF.DragDrop.NET45", "Showcase.WPF.DragDrop.NET45\Showcase.WPF.DragDrop.NET45.csproj", "{3B307648-9B48-469A-9495-BA0A979D4724}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GongSolutions.WPF.DragDrop.Shared", "GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.shproj", "{5FFF6765-2341-42CD-ABC6-94DD180A2B45}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems*{5fff6765-2341-42cd-abc6-94dd180a2b45}*SharedItemsImports = 13
+		GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems*{a8cbf095-271c-48dc-ab94-b5d558eb194b}*SharedItemsImports = 4
+		GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems*{af36e35f-a2aa-4baf-9223-f4dad65df607}*SharedItemsImports = 4
+		GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems*{c50905c8-01d2-4516-9131-80efe1b54bba}*SharedItemsImports = 4
+		GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems*{ce6846c2-2220-4d8e-9bf2-7d12944bf58c}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -56,39 +56,26 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DefaultDragHandler.cs" />
-    <Compile Include="DefaultDropHandler.cs" />
-    <Compile Include="DragAdorner.cs" />
-    <Compile Include="DragDrop.cs" />
-    <Compile Include="DragInfo.cs" />
-    <Compile Include="DropInfo.cs" />
-    <Compile Include="DropTargetAdorner.cs" />
-    <Compile Include="DropTargetAdorners.cs" />
-    <Compile Include="DropTargetHighlightAdorner.cs" />
-    <Compile Include="DropTargetInsertionAdorner.cs" />
-    <Compile Include="Icons\IconFactory.cs" />
-    <Compile Include="IDragInfo.cs" />
-    <Compile Include="IDragSource.cs" />
-    <Compile Include="IDropInfo.cs" />
-    <Compile Include="IDropTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <Compile Include="Utilities\DpiHelper.cs" />
-    <Compile Include="Utilities\DragDropExtensions.cs" />
-    <Compile Include="Utilities\HitTestUtilities.cs" />
-    <Compile Include="Utilities\ItemsControlExtensions.cs" />
-    <Compile Include="Utilities\RootElementFinder.cs" />
-    <Compile Include="Utilities\TypeUtilities.cs" />
-    <Compile Include="Utilities\VisualTreeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\EffectCopy.png" />
-    <Resource Include="Icons\EffectLink.png" />
-    <Resource Include="Icons\EffectMove.png" />
-    <Resource Include="Icons\EffectNone.png" />
+    <Resource Include="..\GongSolutions.WPF.DragDrop.Shared\Icons\EffectCopy.png">
+      <Link>Icons\EffectCopy.png</Link>
+    </Resource>
+    <Resource Include="..\GongSolutions.WPF.DragDrop.Shared\Icons\EffectLink.png">
+      <Link>Icons\EffectLink.png</Link>
+    </Resource>
+    <Resource Include="..\GongSolutions.WPF.DragDrop.Shared\Icons\EffectMove.png">
+      <Link>Icons\EffectMove.png</Link>
+    </Resource>
+    <Resource Include="..\GongSolutions.WPF.DragDrop.Shared\Icons\EffectNone.png">
+      <Link>Icons\EffectNone.png</Link>
+    </Resource>
   </ItemGroup>
+  <Import Project="..\GongSolutions.WPF.DragDrop.Shared\GongSolutions.WPF.DragDrop.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
