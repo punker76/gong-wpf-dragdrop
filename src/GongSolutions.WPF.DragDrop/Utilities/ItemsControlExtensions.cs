@@ -272,6 +272,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       return FlowDirection.LeftToRight;
     }
 
+    /// <summary>
+    /// Sets the given object as selected item at the ItemsControl.
+    /// </summary>
+    /// <param name="itemsControl">The ItemsControl which contains the item.</param>
+    /// <param name="item">The object which should be selected.</param>
     public static void SetSelectedItem(this ItemsControl itemsControl, object item)
     {
       if (itemsControl is MultiSelector) {
@@ -289,8 +294,23 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           ((ListBox)itemsControl).SelectionMode = selectionMode;
         }
       } else if (itemsControl is TreeView) {
-        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, null);
-        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, item);
+        // clear old selected item
+        var prevSelectedItem = ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+        if (prevSelectedItem != null)
+        {
+          var prevSelectedTreeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+          if (prevSelectedTreeViewItem != null)
+          {
+            prevSelectedTreeViewItem.IsSelected = false;
+          }
+        }
+        // set new selected item
+        // TreeView.SelectedItemProperty is a read only property, so we must set the selection on the TreeViewItem itself
+        var treeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+        if (treeViewItem != null)
+        {
+          treeViewItem.IsSelected = true;
+        }
       } else if (itemsControl is Selector) {
         ((Selector)itemsControl).SelectedItem = null;
         ((Selector)itemsControl).SelectedItem = item;
