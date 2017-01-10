@@ -122,7 +122,9 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       VisualTreeHelper.HitTest(itemsControl,
         obj =>
         {
-          if (obj is Viewport3D)
+          // Viewport3D is not good for us
+          // Stop on ScrollBar to improve performance (e.g. at DataGrid)
+          if (obj is Viewport3D || obj is ScrollBar)
           {
             return HitTestFilterBehavior.Stop;
           }
