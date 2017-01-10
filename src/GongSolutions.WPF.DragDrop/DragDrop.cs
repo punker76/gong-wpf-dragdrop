@@ -540,11 +540,14 @@ public static IDragSource DefaultDragHandler
       var bounds = VisualTreeHelper.GetDescendantBounds(target);
       var dpiBounds = DpiHelper.LogicalRectToDevice(bounds);
 
-      var rtb = new RenderTargetBitmap((int)Math.Ceiling(dpiBounds.Width),
-                                       (int)Math.Ceiling(dpiBounds.Height),
-                                       dpiX,
-                                       dpiY,
-                                       PixelFormats.Pbgra32);
+      var pixelWidth = (int)Math.Ceiling(dpiBounds.Width);
+      var pixelHeight = (int)Math.Ceiling(dpiBounds.Height);
+      if (pixelWidth < 0 || pixelHeight < 0)
+      {
+        return null;
+      }
+
+      var rtb = new RenderTargetBitmap(pixelWidth, pixelHeight, dpiX, dpiY, PixelFormats.Pbgra32);
 
       var dv = new DrawingVisual();
       using (var ctx = dv.RenderOpen()) {
