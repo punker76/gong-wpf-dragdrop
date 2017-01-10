@@ -368,7 +368,121 @@ namespace GongSolutions.Wpf.DragDrop
         source.SetValue(ItemsPanelOrientationProperty, value);
     }
 
-public static IDragSource DefaultDragHandler
+        #region CanDragWithRightButtonProperty
+        /// <summary>
+        /// Default false. Set this Property to True to make dragging with the mouse right button possible. --sulinke1133@gmail.com 
+        /// </summary>
+        public static readonly DependencyProperty CanDragWithMouseRightButtonProperty =
+                 DependencyProperty.RegisterAttached("CanDragWithMouseRightButton", typeof(bool), typeof(DragDrop), new UIPropertyMetadata(false, CanDragWithMouseRightButtonChanged));
+
+        public static bool GetCanDragWithMouseRightButton(UIElement target)
+        {
+            return (bool)target.GetValue(CanDragWithMouseRightButtonProperty);
+        }
+
+        public static void SetCanDragWithMouseRightButton(UIElement target, bool value)
+        {
+            target.SetValue(CanDragWithMouseRightButtonProperty, value);
+        }
+
+        private static void CanDragWithMouseRightButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var uiElement = (UIElement)d;
+
+            if ((bool)e.NewValue == true)
+            {
+                uiElement.PreviewMouseRightButtonDown += DragSource_PreviewMouseRightButtonDown;
+                uiElement.PreviewMouseRightButtonUp += DragSource_PreviewMouseRightButtonUp;
+            }
+            else
+            {
+                uiElement.PreviewMouseRightButtonDown -= DragSource_PreviewMouseRightButtonDown;
+                uiElement.PreviewMouseRightButtonUp -= DragSource_PreviewMouseRightButtonUp;
+            }
+        }
+        #endregion
+
+        private static void DragSource_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var elementPosition = e.GetPosition((IInputElement)sender);
+            if ((sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition))
+            {
+                m_DragInfo = null;
+                m_ClickSupressItem = null;
+                return;
+            }
+
+            // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
+            // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
+            var itemsControl = sender as ItemsControl;
+            if (itemsControl != null && m_DragInfo != null && m_ClickSupressItem != null && m_ClickSupressItem == m_DragInfo.SourceItem)
+            {
+                if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+                {
+                    itemsControl.SetItemSelected(m_DragInfo.SourceItem, false);
+                }
+                else if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0)
+                {
+                    itemsControl.SetSelectedItem(m_DragInfo.SourceItem);
+                }
+            }
+
+            m_DragInfo = null;
+            m_ClickSupressItem = null;
+        }
+
+        private static void DragSource_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
+            var elementPosition = e.GetPosition((IInputElement)sender);
+            if (e.ClickCount != 1
+                || (sender as UIElement).IsDragSourceIgnored()
+                || (e.Source as UIElement).IsDragSourceIgnored()
+                || (e.OriginalSource as UIElement).IsDragSourceIgnored()
+                || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
+                || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
+                || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
+                || HitTestUtilities.IsNotPartOfSender(sender, e))
+            {
+                m_DragInfo = null;
+                return;
+            }
+
+            m_DragInfo = new DragInfo(sender, e);
+
+            if (m_DragInfo.VisualSourceItem == null)
+            {
+                m_DragInfo = null;
+                return;
+            }
+
+            var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
+            if (!dragHandler.CanStartDrag(m_DragInfo))
+            {
+                m_DragInfo = null;
+                return;
+            }
+
+            // If the sender is a list box that allows multiple selections, ensure that clicking on an 
+            // already selected item does not change the selection, otherwise dragging multiple items 
+            // is made impossible.
+            var itemsControl = sender as ItemsControl;
+            if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0 && m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems())
+            {
+                var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
+                if (selectedItems.Count > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
+                {
+                    m_ClickSupressItem = m_DragInfo.SourceItem;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        public static IDragSource DefaultDragHandler
     {
       get
       {
@@ -797,7 +911,14 @@ public static IDragSource DefaultDragHandler
         var dragStart = m_DragInfo.DragStartPosition;
 
         // do nothing if mouse left button is released or the pointer is captured
-        if (e.LeftButton == MouseButtonState.Released) {
+        // only when drag element with mouse left button --sulinke1133@gmail.com 
+        if (m_DragInfo.MouseButton == MouseButton.Left && e.LeftButton == MouseButtonState.Released ) {
+          m_DragInfo = null;
+          return;
+        }
+        //Add mouse right button support --sulinke1133@gmail.com 
+        if (m_DragInfo.MouseButton == MouseButton.Right && e.RightButton == MouseButtonState.Released)
+        {
           m_DragInfo = null;
           return;
         }
