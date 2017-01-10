@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -6,14 +7,21 @@ namespace GongSolutions.Wpf.DragDrop
 {
   public class DropTargetHighlightAdorner : DropTargetAdorner
   {
+    [Obsolete("This constructor is obsolete and will be deleted in next major release.")]
     public DropTargetHighlightAdorner(UIElement adornedElement)
-      : base(adornedElement)
+      : base(adornedElement, (DropInfo)null)
+    {
+    }
+
+    public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
+      : base(adornedElement, dropInfo)
     {
     }
 
     protected override void OnRender(DrawingContext drawingContext)
     {
-      var visualTargetItem = this.DropInfo.VisualTargetItem;
+      var dropInfo = this.DropInfo;
+      var visualTargetItem = dropInfo.VisualTargetItem;
       if (visualTargetItem != null) {
         var rect = Rect.Empty;
 

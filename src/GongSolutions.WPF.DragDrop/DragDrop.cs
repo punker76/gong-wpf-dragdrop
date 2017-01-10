@@ -934,12 +934,13 @@ public static IDragSource DefaultDragHandler
           if (dropInfo.DropTargetAdorner == null) {
             DropTargetAdorner = null;
           } else if (!dropInfo.DropTargetAdorner.IsInstanceOfType(DropTargetAdorner)) {
-            DropTargetAdorner = DropTargetAdorner.Create(dropInfo.DropTargetAdorner, adornedElement);
+            DropTargetAdorner = DropTargetAdorner.Create(dropInfo.DropTargetAdorner, adornedElement, dropInfo);
           }
 
-          if (DropTargetAdorner != null) {
-            DropTargetAdorner.DropInfo = dropInfo;
-            DropTargetAdorner.InvalidateVisual();
+          var adorner = DropTargetAdorner;
+          if (adorner != null) {
+            adorner.DropInfo = dropInfo;
+            adorner.InvalidateVisual();
           }
         }
       }
