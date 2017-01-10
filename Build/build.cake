@@ -49,14 +49,14 @@ Task("GitLink_Debug")
 Task("UpdateAssemblyInfo")
   .Does(() =>
 {
-  CreateAssemblyInfo("../src/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
+  CreateAssemblyInfo("../src/GongSolutions.WPF.DragDrop.Shared/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
 });
 
 Task("UpdateAssemblyInfo_Debug")
   .Does(() =>
 {
   newAssemblyInfoSettings.InformationalVersion = string.Format("GongSolutions.WPF.DragDrop {0}", alphaVersion);
-  CreateAssemblyInfo("../src/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
+  CreateAssemblyInfo("../src/GongSolutions.WPF.DragDrop.Shared/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
 });
 
 Task("Build")
