@@ -21,6 +21,12 @@ namespace GongSolutions.Wpf.DragDrop
     {
     }
 
+    /// <summary>
+    /// When overridden in a derived class, participates in rendering operations that are directed by the layout system.
+    /// The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for
+    /// later asynchronous use by layout and drawing.
+    /// </summary>
+    /// <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
     protected override void OnRender(DrawingContext drawingContext)
     {
       var dropInfo = this.DropInfo;
@@ -32,20 +38,28 @@ namespace GongSolutions.Wpf.DragDrop
         // offset later to draw it at the end of the list.
         ItemsControl itemParent;
 
-        if (dropInfo.VisualTargetItem != null) {
-          itemParent = ItemsControl.ItemsControlFromItemContainer(dropInfo.VisualTargetItem);
+        var visualTargetItem = dropInfo.VisualTargetItem;
+        if (visualTargetItem != null) {
+          itemParent = ItemsControl.ItemsControlFromItemContainer(visualTargetItem);
         } else {
           itemParent = itemsControl;
         }
 
-        var index = Math.Min(dropInfo.InsertIndex, itemParent.Items.Count - 1);
+        // this could be happen with a thread scenario where items are removed very quickly
+        if (itemParent == null)
+        {
+          return;
+        }
+
+        var itemsCount = itemParent.Items.Count;
+        var index = Math.Min(dropInfo.InsertIndex, itemsCount - 1);
 
         var lastItemInGroup = false;
         var targetGroup = dropInfo.TargetGroup;
         if (targetGroup != null && targetGroup.IsBottomLevel && dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem)) {
           var indexOf = targetGroup.Items.IndexOf(dropInfo.TargetItem);
           lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
-          if (lastItemInGroup && dropInfo.InsertIndex != itemParent.Items.Count) {
+          if (lastItemInGroup && dropInfo.InsertIndex != itemsCount) {
             index--;
           }
         }
@@ -61,7 +75,7 @@ namespace GongSolutions.Wpf.DragDrop
           var viewportHeight = DropInfo.TargetScrollViewer?.ViewportHeight ?? double.MaxValue;
 
           if (dropInfo.VisualTargetOrientation == Orientation.Vertical) {
-            if (dropInfo.InsertIndex == itemParent.Items.Count || lastItemInGroup) {
+            if (dropInfo.InsertIndex == itemsCount || lastItemInGroup) {
               itemRect.Y += itemContainer.RenderSize.Height;
             }
 
@@ -72,9 +86,9 @@ namespace GongSolutions.Wpf.DragDrop
           } else {
             var itemRectX = itemRect.X;
 
-            if (dropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && dropInfo.InsertIndex == itemParent.Items.Count) {
+            if (dropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && dropInfo.InsertIndex == itemsCount) {
               itemRectX += itemContainer.RenderSize.Width;
-            } else if (dropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && dropInfo.InsertIndex != itemParent.Items.Count) {
+            } else if (dropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && dropInfo.InsertIndex != itemsCount) {
               itemRectX += itemContainer.RenderSize.Width;
             }
 
