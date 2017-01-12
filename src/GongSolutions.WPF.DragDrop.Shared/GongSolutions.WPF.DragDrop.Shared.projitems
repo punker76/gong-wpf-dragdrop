@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultDropHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DragAdorner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DragDrop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DragDrop.Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DragInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropTargetAdorner.cs" />
