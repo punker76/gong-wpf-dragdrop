@@ -60,10 +60,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// <param name="dropInfo">Information about the drop.</param>
     public virtual void Drop(IDropInfo dropInfo)
     {
-      if (dropInfo == null || dropInfo.DragInfo == null) {
+      if (dropInfo == null || dropInfo.DragInfo == null)
+      {
         return;
       }
-      
+
       var insertIndex = dropInfo.InsertIndex != dropInfo.UnfilteredInsertIndex ? dropInfo.UnfilteredInsertIndex : dropInfo.InsertIndex;
 
       var itemsControl = dropInfo.VisualTarget as ItemsControl;
@@ -85,56 +86,65 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       var destinationList = dropInfo.TargetCollection.TryGetList();
-      var data = ExtractData(dropInfo.Data);
+      var data = ExtractData(dropInfo.Data).OfType<object>().ToList();
 
       var copyData = ShouldCopyData(dropInfo);
       if (!copyData)
       {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
-
-        foreach (var o in data) {
-          var index = sourceList.IndexOf(o);
-
-          if (index != -1) {
-            sourceList.RemoveAt(index);
-            // so, is the source list the destination list too ?
-            if (Equals(sourceList, destinationList) && index < insertIndex) {
-              --insertIndex;
+        if (sourceList != null)
+        {
+          foreach (var o in data)
+          {
+            var index = sourceList.IndexOf(o);
+            if (index != -1)
+            {
+              sourceList.RemoveAt(index);
+              // so, is the source list the destination list too ?
+              if (destinationList != null && Equals(sourceList, destinationList) && index < insertIndex)
+              {
+                --insertIndex;
+              }
             }
           }
         }
       }
 
-      var tabControl = dropInfo.VisualTarget as TabControl;
+      if (destinationList != null)
+      {
+        var tabControl = dropInfo.VisualTarget as TabControl;
 
-      // check for cloning
-      var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy)
-                      || dropInfo.Effects.HasFlag(DragDropEffects.Link);
-      foreach (var o in data) {
-        var obj2Insert = o;
-        if (cloneData) {
-          var cloneable = o as ICloneable;
-          if (cloneable != null) {
-            obj2Insert = cloneable.Clone();
-          }
-        }
-
-        destinationList.Insert(insertIndex++, obj2Insert);
-
-        if (tabControl != null) {
-          // call ApplyTemplate for TabItem in TabControl to avoid this error:
-          //
-          // System.Windows.Data Error: 4 : Cannot find source for binding with reference
-          // 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''.
-          // BindingExpression:Path=TabStripPlacement; DataItem=null; target element is 'TabItem' (Name='');
-          // target property is 'NoTarget' (type 'Object')
-          var container = tabControl.ItemContainerGenerator.ContainerFromItem(obj2Insert) as TabItem;
-          if (container != null) {
-            container.ApplyTemplate();
+        // check for cloning
+        var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy)
+                        || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+        foreach (var o in data)
+        {
+          var obj2Insert = o;
+          if (cloneData)
+          {
+            var cloneable = o as ICloneable;
+            if (cloneable != null)
+            {
+              obj2Insert = cloneable.Clone();
+            }
           }
 
-          // for better experience: select the dragged TabItem
-          tabControl.SetSelectedItem(obj2Insert);
+          destinationList.Insert(insertIndex++, obj2Insert);
+
+          if (tabControl != null)
+          {
+            // call ApplyTemplate for TabItem in TabControl to avoid this error:
+            //
+            // System.Windows.Data Error: 4 : Cannot find source for binding with reference
+            // 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''.
+            // BindingExpression:Path=TabStripPlacement; DataItem=null; target element is 'TabItem' (Name='');
+            // target property is 'NoTarget' (type 'Object')
+            var container = tabControl.ItemContainerGenerator.ContainerFromItem(obj2Insert) as TabItem;
+            container?.ApplyTemplate();
+
+            // for better experience: select the dragged TabItem
+            tabControl.SetSelectedItem(obj2Insert);
+          }
         }
       }
     }

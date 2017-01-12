@@ -101,6 +101,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         if (depObj == null) {
           return false;
         }
+        if (depObj == sender) {
+          return false;
+        }
+
         var item = VisualTreeHelper.GetParent(depObj.FindVisualTreeRoot());
         //var item = VisualTreeHelper.GetParent(e.OriginalSource as DependencyObject);
 
