@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -16,6 +15,27 @@ namespace GongSolutions.Wpf.DragDrop
   /// </summary>
   public class DefaultDropHandler : IDropTarget
   {
+    /// <summary>
+    /// Determines whether the data of the drag drop action should be copied otherwise moved.
+    /// </summary>
+    /// <param name="dropInfo">The DropInfo with a valid DragInfo.</param>
+    public static bool ShouldCopyData(IDropInfo dropInfo)
+    {
+      // default should always the move action/effect
+      if (dropInfo == null || dropInfo.DragInfo == null)
+      {
+        return false;
+      }
+      var copyData = ((dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState))
+                     || dropInfo.DragInfo.DragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton);
+      copyData = copyData
+                 //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
+                 && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
+                 && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
+                 && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+      return copyData;
+    }
+
     /// <summary>
     /// Updates the current drag state.
     /// </summary>
@@ -28,13 +48,7 @@ namespace GongSolutions.Wpf.DragDrop
     public virtual void DragOver(IDropInfo dropInfo)
     {
       if (CanAcceptData(dropInfo)) {
-        // default should always the move action/effect
-        var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
-                       //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
-                       && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
-        dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
+        dropInfo.Effects = ShouldCopyData(dropInfo) ? DragDropEffects.Copy : DragDropEffects.Move;
         var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
         dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
       }
@@ -73,12 +87,7 @@ namespace GongSolutions.Wpf.DragDrop
       var destinationList = dropInfo.TargetCollection.TryGetList();
       var data = ExtractData(dropInfo.Data);
 
-      // default should always the move action/effect
-      var copyData = (dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState)
-                     //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
-                     && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
-                     && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
-                     && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+      var copyData = ShouldCopyData(dropInfo);
       if (!copyData)
       {
         var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();

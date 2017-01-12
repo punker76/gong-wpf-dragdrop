@@ -44,6 +44,7 @@ namespace GongSolutions.Wpf.DragDrop
       this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
       this.DragInfo = dragInfo;
       this.KeyStates = e.KeyStates;
+      this.Effects = dragInfo.Effects;
 
       this.VisualTarget = sender as UIElement;
       // if there is no drop target, find another
