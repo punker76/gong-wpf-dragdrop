@@ -74,7 +74,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       }
     }
 
-    public static UIElement GetItemContainer(this ItemsControl itemsControl, UIElement child)
+    public static UIElement GetItemContainer(this ItemsControl itemsControl, DependencyObject child)
     {
       bool isItemContainer;
       var itemType = GetItemContainerType(itemsControl, out isItemContainer);
@@ -91,17 +91,22 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position)
     {
       var inputElement = itemsControl.InputHitTest(position);
-      var uiElement = inputElement as UIElement;
 
+      var uiElement = inputElement as UIElement;
       if (uiElement != null) {
         return GetItemContainer(itemsControl, uiElement);
+      }
+
+      // ContentElement's such as Run's within TextBlock's could not be used as drop target items, because they are not UIElement's.
+      var contentElement = inputElement as ContentElement;
+      if (contentElement != null) {
+        return GetItemContainer(itemsControl, contentElement);
       }
 
       return null;
     }
 
-    public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position,
-                                               Orientation searchDirection)
+    public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position, Orientation searchDirection)
     {
       bool isItemContainer;
       var itemContainerType = GetItemContainerType(itemsControl, out isItemContainer);
