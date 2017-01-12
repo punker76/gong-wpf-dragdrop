@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace GongSolutions.Wpf.DragDrop
 {
   public class DropTargetAdorners
   {
-    public static Type Highlight
-    {
-      get { return typeof(DropTargetHighlightAdorner); }
-    }
+    /// <summary>
+    /// Gets the type of the default highlight target adorner.
+    /// </summary>
+    public static Type Highlight { get; } = typeof(DropTargetHighlightAdorner);
 
-    public static Type Insert
-    {
-      get { return typeof(DropTargetInsertionAdorner); }
-    }
+    /// <summary>
+    /// Gets the type of the default insert target adorner.
+    /// </summary>
+    public static Type Insert { get; } = typeof(DropTargetInsertionAdorner);
   }
 }
