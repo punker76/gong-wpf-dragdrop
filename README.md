@@ -121,7 +121,7 @@ class ExampleItemViewModel
 
 In this example, we're checking that the item being dragged and the item being dropped onto are both ExampleItemViewModels and that the target item allows items to be added to its Children collection. If the drag satisfies both of these conditions, then the function tells the framework to display a Copy mouse pointer, and to use a Highlight drop target adorner.
 
-For more information, check out the full [DropHandlerExample](Examples).
+For more information, check out the [Showcase application](src/Showcase.WPF.DragDrop.NET45).
 
 ## Release History
 
