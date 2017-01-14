@@ -239,21 +239,39 @@ namespace GongSolutions.Wpf.DragDrop
       return new DataTemplate { VisualTree = borderFactory };
     }
 
-    private static void Scroll(ScrollViewer scrollViewer, DragEventArgs e)
+    private static void Scroll(DropInfo dropInfo, DragEventArgs e)
     {
-      if (scrollViewer != null) {
-        var position = e.GetPosition(scrollViewer);
-        var scrollMargin = Math.Min(scrollViewer.FontSize * 2, scrollViewer.ActualHeight / 2);
+      if (dropInfo == null || dropInfo.TargetScrollViewer == null)
+      {
+        return;
+      }
 
-        if (position.X >= scrollViewer.ActualWidth - scrollMargin &&
-            scrollViewer.HorizontalOffset < scrollViewer.ExtentWidth - scrollViewer.ViewportWidth) {
+      var scrollViewer = dropInfo.TargetScrollViewer;
+      var scrollingMode = dropInfo.VisualTarget != null ? GetDropScrollingMode(dropInfo.VisualTarget) : ScrollingMode.Both;
+
+      var position = e.GetPosition(scrollViewer);
+      var scrollMargin = Math.Min(scrollViewer.FontSize * 2, scrollViewer.ActualHeight / 2);
+
+      if (scrollingMode == ScrollingMode.Both || scrollingMode == ScrollingMode.HorizontalOnly)
+      {
+        if (position.X >= scrollViewer.ActualWidth - scrollMargin && scrollViewer.HorizontalOffset < scrollViewer.ExtentWidth - scrollViewer.ViewportWidth)
+        {
           scrollViewer.LineRight();
-        } else if (position.X < scrollMargin && scrollViewer.HorizontalOffset > 0) {
+        }
+        else if (position.X < scrollMargin && scrollViewer.HorizontalOffset > 0)
+        {
           scrollViewer.LineLeft();
-        } else if (position.Y >= scrollViewer.ActualHeight - scrollMargin &&
-                   scrollViewer.VerticalOffset < scrollViewer.ExtentHeight - scrollViewer.ViewportHeight) {
+        }
+      }
+
+      if (scrollingMode == ScrollingMode.Both || scrollingMode == ScrollingMode.VerticalOnly)
+      {
+        if (position.Y >= scrollViewer.ActualHeight - scrollMargin && scrollViewer.VerticalOffset < scrollViewer.ExtentHeight - scrollViewer.ViewportHeight)
+        {
           scrollViewer.LineDown();
-        } else if (position.Y < scrollMargin && scrollViewer.VerticalOffset > 0) {
+        }
+        else if (position.Y < scrollMargin && scrollViewer.VerticalOffset > 0)
+        {
           scrollViewer.LineUp();
         }
       }
@@ -546,7 +564,7 @@ namespace GongSolutions.Wpf.DragDrop
           e.Effects = DragDropEffects.None;
       }
 
-      Scroll(dropInfo.TargetScrollViewer, e);
+      Scroll(dropInfo, e);
     }
 
     private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)

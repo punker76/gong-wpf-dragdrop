@@ -34,6 +34,7 @@
                       ItemsSource="{Binding Data.DataGridCollection1}"
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.DropScrollingMode="VerticalOnly"
                       dd:DragDrop.UseDefaultEffectDataTemplate="True" />
             <DataGrid Grid.Column="1"
                       CanUserAddRows="True"

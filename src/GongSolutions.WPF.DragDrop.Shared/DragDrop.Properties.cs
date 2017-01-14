@@ -1,10 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-  using System.Windows.Controls;
-  using System.Windows.Input;
-
   public static partial class DragDrop
   {
     public static DataFormat DataFormat { get; } = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
@@ -187,6 +186,31 @@ namespace GongSolutions.Wpf.DragDrop
     public static void SetDropHandler(UIElement target, IDropTarget value)
     {
       target.SetValue(DropHandlerProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or Sets the ScrollingMode for the drop action.
+    /// </summary>
+    public static readonly DependencyProperty DropScrollingModeProperty
+      = DependencyProperty.RegisterAttached("DropScrollingMode",
+                                            typeof(ScrollingMode),
+                                            typeof(DragDrop),
+                                            new PropertyMetadata(ScrollingMode.Both));
+
+    /// <summary>
+    /// Gets the ScrollingMode for the drop action.
+    /// </summary>
+    public static ScrollingMode GetDropScrollingMode(UIElement target)
+    {
+      return (ScrollingMode)target.GetValue(DropScrollingModeProperty);
+    }
+
+    /// <summary>
+    /// Sets the ScrollingMode for the drop action.
+    /// </summary>
+    public static void SetDropScrollingMode(UIElement target, ScrollingMode value)
+    {
+      target.SetValue(DropScrollingModeProperty, value);
     }
 
     /// <summary>
