@@ -24,7 +24,7 @@ The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framewo
 
 ## Want to say thanks?
 
-+ This framework is free, can be used in commercial applications too, so please hit the :star: Star :star: button, cause this is the only payment (Cash donations are also being accepted ;-P ).
+This framework is free and can be used for free, open source and commercial applications. It's tested and contributed by many people... So mainly hit the :star: button, that's all... thx :squirrel: (:dollar:, :euro:, :beer: or some other gifts are also being accepted...).
 
 ## Installation
 
@@ -33,7 +33,7 @@ Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong
 
 ## Strong naming
 
-I will not do this anymore for this packages (started with v1.0). If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+If you need strong named dlls then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted. If this doesn't work then you can clone this repository and compile your own strongly named dlls.
 
 ## Namespace
 
