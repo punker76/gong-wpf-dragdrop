@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -211,6 +212,31 @@ namespace GongSolutions.Wpf.DragDrop
     public static void SetDropScrollingMode(UIElement target, ScrollingMode value)
     {
       target.SetValue(DropScrollingModeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or Sets the brush for the DropTargetAdorner.
+    /// </summary>
+    public static readonly DependencyProperty DropTargetAdornerBrushProperty
+      = DependencyProperty.RegisterAttached("DropTargetAdornerBrush",
+                                            typeof(Brush),
+                                            typeof(DragDrop),
+                                            new PropertyMetadata((Brush)null));
+
+    /// <summary>
+    /// Gets the brush for the DropTargetAdorner.
+    /// </summary>
+    public static Brush GetDropTargetAdornerBrush(UIElement target)
+    {
+      return (Brush)target.GetValue(DropTargetAdornerBrushProperty);
+    }
+
+    /// <summary>
+    /// Sets the brush for the DropTargetAdorner.
+    /// </summary>
+    public static void SetDropTargetAdornerBrush(UIElement target, Brush value)
+    {
+      target.SetValue(DropTargetAdornerBrushProperty, value);
     }
 
     /// <summary>

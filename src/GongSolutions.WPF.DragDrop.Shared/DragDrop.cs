@@ -538,6 +538,11 @@ namespace GongSolutions.Wpf.DragDrop
 
           var adorner = DropTargetAdorner;
           if (adorner != null) {
+            var adornerBrush = GetDropTargetAdornerBrush(dropInfo.VisualTarget);
+            if (adornerBrush != null)
+            {
+              adorner.Pen.Brush = adornerBrush;
+            }
             adorner.DropInfo = dropInfo;
             adorner.InvalidateVisual();
           }
