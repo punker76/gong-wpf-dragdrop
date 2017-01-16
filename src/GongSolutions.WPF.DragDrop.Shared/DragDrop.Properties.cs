@@ -132,6 +132,47 @@ namespace GongSolutions.Wpf.DragDrop
     }
 
     /// <summary>
+    /// Gets or Sets whether the control can be used as drag source together with the right mouse.
+    /// </summary>
+    public static readonly DependencyProperty CanDragWithMouseRightButtonProperty
+      = DependencyProperty.RegisterAttached("CanDragWithMouseRightButton",
+                                            typeof(bool),
+                                            typeof(DragDrop),
+                                            new UIPropertyMetadata(false, CanDragWithMouseRightButtonChanged));
+
+    /// <summary>
+    /// Gets whether the control can be used as drag source together with the right mouse.
+    /// </summary>
+    public static bool GetCanDragWithMouseRightButton(UIElement target)
+    {
+      return (bool)target.GetValue(CanDragWithMouseRightButtonProperty);
+    }
+
+    /// <summary>
+    /// Sets whether the control can be used as drag source together with the right mouse.
+    /// </summary>
+    public static void SetCanDragWithMouseRightButton(UIElement target, bool value)
+    {
+      target.SetValue(CanDragWithMouseRightButtonProperty, value);
+    }
+
+    private static void CanDragWithMouseRightButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+      var uiElement = (UIElement)d;
+
+      if ((bool)e.NewValue)
+      {
+        uiElement.PreviewMouseRightButtonDown += DragSource_PreviewMouseRightButtonDown;
+        uiElement.PreviewMouseRightButtonUp += DragSource_PreviewMouseRightButtonUp;
+      }
+      else
+      {
+        uiElement.PreviewMouseRightButtonDown -= DragSource_PreviewMouseRightButtonDown;
+        uiElement.PreviewMouseRightButtonUp -= DragSource_PreviewMouseRightButtonUp;
+      }
+    }
+
+    /// <summary>
     /// Gets the default DragHandler.
     /// </summary>
     public static IDragSource DefaultDragHandler { get; } = new DefaultDragHandler();

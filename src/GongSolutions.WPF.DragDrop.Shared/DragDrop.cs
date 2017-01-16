@@ -319,6 +319,16 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+      DoMouseButtonDown(sender, e);
+    }
+
+    private static void DragSource_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+      DoMouseButtonDown(sender, e);
+    }
+
+    private static void DoMouseButtonDown(object sender, MouseButtonEventArgs e)
+    {
       // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (e.ClickCount != 1
@@ -366,6 +376,16 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
+      DoMouseButtonUp(sender, e);
+    }
+
+    private static void DragSource_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    {
+      DoMouseButtonUp(sender, e);
+    }
+
+    private static void DoMouseButtonUp(object sender, MouseButtonEventArgs e)
+    {
       var elementPosition = e.GetPosition((IInputElement)sender);
       if ((sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)) {
         m_DragInfo = null;
@@ -395,8 +415,12 @@ namespace GongSolutions.Wpf.DragDrop
         // the start from the source
         var dragStart = m_DragInfo.DragStartPosition;
 
-        // do nothing if mouse left button is released or the pointer is captured
-        if (e.LeftButton == MouseButtonState.Released) {
+        // do nothing if mouse left/right button is released or the pointer is captured
+        if (m_DragInfo.MouseButton == MouseButton.Left && e.LeftButton == MouseButtonState.Released) {
+          m_DragInfo = null;
+          return;
+        }
+        if (DragDrop.GetCanDragWithMouseRightButton(m_DragInfo.VisualSource) && m_DragInfo.MouseButton == MouseButton.Right && e.RightButton == MouseButtonState.Released) {
           m_DragInfo = null;
           return;
         }
