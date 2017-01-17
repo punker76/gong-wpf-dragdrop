@@ -129,7 +129,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
           // Viewport3D is not good for us
           // Stop on ScrollBar to improve performance (e.g. at DataGrid)
-          if (obj is Viewport3D || obj is ScrollBar)
+          if (obj is Viewport3D || (itemsControl is DataGrid && obj is ScrollBar))
           {
             return HitTestFilterBehavior.Stop;
           }
