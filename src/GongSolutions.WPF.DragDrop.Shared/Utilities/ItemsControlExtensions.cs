@@ -8,7 +8,6 @@ using System.Windows.Media;
 using System.Reflection;
 using System.Collections;
 using System.Windows.Controls.Primitives;
-
 #if NET35
 using Microsoft.Windows.Controls;
 using Microsoft.Windows.Controls.Primitives;
@@ -74,7 +73,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       }
     }
 
-    public static UIElement GetItemContainer(this ItemsControl itemsControl, UIElement child)
+    public static UIElement GetItemContainer(this ItemsControl itemsControl, DependencyObject child)
     {
       bool isItemContainer;
       var itemType = GetItemContainerType(itemsControl, out isItemContainer);
@@ -91,17 +90,22 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position)
     {
       var inputElement = itemsControl.InputHitTest(position);
-      var uiElement = inputElement as UIElement;
 
+      var uiElement = inputElement as UIElement;
       if (uiElement != null) {
         return GetItemContainer(itemsControl, uiElement);
+      }
+
+      // ContentElement's such as Run's within TextBlock's could not be used as drop target items, because they are not UIElement's.
+      var contentElement = inputElement as ContentElement;
+      if (contentElement != null) {
+        return GetItemContainer(itemsControl, contentElement);
       }
 
       return null;
     }
 
-    public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position,
-                                               Orientation searchDirection)
+    public static UIElement GetItemContainerAt(this ItemsControl itemsControl, Point position, Orientation searchDirection)
     {
       bool isItemContainer;
       var itemContainerType = GetItemContainerType(itemsControl, out isItemContainer);
@@ -122,7 +126,9 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       VisualTreeHelper.HitTest(itemsControl,
         obj =>
         {
-          if (obj is Viewport3D)
+          // Viewport3D is not good for us
+          // Stop on ScrollBar to improve performance (e.g. at DataGrid)
+          if (obj is Viewport3D || (itemsControl is DataGrid && obj is ScrollBar))
           {
             return HitTestFilterBehavior.Stop;
           }
@@ -272,6 +278,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       return FlowDirection.LeftToRight;
     }
 
+    /// <summary>
+    /// Sets the given object as selected item at the ItemsControl.
+    /// </summary>
+    /// <param name="itemsControl">The ItemsControl which contains the item.</param>
+    /// <param name="item">The object which should be selected.</param>
     public static void SetSelectedItem(this ItemsControl itemsControl, object item)
     {
       if (itemsControl is MultiSelector) {
@@ -289,8 +300,23 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           ((ListBox)itemsControl).SelectionMode = selectionMode;
         }
       } else if (itemsControl is TreeView) {
-        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, null);
-        ((TreeView)itemsControl).SetValue(TreeView.SelectedItemProperty, item);
+        // clear old selected item
+        var prevSelectedItem = ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+        if (prevSelectedItem != null)
+        {
+          var prevSelectedTreeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+          if (prevSelectedTreeViewItem != null)
+          {
+            prevSelectedTreeViewItem.IsSelected = false;
+          }
+        }
+        // set new selected item
+        // TreeView.SelectedItemProperty is a read only property, so we must set the selection on the TreeViewItem itself
+        var treeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+        if (treeViewItem != null)
+        {
+          treeViewItem.IsSelected = true;
+        }
       } else if (itemsControl is Selector) {
         ((Selector)itemsControl).SelectedItem = null;
         ((Selector)itemsControl).SelectedItem = item;

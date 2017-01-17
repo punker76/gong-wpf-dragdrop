@@ -1,14 +1,16 @@
 ![logo](GongSolutions.Wpf.DragDrop.Full.png)
 
+[![gitter](https://img.shields.io/badge/Gitter-Join%20Chat-green.svg?style=flat-square)](https://gitter.im/punker76/gong-wpf-dragdrop)
+[![twitter](https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square)](https://twitter.com/punker76)
+
+[![masterstatus](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/master.svg?style=flat-square&&label=master)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
+[![devstatus](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/dev.svg?style=flat-square&&label=dev)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/dev)
+
+[![release](https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/releases/latest)
+[![nuget](https://img.shields.io/nuget/v/gong-wpf-dragdrop.svg?style=flat-square&&label=nuget)](http://www.nuget.org/packages/gong-wpf-dragdrop/)
+[![issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
+
 ## Introduction
-
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/punker76/gong-wpf-dragdrop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-[![Build status](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/master.svg?style=flat-square)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
-[![Release](https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/releases/latest)
-[![Downloads](https://img.shields.io/nuget/dt/gong-wpf-dragdrop.svg?style=flat-square)](http://www.nuget.org/packages/gong-wpf-dragdrop/)
-[![Issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
-[![Twitter](https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square)](https://twitter.com/punker76)
 
 The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framework for WPF.
 
@@ -24,7 +26,7 @@ The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framewo
 
 ## Want to say thanks?
 
-+ This framework is free, can be used in commercial applications too, so please hit the :star: Star :star: button, cause this is the only payment (Cash donations are also being accepted ;-P ).
+This framework is free and can be used for free, open source and commercial applications. It's tested and contributed by many people... So mainly hit the :star: button, that's all... thx :squirrel: (:dollar:, :euro:, :beer: or some other gifts are also being accepted...).
 
 ## Installation
 
@@ -33,7 +35,7 @@ Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong
 
 ## Strong naming
 
-I will not do this anymore for this packages (started with v1.0). If you need this then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted, it's an easy to add NuGet package which will help you.
+If you need strong named dlls then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted. If this doesn't work then you can clone this repository and compile your own strongly named dlls.
 
 ## Namespace
 
@@ -121,7 +123,7 @@ class ExampleItemViewModel
 
 In this example, we're checking that the item being dragged and the item being dropped onto are both ExampleItemViewModels and that the target item allows items to be added to its Children collection. If the drag satisfies both of these conditions, then the function tells the framework to display a Copy mouse pointer, and to use a Highlight drop target adorner.
 
-For more information, check out the full [DropHandlerExample](Examples).
+For more information, check out the [Showcase application](src/Showcase.WPF.DragDrop.NET45).
 
 ## Release History
 

@@ -396,11 +396,22 @@
                                     dd:DragDrop.IsDropTarget="True"
                                     ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
                         <ItemsControl.ItemTemplate>
-                          <DataTemplate>
+                          <DataTemplate DataType="{x:Type models:SubItemModel}">
                             <Grid Background="#FDA07E">
-                              <Button Content="{Binding}"
-                                      HorizontalAlignment="Left"
-                                      Margin="20,1,1,1" />
+                              <StackPanel Orientation="Horizontal">
+                                <Button Content="{Binding Caption}"
+                                        Command="{Binding ButtonTestCommand}"
+                                        VerticalAlignment="Center"
+                                        Margin="20 0 10 0" />
+                                <RadioButton Content="Option A"
+                                             VerticalAlignment="Center"
+                                             IsChecked="{Binding BindableOptionA}" />
+                                <RadioButton Content="Option B"
+                                             VerticalAlignment="Center"
+                                             IsChecked="{Binding BindableOptionB}" />
+                                <TextBlock Text="{Binding BindableValue}"
+                                           VerticalAlignment="Center" />
+                              </StackPanel>
                             </Grid>
                           </DataTemplate>
                         </ItemsControl.ItemTemplate>

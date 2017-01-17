@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,24 +38,27 @@ namespace GongSolutions.Wpf.DragDrop
       this.VisualSource = sender as UIElement;
       this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
 
+      var sourceElement = e.OriginalSource as UIElement;
+      // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
+      if (sourceElement == null && e.OriginalSource is FrameworkContentElement)
+      {
+        sourceElement = ((FrameworkContentElement)e.OriginalSource).Parent as UIElement;
+      }
+
       if (sender is ItemsControl) {
         var itemsControl = (ItemsControl)sender;
 
         this.SourceGroup = itemsControl.FindGroup(this.DragStartPosition);
         this.VisualSourceFlowDirection = itemsControl.GetItemsPanelFlowDirection();
 
-        var sourceItem = e.OriginalSource as UIElement; // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
-        if (sourceItem == null && e.OriginalSource is FrameworkContentElement) {
-          sourceItem = ((FrameworkContentElement)e.OriginalSource).Parent as UIElement;
-        }
         UIElement item = null;
-        if (sourceItem != null) {
-          item = itemsControl.GetItemContainer(sourceItem);
+        if (sourceElement != null) {
+          item = itemsControl.GetItemContainer(sourceElement);
         }
           
         if (item == null)
         {
-          if (DragDrop.GetDragDirectlySelectedOnly(VisualSource))
+          if (DragDrop.GetDragDirectlySelectedOnly(this.VisualSource))
           {
             item = itemsControl.GetItemContainerAt(e.GetPosition(itemsControl));
           }
@@ -110,9 +112,13 @@ namespace GongSolutions.Wpf.DragDrop
           this.SourceCollection = itemsControl.ItemsSource ?? itemsControl.Items;
         }
       } else {
-        if (sender is UIElement) {
-          this.PositionInDraggedItem = e.GetPosition((UIElement)sender);
+        this.SourceItem = (sender as FrameworkElement)?.DataContext;
+        if (this.SourceItem != null)
+        {
+          this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
         }
+        this.VisualSourceItem = sourceElement;
+        this.PositionInDraggedItem = sourceElement != null ? e.GetPosition(sourceElement) : this.DragStartPosition;
       }
 
       if (this.SourceItems == null) {

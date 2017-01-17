@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-
 #if NET35
 using Microsoft.Windows.Controls;
 using Microsoft.Windows.Controls.Primitives;
@@ -101,6 +100,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         if (depObj == null) {
           return false;
         }
+        if (depObj == sender) {
+          return false;
+        }
+
         var item = VisualTreeHelper.GetParent(depObj.FindVisualTreeRoot());
         //var item = VisualTreeHelper.GetParent(e.OriginalSource as DependencyObject);
 

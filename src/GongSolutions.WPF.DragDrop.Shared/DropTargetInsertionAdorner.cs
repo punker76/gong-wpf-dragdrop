@@ -10,51 +10,82 @@ namespace GongSolutions.Wpf.DragDrop
 {
   public class DropTargetInsertionAdorner : DropTargetAdorner
   {
+    [Obsolete("This constructor is obsolete and will be deleted in next major release.")]
     public DropTargetInsertionAdorner(UIElement adornedElement)
-      : base(adornedElement)
+      : base(adornedElement, (DropInfo)null)
     {
     }
 
+    public DropTargetInsertionAdorner(UIElement adornedElement, DropInfo dropInfo)
+      : base(adornedElement, dropInfo)
+    {
+    }
+
+    /// <summary>
+    /// When overridden in a derived class, participates in rendering operations that are directed by the layout system.
+    /// The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for
+    /// later asynchronous use by layout and drawing.
+    /// </summary>
+    /// <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
     protected override void OnRender(DrawingContext drawingContext)
     {
-      var itemsControl = this.DropInfo.VisualTarget as ItemsControl;
+      var dropInfo = this.DropInfo;
+      var itemsControl = dropInfo.VisualTarget as ItemsControl;
 
-      if (itemsControl != null) {
+      if (itemsControl != null)
+      {
         // Get the position of the item at the insertion index. If the insertion point is
         // to be after the last item, then get the position of the last item and add an 
         // offset later to draw it at the end of the list.
         ItemsControl itemParent;
 
-        if (this.DropInfo.VisualTargetItem != null) {
-          itemParent = ItemsControl.ItemsControlFromItemContainer(this.DropInfo.VisualTargetItem);
-        } else {
+        var visualTargetItem = dropInfo.VisualTargetItem;
+        if (visualTargetItem != null)
+        {
+          itemParent = ItemsControl.ItemsControlFromItemContainer(visualTargetItem);
+        }
+        else
+        {
           itemParent = itemsControl;
         }
 
-        var index = Math.Min(this.DropInfo.InsertIndex, itemParent.Items.Count - 1);
+        // this could be happen with a thread scenario where items are removed very quickly
+        if (itemParent == null)
+        {
+          return;
+        }
+
+        var itemsCount = itemParent.Items.Count;
+        var index = Math.Min(dropInfo.InsertIndex, itemsCount - 1);
 
         var lastItemInGroup = false;
-        var targetGroup = this.DropInfo.TargetGroup;
-        if (targetGroup != null && targetGroup.IsBottomLevel && this.DropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem)) {
-          var indexOf = targetGroup.Items.IndexOf(this.DropInfo.TargetItem);
+        var targetGroup = dropInfo.TargetGroup;
+        if (targetGroup != null && targetGroup.IsBottomLevel && dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem))
+        {
+          var indexOf = targetGroup.Items.IndexOf(dropInfo.TargetItem);
           lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
-          if (lastItemInGroup && this.DropInfo.InsertIndex != itemParent.Items.Count) {
+          if (lastItemInGroup && dropInfo.InsertIndex != itemsCount)
+          {
             index--;
           }
         }
 
         var itemContainer = (UIElement)itemParent.ItemContainerGenerator.ContainerFromIndex(index);
 
-        if (itemContainer != null) {
+        if (itemContainer != null)
+        {
           var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement), itemContainer.RenderSize);
-          Point point1, point2;
+          Point point1,
+                point2;
           double rotation = 0;
 
           var viewportWidth = DropInfo.TargetScrollViewer?.ViewportWidth ?? double.MaxValue;
           var viewportHeight = DropInfo.TargetScrollViewer?.ViewportHeight ?? double.MaxValue;
 
-          if (this.DropInfo.VisualTargetOrientation == Orientation.Vertical) {
-            if (this.DropInfo.InsertIndex == itemParent.Items.Count || lastItemInGroup) {
+          if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
+          {
+            if (dropInfo.InsertIndex == itemsCount || lastItemInGroup)
+            {
               itemRect.Y += itemContainer.RenderSize.Height;
             }
 
@@ -62,12 +93,17 @@ namespace GongSolutions.Wpf.DragDrop
             var itemRectLeft = itemRect.X < 0 ? 0 : itemRect.X;
             point1 = new Point(itemRectLeft, itemRect.Y);
             point2 = new Point(itemRectRight, itemRect.Y);
-          } else {
+          }
+          else
+          {
             var itemRectX = itemRect.X;
 
-            if (this.DropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && this.DropInfo.InsertIndex == itemParent.Items.Count) {
+            if (dropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && dropInfo.InsertIndex == itemsCount)
+            {
               itemRectX += itemContainer.RenderSize.Width;
-            } else if (this.DropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && this.DropInfo.InsertIndex != itemParent.Items.Count) {
+            }
+            else if (dropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && dropInfo.InsertIndex != itemsCount)
+            {
               itemRectX += itemContainer.RenderSize.Width;
             }
 
@@ -76,7 +112,7 @@ namespace GongSolutions.Wpf.DragDrop
             rotation = 90;
           }
 
-          drawingContext.DrawLine(m_Pen, point1, point2);
+          drawingContext.DrawLine(this.Pen, point1, point2);
           this.DrawTriangle(drawingContext, point1, rotation);
           this.DrawTriangle(drawingContext, point2, 180 + rotation);
         }
@@ -88,7 +124,7 @@ namespace GongSolutions.Wpf.DragDrop
       drawingContext.PushTransform(new TranslateTransform(origin.X, origin.Y));
       drawingContext.PushTransform(new RotateTransform(rotation));
 
-      drawingContext.DrawGeometry(m_Pen.Brush, null, m_Triangle);
+      drawingContext.DrawGeometry(this.Pen.Brush, null, m_Triangle);
 
       drawingContext.Pop();
       drawingContext.Pop();
@@ -98,9 +134,6 @@ namespace GongSolutions.Wpf.DragDrop
     {
       // Create the pen and triangle in a static constructor and freeze them to improve performance.
       const int triangleSize = 5;
-
-      m_Pen = new Pen(Brushes.Gray, 2);
-      m_Pen.Freeze();
 
       var firstLine = new LineSegment(new Point(0, -triangleSize), false);
       firstLine.Freeze();
@@ -117,7 +150,6 @@ namespace GongSolutions.Wpf.DragDrop
       m_Triangle.Freeze();
     }
 
-    private static readonly Pen m_Pen;
     private static readonly PathGeometry m_Triangle;
   }
 }

@@ -26,8 +26,8 @@ namespace Showcase.WPF.DragDrop.Models
     private readonly Pen _pen;
     private readonly Brush _brush;
 
-    public DropTargetHighlightAdorner(UIElement adornedElement)
-      : base(adornedElement)
+    public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
+      : base(adornedElement, dropInfo)
     {
       _pen = new Pen(Brushes.Tomato, 2);
       _pen.Freeze();

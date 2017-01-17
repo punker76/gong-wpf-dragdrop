@@ -68,6 +68,8 @@ namespace GongSolutions.Wpf.DragDrop
         this.TargetScrollViewer = this.VisualTarget?.GetVisualDescendent<ScrollViewer>();
       }
 
+      this.TargetScrollingMode = this.VisualTarget != null ? DragDrop.GetDropScrollingMode(this.VisualTarget) : ScrollingMode.Both;
+
       // visual target can be null, so give us a point...
       this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
@@ -117,24 +119,41 @@ namespace GongSolutions.Wpf.DragDrop
           
           if (directlyOverItem || tvItem != null)
           {
-            this.TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
             this.VisualTargetItem = item;
+            this.TargetItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
           }
 
-          var itemRenderSize = item.RenderSize;
+          var expandedTVItem = tvItem != null && tvItem.HasHeader && tvItem.HasItems && tvItem.IsExpanded;
+          var itemRenderSize = expandedTVItem ? tvItem.GetHeaderSize() : item.RenderSize;
 
           if (this.VisualTargetOrientation == Orientation.Vertical) {
             var currentYPos = e.GetPosition(item).Y;
             var targetHeight = itemRenderSize.Height;
 
-            if (currentYPos > targetHeight / 2) {
-              this.InsertIndex++;
-              this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-            } else {
+            var topGap = targetHeight * 0.25;
+            var bottomGap = targetHeight * 0.75;
+            if (currentYPos > targetHeight / 2)
+            {
+              if (expandedTVItem && (currentYPos < topGap || currentYPos > bottomGap))
+              {
+                this.VisualTargetItem = tvItem.ItemContainerGenerator.ContainerFromIndex(0) as UIElement;
+                this.TargetItem = this.VisualTargetItem != null ? tvItem.ItemContainerGenerator.ItemFromContainer(this.VisualTargetItem) : null;
+                this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
+                this.InsertIndex = 0;
+                this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+              }
+              else
+              {
+                this.InsertIndex++;
+                this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
+              }
+            }
+            else
+            {
               this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
             }
 
-            if (currentYPos > targetHeight * 0.25 && currentYPos < targetHeight * 0.75) {
+            if (currentYPos > topGap && currentYPos < bottomGap) {
               if (tvItem != null)
               {
                 this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
@@ -293,6 +312,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the ScrollViewer control for the visual target.
     /// </summary>
     public ScrollViewer TargetScrollViewer { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the ScrollingMode for the drop action.
+    /// </summary>
+    public ScrollingMode TargetScrollingMode { get; set; }
 
     /// <summary>
     /// Gets the control that is the current drop target.

@@ -34,17 +34,22 @@
                          ItemsSource="{Binding Data.Collection1}"
                          dd:DragDrop.IsDragSource="True"
                          dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.CanDragWithMouseRightButton="True"
+                         dd:DragDrop.DropTargetAdornerBrush="Coral"
                          dd:DragDrop.UseDefaultEffectDataTemplate="True" />
                 <ListBox Grid.Column="1"
                          ItemsSource="{Binding Data.Collection2}"
                          dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True" />
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DropTargetAdornerBrush="Coral" />
               </Grid>
 
               <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
                          Text="Customization (for left ListBox)" />
               <CheckBox Margin="10 5" Content="IsDragSource"
                         IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="CanDragWithMouseRightButton"
+                        IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="IsDropTarget"
                         IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
