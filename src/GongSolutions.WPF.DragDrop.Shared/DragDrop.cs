@@ -320,12 +320,12 @@ namespace GongSolutions.Wpf.DragDrop
       return dropHandler ?? DefaultDropHandler;
     }
 
-    private static void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private static void DragSourceOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
       DoMouseButtonDown(sender, e);
     }
 
-    private static void DragSource_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    private static void DragSourceOnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
       DoMouseButtonDown(sender, e);
     }
@@ -377,12 +377,12 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private static void DragSourceOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
       DoMouseButtonUp(sender, e);
     }
 
-    private static void DragSource_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    private static void DragSourceOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
       DoMouseButtonUp(sender, e);
     }
@@ -411,7 +411,7 @@ namespace GongSolutions.Wpf.DragDrop
       m_ClickSupressItem = null;
     }
 
-    private static void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
+    private static void DragSourceOnMouseMove(object sender, MouseEventArgs e)
     {
       if (m_DragInfo != null && !m_DragInProgress) {
 
@@ -473,7 +473,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void DragSource_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+    private static void DragSourceOnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
     {
       if (e.Action == DragAction.Cancel || e.EscapePressed) {
         DragAdorner = null;
@@ -483,19 +483,19 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
+    private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
     {
-      DropTarget_PreviewDragOver(sender, e);
+      DropTargetOnDragOver(sender, e);
     }
 
-    private static void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
+    private static void DropTargetOnDragLeave(object sender, DragEventArgs e)
     {
       DragAdorner = null;
       EffectAdorner = null;
       DropTargetAdorner = null;
     }
 
-    private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
+    private static void DropTargetOnDragOver(object sender, DragEventArgs e)
     {
       var elementPosition = e.GetPosition((IInputElement)sender);
 
@@ -611,7 +611,7 @@ namespace GongSolutions.Wpf.DragDrop
       Scroll(dropInfo, e);
     }
 
-    private static void DropTarget_PreviewDrop(object sender, DragEventArgs e)
+    private static void DropTargetOnDrop(object sender, DragEventArgs e)
     {
       var dropInfo = new DropInfo(sender, e, m_DragInfo);
       var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
@@ -629,7 +629,7 @@ namespace GongSolutions.Wpf.DragDrop
       e.Handled = !dropInfo.NotHandled;
     }
 
-    private static void DropTarget_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+    private static void DropTargetOnGiveFeedback(object sender, GiveFeedbackEventArgs e)
     {
       if (EffectAdorner != null)
       {

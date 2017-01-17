@@ -40,17 +40,17 @@ namespace GongSolutions.Wpf.DragDrop
 
       if ((bool)e.NewValue)
       {
-        uiElement.PreviewMouseLeftButtonDown += DragSource_PreviewMouseLeftButtonDown;
-        uiElement.PreviewMouseLeftButtonUp += DragSource_PreviewMouseLeftButtonUp;
-        uiElement.PreviewMouseMove += DragSource_PreviewMouseMove;
-        uiElement.QueryContinueDrag += DragSource_QueryContinueDrag;
+        uiElement.PreviewMouseLeftButtonDown += DragSourceOnMouseLeftButtonDown;
+        uiElement.PreviewMouseLeftButtonUp += DragSourceOnMouseLeftButtonUp;
+        uiElement.PreviewMouseMove += DragSourceOnMouseMove;
+        uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
       }
       else
       {
-        uiElement.PreviewMouseLeftButtonDown -= DragSource_PreviewMouseLeftButtonDown;
-        uiElement.PreviewMouseLeftButtonUp -= DragSource_PreviewMouseLeftButtonUp;
-        uiElement.PreviewMouseMove -= DragSource_PreviewMouseMove;
-        uiElement.QueryContinueDrag -= DragSource_QueryContinueDrag;
+        uiElement.PreviewMouseLeftButtonDown -= DragSourceOnMouseLeftButtonDown;
+        uiElement.PreviewMouseLeftButtonUp -= DragSourceOnMouseLeftButtonUp;
+        uiElement.PreviewMouseMove -= DragSourceOnMouseMove;
+        uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
       }
     }
 
@@ -90,20 +90,20 @@ namespace GongSolutions.Wpf.DragDrop
         if (uiElement is ItemsControl)
         {
           // use normal events for ItemsControls
-          uiElement.DragEnter += DropTarget_PreviewDragEnter;
-          uiElement.DragLeave += DropTarget_PreviewDragLeave;
-          uiElement.DragOver += DropTarget_PreviewDragOver;
-          uiElement.Drop += DropTarget_PreviewDrop;
-          uiElement.GiveFeedback += DropTarget_GiveFeedback;
+          uiElement.DragEnter += DropTargetOnDragEnter;
+          uiElement.DragLeave += DropTargetOnDragLeave;
+          uiElement.DragOver += DropTargetOnDragOver;
+          uiElement.Drop += DropTargetOnDrop;
+          uiElement.GiveFeedback += DropTargetOnGiveFeedback;
         }
         else
         {
           // issue #85: try using preview events for all other elements than ItemsControls
-          uiElement.PreviewDragEnter += DropTarget_PreviewDragEnter;
-          uiElement.PreviewDragLeave += DropTarget_PreviewDragLeave;
-          uiElement.PreviewDragOver += DropTarget_PreviewDragOver;
-          uiElement.PreviewDrop += DropTarget_PreviewDrop;
-          uiElement.PreviewGiveFeedback += DropTarget_GiveFeedback;
+          uiElement.PreviewDragEnter += DropTargetOnDragEnter;
+          uiElement.PreviewDragLeave += DropTargetOnDragLeave;
+          uiElement.PreviewDragOver += DropTargetOnDragOver;
+          uiElement.PreviewDrop += DropTargetOnDrop;
+          uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
         }
       }
       else
@@ -112,19 +112,19 @@ namespace GongSolutions.Wpf.DragDrop
 
         if (uiElement is ItemsControl)
         {
-          uiElement.DragEnter -= DropTarget_PreviewDragEnter;
-          uiElement.DragLeave -= DropTarget_PreviewDragLeave;
-          uiElement.DragOver -= DropTarget_PreviewDragOver;
-          uiElement.Drop -= DropTarget_PreviewDrop;
-          uiElement.GiveFeedback -= DropTarget_GiveFeedback;
+          uiElement.DragEnter -= DropTargetOnDragEnter;
+          uiElement.DragLeave -= DropTargetOnDragLeave;
+          uiElement.DragOver -= DropTargetOnDragOver;
+          uiElement.Drop -= DropTargetOnDrop;
+          uiElement.GiveFeedback -= DropTargetOnGiveFeedback;
         }
         else
         {
-          uiElement.PreviewDragEnter -= DropTarget_PreviewDragEnter;
-          uiElement.PreviewDragLeave -= DropTarget_PreviewDragLeave;
-          uiElement.PreviewDragOver -= DropTarget_PreviewDragOver;
-          uiElement.PreviewDrop -= DropTarget_PreviewDrop;
-          uiElement.PreviewGiveFeedback -= DropTarget_GiveFeedback;
+          uiElement.PreviewDragEnter -= DropTargetOnDragEnter;
+          uiElement.PreviewDragLeave -= DropTargetOnDragLeave;
+          uiElement.PreviewDragOver -= DropTargetOnDragOver;
+          uiElement.PreviewDrop -= DropTargetOnDrop;
+          uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
         }
 
         Mouse.OverrideCursor = null;
@@ -162,13 +162,13 @@ namespace GongSolutions.Wpf.DragDrop
 
       if ((bool)e.NewValue)
       {
-        uiElement.PreviewMouseRightButtonDown += DragSource_PreviewMouseRightButtonDown;
-        uiElement.PreviewMouseRightButtonUp += DragSource_PreviewMouseRightButtonUp;
+        uiElement.PreviewMouseRightButtonDown += DragSourceOnMouseRightButtonDown;
+        uiElement.PreviewMouseRightButtonUp += DragSourceOnMouseRightButtonUp;
       }
       else
       {
-        uiElement.PreviewMouseRightButtonDown -= DragSource_PreviewMouseRightButtonDown;
-        uiElement.PreviewMouseRightButtonUp -= DragSource_PreviewMouseRightButtonUp;
+        uiElement.PreviewMouseRightButtonDown -= DragSourceOnMouseRightButtonDown;
+        uiElement.PreviewMouseRightButtonUp -= DragSourceOnMouseRightButtonUp;
       }
     }
 
