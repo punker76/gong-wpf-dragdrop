@@ -428,6 +428,9 @@ namespace GongSolutions.Wpf.DragDrop
         // current mouse position
         var position = e.GetPosition((IInputElement)sender);
 
+        // prevent selection changing while drag operation
+        m_DragInfo.VisualSource?.ReleaseMouseCapture();
+
         // only if the sender is the source control and the mouse point differs from an offset
         if (m_DragInfo.VisualSource == sender
             && (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
