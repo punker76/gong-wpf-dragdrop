@@ -32,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ItemsControlExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RootElementFinder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeViewItemExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TypeUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\VisualTreeExtensions.cs" />
   </ItemGroup>
