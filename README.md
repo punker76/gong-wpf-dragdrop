@@ -1,14 +1,16 @@
 ![logo](GongSolutions.Wpf.DragDrop.Full.png)
 
+[![gitter](https://img.shields.io/badge/Gitter-Join%20Chat-green.svg?style=flat-square)](https://gitter.im/punker76/gong-wpf-dragdrop)
+[![twitter](https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square)](https://twitter.com/punker76)
+
+[![masterstatus](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/master.svg?style=flat-square&&label=master)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
+[![devstatus](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/dev.svg?style=flat-square&&label=dev)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/dev)
+
+[![release](https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/releases/latest)
+[![nuget](https://img.shields.io/nuget/v/gong-wpf-dragdrop.svg?style=flat-square&&label=nuget)](http://www.nuget.org/packages/gong-wpf-dragdrop/)
+[![issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
+
 ## Introduction
-
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/punker76/gong-wpf-dragdrop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-[![Build status](https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/master.svg?style=flat-square)](https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master)
-[![Release](https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/releases/latest)
-[![Downloads](https://img.shields.io/nuget/dt/gong-wpf-dragdrop.svg?style=flat-square)](http://www.nuget.org/packages/gong-wpf-dragdrop/)
-[![Issues](https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square)](https://github.com/punker76/gong-wpf-dragdrop/issues)
-[![Twitter](https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square)](https://twitter.com/punker76)
 
 The **GongSolutions.WPF.DragDrop** library is an easy to use drag'n'drop framework for WPF.
 
