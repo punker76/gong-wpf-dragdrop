@@ -250,7 +250,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       var scrollViewer = dropInfo.TargetScrollViewer;
-      var scrollingMode = dropInfo.VisualTarget != null ? GetDropScrollingMode(dropInfo.VisualTarget) : ScrollingMode.Both;
+      var scrollingMode = dropInfo.TargetScrollingMode;
 
       var position = e.GetPosition(scrollViewer);
       var scrollMargin = Math.Min(scrollViewer.FontSize * 2, scrollViewer.ActualHeight / 2);

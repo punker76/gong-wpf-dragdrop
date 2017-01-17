@@ -68,6 +68,8 @@ namespace GongSolutions.Wpf.DragDrop
         this.TargetScrollViewer = this.VisualTarget?.GetVisualDescendent<ScrollViewer>();
       }
 
+      this.TargetScrollingMode = this.VisualTarget != null ? DragDrop.GetDropScrollingMode(this.VisualTarget) : ScrollingMode.Both;
+
       // visual target can be null, so give us a point...
       this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
@@ -310,6 +312,11 @@ namespace GongSolutions.Wpf.DragDrop
     /// Gets the ScrollViewer control for the visual target.
     /// </summary>
     public ScrollViewer TargetScrollViewer { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the ScrollingMode for the drop action.
+    /// </summary>
+    public ScrollingMode TargetScrollingMode { get; set; }
 
     /// <summary>
     /// Gets the control that is the current drop target.
