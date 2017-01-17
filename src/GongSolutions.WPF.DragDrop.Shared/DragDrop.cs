@@ -9,6 +9,9 @@ using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
+#if NET35
+using Microsoft.Windows.Controls;
+#endif
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -551,10 +554,19 @@ namespace GongSolutions.Wpf.DragDrop
         // Display the adorner in the control's ItemsPresenter. If there is no 
         // ItemsPresenter provided by the style, try getting hold of a
         // ScrollContentPresenter and using that.
-        var adornedElement =
-          itemsControl is TabControl
-            ? itemsControl.GetVisualDescendent<TabPanel>()
-            : (itemsControl.GetVisualDescendent<ScrollContentPresenter>() ?? itemsControl.GetVisualDescendent<ItemsPresenter>() as UIElement ?? itemsControl);
+        UIElement adornedElement = null;
+        if (itemsControl is TabControl)
+        {
+          adornedElement = itemsControl.GetVisualDescendent<TabPanel>();
+        }
+        else if (itemsControl is DataGrid)
+        {
+          adornedElement = itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement ?? itemsControl.GetVisualDescendent<ItemsPresenter>() as UIElement ?? itemsControl;
+        }
+        else
+        {
+          adornedElement = itemsControl.GetVisualDescendent<ItemsPresenter>() as UIElement ?? itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement ?? itemsControl;
+        }
 
         if (adornedElement != null) {
           if (dropInfo.DropTargetAdorner == null) {

@@ -4,7 +4,6 @@ using System.Windows.Media;
 using System.Windows.Controls;
 #if NET35
 using GongSolutions.Wpf.DragDrop.Utilities;
-
 #endif
 
 namespace GongSolutions.Wpf.DragDrop

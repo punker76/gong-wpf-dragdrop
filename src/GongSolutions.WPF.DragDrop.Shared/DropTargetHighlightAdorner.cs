@@ -39,7 +39,8 @@ namespace GongSolutions.Wpf.DragDrop
           var translatePoint = tvItem.TranslatePoint(new Point(), this.AdornedElement);
           var itemRect = new Rect(translatePoint, tvItem.RenderSize);
           descendant.Union(itemRect);
-          rect = new Rect(translatePoint, new Size(descendant.Width - translatePoint.X, tvItem.ActualHeight));
+          translatePoint.Offset(1, 0);
+          rect = new Rect(translatePoint, new Size(descendant.Width - translatePoint.X - 1, tvItem.ActualHeight));
         }
         if (rect.IsEmpty)
         {
