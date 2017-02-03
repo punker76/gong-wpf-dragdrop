@@ -9,5 +9,5 @@ using System.Reflection;
 [assembly: AssemblyVersion("1.1.0.0")]
 [assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: AssemblyInformationalVersion("GongSolutions.WPF.DragDrop 1.1.0")]
-[assembly: AssemblyCopyright("Copyright © GongSolutions.WPF.DragDrop 2013 - 2016")]
+[assembly: AssemblyCopyright("Copyright © GongSolutions.WPF.DragDrop 2013 - 2017")]
 
