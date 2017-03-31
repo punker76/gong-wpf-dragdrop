@@ -351,6 +351,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
 
       m_DragInfo = new DragInfo(sender, e);
+      m_DragInfo.VisualSource?.Focus();
 
       if (m_DragInfo.VisualSourceItem == null)
       {

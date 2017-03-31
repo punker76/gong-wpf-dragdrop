@@ -295,7 +295,6 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
           ((ListBox)itemsControl).SelectionMode = SelectionMode.Single;
           ((ListBox)itemsControl).SelectedItem = null;
           ((ListBox)itemsControl).SelectedItem = item;
-          ((ListBox)itemsControl).Focus();
         }
         finally {
           ((ListBox)itemsControl).SelectionMode = selectionMode;
