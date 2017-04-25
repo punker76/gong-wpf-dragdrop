@@ -293,59 +293,6 @@
         </DockPanel>
       </TabItem>
 
-      <TabItem Header="List in List">
-        <DockPanel LastChildFill="True">
-          <TextBlock Text="ListBox List in List" Style="{StaticResource SampleHeaderTextBlockStyle}" DockPanel.Dock="Top" />
-          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                         Text="This sample comes from an issue and demonstrates the behaviour of nested ListBoxes." />
-              <Grid>
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <ListBox Grid.Column="0"
-                         Height="450"
-                         ItemsSource="{Binding Data.Collection1}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.UseDefaultDragAdorner="True" />
-                <ListBox Grid.Column="1"
-                         Height="450"
-                         x:Name="Outer"
-                         dd:DragDrop.IsDropTarget="True">
-                  <Border BorderThickness="1" BorderBrush="Silver">
-                    <ListBox x:Name="Inner1"
-                             Height="150"
-                             Width="200"
-                             HorizontalContentAlignment="Stretch"
-                             Background="DarkOrange"
-                             ItemsSource="{Binding Data.Collection2}"
-                             dd:DragDrop.IsDragSource="True"
-                             dd:DragDrop.IsDropTarget="True"
-                             dd:DragDrop.UseDefaultDragAdorner="True" />
-                  </Border>
-                  <Border BorderThickness="1" BorderBrush="Silver">
-                    <ListBox x:Name="Inner2"
-                             Height="150"
-                             Width="200"
-                             HorizontalContentAlignment="Stretch"
-                             Background="DarkSeaGreen"
-                             dd:DragDrop.IsDragSource="True"
-                             dd:DragDrop.IsDropTarget="True"
-                             dd:DragDrop.UseDefaultDragAdorner="True">
-                      <ListBoxItem Content="ListBoxItem1" />
-                      <ListBoxItem Content="ListBoxItem2" />
-                    </ListBox>
-                  </Border>
-                </ListBox>
-              </Grid>
-            </StackPanel>
-          </ScrollViewer>
-        </DockPanel>
-      </TabItem>
-
       <TabItem Header="DragDropKeyStates">
         <TabItem.Resources>
           <ObjectDataProvider x:Key="DragDropKeyStatesEnumValues"
@@ -404,6 +351,102 @@
           </ScrollViewer>
         </DockPanel>
       </TabItem>
+
+      <TabItem Header="List in List">
+        <DockPanel LastChildFill="True">
+          <TextBlock Text="ListBox List in List"
+                     Style="{StaticResource SampleHeaderTextBlockStyle}"
+                     DockPanel.Dock="Top" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="This sample comes from an issue and demonstrates the behaviour of nested ListBoxes." />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Column="0"
+                         Height="450"
+                         ItemsSource="{Binding Data.Collection1}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.UseDefaultDragAdorner="True" />
+                <ListBox Grid.Column="1"
+                         Height="450"
+                         x:Name="Outer"
+                         dd:DragDrop.IsDropTarget="True">
+                  <Border BorderThickness="1" BorderBrush="Silver">
+                    <ListBox x:Name="Inner1"
+                             Height="150"
+                             Width="200"
+                             HorizontalContentAlignment="Stretch"
+                             Background="DarkOrange"
+                             ItemsSource="{Binding Data.Collection2}"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.UseDefaultDragAdorner="True" />
+                  </Border>
+                  <Border BorderThickness="1" BorderBrush="Silver">
+                    <ListBox x:Name="Inner2"
+                             Height="150"
+                             Width="200"
+                             HorizontalContentAlignment="Stretch"
+                             Background="DarkSeaGreen"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.UseDefaultDragAdorner="True">
+                      <ListBoxItem Content="ListBoxItem1" />
+                      <ListBoxItem Content="ListBoxItem2" />
+                    </ListBox>
+                  </Border>
+                </ListBox>
+              </Grid>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
+      <TabItem Header="Undraggable List in List">
+        <DockPanel LastChildFill="True">
+          <TextBlock DockPanel.Dock="Top"
+                     Style="{StaticResource SampleHeaderTextBlockStyle}"
+                     Text="ListBox Undraggable List in List" />
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="This sample comes from an issue and demonstrates the behaviour of nested ListBoxes that can be dragged in the outer ListBox while their own items cannot be dragged" />
+              <ListBox x:Name="Outer2"
+                       Height="450"
+                       dd:DragDrop.IsDragSource="True"
+                       dd:DragDrop.IsDropTarget="True"
+                       dd:DragDrop.UseDefaultDragAdorner="True">
+                <Border BorderBrush="Silver" BorderThickness="1">
+                  <ListBox x:Name="Inner3"
+                           Width="200"
+                           Height="150"
+                           HorizontalContentAlignment="Stretch"
+                           Background="HotPink">
+                    <ListBoxItem Content="ListBoxItem1 Inner3" />
+                    <ListBoxItem Content="ListBoxItem2 Inner3" />
+                  </ListBox>
+                </Border>
+                <Border BorderBrush="Silver" BorderThickness="1">
+                  <ListBox x:Name="Inner4"
+                           Width="200"
+                           Height="150"
+                           HorizontalContentAlignment="Stretch"
+                           Background="LightSkyBlue">
+                    <ListBoxItem Content="ListBoxItem1 Inner4" />
+                    <ListBoxItem Content="ListBoxItem2 Inner4" />
+                    <ListBoxItem Content="ListBoxItem3 Inner4" />
+                  </ListBox>
+                </Border>
+              </ListBox>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>

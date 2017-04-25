@@ -81,7 +81,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       if (itemType != null) {
         return isItemContainer
                  ? (UIElement)child.GetVisualAncestor(itemType, itemsControl)
-                 : (UIElement)child.GetVisualAncestor(itemType, itemsControl.GetType());
+                 : (UIElement)child.GetVisualAncestor(itemType, itemsControl, itemsControl.GetType());
       }
 
       return null;
@@ -138,7 +138,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
           var itemContainer = isItemContainer
             ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
-            : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl.GetType());
+            : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl, itemsControl.GetType());
           if (itemContainer != null && ((UIElement) itemContainer).IsVisible == true)
           {
             var tvItem = itemContainer as TreeViewItem;
