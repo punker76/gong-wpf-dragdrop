@@ -79,7 +79,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
       while (currentVisual != null && itemSearchType != null) {
         var currentVisualType = currentVisual.GetType();
         if (currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType)) {
-          if (itemsControl == null || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
+          if (itemsControl == null || itemsControl is TreeView || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
           {
             return currentVisual;
           }
