@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
@@ -71,20 +72,25 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     /// <summary>
     /// find the visual ancestor item by type
     /// </summary>
-    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, ItemsControl itemsControl, Type itemContainerSearchType)
+    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl, [NotNull] Type itemContainerSearchType)
     {
+      if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
+      if (itemContainerSearchType == null) throw new ArgumentNullException(nameof(itemContainerSearchType));
+
       var visualTreeRoot = d.FindVisualTreeRoot();
       var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
 
-      while (currentVisual != null && itemSearchType != null) {
+      while (currentVisual != null && itemSearchType != null)
+      {
         var currentVisualType = currentVisual.GetType();
-        if (currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType)) {
-          if (itemsControl == null || itemsControl is TreeView || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
+        if (currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
+        {
+          if (currentVisual is TreeViewItem || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
           {
             return currentVisual;
           }
         }
-        if (itemContainerSearchType != null && itemContainerSearchType.IsAssignableFrom(currentVisualType))
+        if (itemContainerSearchType.IsAssignableFrom(currentVisualType))
         {
           // ok, we found an ItemsControl (maybe an empty)
           return null;
@@ -98,21 +104,27 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     /// <summary>
     /// find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
     /// </summary>
-    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, ItemsControl itemsControl)
+    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl)
     {
+      if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
+
       var visualTreeRoot = d.FindVisualTreeRoot();
-      var item = VisualTreeHelper.GetParent(visualTreeRoot);
+      var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
       DependencyObject lastFoundItemByType = null;
 
-      while (item != null && itemSearchType != null) {
-        if (item == itemsControl) {
+      while (currentVisual != null && itemSearchType != null)
+      {
+        if (currentVisual == itemsControl)
+        {
           return lastFoundItemByType;
         }
-        if ((item.GetType() == itemSearchType || item.GetType().IsSubclassOf(itemSearchType))
-            && (itemsControl == null || itemsControl.ItemContainerGenerator.IndexFromContainer(item) != -1)) {
-          lastFoundItemByType = item;
+        var currentVisualType = currentVisual.GetType();
+        if ((currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
+            && (itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1))
+        {
+          lastFoundItemByType = currentVisual;
         }
-        item = VisualTreeHelper.GetParent(item);
+        currentVisual = VisualTreeHelper.GetParent(currentVisual);
       }
 
       return lastFoundItemByType;
