@@ -54,7 +54,6 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="..\GongSolutions.WPF.DragDrop.Shared\Icons\EffectCopy.png">
       <Link>Icons\EffectCopy.png</Link>
