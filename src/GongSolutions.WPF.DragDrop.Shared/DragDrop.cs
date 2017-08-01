@@ -442,8 +442,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         // only if the sender is the source control and the mouse point differs from an offset
         if (dragInfo.VisualSource == sender
-            && (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance)) {
+            && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(sender as UIElement) ||
+                Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(sender as UIElement))) {
           var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
           if (dragHandler.CanStartDrag(dragInfo)) {
             dragHandler.StartDrag(dragInfo);
