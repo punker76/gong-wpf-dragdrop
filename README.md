@@ -35,7 +35,17 @@ Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong
 
 ## Strong naming
 
-If you need strong named dlls then you should use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from @dsplaisted. If this doesn't work then you can clone this repository and compile your own strongly named dlls.
+GongSolutions.WPF.DragDrop will not be strong-named. (beginning with v1.0).
+
+Why?
+
+Strong-named assemblies are only useful in some rare scenarios. If you need strong-named assembly then you can compile the source by yourself ore use the [Strong Namer](https://github.com/dsplaisted/strongnamer) from Daniel Plaisted @dsplaisted or [Strong-Name Signer](https://github.com/brutaldev/StrongNameSigner) from Werner van Deventer @brutaldev.
+
+More informations about the reason of this decision can be found here:
+
+- [Still Strong-Naming your Assemblies? You do know it’s 2016, right?](https://www.pedrolamas.com/2016/03/01/still-strong-naming-your-assemblies-you-do-know-its-2016-right/)
+- [XAML Behaviors UWP Managed 1.1.0](https://www.pedrolamas.com/2016/02/23/xaml-behaviors-uwp-managed-1-1-0/)
+- [Strong-Named Assemblies](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/strong-named-assemblies)
 
 ## Namespace
 
