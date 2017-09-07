@@ -2,21 +2,27 @@
 
 # configuration for dev
 -
+  image: Visual Studio 2017
   branches:
     only:
       - dev
 
-  version: 1.1.0-alpha{build}
+  version: 1.2.0-dev{build}
+
   pull_requests:
     do_not_increment_build_number: true
   skip_tags: true
-  image: Visual Studio 2015
-  configuration: Release
 
+  configuration: Release
   platform: Any CPU
 
   build_script:
-  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target AppveyorDev
+  - ./build.cmd AppveyorDev
+
+  cache:
+  - tools -> build.*
+  - src\packages -> **\packages.config
+  - '%USERPROFILE%\.nuget\packages -> **\project.json'
 
   artifacts:
   - path: Build\gong-wpf-dragdrop.*.nupkg
@@ -24,21 +30,27 @@
 
 # configuration for master
 -
+  image: Visual Studio 2017
   branches:
     only:
       - master
 
-  version: 1.1.0.0
+  version: 1.2.0.0
+
   pull_requests:
     do_not_increment_build_number: true
   skip_tags: true
-  image: Visual Studio 2015
-  configuration: Release
 
+  configuration: Release
   platform: Any CPU
 
   build_script:
-  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target Appveyor
+  - ./build.cmd Appveyor
+
+  cache:
+  - tools -> build.*
+  - src\packages -> **\packages.config
+  - '%USERPROFILE%\.nuget\packages -> **\project.json'
 
   artifacts:
   - path: Build\gong-wpf-dragdrop.*.nupkg
