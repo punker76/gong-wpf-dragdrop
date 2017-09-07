@@ -13,11 +13,12 @@ var newAssemblyInfoSettings = new AssemblyInfoSettings {
   Copyright = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
 };
 
-var nuGetPackSettings   = new NuGetPackSettings {
-  BasePath                = "./src/bin/GongSolutions.WPF.DragDrop/",
-  Id                      = "gong-wpf-dragdrop",
-  Title                   = "gong-wpf-dragdrop",
-  Copyright               = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
+var nuGetPackSettings = new NuGetPackSettings {
+  BasePath        = "./src/bin/GongSolutions.WPF.DragDrop/",
+  OutputDirectory = "./Build",
+  Id              = "gong-wpf-dragdrop",
+  Title           = "gong-wpf-dragdrop",
+  Copyright       = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
 };
 
 // Tasks
@@ -64,13 +65,13 @@ Task("NuGetPack_Debug")
 Task("ZipShowcase")
   .Does(() =>
 {
-  Zip("./src/bin/Showcase.WPF.DragDrop/Release_NET45/", "Showcase.WPF.DragDrop.Release.zip");
+  Zip("./src/bin/Showcase.WPF.DragDrop/Release_NET45/", "./Build/Showcase.WPF.DragDrop.Release.zip");
 });
 
 Task("ZipShowcase_Debug")
   .Does(() =>
 {
-  Zip("./src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "Showcase.WPF.DragDrop.Debug.zip");
+  Zip("./src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "./Build/Showcase.WPF.DragDrop.Debug.zip");
 });
 
 Task("CleanOutput")
