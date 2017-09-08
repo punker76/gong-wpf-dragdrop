@@ -210,6 +210,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             // Ensure that this actually *is* an item container by checking it with
             // ItemContainerGenerator.
             if (itemContainer != null &&
+                !(itemContainer is GroupItem) &&
                 itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) != -1) {
               isItemContainer = true;
               return itemContainer.GetType();
