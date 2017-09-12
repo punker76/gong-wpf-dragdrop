@@ -97,13 +97,15 @@ namespace GongSolutions.Wpf.DragDrop
           } else {
             this.SourceIndex = -1;
           }
-          this.SourceItems = itemsControl.GetSelectedItems();
+
+          var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
+          this.SourceItems = selectedItems;
 
           // Some controls (I'm looking at you TreeView!) haven't updated their
           // SelectedItem by this point. Check to see if there 1 or less item in 
           // the SourceItems collection, and if so, override the control's 
           // SelectedItems with the clicked item.
-          if (this.SourceItems.Cast<object>().Count() <= 1) {
+          if (selectedItems.Count <= 1) {
             this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
           }
 
