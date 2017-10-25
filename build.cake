@@ -34,7 +34,8 @@ var githubUrl = string.Format("https://github.com/{0}/{1}", githubOwner, githubR
 // Version
 var gitVersion = GitVersion(new GitVersionSettings {
   UpdateAssemblyInfo = true,
-  UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs"
+  UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs",
+  OutputType = GitVersionOutput.BuildServer
   });
 var majorMinorPatch = gitVersion.MajorMinorPatch;
 var informationalVersion = gitVersion.InformationalVersion;
@@ -62,8 +63,6 @@ Setup(context =>
     {
         throw new NotImplementedException("gong-wpf-dragdrop will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
     }
-
-    GitVersion(new GitVersionSettings { UpdateAssemblyInfo = true, OutputType = GitVersionOutput.BuildServer });
 
     Information("Building version {0} of gong-wpf-dragdrop. (isTagged: {1})", informationalVersion, isTagged);
 });
