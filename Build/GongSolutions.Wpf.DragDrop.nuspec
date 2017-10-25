@@ -22,17 +22,20 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35\GongSolutions.Wpf.DragDrop.dll"/>
-        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35\GongSolutions.Wpf.DragDrop.xml"/>
-        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35\GongSolutions.Wpf.DragDrop.pdb"/>
-        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.dll" target="lib\net40\GongSolutions.Wpf.DragDrop.dll"/>
-        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.xml" target="lib\net40\GongSolutions.Wpf.DragDrop.xml"/>
-        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40\GongSolutions.Wpf.DragDrop.pdb"/>
-        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.dll" target="lib\net45\GongSolutions.Wpf.DragDrop.dll"/>
-        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.xml" target="lib\net45\GongSolutions.Wpf.DragDrop.xml"/>
-        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.pdb" target="lib\net45\GongSolutions.Wpf.DragDrop.pdb"/>
-        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.dll" target="lib\net46\GongSolutions.Wpf.DragDrop.dll"/>
-        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.xml" target="lib\net46\GongSolutions.Wpf.DragDrop.xml"/>
-        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.pdb" target="lib\net46\GongSolutions.Wpf.DragDrop.pdb"/>
+        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.dll" target="lib\net35"/>
+        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.xml" target="lib\net35"/>
+        <file src="Release_NET35\GongSolutions.Wpf.DragDrop.pdb" target="lib\net35"/>
+
+        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.dll" target="lib\net40"/>
+        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.xml" target="lib\net40"/>
+        <file src="Release_NET40\GongSolutions.Wpf.DragDrop.pdb" target="lib\net40"/>
+
+        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.dll" target="lib\net45"/>
+        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.xml" target="lib\net45"/>
+        <file src="Release_NET45\GongSolutions.Wpf.DragDrop.pdb" target="lib\net45"/>
+
+        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.dll" target="lib\net46"/>
+        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.xml" target="lib\net46"/>
+        <file src="Release_NET46\GongSolutions.Wpf.DragDrop.pdb" target="lib\net46"/>
     </files>
 </package>

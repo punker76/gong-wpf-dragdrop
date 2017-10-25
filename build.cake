@@ -1,19 +1,60 @@
-// Arguments
+
+//////////////////////////////////////////////////////////////////////
+// ADDINS
+//////////////////////////////////////////////////////////////////////
+
+#addin "nuget:?package=Cake.FileHelpers&version=2.0.0"
+#addin "nuget:?package=Cake.Powershell&version=0.4.2"
+
+//////////////////////////////////////////////////////////////////////
+// TOOLS
+//////////////////////////////////////////////////////////////////////
+
+#tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
+#tool "nuget:?package=vswhere&version=2.2.7"
+
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+
 var target = Argument("target", "Default");
+if (string.IsNullOrWhiteSpace(target))
+{
+    target = "Default";
+}
 
-var version = "1.2.0.0";
-var infoVersion = "1.2.0";
-var alphaVersion = "1.2.0-dev001";
+//////////////////////////////////////////////////////////////////////
+// PREPARATION
+//////////////////////////////////////////////////////////////////////
 
-var newAssemblyInfoSettings = new AssemblyInfoSettings {
-  Product = string.Format("GongSolutions.WPF.DragDrop {0}", version),
-  Version = version,
-  FileVersion = version,
-  InformationalVersion = string.Format("GongSolutions.WPF.DragDrop {0}", infoVersion),
-  Copyright = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
-};
+// Build configuration
+var local = BuildSystem.IsLocalBuild;
+var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
+var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", AppVeyor.Environment.Repository.Branch);
+var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", AppVeyor.Environment.Repository.Branch);
+var isTagged = AppVeyor.Environment.Repository.Tag?.IsTag;
+
+var githubOwner = "punker76";
+var githubRepository = "gong-wpf-dragdrop";
+var githubUrl = string.Format("https://github.com/{0}/{1}", githubOwner, githubRepository);
+
+// var msBuildPath = VSWhereLatest().CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
+
+// Version
+var gitVersion = GitVersion(new GitVersionSettings {
+  UpdateAssemblyInfo = true,
+  UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs"
+  });
+var majorMinorPatch = gitVersion.MajorMinorPatch;
+var informationalVersion = gitVersion.InformationalVersion;
+var nugetVersion = gitVersion.NuGetVersion;
+var buildVersion = gitVersion.FullBuildMetaData;
+
+// Define global marcos.
+Action Abort = () => { throw new Exception("a non-recoverable fatal error occurred."); };
 
 var nuGetPackSettings = new NuGetPackSettings {
+  Version         = nugetVersion,
   BasePath        = "./src/bin/GongSolutions.WPF.DragDrop/",
   OutputDirectory = "./Build",
   Id              = "gong-wpf-dragdrop",
@@ -21,57 +62,56 @@ var nuGetPackSettings = new NuGetPackSettings {
   Copyright       = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
 };
 
-// Tasks
-
-Task("UpdateAssemblyInfo")
-  .Does(() =>
+///////////////////////////////////////////////////////////////////////////////
+// SETUP / TEARDOWN
+///////////////////////////////////////////////////////////////////////////////
+Setup(context =>
 {
-  CreateAssemblyInfo("./src/GongSolutions.WPF.DragDrop.Shared/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
+    if (!IsRunningOnWindows())
+    {
+        throw new NotImplementedException("gong-wpf-dragdrop will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
+    }
+
+    Information("Building version {0} of gong-wpf-dragdrop. (isTagged: {1})", informationalVersion, isTagged);
 });
 
-Task("UpdateAssemblyInfo_Debug")
-  .Does(() =>
+Teardown(context =>
 {
-  newAssemblyInfoSettings.InformationalVersion = string.Format("GongSolutions.WPF.DragDrop {0}", alphaVersion);
-  CreateAssemblyInfo("./src/GongSolutions.WPF.DragDrop.Shared/GlobalAssemblyInfo.cs", newAssemblyInfoSettings);
+    // Executed AFTER the last task.
 });
+
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
 
 Task("Build")
   .Does(() =>
 {
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2017));
+  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2015));
 });
 
 Task("Build_Debug")
   .Does(() =>
 {
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2017));
+  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2015));
 });
 
 Task("NuGetPack")
   .Does(() =>
 {
-  nuGetPackSettings.Version = version;
   NuGetPack("./Build/GongSolutions.Wpf.DragDrop.nuspec", nuGetPackSettings);
-});
-
-Task("NuGetPack_Debug")
-  .Does(() =>
-{
-  nuGetPackSettings.Version = alphaVersion;
-  NuGetPack("./Build/GongSolutions.Wpf.DragDrop.ALPHA.nuspec", nuGetPackSettings);
 });
 
 Task("ZipShowcase")
   .Does(() =>
 {
-  Zip("./src/bin/Showcase.WPF.DragDrop/Release_NET45/", "./Build/Showcase.WPF.DragDrop.Release.zip");
+  Zip("./src/bin/Showcase.WPF.DragDrop/Release_NET45/", "./Build/Showcase.WPF.DragDrop." + nugetVersion + ".zip");
 });
 
 Task("ZipShowcase_Debug")
   .Does(() =>
 {
-  Zip("./src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "./Build/Showcase.WPF.DragDrop.Debug.zip");
+  Zip("./src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "./Build/Showcase.WPF.DragDrop.Debug." + nugetVersion + ".zip");
 });
 
 Task("CleanOutput")
@@ -82,22 +122,19 @@ Task("CleanOutput")
 });
 
 // Task Targets
-Task("Release").IsDependentOn("CleanOutput").IsDependentOn("UpdateAssemblyInfo").IsDependentOn("Build").IsDependentOn("ZipShowcase");
-Task("Default").IsDependentOn("CleanOutput").IsDependentOn("UpdateAssemblyInfo_Debug").IsDependentOn("Build_Debug").IsDependentOn("ZipShowcase_Debug");
+Task("Default")
+  .IsDependentOn("CleanOutput")
+  .IsDependentOn("Build_Debug").IsDependentOn("Build")
+  .IsDependentOn("ZipShowcase_Debug").IsDependentOn("ZipShowcase");
+
+Task("Release")
+  .IsDependentOn("CleanOutput")
+  .IsDependentOn("Build")
+  .IsDependentOn("ZipShowcase");
 
 Task("Appveyor")
-  .IsDependentOn("CleanOutput")
-  .IsDependentOn("UpdateAssemblyInfo")
-  .IsDependentOn("Build")
-  .IsDependentOn("ZipShowcase")
+  .IsDependentOn("Release")
   .IsDependentOn("NuGetPack");
-
-Task("AppveyorDev")
-  .IsDependentOn("CleanOutput")
-  .IsDependentOn("UpdateAssemblyInfo_Debug")
-  .IsDependentOn("Build_Debug")
-  .IsDependentOn("ZipShowcase_Debug")
-  .IsDependentOn("NuGetPack_Debug");
 
 // Execution
 RunTarget(target);

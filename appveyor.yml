@@ -2,56 +2,52 @@
 
 # configuration for dev
 -
-  image: Visual Studio 2017
   branches:
     only:
       - dev
 
-  version: 1.2.0-dev{build}
-
-  pull_requests:
-    do_not_increment_build_number: true
   skip_tags: true
-
+  image: Visual Studio 2017
   configuration: Release
   platform: Any CPU
 
+  pull_requests:
+    do_not_increment_build_number: false
+
   build_script:
-  - ./build.cmd AppveyorDev
+    - ./build.cmd Appveyor
 
   cache:
-  - tools -> build.*
-  - src\packages -> **\packages.config
-  - '%USERPROFILE%\.nuget\packages -> **\project.json'
+    - tools -> build.*
+    - src\packages -> **\packages.config
+    # - '%USERPROFILE%\.nuget\packages -> **\project.json'
 
   artifacts:
-  - path: Build\gong-wpf-dragdrop.*.nupkg
-  - path: Build\Showcase.WPF.DragDrop.*.zip
+    - path: Build\gong-wpf-dragdrop.*.nupkg
+    - path: Build\Showcase.WPF.DragDrop.*.zip
 
 # configuration for master
 -
-  image: Visual Studio 2017
   branches:
     only:
       - master
 
-  version: 1.2.0.0
-
-  pull_requests:
-    do_not_increment_build_number: true
   skip_tags: true
-
+  image: Visual Studio 2017
   configuration: Release
   platform: Any CPU
 
+  pull_requests:
+    do_not_increment_build_number: false
+
   build_script:
-  - ./build.cmd Appveyor
+    - ./build.cmd Appveyor
 
   cache:
-  - tools -> build.*
-  - src\packages -> **\packages.config
-  - '%USERPROFILE%\.nuget\packages -> **\project.json'
+    - tools -> build.*
+    - src\packages -> **\packages.config
+    # - '%USERPROFILE%\.nuget\packages -> **\project.json'
 
   artifacts:
-  - path: Build\gong-wpf-dragdrop.*.nupkg
-  - path: Build\Showcase.WPF.DragDrop.*.zip
+    - path: Build\gong-wpf-dragdrop.*.nupkg
+    - path: Build\Showcase.WPF.DragDrop.*.zip
