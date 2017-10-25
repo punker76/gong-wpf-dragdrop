@@ -103,9 +103,10 @@ namespace GongSolutions.Wpf.DragDrop
 
           // Some controls (I'm looking at you TreeView!) haven't updated their
           // SelectedItem by this point. Check to see if there 1 or less item in 
-          // the SourceItems collection, and if so, override the control's 
-          // SelectedItems with the clicked item.
-          if (selectedItems.Count <= 1) {
+          // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
+          //
+          // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
+          if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem)) {
             this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
           }
 
