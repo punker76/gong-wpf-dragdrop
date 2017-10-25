@@ -1,12 +1,5 @@
 
 //////////////////////////////////////////////////////////////////////
-// ADDINS
-//////////////////////////////////////////////////////////////////////
-
-#addin "nuget:?package=Cake.FileHelpers&version=2.0.0"
-#addin "nuget:?package=Cake.Powershell&version=0.4.2"
-
-//////////////////////////////////////////////////////////////////////
 // TOOLS
 //////////////////////////////////////////////////////////////////////
 
@@ -37,8 +30,6 @@ var isTagged = AppVeyor.Environment.Repository.Tag?.IsTag;
 var githubOwner = "punker76";
 var githubRepository = "gong-wpf-dragdrop";
 var githubUrl = string.Format("https://github.com/{0}/{1}", githubOwner, githubRepository);
-
-// var msBuildPath = VSWhereLatest().CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
 
 // Version
 var gitVersion = GitVersion(new GitVersionSettings {
