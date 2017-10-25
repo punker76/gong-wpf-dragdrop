@@ -32,11 +32,8 @@ var githubRepository = "gong-wpf-dragdrop";
 var githubUrl = string.Format("https://github.com/{0}/{1}", githubOwner, githubRepository);
 
 // Version
-var gitVersion = GitVersion(new GitVersionSettings {
-  UpdateAssemblyInfo = true,
-  UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs",
-  OutputType = GitVersionOutput.BuildServer
-  });
+GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.BuildServer });
+var gitVersion = GitVersion(new GitVersionSettings { UpdateAssemblyInfo = true, UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs" });
 var majorMinorPatch = gitVersion.MajorMinorPatch;
 var informationalVersion = gitVersion.InformationalVersion;
 var nugetVersion = gitVersion.NuGetVersion;
