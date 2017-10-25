@@ -79,13 +79,13 @@ Teardown(context =>
 Task("Build")
   .Does(() =>
 {
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2015));
+  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2017));
 });
 
 Task("Build_Debug")
   .Does(() =>
 {
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2015));
+  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2017));
 });
 
 Task("NuGetPack")
