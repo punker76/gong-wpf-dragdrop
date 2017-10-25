@@ -63,6 +63,8 @@ Setup(context =>
         throw new NotImplementedException("gong-wpf-dragdrop will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
     }
 
+    GitVersion(new GitVersionSettings { UpdateAssemblyInfo = true, OutputType = GitVersionOutput.BuildServer });
+
     Information("Building version {0} of gong-wpf-dragdrop. (isTagged: {1})", informationalVersion, isTagged);
 });
 
