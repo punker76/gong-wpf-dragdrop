@@ -9,6 +9,7 @@ using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
+using GongSolutions.WPF.DragDrop.Shared;
 #if NET35
 using Microsoft.Windows.Controls;
 #endif
@@ -452,9 +453,9 @@ namespace GongSolutions.Wpf.DragDrop
               var data = dragInfo.DataObject;
 
               if (data == null) {
-                data = new DataObject(DataFormat.Name, dragInfo.Data);
+                data = new DataObject(DataFormat.Name, new DragDropDataWrapper(dragInfo.Data));
               } else {
-                data.SetData(DataFormat.Name, dragInfo.Data);
+                data.SetData(DataFormat.Name, new DragDropDataWrapper(dragInfo.Data));
               }
 
               try {

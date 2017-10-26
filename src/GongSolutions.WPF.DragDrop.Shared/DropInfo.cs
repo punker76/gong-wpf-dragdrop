@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Data;
+using GongSolutions.WPF.DragDrop.Shared;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -41,7 +42,8 @@ namespace GongSolutions.Wpf.DragDrop
     public DropInfo(object sender, DragEventArgs e, DragInfo dragInfo)
     {
       var dataFormat = DragDrop.DataFormat.Name;
-      this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
+      this.Data = e.Data.GetDataPresent(dataFormat) ? e.Data.GetData(dataFormat) : e.Data;
+      if (this.Data is DragDropDataWrapper) this.Data = (this.Data as DragDropDataWrapper).InnerData;
       this.DragInfo = dragInfo;
       this.KeyStates = e.KeyStates;
 
