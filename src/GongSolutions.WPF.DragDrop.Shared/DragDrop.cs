@@ -448,20 +448,24 @@ namespace GongSolutions.Wpf.DragDrop
           if (dragHandler.CanStartDrag(dragInfo)) {
             dragHandler.StartDrag(dragInfo);
 
-            if (dragInfo.Effects != DragDropEffects.None && dragInfo.Data != null) {
-              var data = dragInfo.DataObject;
+            if (dragInfo.Effects != DragDropEffects.None) {
+              var dataObject = dragInfo.DataObject;
 
-              if (data == null) {
-                data = new DataObject(DataFormat.Name, dragInfo.Data);
-              } else {
-                data.SetData(DataFormat.Name, dragInfo.Data);
+              if (dataObject == null) {
+                if (dragInfo.Data == null) {
+                  // it's bad if the Data is null, cause the DataObject constructor will raise an ArgumentNullException
+                  m_DragInfo = null; // maybe not necessary or should not set here to null
+                  return;
+                }
+                dataObject = new DataObject(DataFormat.Name, dragInfo.Data);
               }
 
               try {
                 m_DragInProgress = true;
-                var result = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, data, dragInfo.Effects);
-                if (result == DragDropEffects.None)
+                var result = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, dataObject, dragInfo.Effects);
+                if (result == DragDropEffects.None) {
                   dragHandler.DragCancelled();
+                }
               }
               catch (Exception ex) {
                 if (!dragHandler.TryCatchOccurredException(ex)) {
