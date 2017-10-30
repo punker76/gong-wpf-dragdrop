@@ -146,7 +146,7 @@ namespace GongSolutions.Wpf.DragDrop
       }
     }
 
-    private static DataTemplate GetEffectAdornerTemplate(UIElement target, DragDropEffects effect, string destinationText, string effectText)
+    private static DataTemplate GetEffectAdornerTemplate(UIElement target, DragDropEffects effect, string destinationText, string effectText = "")
     {
       switch (effect)
       {
@@ -154,13 +154,13 @@ namespace GongSolutions.Wpf.DragDrop
           // TODO: Add default template for EffectAll
           return GetEffectAllAdornerTemplate(target);
         case DragDropEffects.Copy:
-          return GetEffectCopyAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectCopy, effectText == string.Empty ? "Copy to" : effectText, destinationText);
+          return GetEffectCopyAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectCopy, string.IsNullOrEmpty(effectText) ? "Copy to" : effectText, destinationText);
         case DragDropEffects.Link:
-          return GetEffectLinkAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectLink, effectText == string.Empty ? "Link to" : effectText, destinationText);
+          return GetEffectLinkAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectLink, string.IsNullOrEmpty(effectText) ? "Link to" : effectText, destinationText);
         case DragDropEffects.Move:
-          return GetEffectMoveAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectMove, effectText == string.Empty ? "Move to" : effectText, destinationText);
+          return GetEffectMoveAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectMove, string.IsNullOrEmpty(effectText) ? "Move to" : effectText, destinationText);
         case DragDropEffects.None:
-          return GetEffectNoneAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectNone, effectText == string.Empty ? "None" : effectText, destinationText);
+          return GetEffectNoneAdornerTemplate(target) ?? CreateDefaultEffectDataTemplate(target, IconFactory.EffectNone, string.IsNullOrEmpty(effectText) ? "None" : effectText, destinationText);
         case DragDropEffects.Scroll:
           // TODO: Add default template EffectScroll
           return GetEffectScrollAdornerTemplate(target);
