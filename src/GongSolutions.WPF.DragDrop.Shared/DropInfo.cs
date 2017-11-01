@@ -352,7 +352,6 @@ namespace GongSolutions.Wpf.DragDrop
     /// </summary>
     public string EffectText { get; set; }
 
-
     /// <summary>
     /// Gets the relative position the item will be inserted to compared to the TargetItem
     /// </summary>
