@@ -444,6 +444,9 @@ namespace GongSolutions.Wpf.DragDrop
         if (dragInfo.VisualSource == sender
             && (Math.Abs(position.X - dragStart.X) > SystemParameters.MinimumHorizontalDragDistance ||
                 Math.Abs(position.Y - dragStart.Y) > SystemParameters.MinimumVerticalDragDistance)) {
+
+          dragInfo.RefreshSourceValues(sender, e);
+
           var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
           if (dragHandler.CanStartDrag(dragInfo)) {
             dragHandler.StartDrag(dragInfo);
