@@ -32,12 +32,15 @@ namespace GongSolutions.Wpf.DragDrop
     /// </param>
     public DragInfo(object sender, MouseButtonEventArgs e)
     {
-      this.DragStartPosition = e.GetPosition((IInputElement)sender);
       this.Effects = DragDropEffects.None;
       this.MouseButton = e.ChangedButton;
       this.VisualSource = sender as UIElement;
       this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
+      this.RefreshSourceValues(sender, e);
+    }
 
+    internal void RefreshSourceValues(object sender, MouseEventArgs e)
+    {
       var sourceElement = e.OriginalSource as UIElement;
       // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
       if (sourceElement == null && e.OriginalSource is FrameworkContentElement)
@@ -47,6 +50,8 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (sender is ItemsControl) {
         var itemsControl = (ItemsControl)sender;
+
+        this.DragStartPosition = e.GetPosition((IInputElement)sender);
 
         this.SourceGroup = itemsControl.FindGroup(this.DragStartPosition);
         this.VisualSourceFlowDirection = itemsControl.GetItemsPanelFlowDirection();
