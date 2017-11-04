@@ -597,6 +597,8 @@ namespace GongSolutions.Wpf.DragDrop
                 DragAdorner.InvalidateVisual();
             }
 
+            Scroll(dropInfo, e);
+
             if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
                 || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
                 || HitTestUtilities.HitTest4DataGridTypesOnDragOver(sender, elementPosition))
@@ -672,8 +674,6 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 e.Effects = DragDropEffects.None;
             }
-
-            Scroll(dropInfo, e);
         }
 
         private static void DropTargetOnDrop(object sender, DragEventArgs e)
