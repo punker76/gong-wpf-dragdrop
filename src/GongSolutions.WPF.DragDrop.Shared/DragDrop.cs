@@ -442,8 +442,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         // only if the sender is the source control and the mouse point differs from an offset
         if (dragInfo.VisualSource == sender
-            && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(sender as UIElement) ||
-                Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(sender as UIElement))) {
+            && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(dragInfo.VisualSource) ||
+                Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(dragInfo.VisualSource))) {
 
           dragInfo.RefreshSelectedItems(sender, e);
 

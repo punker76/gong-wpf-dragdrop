@@ -740,17 +740,7 @@ namespace GongSolutions.Wpf.DragDrop
     }
 
     /// <summary>
-    /// Gets or sets the minimum vertical drag distance before drag drop is activated.
-    /// Default is SystemParameters.MinimumVerticalDragDistance.
-    /// </summary>
-    public static readonly DependencyProperty MinimumVerticalDragDistanceProperty 
-      = DependencyProperty.RegisterAttached("MinimumVerticalDragDistance", 
-                                            typeof(double), 
-                                            typeof(DragDrop), 
-                                            new PropertyMetadata(SystemParameters.MinimumVerticalDragDistance));
-
-    /// <summary>
-    /// Gets or sets the minimum horizontal drag distance before drag drop is activated.
+    /// Gets or sets the minimum horizontal drag distance to allow for limited movement of the mouse pointer before a drag operation begins.
     /// Default is SystemParameters.MinimumHorizontalDragDistance.
     /// </summary>
     public static readonly DependencyProperty MinimumHorizontalDragDistanceProperty 
@@ -758,13 +748,39 @@ namespace GongSolutions.Wpf.DragDrop
                                             typeof(double), 
                                             typeof(DragDrop), 
                                             new PropertyMetadata(SystemParameters.MinimumHorizontalDragDistance));
-    
+
+    /// <summary>
+    /// Sets the minimum horizontal drag distance.
+    /// </summary>
+    public static double GetMinimumHorizontalDragDistance(UIElement source)
+    {
+      return (double)source.GetValue(MinimumHorizontalDragDistanceProperty);
+    }
+
+    /// <summary>
+    /// Sets the minimum horizontal drag distance.
+    /// </summary>
+    public static void SetMinimumHorizontalDragDistance(UIElement source, double value)
+    {
+      source.SetValue(MinimumHorizontalDragDistanceProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum vertical drag distance to allow for limited movement of the mouse pointer before a drag operation begins.
+    /// Default is SystemParameters.MinimumVerticalDragDistance.
+    /// </summary>
+    public static readonly DependencyProperty MinimumVerticalDragDistanceProperty
+      = DependencyProperty.RegisterAttached("MinimumVerticalDragDistance",
+                                            typeof(double),
+                                            typeof(DragDrop),
+                                            new PropertyMetadata(SystemParameters.MinimumVerticalDragDistance));
+
     /// <summary>
     /// Gets the minimum vertical drag distance.
     /// </summary>
     public static double GetMinimumVerticalDragDistance(UIElement source)
     {
-        return (double)source.GetValue(MinimumVerticalDragDistanceProperty);
+      return (double)source.GetValue(MinimumVerticalDragDistanceProperty);
     }
 
     /// <summary>
@@ -772,24 +788,7 @@ namespace GongSolutions.Wpf.DragDrop
     /// </summary>
     public static void SetMinimumVerticalDragDistance(UIElement source, double value)
     {
-        source.SetValue(MinimumVerticalDragDistanceProperty, value);
-    }
-
-    /// <summary>
-    /// Sets the minimum horizontal drag distance.
-    /// </summary>
-    public static double GetMinimumHorizontalDragDistance(UIElement source)
-    {
-        return (double)source.GetValue(MinimumHorizontalDragDistanceProperty);
-    }
-
-
-    /// <summary>
-    /// Sets the minimum horizontal drag distance.
-    /// </summary>
-    public static void SetMinimumHorizontalDragDistance(UIElement source, double value)
-    {
-        source.SetValue(MinimumHorizontalDragDistanceProperty, value);
+      source.SetValue(MinimumVerticalDragDistanceProperty, value);
     }
   }
 }
