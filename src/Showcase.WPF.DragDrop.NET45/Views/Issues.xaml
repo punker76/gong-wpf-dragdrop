@@ -811,6 +811,52 @@
         </DockPanel>
       </TabItem>
 
+      <TabItem Header="#248">
+        <DockPanel LastChildFill="True">
+          <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Fix IDropInfo.Data when dragging from an ItemsControl using a CollectionViewSource with groups" Style="{StaticResource SampleHeaderTextBlockStyle}" />
+            <Button CommandParameter="248" ToolTip="Open #248 on Github" Style="{StaticResource GitHubPullRequestButtonStyle}" />
+          </Grid>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="When dragging an item from an ItemsControl using a CollectionViewSource with groups, IDropInfo.Data was incorrectly referencing the item's group and not the item itself, causing unexpected behavior." />
+              <Grid>
+                <ItemsControl x:Name="LeftItemsControlIssue248"
+                              ItemsSource="{Binding Data.GroupedItemsCollectionViewSource}"
+                              DisplayMemberPath="Caption"
+                              dd:DragDrop.DropHandler="{Binding Data.GroupedDropHandler}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.UseDefaultEffectDataTemplate="True">
+                  <ItemsControl.GroupStyle>
+                    <GroupStyle>
+                      <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                      </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                  </ItemsControl.GroupStyle>
+                </ItemsControl>
+              </Grid>
+
+              <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
+                         Text="Customization" />
+              <CheckBox Margin="10 5" Content="IsDragSource"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue248, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="IsDropTarget"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue248, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultDragAdorner"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue248, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox Margin="10 5" Content="UseDefaultEffectDataTemplate"
+                        IsChecked="{Binding ElementName=LeftItemsControlIssue248, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </TabItem>
+
     </TabControl>
 
   </Grid>

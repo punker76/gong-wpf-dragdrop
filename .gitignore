@@ -20,6 +20,7 @@ x86/
 bld/
 [Bb]in/
 [Oo]bj/
+[Tt]ools/[Cc]ake/
 
 # Roslyn cache directories
 *.ide/
@@ -188,3 +189,6 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+**/[tT]ools/*
+!**/[tT]ools/[nN]uget/

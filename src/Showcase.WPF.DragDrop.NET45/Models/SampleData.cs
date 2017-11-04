@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace Showcase.WPF.DragDrop.Models
 {
@@ -25,6 +27,9 @@ namespace Showcase.WPF.DragDrop.Models
           this.GroupedCollection.Add(new GroupedItem(g, i));
         }
       }
+
+      this.GroupedItemsCollectionViewSource = CollectionViewSource.GetDefaultView(this.GroupedCollection);
+      this.GroupedItemsCollectionViewSource.GroupDescriptions.Add(new PropertyGroupDescription() { PropertyName = nameof(GroupedItem.Group) });
 
       for (int r = 1; r <= 6; r++)
       {
@@ -63,6 +68,7 @@ namespace Showcase.WPF.DragDrop.Models
 
     public GroupedDropHandler GroupedDropHandler { get; set; } = new GroupedDropHandler();
     public ObservableCollection<GroupedItem> GroupedCollection { get; set; } = new ObservableCollection<GroupedItem>();
+    public ICollectionView GroupedItemsCollectionViewSource { get; }
 
     public ObservableCollection<DataGridRowModel> DataGridCollection1 { get; set; } = new ObservableCollection<DataGridRowModel>();
     public ObservableCollection<DataGridRowModel> DataGridCollection2 { get; set; } = new ObservableCollection<DataGridRowModel>();

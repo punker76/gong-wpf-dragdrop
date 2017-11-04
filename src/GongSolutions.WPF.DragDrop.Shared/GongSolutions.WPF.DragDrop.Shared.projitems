@@ -20,7 +20,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)DropTargetAdorners.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropTargetHighlightAdorner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropTargetInsertionAdorner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GlobalAssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Icons\IconFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDragInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDragSource.cs" />
