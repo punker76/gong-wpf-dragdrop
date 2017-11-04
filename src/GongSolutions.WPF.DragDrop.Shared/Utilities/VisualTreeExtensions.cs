@@ -9,149 +9,161 @@ using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
-  public static class VisualTreeExtensions
-  {
-    /// <summary>
-    /// Gets the next ancestor element which is a drop target.
-    /// </summary>
-    /// <param name="element">The start element.</param>
-    /// <returns>The first element which is a drop target.</returns>
-    public static UIElement TryGetNextAncestorDropTargetElement(this UIElement element)
+    public static class VisualTreeExtensions
     {
-      if (element == null)
-      {
-        return null;
-      }
-      var ancestor = element.GetVisualAncestor<UIElement>();
-      while (ancestor != null)
-      {
-        if (ancestor.IsDropTarget())
+        /// <summary>
+        /// Gets the next ancestor element which is a drop target.
+        /// </summary>
+        /// <param name="element">The start element.</param>
+        /// <returns>The first element which is a drop target.</returns>
+        public static UIElement TryGetNextAncestorDropTargetElement(this UIElement element)
         {
-          return ancestor;
+            if (element == null)
+            {
+                return null;
+            }
+            var ancestor = element.GetVisualAncestor<UIElement>();
+            while (ancestor != null)
+            {
+                if (ancestor.IsDropTarget())
+                {
+                    return ancestor;
+                }
+                ancestor = ancestor.GetVisualAncestor<UIElement>();
+            }
+            return null;
         }
-        ancestor = ancestor.GetVisualAncestor<UIElement>();
-      }
-      return null;
-    }
 
-    internal static DependencyObject FindVisualTreeRoot(this DependencyObject d)
-    {
-      var current = d;
-      var result = d;
-
-      while (current != null) {
-        result = current;
-        if (current is Visual || current is Visual3D) {
-          break;
-        } else {
-          // If we're in Logical Land then we must walk 
-          // up the logical tree until we find a 
-          // Visual/Visual3D to get us back to Visual Land.
-          current = LogicalTreeHelper.GetParent(current);
-        }
-      }
-
-      return result;
-    }
-
-    public static T GetVisualAncestor<T>(this DependencyObject d) where T : class
-    {
-      var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
-
-      while (item != null) {
-        var itemAsT = item as T;
-        if (itemAsT != null) {
-          return itemAsT;
-        }
-        item = VisualTreeHelper.GetParent(item);
-      }
-
-      return null;
-    }
-
-    /// <summary>
-    /// find the visual ancestor item by type
-    /// </summary>
-    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl, [NotNull] Type itemContainerSearchType)
-    {
-      if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
-      if (itemContainerSearchType == null) throw new ArgumentNullException(nameof(itemContainerSearchType));
-
-      var visualTreeRoot = d.FindVisualTreeRoot();
-      var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
-
-      while (currentVisual != null && itemSearchType != null)
-      {
-        var currentVisualType = currentVisual.GetType();
-        if (currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
+        internal static DependencyObject FindVisualTreeRoot(this DependencyObject d)
         {
-          if (currentVisual is TreeViewItem || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
-          {
-            return currentVisual;
-          }
+            var current = d;
+            var result = d;
+
+            while (current != null)
+            {
+                result = current;
+                if (current is Visual || current is Visual3D)
+                {
+                    break;
+                }
+                else
+                {
+                    // If we're in Logical Land then we must walk 
+                    // up the logical tree until we find a 
+                    // Visual/Visual3D to get us back to Visual Land.
+                    current = LogicalTreeHelper.GetParent(current);
+                }
+            }
+
+            return result;
         }
-        if (itemContainerSearchType.IsAssignableFrom(currentVisualType))
+
+        public static T GetVisualAncestor<T>(this DependencyObject d)
+            where T : class
         {
-          // ok, we found an ItemsControl (maybe an empty)
-          return null;
+            var item = VisualTreeHelper.GetParent(d.FindVisualTreeRoot());
+
+            while (item != null)
+            {
+                var itemAsT = item as T;
+                if (itemAsT != null)
+                {
+                    return itemAsT;
+                }
+                item = VisualTreeHelper.GetParent(item);
+            }
+
+            return null;
         }
-        currentVisual = VisualTreeHelper.GetParent(currentVisual);
-      }
 
-      return null;
-    }
-
-    /// <summary>
-    /// find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
-    /// </summary>
-    public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl)
-    {
-      if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
-
-      var visualTreeRoot = d.FindVisualTreeRoot();
-      var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
-      DependencyObject lastFoundItemByType = null;
-
-      while (currentVisual != null && itemSearchType != null)
-      {
-        if (currentVisual == itemsControl)
+        /// <summary>
+        /// find the visual ancestor item by type
+        /// </summary>
+        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl, [NotNull] Type itemContainerSearchType)
         {
-          return lastFoundItemByType;
+            if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
+            if (itemContainerSearchType == null) throw new ArgumentNullException(nameof(itemContainerSearchType));
+
+            var visualTreeRoot = d.FindVisualTreeRoot();
+            var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
+
+            while (currentVisual != null && itemSearchType != null)
+            {
+                var currentVisualType = currentVisual.GetType();
+                if (currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
+                {
+                    if (currentVisual is TreeViewItem || itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1)
+                    {
+                        return currentVisual;
+                    }
+                }
+                if (itemContainerSearchType.IsAssignableFrom(currentVisualType))
+                {
+                    // ok, we found an ItemsControl (maybe an empty)
+                    return null;
+                }
+                currentVisual = VisualTreeHelper.GetParent(currentVisual);
+            }
+
+            return null;
         }
-        var currentVisualType = currentVisual.GetType();
-        if ((currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
-            && (itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1))
+
+        /// <summary>
+        /// find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
+        /// </summary>
+        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl)
         {
-          lastFoundItemByType = currentVisual;
+            if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
+
+            var visualTreeRoot = d.FindVisualTreeRoot();
+            var currentVisual = VisualTreeHelper.GetParent(visualTreeRoot);
+            DependencyObject lastFoundItemByType = null;
+
+            while (currentVisual != null && itemSearchType != null)
+            {
+                if (currentVisual == itemsControl)
+                {
+                    return lastFoundItemByType;
+                }
+                var currentVisualType = currentVisual.GetType();
+                if ((currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
+                    && (itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1))
+                {
+                    lastFoundItemByType = currentVisual;
+                }
+                currentVisual = VisualTreeHelper.GetParent(currentVisual);
+            }
+
+            return lastFoundItemByType;
         }
-        currentVisual = VisualTreeHelper.GetParent(currentVisual);
-      }
 
-      return lastFoundItemByType;
-    }
-
-    public static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
-    {
-      return d.GetVisualDescendents<T>().FirstOrDefault();
-    }
-
-    public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d) where T : DependencyObject
-    {
-      var childCount = VisualTreeHelper.GetChildrenCount(d);
-
-      for (var n = 0; n < childCount; n++) {
-        var child = VisualTreeHelper.GetChild(d, n);
-
-        if (child is T) {
-          yield return (T)child;
+        public static T GetVisualDescendent<T>(this DependencyObject d)
+            where T : DependencyObject
+        {
+            return d.GetVisualDescendents<T>().FirstOrDefault();
         }
 
-        foreach (var match in GetVisualDescendents<T>(child)) {
-          yield return match;
-        }
-      }
+        public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d)
+            where T : DependencyObject
+        {
+            var childCount = VisualTreeHelper.GetChildrenCount(d);
 
-      yield break;
+            for (var n = 0; n < childCount; n++)
+            {
+                var child = VisualTreeHelper.GetChild(d, n);
+
+                if (child is T)
+                {
+                    yield return (T)child;
+                }
+
+                foreach (var match in GetVisualDescendents<T>(child))
+                {
+                    yield return match;
+                }
+            }
+
+            yield break;
+        }
     }
-  }
 }

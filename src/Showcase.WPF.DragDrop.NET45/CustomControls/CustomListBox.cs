@@ -3,24 +3,24 @@ using System.Windows.Controls;
 
 namespace Showcase.WPF.DragDrop.CustomControls
 {
-  public class CustomListBox : ListBox
-  {
-    protected override DependencyObject GetContainerForItemOverride()
+    public class CustomListBox : ListBox
     {
-      return new CustomListBoxItem();
+        protected override DependencyObject GetContainerForItemOverride()
+        {
+            return new CustomListBoxItem();
+        }
+
+        protected override bool IsItemItsOwnContainerOverride(object item)
+        {
+            return item is CustomListBoxItem;
+        }
     }
 
-    protected override bool IsItemItsOwnContainerOverride(object item)
+    public class CustomListBoxItem : ListBoxItem
     {
-      return item is CustomListBoxItem;
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
-  }
-
-  public class CustomListBoxItem : ListBoxItem
-  {
-    public override string ToString()
-    {
-      return base.ToString();
-    }
-  }
 }

@@ -6,84 +6,84 @@ using JetBrains.Annotations;
 
 namespace Showcase.WPF.DragDrop.Models
 {
-  public class TreeNode : INotifyPropertyChanged, ICloneable
-  {
-    private string _caption;
-    private ObservableCollection<TreeNode> _children;
-    private bool _isCloned;
-    private bool _isExpanded;
-
-    public TreeNode(string caption)
+    public class TreeNode : INotifyPropertyChanged, ICloneable
     {
-      this.Caption = caption;
-      this.Children = new ObservableCollection<TreeNode>();
-    }
+        private string _caption;
+        private ObservableCollection<TreeNode> _children;
+        private bool _isCloned;
+        private bool _isExpanded;
 
-    public string Caption
-    {
-      get { return _caption; }
-      set
-      {
-        if (value == _caption) return;
-        _caption = value;
-        OnPropertyChanged();
-      }
-    }
+        public TreeNode(string caption)
+        {
+            this.Caption = caption;
+            this.Children = new ObservableCollection<TreeNode>();
+        }
 
-    public ObservableCollection<TreeNode> Children
-    {
-      get { return _children; }
-      set
-      {
-        if (Equals(value, _children)) return;
-        _children = value;
-        OnPropertyChanged();
-      }
-    }
+        public string Caption
+        {
+            get { return _caption; }
+            set
+            {
+                if (value == _caption) return;
+                _caption = value;
+                OnPropertyChanged();
+            }
+        }
 
-    public bool IsCloned
-    {
-      get { return _isCloned; }
-      set
-      {
-        if (value == _isCloned) return;
-        _isCloned = value;
-        OnPropertyChanged();
-      }
-    }
+        public ObservableCollection<TreeNode> Children
+        {
+            get { return _children; }
+            set
+            {
+                if (Equals(value, _children)) return;
+                _children = value;
+                OnPropertyChanged();
+            }
+        }
 
-    public bool IsExpanded
-    {
-      get { return _isExpanded; }
-      set
-      {
-        if (value == _isExpanded) return;
-        _isExpanded = value;
-        OnPropertyChanged();
-      }
-    }
+        public bool IsCloned
+        {
+            get { return _isCloned; }
+            set
+            {
+                if (value == _isCloned) return;
+                _isCloned = value;
+                OnPropertyChanged();
+            }
+        }
 
-    public override string ToString()
-    {
-      return this.Caption;
-    }
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                if (value == _isExpanded) return;
+                _isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
 
-    public object Clone()
-    {
-      var treeNode = new TreeNode(this.Caption) {IsCloned = true};
-      foreach (var child in this.Children)
-      {
-        treeNode.Children.Add((TreeNode) child.Clone());
-      }
-      return treeNode;
-    }
+        public override string ToString()
+        {
+            return this.Caption;
+        }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+        public object Clone()
+        {
+            var treeNode = new TreeNode(this.Caption) { IsCloned = true };
+            foreach (var child in this.Children)
+            {
+                treeNode.Children.Add((TreeNode)child.Clone());
+            }
+            return treeNode;
+        }
 
-    [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
-  }
 }

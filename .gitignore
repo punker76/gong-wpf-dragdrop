@@ -192,3 +192,5 @@ FakesAssemblies/
 
 **/[tT]ools/*
 !**/[tT]ools/[nN]uget/
+!**/[tT]ools/XamlStyler/
+!**/[tT]ools/format_all_xaml.cmd
