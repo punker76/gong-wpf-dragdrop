@@ -348,6 +348,11 @@ namespace GongSolutions.Wpf.DragDrop
     public string DestinationText { get; set; }
 
     /// <summary>
+    /// Gets and sets the effect text displayed in the DropDropEffects adorner.
+    /// </summary>
+    public string EffectText { get; set; }
+
+    /// <summary>
     /// Gets the relative position the item will be inserted to compared to the TargetItem
     /// </summary>
     public RelativeInsertPosition InsertPosition { get; private set; }
