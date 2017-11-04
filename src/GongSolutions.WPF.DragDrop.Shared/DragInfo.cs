@@ -36,11 +36,7 @@ namespace GongSolutions.Wpf.DragDrop
       this.MouseButton = e.ChangedButton;
       this.VisualSource = sender as UIElement;
       this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
-      this.RefreshSourceValues(sender, e);
-    }
 
-    internal void RefreshSourceValues(object sender, MouseEventArgs e)
-    {
       var sourceElement = e.OriginalSource as UIElement;
       // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
       if (sourceElement == null && e.OriginalSource is FrameworkContentElement)
@@ -131,6 +127,27 @@ namespace GongSolutions.Wpf.DragDrop
 
       if (this.SourceItems == null) {
         this.SourceItems = Enumerable.Empty<object>();
+      }
+    }
+
+    internal void RefreshSelectedItems(object sender, MouseEventArgs e)
+    {
+      if (sender is ItemsControl)
+      {
+        var itemsControl = (ItemsControl)sender;
+
+        var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
+        this.SourceItems = selectedItems;
+
+        // Some controls (I'm looking at you TreeView!) haven't updated their
+        // SelectedItem by this point. Check to see if there 1 or less item in 
+        // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
+        //
+        // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
+        if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem))
+        {
+          this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
+        }
       }
     }
 
