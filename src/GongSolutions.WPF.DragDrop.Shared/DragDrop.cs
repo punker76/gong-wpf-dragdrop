@@ -155,7 +155,7 @@ namespace GongSolutions.Wpf.DragDrop
                 adornment.Content = dragInfo.Data;
                 adornment.ContentTemplate = template;
 
-                EffectAdorner = new DragAdorner(rootElement, adornment, new Point(), dropInfo.Effects);
+                EffectAdorner = new DragAdorner(rootElement, adornment, GetEffectAdornerTranslation(dragInfo.VisualSource), dropInfo.Effects);
             }
         }
 
@@ -662,7 +662,7 @@ namespace GongSolutions.Wpf.DragDrop
             if (EffectAdorner != null)
             {
                 var adornerPos = e.GetPosition(EffectAdorner.AdornedElement);
-                adornerPos.Offset(20, 20);
+                //adornerPos.Offset(20, 20);
                 EffectAdorner.MousePosition = adornerPos;
                 EffectAdorner.InvalidateVisual();
             }

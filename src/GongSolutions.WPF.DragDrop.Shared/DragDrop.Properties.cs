@@ -485,6 +485,31 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or Sets the translation transform which will be used for the EffectAdorner.
+        /// </summary>
+        public static readonly DependencyProperty EffectAdornerTranslationProperty
+            = DependencyProperty.RegisterAttached("EffectAdornerTranslation",
+                                                  typeof(Point),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(new Point(16, 16)));
+
+        /// <summary>
+        /// Gets the translation transform which will be used for the EffectAdorner.
+        /// </summary>
+        public static Point GetEffectAdornerTranslation(UIElement element)
+        {
+            return (Point)element.GetValue(EffectAdornerTranslationProperty);
+        }
+
+        /// <summary>
+        /// Sets the translation transform which will be used for the EffectAdorner.
+        /// </summary>
+        public static void SetEffectAdornerTranslation(UIElement element, Point value)
+        {
+            element.SetValue(EffectAdornerTranslationProperty, value);
+        }
+
+        /// <summary>
         /// Gets or Sets a DataTemplate for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTemplateProperty
