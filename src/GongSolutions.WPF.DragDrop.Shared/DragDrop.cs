@@ -95,7 +95,7 @@ namespace GongSolutions.Wpf.DragDrop
                 }
 
                 var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
-                DragAdorner = new DragAdorner(rootElement, adornment);
+                DragAdorner = new DragAdorner(rootElement, adornment, GetDragAdornerTranslation(dragInfo.VisualSource));
             }
         }
 
@@ -155,7 +155,7 @@ namespace GongSolutions.Wpf.DragDrop
                 adornment.Content = dragInfo.Data;
                 adornment.ContentTemplate = template;
 
-                EffectAdorner = new DragAdorner(rootElement, adornment, dropInfo.Effects);
+                EffectAdorner = new DragAdorner(rootElement, adornment, new Point(), dropInfo.Effects);
             }
         }
 
