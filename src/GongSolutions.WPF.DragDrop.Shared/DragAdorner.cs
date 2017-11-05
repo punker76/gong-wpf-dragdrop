@@ -6,9 +6,10 @@ namespace GongSolutions.Wpf.DragDrop
 {
     internal class DragAdorner : Adorner
     {
-        public DragAdorner(UIElement adornedElement, UIElement adornment, DragDropEffects effects = DragDropEffects.None)
+        public DragAdorner(UIElement adornedElement, UIElement adornment, Point translation, DragDropEffects effects = DragDropEffects.None)
             : base(adornedElement)
         {
+            this._translation = translation;
             this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
             this.m_AdornerLayer.Add(this);
             this.m_Adornment = adornment;
@@ -46,7 +47,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             var result = new GeneralTransformGroup();
             result.Children.Add(base.GetDesiredTransform(transform));
-            result.Children.Add(new TranslateTransform(this.MousePosition.X - 4, this.MousePosition.Y - 4));
+            result.Children.Add(new TranslateTransform(this.MousePosition.X + this._translation.X, this.MousePosition.Y + this._translation.Y));
 
             return result;
         }
@@ -70,5 +71,6 @@ namespace GongSolutions.Wpf.DragDrop
         private readonly AdornerLayer m_AdornerLayer;
         private readonly UIElement m_Adornment;
         private Point m_MousePosition;
+        private Point _translation;
     }
 }
