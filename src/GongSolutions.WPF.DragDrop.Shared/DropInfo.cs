@@ -4,8 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Data;
+using System.Windows.Media;
+using GongSolutions.Wpf.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -97,7 +98,7 @@ namespace GongSolutions.Wpf.DragDrop
                 {
                     // ok, no item found, so maybe we can found an item at top, left, right or bottom
                     item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
-                    directlyOverItem = false;
+                    directlyOverItem = item != null && VisualTreeHelper.GetDescendantBounds(item).Contains(this.DropPosition);
                 }
 
                 if (item == null && this.TargetGroup != null && this.TargetGroup.IsBottomLevel)
@@ -106,7 +107,7 @@ namespace GongSolutions.Wpf.DragDrop
                     if (itemData != null)
                     {
                         item = itemsControl.ItemContainerGenerator.ContainerFromItem(itemData) as UIElement;
-                        directlyOverItem = false;
+                        directlyOverItem = item != null && VisualTreeHelper.GetDescendantBounds(item).Contains(this.DropPosition);
                     }
                 }
 
