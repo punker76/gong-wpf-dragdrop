@@ -72,6 +72,12 @@ namespace GongSolutions.Wpf.DragDrop
 
                 var itemContainer = (UIElement)itemParent.ItemContainerGenerator.ContainerFromIndex(index);
 
+                var showAlwaysDropTargetAdorner = itemContainer == null && DragDrop.GetShowAlwaysDropTargetAdorner(itemParent);
+                if (showAlwaysDropTargetAdorner)
+                {
+                    itemContainer = itemParent;
+                }
+
                 if (itemContainer != null)
                 {
                     var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement), itemContainer.RenderSize);
@@ -84,9 +90,16 @@ namespace GongSolutions.Wpf.DragDrop
 
                     if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
                     {
-                        if (dropInfo.InsertIndex == itemsCount || lastItemInGroup)
+                        if ((dropInfo.InsertIndex == itemsCount) || lastItemInGroup)
                         {
-                            itemRect.Y += itemContainer.RenderSize.Height;
+                            if (itemsCount > 0)
+                            {
+                                itemRect.Y += itemContainer.RenderSize.Height;
+                            }
+                            else
+                            {
+                                itemRect.Y += this.Pen.Thickness;
+                            }
                         }
 
                         var itemRectRight = Math.Min(itemRect.Right, viewportWidth);
@@ -96,19 +109,34 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                     else
                     {
-                        var itemRectX = itemRect.X;
-
                         if (dropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && dropInfo.InsertIndex == itemsCount)
                         {
-                            itemRectX += itemContainer.RenderSize.Width;
+                            if (itemsCount > 0)
+                            {
+                                itemRect.X += itemContainer.RenderSize.Width;
+                            }
+                            else
+                            {
+                                itemRect.X += this.Pen.Thickness;
+                            }
                         }
                         else if (dropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && dropInfo.InsertIndex != itemsCount)
                         {
-                            itemRectX += itemContainer.RenderSize.Width;
+                            if (itemsCount > 0)
+                            {
+                                itemRect.X += itemContainer.RenderSize.Width;
+                            }
+                            else
+                            {
+                                itemRect.X += this.Pen.Thickness;
+                            }
                         }
 
-                        point1 = new Point(itemRectX, itemRect.Y);
-                        point2 = new Point(itemRectX, itemRect.Bottom);
+                        var itemRectTop = itemRect.Y < 0 ? 0 : itemRect.Y;
+                        var itemRectBottom = Math.Min(itemRect.Bottom, viewportHeight);
+
+                        point1 = new Point(itemRect.X, itemRectTop);
+                        point2 = new Point(itemRect.X, itemRectBottom);
                         rotation = 90;
                     }
 

@@ -256,6 +256,31 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
+        /// </summary>
+        public static readonly DependencyProperty ShowAlwaysDropTargetAdornerProperty
+            = DependencyProperty.RegisterAttached("ShowAlwaysDropTargetAdorner",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
+        /// </summary>
+        public static bool GetShowAlwaysDropTargetAdorner(UIElement target)
+        {
+            return (bool)target.GetValue(ShowAlwaysDropTargetAdornerProperty);
+        }
+
+        /// <summary>
+        /// Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
+        /// </summary>
+        public static void SetShowAlwaysDropTargetAdorner(UIElement target, bool value)
+        {
+            target.SetValue(ShowAlwaysDropTargetAdornerProperty, value);
+        }
+
+        /// <summary>
         /// Gets or Sets the brush for the DropTargetAdorner.
         /// </summary>
         public static readonly DependencyProperty DropTargetAdornerBrushProperty
