@@ -39,6 +39,7 @@
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <ListBox Grid.Column="1"
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
+                                         dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          ItemsSource="{Binding Data.Collection2}" />
