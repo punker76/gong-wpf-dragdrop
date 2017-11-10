@@ -7,7 +7,35 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public static partial class DragDrop
     {
+        /// <summary>
+        /// The default data format which will be used for the drag and drop actions.
+        /// </summary>
         public static DataFormat DataFormat { get; } = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
+
+        /// <summary>
+        /// Gets or sets the data format which will be used for the drag and drop actions.
+        /// </summary>
+        public static readonly DependencyProperty DataFormatProperty
+            = DependencyProperty.RegisterAttached("DataFormat",
+                                                  typeof(DataFormat),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(DragDrop.DataFormat));
+
+        /// <summary>
+        /// Gets the data format which will be used for the drag and drop actions.
+        /// </summary>
+        public static DataFormat GetDataFormat(UIElement source)
+        {
+            return (DataFormat)source.GetValue(DataFormatProperty);
+        }
+
+        /// <summary>
+        /// Sets the data format which will be used for the drag and drop actions.
+        /// </summary>
+        public static void SetDataFormat(UIElement source, DataFormat value)
+        {
+            source.SetValue(DataFormatProperty, value);
+        }
 
         /// <summary>
         /// Gets or Sets whether the control can be used as drag source.

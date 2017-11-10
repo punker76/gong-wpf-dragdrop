@@ -491,7 +491,7 @@ namespace GongSolutions.Wpf.DragDrop
                                     m_DragInfo = null; // maybe not necessary or should not set here to null
                                     return;
                                 }
-                                dataObject = new DataObject(DataFormat.Name, dragInfo.Data);
+                                dataObject = new DataObject(dragInfo.DataFormat.Name, dragInfo.Data);
                             }
 
                             try

@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop.Utilities;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -39,12 +40,12 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dragInfo">
         /// Information about the source of the drag, if the drag came from within the framework.
         /// </param>
-        public DropInfo(object sender, DragEventArgs e, DragInfo dragInfo)
+        public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo)
         {
-            var dataFormat = DragDrop.DataFormat.Name;
-            this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
+            var dataFormat = dragInfo?.DataFormat;
+            this.Data = dataFormat != null && e.Data.GetDataPresent(dataFormat.Name) ? e.Data.GetData(dataFormat.Name) : e.Data;
 
             this.VisualTarget = sender as UIElement;
             // if there is no drop target, find another
