@@ -36,6 +36,11 @@ namespace GongSolutions.Wpf.DragDrop
             this.MouseButton = e.ChangedButton;
             this.VisualSource = sender as UIElement;
             this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
+            var dataFormat = DragDrop.GetDataFormat(this.VisualSource);
+            if (dataFormat != null)
+            {
+                this.DataFormat = dataFormat;
+            }
 
             var sourceElement = e.OriginalSource as UIElement;
             // If we can't cast object as a UIElement it might be a FrameworkContentElement, if so try and use its parent.
@@ -162,6 +167,12 @@ namespace GongSolutions.Wpf.DragDrop
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the data format which will be used for the drag and drop actions.
+        /// </summary>
+        /// <value>The data format.</value>
+        public DataFormat DataFormat { get; set; } = DragDrop.DataFormat;
 
         /// <summary>
         /// Gets or sets the drag data.

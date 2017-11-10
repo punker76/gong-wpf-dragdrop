@@ -8,6 +8,12 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDragInfo
     {
         /// <summary>
+        /// Gets or sets the data format which will be used for the drag and drop actions.
+        /// </summary>
+        /// <value>The data format.</value>
+        DataFormat DataFormat { get; set; }
+
+        /// <summary>
         /// Gets or sets the drag data.
         /// </summary>
         /// 

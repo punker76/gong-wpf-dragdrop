@@ -41,7 +41,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </param>
         public DropInfo(object sender, DragEventArgs e, DragInfo dragInfo)
         {
-            var dataFormat = DragDrop.DataFormat.Name;
+            var dataFormat = dragInfo.DataFormat.Name;
             this.Data = (e.Data.GetDataPresent(dataFormat)) ? e.Data.GetData(dataFormat) : e.Data;
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
