@@ -497,11 +497,12 @@ namespace GongSolutions.Wpf.DragDrop
                             try
                             {
                                 m_DragInProgress = true;
-                                var result = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, dataObject, dragInfo.Effects);
-                                if (result == DragDropEffects.None)
+                                var dragDropEffects = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, dataObject, dragInfo.Effects);
+                                if (dragDropEffects == DragDropEffects.None)
                                 {
                                     dragHandler.DragCancelled();
                                 }
+                                dragHandler.DragDropOperationFinished(dragDropEffects, dragInfo);
                             }
                             catch (Exception ex)
                             {
@@ -691,8 +692,10 @@ namespace GongSolutions.Wpf.DragDrop
             dropHandler.Drop(dropInfo);
             dragHandler.Dropped(dropInfo);
 
-            Mouse.OverrideCursor = null;
+            e.Effects = dropInfo.Effects;
             e.Handled = !dropInfo.NotHandled;
+
+            Mouse.OverrideCursor = null;
         }
 
         private static void DropTargetOnGiveFeedback(object sender, GiveFeedbackEventArgs e)

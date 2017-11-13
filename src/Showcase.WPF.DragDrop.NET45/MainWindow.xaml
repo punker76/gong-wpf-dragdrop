@@ -14,7 +14,7 @@
 
     <Grid>
 
-        <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+        <TabControl x:Name="MainTabControl" Style="{StaticResource ShowcaseTabControlStyle}">
             <TabItem Header="ListBox">
                 <views:ListBoxSamples />
             </TabItem>

@@ -38,6 +38,13 @@ namespace GongSolutions.Wpf.DragDrop
         void Dropped(IDropInfo dropInfo);
 
         /// <summary>
+        /// Notifies the drag handler that a drag and drop operation has finished.
+        /// </summary>
+        /// <param name="operationResult">The operation result.</param>
+        /// <param name="dragInfo">The drag information.</param>
+        void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo);
+
+        /// <summary>
         /// Notifies the drag handler that a drag has been aborted.
         /// </summary>
         void DragCancelled();

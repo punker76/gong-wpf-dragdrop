@@ -10,6 +10,7 @@ namespace Showcase.WPF.DragDrop.Models
         {
             for (var n = 0; n < 50; ++n)
             {
+                this.SerializableCollection1.Add(new SerializableItemModel(n + 1));
                 this.Collection1.Add(new ItemModel(n + 1));
                 this.FilterCollection1.Add(new ItemModel(n + 1));
                 this.ClonableCollection1.Add(new ClonableItemModel(n + 1));
@@ -51,6 +52,14 @@ namespace Showcase.WPF.DragDrop.Models
             }
             this.TabItemCollection2.Add(new TabItemModel(1));
         }
+
+        public ObservableCollection<SerializableItemModel> SerializableCollection1 { get; set; } = new ObservableCollection<SerializableItemModel>();
+
+        public ObservableCollection<SerializableItemModel> SerializableCollection2 { get; set; } = new ObservableCollection<SerializableItemModel>();
+
+        public SerializableDragHandler SerializableDragHandler { get; set; } = new SerializableDragHandler();
+
+        public SerializableDropHandler SerializableDropHandler { get; set; } = new SerializableDropHandler();
 
         public ObservableCollection<ItemModel> Collection1 { get; set; } = new ObservableCollection<ItemModel>();
 
