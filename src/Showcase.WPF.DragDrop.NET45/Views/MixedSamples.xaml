@@ -19,7 +19,7 @@
             <Style BasedOn="{StaticResource DefaultTreeViewStyle}" TargetType="{x:Type TreeView}" />
         </Grid.Resources>
 
-        <TabControl Style="{StaticResource ShowcaseTabControlStyle}">
+        <TabControl x:Name="MixedTabControl" Style="{StaticResource ShowcaseTabControlStyle}">
 
             <TabControl.Resources>
                 <DataTemplate x:Key="DragAdorner">
@@ -439,6 +439,71 @@
                             </ItemsControl>
                         </ScrollViewer>
                     </DockPanel>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Outside">
+                <TabItem.Resources />
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Drag and drop from one App to another one." />
+                        <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates drag and drop action bewteen one application to another one. Just open the other app and try to drag one or more items to this app or vice versa." />
+                        <Button Margin="2"
+                                Click="ButtonOpenAnotherAppOnClick"
+                                Content="Open another application..." />
+                    </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ListBox x:Name="LeftBoundListBox"
+                                     Grid.Column="0"
+                                     Height="Auto"
+                                     dd:DragDrop.DragHandler="{Binding Data.SerializableDragHandler}"
+                                     dd:DragDrop.DropHandler="{Binding Data.SerializableDropHandler}"
+                                     dd:DragDrop.DropTargetAdornerBrush="BlueViolet"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     ItemsSource="{Binding Data.SerializableCollection1}" />
+                            <ListBox Grid.Column="1"
+                                     Height="Auto"
+                                     dd:DragDrop.DragHandler="{Binding Data.SerializableDragHandler}"
+                                     dd:DragDrop.DropHandler="{Binding Data.SerializableDropHandler}"
+                                     dd:DragDrop.DropTargetAdornerBrush="BlueViolet"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     ItemsSource="{Binding Data.SerializableCollection2}" />
+                        </Grid>
+
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left ListBox)" />
+                            <CheckBox Margin="10 5"
+                                      Content="IsDragSource"
+                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="CanDragWithMouseRightButton"
+                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="IsDropTarget"
+                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultDragAdorner"
+                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultEffectDataTemplate"
+                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
                 </DockPanel>
             </TabItem>
 

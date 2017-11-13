@@ -133,4 +133,23 @@ namespace Showcase.WPF.DragDrop.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    [Serializable]
+    public class SerializableItemModel
+    {
+        public SerializableItemModel(int itemIndex)
+        {
+            this.Index = itemIndex;
+            this.Caption = $"{itemIndex}. Item";
+        }
+
+        public int Index { get; set; }
+
+        public string Caption { get; set; }
+
+        public override string ToString()
+        {
+            return this.Caption;
+        }
+    }
 }
