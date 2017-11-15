@@ -299,6 +299,14 @@ namespace GongSolutions.Wpf.DragDrop
                                 return indexOf;
                             }
                         }
+                        else if (itemParent.Items.Count > 0 && insertIndex == itemParent.Items.Count)
+                        {
+                            var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex - 1]);
+                            if (indexOf >= 0)
+                            {
+                                return indexOf + 1;
+                            }
+                        }
                     }
                 }
                 return insertIndex;
