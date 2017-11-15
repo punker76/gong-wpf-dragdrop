@@ -113,11 +113,10 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (destinationList != null)
             {
-                var tabControl = dropInfo.VisualTarget as TabControl;
+                var objects2Insert = new List<object>();
 
                 // check for cloning
-                var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy)
-                                || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+                var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
                 foreach (var o in data)
                 {
                     var obj2Insert = o;
@@ -130,22 +129,28 @@ namespace GongSolutions.Wpf.DragDrop
                         }
                     }
 
+                    objects2Insert.Add(obj2Insert);
                     destinationList.Insert(insertIndex++, obj2Insert);
+                }
 
-                    if (tabControl != null)
+                if (itemsControl != null)
+                {
+                    var itemsParent = (dropInfo.VisualTargetItem != null ? ItemsControl.ItemsControlFromItemContainer(dropInfo.VisualTargetItem) : itemsControl) ?? itemsControl;
+                    var keepSelection = itemsControl is TabControl || true;
+                    if (keepSelection)
                     {
-                        // call ApplyTemplate for TabItem in TabControl to avoid this error:
-                        //
-                        // System.Windows.Data Error: 4 : Cannot find source for binding with reference
-                        // 'RelativeSource FindAncestor, AncestorType='System.Windows.Controls.TabControl', AncestorLevel='1''.
-                        // BindingExpression:Path=TabStripPlacement; DataItem=null; target element is 'TabItem' (Name='');
-                        // target property is 'NoTarget' (type 'Object')
-                        var container = tabControl.ItemContainerGenerator.ContainerFromItem(obj2Insert) as TabItem;
-                        container?.ApplyTemplate();
-
-                        // for better experience: select the dragged TabItem
-                        tabControl.SetSelectedItem(obj2Insert);
+                        itemsParent.ClearSelectedItems();
+                        foreach (var obj in objects2Insert)
+                        {
+                            // call ApplyTemplate for TabItem in TabControl to avoid this error:
+                            //
+                            // System.Windows.Data Error: 4 : Cannot find source for binding with reference
+                            var container = itemsParent.ItemContainerGenerator.ContainerFromItem(obj) as FrameworkElement;
+                            container?.ApplyTemplate();
+                            itemsParent.SetItemSelected(obj, true);
+                        }
                     }
+                    itemsControl.Focus();
                 }
             }
         }

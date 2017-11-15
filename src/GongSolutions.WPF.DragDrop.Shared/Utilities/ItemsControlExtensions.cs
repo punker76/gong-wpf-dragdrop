@@ -330,6 +330,30 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     ((ListBox)itemsControl).SelectionMode = selectionMode;
                 }
             }
+            else if (itemsControl is TreeViewItem)
+            {
+                // clear old selected item
+                var treeView = ItemsControl.ItemsControlFromItemContainer((TreeViewItem)itemsControl);
+                if (treeView != null)
+                {
+                    var prevSelectedItem = treeView.GetValue(TreeView.SelectedItemProperty);
+                    if (prevSelectedItem != null)
+                    {
+                        var prevSelectedTreeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+                        if (prevSelectedTreeViewItem != null)
+                        {
+                            prevSelectedTreeViewItem.IsSelected = false;
+                        }
+                    }
+                }
+                // set new selected item
+                // TreeView.SelectedItemProperty is a read only property, so we must set the selection on the TreeViewItem itself
+                var treeViewItem = ((TreeViewItem)itemsControl).ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if (treeViewItem != null)
+                {
+                    treeViewItem.IsSelected = true;
+                }
+            }
             else if (itemsControl is TreeView)
             {
                 // clear old selected item
@@ -354,6 +378,45 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 ((Selector)itemsControl).SelectedItem = null;
                 ((Selector)itemsControl).SelectedItem = item;
+            }
+        }
+
+        public static void ClearSelectedItems(this ItemsControl itemsControl)
+        {
+            if (itemsControl is MultiSelector)
+            {
+                if (((MultiSelector)itemsControl).CanSelectMultipleItems())
+                {
+                    ((MultiSelector)itemsControl).SelectedItems.Clear();
+                }
+                ((MultiSelector)itemsControl).SelectedItem = null;
+            }
+            else if (itemsControl is ListBox)
+            {
+                ((ListBox)itemsControl).SelectedItems.Clear();
+                ((ListBox)itemsControl).SelectedItem = null;
+            }
+            else if (itemsControl is TreeViewItem)
+            {
+                var treeView = ItemsControl.ItemsControlFromItemContainer((TreeViewItem)itemsControl);
+                treeView?.ClearSelectedItems();
+            }
+            else if (itemsControl is TreeView)
+            {
+                // clear old selected item
+                var prevSelectedItem = ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+                if (prevSelectedItem != null)
+                {
+                    var prevSelectedTreeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+                    if (prevSelectedTreeViewItem != null)
+                    {
+                        prevSelectedTreeViewItem.IsSelected = false;
+                    }
+                }
+            }
+            else if (itemsControl is Selector)
+            {
+                ((Selector)itemsControl).SelectedItem = null;
             }
         }
 
@@ -438,51 +501,59 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
         }
 
-        public static void SetItemSelected(this ItemsControl itemsControl, object item, bool value)
+        public static void SetItemSelected(this ItemsControl itemsControl, object item, bool itemSelected)
         {
             if (itemsControl is MultiSelector)
             {
                 var multiSelector = (MultiSelector)itemsControl;
 
-                if (value)
+                if (multiSelector.CanSelectMultipleItems())
                 {
-                    if (multiSelector.CanSelectMultipleItems())
+                    if (itemSelected)
                     {
                         multiSelector.SelectedItems.Add(item);
                     }
                     else
                     {
-                        multiSelector.SelectedItem = item;
+                        multiSelector.SelectedItems.Remove(item);
                     }
                 }
                 else
                 {
-                    multiSelector.SelectedItems.Remove(item);
+                    multiSelector.SelectedItem = null;
+                    if (itemSelected)
+                    {
+                        multiSelector.SelectedItem = item;
+                    }
                 }
             }
             else if (itemsControl is ListBox)
             {
                 var listBox = (ListBox)itemsControl;
 
-                if (value)
+                if (listBox.SelectionMode != SelectionMode.Single)
                 {
-                    if (listBox.SelectionMode != SelectionMode.Single)
+                    if (itemSelected)
                     {
                         listBox.SelectedItems.Add(item);
                     }
                     else
                     {
-                        listBox.SelectedItem = item;
+                        listBox.SelectedItems.Remove(item);
                     }
                 }
                 else
                 {
-                    listBox.SelectedItems.Remove(item);
+                    listBox.SelectedItem = null;
+                    if (itemSelected)
+                    {
+                        listBox.SelectedItem = item;
+                    }
                 }
             }
             else
             {
-                if (value)
+                if (itemSelected)
                 {
                     itemsControl.SetSelectedItem(item);
                 }
