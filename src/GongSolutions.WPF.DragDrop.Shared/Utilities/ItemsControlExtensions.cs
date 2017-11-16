@@ -381,6 +381,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
         }
 
+        /// <summary>
+        /// Clears the selected items.
+        /// </summary>
+        /// <param name="itemsControl">The items control.</param>
         public static void ClearSelectedItems(this ItemsControl itemsControl)
         {
             if (itemsControl is MultiSelector)
