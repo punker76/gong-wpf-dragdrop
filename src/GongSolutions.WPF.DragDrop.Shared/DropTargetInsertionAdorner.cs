@@ -2,8 +2,12 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
-#if NET35
 using GongSolutions.Wpf.DragDrop.Utilities;
+#if NET35
+using Microsoft.Windows.Controls;
+using Microsoft.Windows.Controls.Primitives;
+#else
+using System.Windows.Controls.Primitives;
 #endif
 
 namespace GongSolutions.Wpf.DragDrop
@@ -98,6 +102,22 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                             else
                             {
+                                if ((itemsControl as ListView)?.View is GridView)
+                                {
+                                    var header = itemsControl.GetVisualDescendent<GridViewHeaderRowPresenter>();
+                                    if (header != null)
+                                    {
+                                        itemRect.Y += header.RenderSize.Height;
+                                    }
+                                }
+                                else if (itemsControl is DataGrid)
+                                {
+                                    var header = itemsControl.GetVisualDescendent<DataGridColumnHeadersPresenter>();
+                                    if (header != null)
+                                    {
+                                        itemRect.Y += header.RenderSize.Height;
+                                    }
+                                }
                                 itemRect.Y += this.Pen.Thickness;
                             }
                         }

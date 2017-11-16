@@ -34,6 +34,7 @@
                                           Grid.Column="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                           ItemsSource="{Binding Data.Collection1}">
                                     <ListView.View>
                                         <GridView>
@@ -67,6 +68,7 @@
                                 <ListView Grid.Column="1"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
                                           ItemsSource="{Binding Data.Collection2}">
                                     <ListView.ItemTemplate>
