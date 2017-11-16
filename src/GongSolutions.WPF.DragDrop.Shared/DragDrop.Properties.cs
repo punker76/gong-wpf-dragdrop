@@ -893,5 +893,31 @@ namespace GongSolutions.Wpf.DragDrop
         {
             source.SetValue(MinimumVerticalDragDistanceProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets whether if the dropped items should be select again (should keep the selection).
+        /// Default is false.
+        /// </summary>
+        public static readonly DependencyProperty SelectDroppedItemsProperty
+            = DependencyProperty.RegisterAttached("SelectDroppedItems",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets whether if the dropped items should be select again (should keep the selection).
+        /// </summary>
+        public static bool GetSelectDroppedItems(UIElement target)
+        {
+            return (bool)target.GetValue(SelectDroppedItemsProperty);
+        }
+
+        /// <summary>
+        /// Sets whether if the dropped items should be select again (should keep the selection).
+        /// </summary>
+        public static void SetSelectDroppedItems(UIElement target, bool value)
+        {
+            target.SetValue(SelectDroppedItemsProperty, value);
+        }
     }
 }
