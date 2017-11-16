@@ -620,7 +620,7 @@ namespace GongSolutions.Wpf.DragDrop
                 {
                     adornedElement = itemsControl.GetVisualDescendent<TabPanel>();
                 }
-                else if (itemsControl is DataGrid)
+                else if (itemsControl is DataGrid || (itemsControl as ListView)?.View is GridView)
                 {
                     adornedElement = itemsControl.GetVisualDescendent<ScrollContentPresenter>() as UIElement ?? itemsControl.GetVisualDescendent<ItemsPresenter>() as UIElement ?? itemsControl;
                 }
