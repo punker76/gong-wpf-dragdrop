@@ -507,6 +507,78 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="Keep Selection">
+                <TabItem.Resources />
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Keep selection after Drag and drop action." />
+                    </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ListBox x:Name="LeftBoundKeepSelListBox"
+                                     Grid.Column="0"
+                                     Height="Auto"
+                                     dd:DragDrop.DropTargetAdornerBrush="Crimson"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.SelectDroppedItems="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     ItemsSource="{Binding Data.Collection1}" />
+                            <ListView Grid.Column="1"
+                                      Height="Auto"
+                                      dd:DragDrop.DropTargetAdornerBrush="Crimson"
+                                      dd:DragDrop.IsDragSource="True"
+                                      dd:DragDrop.IsDropTarget="True"
+                                      dd:DragDrop.SelectDroppedItems="True"
+                                      dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                      ItemsSource="{Binding Data.Collection2}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel LastChildFill="True">
+                                            <iconPacks:PackIconMaterial Margin="2"
+                                                                        Focusable="False"
+                                                                        Foreground="DarkOrange"
+                                                                        Kind="CheckboxMarkedOutline" />
+                                            <TextBlock Margin="2" Text="{Binding}" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left ListBox)" />
+                            <CheckBox Margin="10 5"
+                                      Content="IsDragSource"
+                                      IsChecked="{Binding ElementName=LeftBoundKeepSelListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultDragAdorner"
+                                      IsChecked="{Binding ElementName=LeftBoundKeepSelListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultEffectDataTemplate"
+                                      IsChecked="{Binding ElementName=LeftBoundKeepSelListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="ShowAlwaysDropTargetAdorner"
+                                      IsChecked="{Binding ElementName=LeftBoundKeepSelListBox, Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="SelectDroppedItems"
+                                      IsChecked="{Binding ElementName=LeftBoundKeepSelListBox, Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>
