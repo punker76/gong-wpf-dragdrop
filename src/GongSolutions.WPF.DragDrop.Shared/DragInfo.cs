@@ -35,7 +35,9 @@ namespace GongSolutions.Wpf.DragDrop
             this.Effects = DragDropEffects.None;
             this.MouseButton = e.ChangedButton;
             this.VisualSource = sender as UIElement;
+            this.DragStartPosition = e.GetPosition(this.VisualSource);
             this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
+
             var dataFormat = DragDrop.GetDataFormat(this.VisualSource);
             if (dataFormat != null)
             {
@@ -52,8 +54,6 @@ namespace GongSolutions.Wpf.DragDrop
             if (sender is ItemsControl)
             {
                 var itemsControl = (ItemsControl)sender;
-
-                this.DragStartPosition = e.GetPosition((IInputElement)sender);
 
                 this.SourceGroup = itemsControl.FindGroup(this.DragStartPosition);
                 this.VisualSourceFlowDirection = itemsControl.GetItemsPanelFlowDirection();
