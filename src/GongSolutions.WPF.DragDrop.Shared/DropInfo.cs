@@ -99,7 +99,7 @@ namespace GongSolutions.Wpf.DragDrop
                 {
                     // ok, no item found, so maybe we can found an item at top, left, right or bottom
                     item = itemsControl.GetItemContainerAt(this.DropPosition, this.VisualTargetOrientation);
-                    directlyOverItem = item != null && VisualTreeHelper.GetDescendantBounds(item).Contains(this.DropPosition);
+                    directlyOverItem = DropPosition.DirectlyOverElement(this.item, itemsControl);
                 }
 
                 if (item == null && this.TargetGroup != null && this.TargetGroup.IsBottomLevel)
@@ -108,7 +108,7 @@ namespace GongSolutions.Wpf.DragDrop
                     if (itemData != null)
                     {
                         item = itemsControl.ItemContainerGenerator.ContainerFromItem(itemData) as UIElement;
-                        directlyOverItem = item != null && VisualTreeHelper.GetDescendantBounds(item).Contains(this.DropPosition);
+                        directlyOverItem = DropPosition.DirectlyOverElement(this.item, itemsControl);
                     }
                 }
 
