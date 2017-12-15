@@ -74,6 +74,7 @@
     <Compile Include="Models\GroupedItem.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ListBoxCustomDropHandler.cs" />
+    <Compile Include="Models\NestedDropHandler.cs" />
     <Compile Include="Models\SampleData.cs" />
     <Compile Include="Models\SerializableDragHandler.cs" />
     <Compile Include="Models\SerializableDropHandler.cs" />

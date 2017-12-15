@@ -903,6 +903,84 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#244">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Dragging an item over a nested ListView which is not a DropTarget will use it as target instead of parent" />
+                        <Button CommandParameter="244"
+                                Style="{StaticResource GitHubIssueButtonStyle}"
+                                ToolTip="Open #244 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="This is a more complex sample with nested controls." />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ListView Grid.Column="0"
+                                          Height="450"
+                                          Margin="4"
+                                          dd:DragDrop.DragDropContext="OuterContext"
+                                          dd:DragDrop.IsDragSource="True"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          ItemsSource="{Binding Data.TreeCollection1}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Row="0" Content="{Binding Caption}" />
+                                                <!--  This nested ListView contains some items and problem occurs when I start dragging parent item from position in nested ListView OR dragging other item ovet this item  -->
+                                                <ListView Grid.Row="1"
+                                                          Height="NaN"
+                                                          MinWidth="100"
+                                                          MinHeight="25"
+                                                          AllowDrop="False"
+                                                          ItemsSource="{Binding Children}"
+                                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                          ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <ListView Grid.Column="1"
+                                          Height="450"
+                                          Margin="4"
+                                          dd:DragDrop.DragDropContext="OuterContext"
+                                          dd:DragDrop.DropHandler="{Binding Data.NestedDropHandler}"
+                                          dd:DragDrop.IsDragSource="True"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          ItemsSource="{Binding Data.TreeCollection2}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid AllowDrop="True">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Row="0" Content="{Binding Caption}" />
+                                                <ListView Grid.Row="1"
+                                                          Height="NaN"
+                                                          MinWidth="100"
+                                                          MinHeight="25"
+                                                          ItemsSource="{Binding Children}"
+                                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                          ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>

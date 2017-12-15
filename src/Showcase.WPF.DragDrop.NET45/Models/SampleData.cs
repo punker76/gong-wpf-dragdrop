@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using GongSolutions.Wpf.DragDrop;
 
 namespace Showcase.WPF.DragDrop.Models
 {
@@ -98,5 +99,7 @@ namespace Showcase.WPF.DragDrop.Models
         public TextBoxCustomDropHandler TextBoxCustomDropHandler { get; set; } = new TextBoxCustomDropHandler();
 
         public ListBoxCustomDropHandler ListBoxCustomDropHandler { get; set; } = new ListBoxCustomDropHandler();
+
+        public IDropTarget NestedDropHandler { get; set; } = new NestedDropHandler();
     }
 }
