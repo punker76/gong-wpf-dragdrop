@@ -350,6 +350,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DoMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
+            m_DragInfo = null;
+            
             // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
             var elementPosition = e.GetPosition((IInputElement)sender);
             if (e.ClickCount != 1
@@ -365,23 +367,20 @@ namespace GongSolutions.Wpf.DragDrop
                 || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
                 || HitTestUtilities.IsNotPartOfSender(sender, e))
             {
-                m_DragInfo = null;
                 return;
             }
 
-            m_DragInfo = new DragInfo(sender, e);
-            m_DragInfo.VisualSource?.Focus();
+            var dragInfo = new DragInfo(sender, e);
+            dragInfo.VisualSource?.Focus();
 
-            if (m_DragInfo.VisualSourceItem == null)
+            if (dragInfo.VisualSourceItem == null)
             {
-                m_DragInfo = null;
                 return;
             }
 
-            var dragHandler = TryGetDragHandler(m_DragInfo, sender as UIElement);
-            if (!dragHandler.CanStartDrag(m_DragInfo))
+            var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
+            if (!dragHandler.CanStartDrag(dragInfo))
             {
-                m_DragInfo = null;
                 return;
             }
 
@@ -389,15 +388,17 @@ namespace GongSolutions.Wpf.DragDrop
             // already selected item does not change the selection, otherwise dragging multiple items 
             // is made impossible.
             var itemsControl = sender as ItemsControl;
-            if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0 && m_DragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems())
+            if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0 && dragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems())
             {
                 var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
-                if (selectedItems.Count > 1 && selectedItems.Contains(m_DragInfo.SourceItem))
+                if (selectedItems.Count > 1 && selectedItems.Contains(dragInfo.SourceItem))
                 {
-                    m_ClickSupressItem = m_DragInfo.SourceItem;
+                    m_ClickSupressItem = dragInfo.SourceItem;
                     e.Handled = true;
                 }
             }
+
+            m_DragInfo = dragInfo;
         }
 
         private static void DragSourceOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
