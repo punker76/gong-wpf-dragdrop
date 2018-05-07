@@ -9,6 +9,7 @@ using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
 using System.Windows.Media.Imaging;
+using IComDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 #if NET35
 using Microsoft.Windows.Controls;
 #endif
@@ -498,7 +499,14 @@ namespace GongSolutions.Wpf.DragDrop
                             try
                             {
                                 m_DragInProgress = true;
-                                var dragDropEffects = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, dataObject, dragInfo.Effects);
+                                DragDropEffects dragDropEffects;
+
+                                var comDataObject = dataObject as IComDataObject;
+                                if (comDataObject != null && dragInfo.CustomComDataObjectHandler != null)
+                                    dragDropEffects = dragInfo.CustomComDataObjectHandler(dragInfo.VisualSource, comDataObject, dragInfo.Effects);
+                                else
+                                    dragDropEffects = System.Windows.DragDrop.DoDragDrop(dragInfo.VisualSource, dataObject, dragInfo.Effects);
+
                                 if (dragDropEffects == DragDropEffects.None)
                                 {
                                     dragHandler.DragCancelled();

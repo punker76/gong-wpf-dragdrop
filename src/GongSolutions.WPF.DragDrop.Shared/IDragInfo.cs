@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using IComDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -106,10 +108,15 @@ namespace GongSolutions.Wpf.DragDrop
         FlowDirection VisualSourceFlowDirection { get; }
 
         /// <summary>
-        /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
+        /// Gets the DataObject which is used by the drag and drop operation. Set it to
         /// a custom instance if custom drag and drop behavior is needed.
         /// </summary>
-        IDataObject DataObject { get; set; }
+        object DataObject { get; set; }
+
+        /// <summary>
+        /// Gets the custom function to enter drag drop operations. Set it to an instance if custom drag and drop behavior is needed.
+        /// </summary>
+        Func<DependencyObject, IComDataObject, DragDropEffects, DragDropEffects> CustomComDataObjectHandler { get; set; }
 
         /// <summary>
         /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
