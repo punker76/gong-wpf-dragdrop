@@ -28,6 +28,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDragSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDropInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDropTarget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LambdaDragHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LambdaDropHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScrollingMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DpiHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DragDropExtensions.cs" />
