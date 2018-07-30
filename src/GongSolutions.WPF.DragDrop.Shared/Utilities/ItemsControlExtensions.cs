@@ -397,8 +397,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else if (itemsControl is ListBox)
             {
-                ((ListBox)itemsControl).SelectedItems.Clear();
-                ((ListBox)itemsControl).SelectedItem = null;
+                if (((ListBox)itemsControl).CanSelectMultipleItems())
+                {
+                    ((ListBox)itemsControl).SelectedItems.Clear();
+                    ((ListBox)itemsControl).SelectedItem = null;
+                }
             }
             else if (itemsControl is TreeViewItem)
             {
