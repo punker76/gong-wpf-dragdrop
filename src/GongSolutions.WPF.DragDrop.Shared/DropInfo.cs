@@ -60,7 +60,12 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             // try find ScrollViewer
-            if (this.VisualTarget is TabControl)
+            var dropTargetScrollViewer = DragDrop.GetDropTargetScrollViewer(this.VisualTarget);
+            if (dropTargetScrollViewer != null)
+            {
+                this.TargetScrollViewer = dropTargetScrollViewer;
+            }
+            else if (this.VisualTarget is TabControl)
             {
                 var tabPanel = this.VisualTarget.GetVisualDescendent<TabPanel>();
                 this.TargetScrollViewer = tabPanel?.GetVisualAncestor<ScrollViewer>();
