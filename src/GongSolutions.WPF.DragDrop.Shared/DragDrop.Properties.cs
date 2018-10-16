@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -115,47 +116,166 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 uiElement.AllowDrop = true;
 
-                if (uiElement is ItemsControl)
-                {
-                    // use normal events for ItemsControls
-                    uiElement.DragEnter += DropTargetOnDragEnter;
-                    uiElement.DragLeave += DropTargetOnDragLeave;
-                    uiElement.DragOver += DropTargetOnDragOver;
-                    uiElement.Drop += DropTargetOnDrop;
-                    uiElement.GiveFeedback += DropTargetOnGiveFeedback;
-                }
-                else
-                {
-                    // issue #85: try using preview events for all other elements than ItemsControls
-                    uiElement.PreviewDragEnter += DropTargetOnDragEnter;
-                    uiElement.PreviewDragLeave += DropTargetOnDragLeave;
-                    uiElement.PreviewDragOver += DropTargetOnDragOver;
-                    uiElement.PreviewDrop += DropTargetOnDrop;
-                    uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
-                }
+                RegisterDragDropEvents(uiElement, GetDropEventType(d));
             }
             else
             {
                 uiElement.AllowDrop = false;
 
-                if (uiElement is ItemsControl)
-                {
+                UnregisterDragDropEvents(uiElement, GetDropEventType(d));
+
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets which type of events are subscribed for the drag and drop events.
+        /// </summary>
+        public static EventType GetDropEventType(DependencyObject obj)
+        {
+            return (EventType)obj.GetValue(DropEventTypeProperty);
+        }
+
+        /// <summary>
+        /// Sets which type of events are subscribed for the drag and drop events.
+        /// </summary>
+        public static void SetDropEventType(DependencyObject obj, EventType value)
+        {
+            obj.SetValue(DropEventTypeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the events which are subscribed for the drag and drop events
+        /// </summary>
+        public static readonly DependencyProperty DropEventTypeProperty =
+            DependencyProperty.RegisterAttached("DropEventType", typeof(EventType), typeof(DragDrop), new PropertyMetadata(EventType.Auto, DropEventTypeChanged));
+
+        private static void DropEventTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var uiElement = (UIElement)d;
+
+            if (!GetIsDropTarget(uiElement))
+                return;
+
+            UnregisterDragDropEvents(uiElement, (EventType)e.OldValue);
+            RegisterDragDropEvents(uiElement, (EventType)e.NewValue);
+        }
+
+        private static void RegisterDragDropEvents(UIElement uiElement, EventType eventType)
+        {
+            switch (eventType)
+            {
+                case EventType.Auto:
+                    if (uiElement is ItemsControl)
+                    {
+                        // use normal events for ItemsControls
+                        uiElement.DragEnter += DropTargetOnDragEnter;
+                        uiElement.DragLeave += DropTargetOnDragLeave;
+                        uiElement.DragOver += DropTargetOnDragOver;
+                        uiElement.Drop += DropTargetOnDrop;
+                        uiElement.GiveFeedback += DropTargetOnGiveFeedback;
+                    }
+                    else
+                    {
+                        // issue #85: try using preview events for all other elements than ItemsControls
+                        uiElement.PreviewDragEnter += DropTargetOnPreviewDragEnter;
+                        uiElement.PreviewDragLeave += DropTargetOnDragLeave;
+                        uiElement.PreviewDragOver += DropTargetOnPreviewDragOver;
+                        uiElement.PreviewDrop += DropTargetOnPreviewDrop;
+                        uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
+                    }
+                    break;
+
+                case EventType.Tunneled:
+                    uiElement.PreviewDragEnter += DropTargetOnPreviewDragEnter;
+                    uiElement.PreviewDragLeave += DropTargetOnDragLeave;
+                    uiElement.PreviewDragOver += DropTargetOnPreviewDragOver;
+                    uiElement.PreviewDrop += DropTargetOnPreviewDrop;
+                    uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
+                    break;
+
+                case EventType.Bubbled:
+                    uiElement.DragEnter += DropTargetOnDragEnter;
+                    uiElement.DragLeave += DropTargetOnDragLeave;
+                    uiElement.DragOver += DropTargetOnDragOver;
+                    uiElement.Drop += DropTargetOnDrop;
+                    uiElement.GiveFeedback += DropTargetOnGiveFeedback;
+                    break;
+
+                case EventType.TunneledBubbled:
+                    uiElement.PreviewDragEnter += DropTargetOnPreviewDragEnter;
+                    uiElement.PreviewDragLeave += DropTargetOnDragLeave;
+                    uiElement.PreviewDragOver += DropTargetOnPreviewDragOver;
+                    uiElement.PreviewDrop += DropTargetOnPreviewDrop;
+                    uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
+                    uiElement.DragEnter += DropTargetOnDragEnter;
+                    uiElement.DragLeave += DropTargetOnDragLeave;
+                    uiElement.DragOver += DropTargetOnDragOver;
+                    uiElement.Drop += DropTargetOnDrop;
+                    uiElement.GiveFeedback += DropTargetOnGiveFeedback;
+                    break;
+
+                default:
+                    throw new ArgumentException("Unknown value for eventType: " + eventType.ToString(), nameof(eventType));
+            }
+        }
+
+        private static void UnregisterDragDropEvents(UIElement uiElement, EventType eventType)
+        {
+            switch (eventType)
+            {
+                case EventType.Auto:
+                    if (uiElement is ItemsControl)
+                    {
+                        // use normal events for ItemsControls
+                        uiElement.DragEnter -= DropTargetOnDragEnter;
+                        uiElement.DragLeave -= DropTargetOnDragLeave;
+                        uiElement.DragOver -= DropTargetOnDragOver;
+                        uiElement.Drop -= DropTargetOnDrop;
+                        uiElement.GiveFeedback -= DropTargetOnGiveFeedback;
+                    }
+                    else
+                    {
+                        // issue #85: try using preview events for all other elements than ItemsControls
+                        uiElement.PreviewDragEnter -= DropTargetOnPreviewDragEnter;
+                        uiElement.PreviewDragLeave -= DropTargetOnDragLeave;
+                        uiElement.PreviewDragOver -= DropTargetOnPreviewDragOver;
+                        uiElement.PreviewDrop -= DropTargetOnPreviewDrop;
+                        uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
+                    }
+                    break;
+
+                case EventType.Tunneled:
+                    uiElement.PreviewDragEnter -= DropTargetOnPreviewDragEnter;
+                    uiElement.PreviewDragLeave -= DropTargetOnDragLeave;
+                    uiElement.PreviewDragOver -= DropTargetOnPreviewDragOver;
+                    uiElement.PreviewDrop -= DropTargetOnPreviewDrop;
+                    uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
+                    break;
+
+                case EventType.Bubbled:
                     uiElement.DragEnter -= DropTargetOnDragEnter;
                     uiElement.DragLeave -= DropTargetOnDragLeave;
                     uiElement.DragOver -= DropTargetOnDragOver;
                     uiElement.Drop -= DropTargetOnDrop;
                     uiElement.GiveFeedback -= DropTargetOnGiveFeedback;
-                }
-                else
-                {
-                    uiElement.PreviewDragEnter -= DropTargetOnDragEnter;
-                    uiElement.PreviewDragLeave -= DropTargetOnDragLeave;
-                    uiElement.PreviewDragOver -= DropTargetOnDragOver;
-                    uiElement.PreviewDrop -= DropTargetOnDrop;
-                    uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
-                }
+                    break;
 
-                Mouse.OverrideCursor = null;
+                case EventType.TunneledBubbled:
+                    uiElement.PreviewDragEnter -= DropTargetOnPreviewDragEnter;
+                    uiElement.PreviewDragLeave -= DropTargetOnDragLeave;
+                    uiElement.PreviewDragOver -= DropTargetOnPreviewDragOver;
+                    uiElement.PreviewDrop -= DropTargetOnPreviewDrop;
+                    uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
+                    uiElement.DragEnter -= DropTargetOnDragEnter;
+                    uiElement.DragLeave -= DropTargetOnDragLeave;
+                    uiElement.DragOver -= DropTargetOnDragOver;
+                    uiElement.Drop -= DropTargetOnDrop;
+                    uiElement.GiveFeedback -= DropTargetOnGiveFeedback;
+                    break;
+
+                default:
+                    throw new ArgumentException("Unknown value for eventType: " + eventType.ToString(), nameof(eventType));
             }
         }
 

@@ -146,5 +146,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets a value indicating whether the target is in the same context as the source, <see cref="DragDrop.DragDropContextProperty" />.
         /// </summary>
         bool IsSameDragDropContextAsSource { get; }
+
+        /// <summary>
+        /// Gets the current mode of the underlying routed event.
+        /// </summary>
+        EventType EventType { get; }
     }
 }

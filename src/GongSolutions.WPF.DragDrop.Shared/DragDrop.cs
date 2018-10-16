@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using System.Windows.Media.Imaging;
 #if NET35
 using Microsoft.Windows.Controls;
 #endif
@@ -240,19 +240,19 @@ namespace GongSolutions.Wpf.DragDrop
                                      new GradientStop(Colors.AliceBlue, 1.0)
                                  };
             var gradientBrush = new LinearGradientBrush(stopCollection)
-                                {
-                                    StartPoint = new Point(0, 0),
-                                    EndPoint = new Point(0, 1)
-                                };
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(0, 1)
+            };
             borderFactory.SetValue(Panel.BackgroundProperty, gradientBrush);
             borderFactory.SetValue(Border.BorderBrushProperty, Brushes.DimGray);
             borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(3));
             borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(1));
             borderFactory.SetValue(Border.SnapsToDevicePixelsProperty, true);
 #if !NET35
-      borderFactory.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
-      borderFactory.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
-      borderFactory.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Fixed);
+            borderFactory.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
+            borderFactory.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
+            borderFactory.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Fixed);
 #endif
             borderFactory.AppendChild(stackPanelFactory);
 
@@ -351,7 +351,7 @@ namespace GongSolutions.Wpf.DragDrop
         private static void DoMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
             m_DragInfo = null;
-            
+
             // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
             var elementPosition = e.GetPosition((IInputElement)sender);
             if (e.ClickCount != 1
@@ -536,7 +536,12 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
         {
-            DropTargetOnDragOver(sender, e);
+            DropTargetOnDragOver(sender, e, EventType.Bubbled);
+        }
+
+        private static void DropTargetOnPreviewDragEnter(object sender, DragEventArgs e)
+        {
+            DropTargetOnDragOver(sender, e, EventType.Tunneled);
         }
 
         private static void DropTargetOnDragLeave(object sender, DragEventArgs e)
@@ -548,10 +553,20 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDragOver(object sender, DragEventArgs e)
         {
+            DropTargetOnDragOver(sender, e, EventType.Bubbled);
+        }
+
+        private static void DropTargetOnPreviewDragOver(object sender, DragEventArgs e)
+        {
+            DropTargetOnDragOver(sender, e, EventType.Tunneled);
+        }
+
+        private static void DropTargetOnDragOver(object sender, DragEventArgs e, EventType eventType)
+        {
             var elementPosition = e.GetPosition((IInputElement)sender);
 
             var dragInfo = m_DragInfo;
-            var dropInfo = new DropInfo(sender, e, dragInfo);
+            var dropInfo = new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var itemsControl = dropInfo.VisualTarget;
 
@@ -680,8 +695,18 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDrop(object sender, DragEventArgs e)
         {
+            DropTargetOnDrop(sender, e, EventType.Bubbled);
+        }
+
+        private static void DropTargetOnPreviewDrop(object sender, DragEventArgs e)
+        {
+            DropTargetOnDrop(sender, e, EventType.Tunneled);
+        }
+
+        private static void DropTargetOnDrop(object sender, DragEventArgs e, EventType eventType)
+        {
             var dragInfo = m_DragInfo;
-            var dropInfo = new DropInfo(sender, e, dragInfo);
+            var dropInfo = new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
 

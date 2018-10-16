@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)EventType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Icons\IconFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDragInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDragSource.cs" />

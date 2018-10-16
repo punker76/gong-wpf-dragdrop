@@ -40,10 +40,15 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dragInfo">
         /// Information about the source of the drag, if the drag came from within the framework.
         /// </param>
-        public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo)
+        /// 
+        /// <param name="eventType">
+        /// The type of the underlying event (tunneled or bubbled).
+        /// </param>
+        public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo, EventType eventType)
         {
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
+            this.EventType = eventType;
             var dataFormat = dragInfo?.DataFormat;
             this.Data = dataFormat != null && e.Data.GetDataPresent(dataFormat.Name) ? e.Data.GetData(dataFormat.Name) : e.Data;
 
@@ -425,6 +430,11 @@ namespace GongSolutions.Wpf.DragDrop
                 return string.Equals(sourceContext, targetContext);
             }
         }
+
+        /// <summary>
+        /// Gets the current mode of the underlying routed event.
+        /// </summary>
+        public EventType EventType { get; }
     }
 
     [Flags]
