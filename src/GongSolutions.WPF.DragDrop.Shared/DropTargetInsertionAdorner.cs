@@ -89,8 +89,17 @@ namespace GongSolutions.Wpf.DragDrop
                           point2;
                     double rotation = 0;
 
-                    var viewportWidth = DropInfo.TargetScrollViewer?.ViewportWidth ?? double.MaxValue;
-                    var viewportHeight = DropInfo.TargetScrollViewer?.ViewportHeight ?? double.MaxValue;
+                    var viewportWidth = double.MaxValue;
+                    var viewportHeight = double.MaxValue;
+                    if( DropInfo.TargetScrollViewer != null ) {
+                        if( DropInfo.TargetScrollViewer.ScrollableWidth != 0 ) {
+                            viewportWidth = DropInfo.TargetScrollViewer.ViewportWidth;
+                        }
+
+                        if( DropInfo.TargetScrollViewer.ScrollableHeight != 0 ) {
+                            viewportHeight = DropInfo.TargetScrollViewer.ViewportHeight;
+                        }
+                    }
 
                     if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
                     {
