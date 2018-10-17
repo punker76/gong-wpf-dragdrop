@@ -1039,5 +1039,30 @@ namespace GongSolutions.Wpf.DragDrop
         {
             target.SetValue(SelectDroppedItemsProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.
+        /// </summary>
+        public static readonly DependencyProperty DropTargetScrollViewerProperty
+            = DependencyProperty.RegisterAttached("DropTargetScrollViewer",
+                                                  typeof(ScrollViewer),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata((ScrollViewer)null));
+
+        /// <summary>
+        /// Sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.
+        /// </summary>
+        public static void SetDropTargetScrollViewer(DependencyObject element, ScrollViewer value)
+        {
+            element.SetValue(DropTargetScrollViewerProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.
+        /// </summary>
+        public static ScrollViewer GetDropTargetScrollViewer(DependencyObject element)
+        {
+            return (ScrollViewer)element?.GetValue(DropTargetScrollViewerProperty);
+        }
     }
 }
