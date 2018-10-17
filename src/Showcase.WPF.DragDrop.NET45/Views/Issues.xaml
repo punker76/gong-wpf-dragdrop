@@ -981,6 +981,38 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#296">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="DropTargetInsertionAdorner is too short" />
+                        <Button CommandParameter="296"
+                                Style="{StaticResource GitHubPullRequestButtonStyle}"
+                                ToolTip="Open #296 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ViewportWidth is sometimes not right at the time of non-indication ScrollBar." />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <ListView MinWidth="150"
+                                          dd:DragDrop.IsDragSource="True"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.UseDefaultEffectDataTemplate="True">
+                                    <ListViewItem>Unbound Item1</ListViewItem>
+                                    <ListViewItem>Unbound Item2</ListViewItem>
+                                    <ListViewItem>Unbound Item3</ListViewItem>
+                                    <ListViewItem>Unbound Item4</ListViewItem>
+                                    <ListViewItem>Unbound Item5</ListViewItem>
+                                </ListView>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>
