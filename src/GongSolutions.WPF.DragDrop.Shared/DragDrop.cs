@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Windows;
@@ -30,19 +30,7 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (template == null && templateSelector == null && useDefaultDragAdorner)
             {
-                var bs = CaptureScreen(dragInfo.VisualSourceItem, dragInfo.VisualSourceFlowDirection);
-                if (bs != null)
-                {
-                    var factory = new FrameworkElementFactory(typeof(Image));
-                    factory.SetValue(Image.SourceProperty, bs);
-                    factory.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-                    factory.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
-                    factory.SetValue(FrameworkElement.WidthProperty, bs.Width);
-                    factory.SetValue(FrameworkElement.HeightProperty, bs.Height);
-                    factory.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Left);
-                    factory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Top);
-                    template = new DataTemplate { VisualTree = factory };
-                }
+                template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
             }
 
             if (template != null || templateSelector != null)
@@ -55,6 +43,7 @@ namespace GongSolutions.Wpf.DragDrop
                         itemsControl.ItemsSource = (IEnumerable)dragInfo.Data;
                         itemsControl.ItemTemplate = template;
                         itemsControl.ItemTemplateSelector = templateSelector;
+                        itemsControl.Tag = dragInfo;
 
                         if (useVisualSourceItemSizeForDragAdorner)
                         {
@@ -75,6 +64,7 @@ namespace GongSolutions.Wpf.DragDrop
                     contentPresenter.Content = dragInfo.Data;
                     contentPresenter.ContentTemplate = template;
                     contentPresenter.ContentTemplateSelector = templateSelector;
+                    contentPresenter.Tag = dragInfo;
 
                     if (useVisualSourceItemSizeForDragAdorner)
                     {
@@ -97,49 +87,6 @@ namespace GongSolutions.Wpf.DragDrop
                 var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
                 DragAdorner = new DragAdorner(rootElement, adornment, GetDragAdornerTranslation(dragInfo.VisualSource));
             }
-        }
-
-        // Helper to generate the image - I grabbed this off Google 
-        // somewhere. -- Chris Bordeman cbordeman@gmail.com
-        private static BitmapSource CaptureScreen(Visual target, FlowDirection flowDirection)
-        {
-            if (target == null)
-            {
-                return null;
-            }
-
-            var dpiX = DpiHelper.DpiX;
-            var dpiY = DpiHelper.DpiY;
-
-            var bounds = VisualTreeHelper.GetDescendantBounds(target);
-            var dpiBounds = DpiHelper.LogicalRectToDevice(bounds);
-
-            var pixelWidth = (int)Math.Ceiling(dpiBounds.Width);
-            var pixelHeight = (int)Math.Ceiling(dpiBounds.Height);
-            if (pixelWidth < 0 || pixelHeight < 0)
-            {
-                return null;
-            }
-
-            var rtb = new RenderTargetBitmap(pixelWidth, pixelHeight, dpiX, dpiY, PixelFormats.Pbgra32);
-
-            var dv = new DrawingVisual();
-            using (var ctx = dv.RenderOpen())
-            {
-                var vb = new VisualBrush(target);
-                if (flowDirection == FlowDirection.RightToLeft)
-                {
-                    var transformGroup = new TransformGroup();
-                    transformGroup.Children.Add(new ScaleTransform(-1, 1));
-                    transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width - 1, 0));
-                    ctx.PushTransform(transformGroup);
-                }
-                ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
-            }
-
-            rtb.Render(dv);
-
-            return rtb;
         }
 
         private static void CreateEffectAdorner(DropInfo dropInfo)
