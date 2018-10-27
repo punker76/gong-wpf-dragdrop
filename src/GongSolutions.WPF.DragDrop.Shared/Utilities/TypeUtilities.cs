@@ -8,35 +8,6 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     public static class TypeUtilities
     {
-#if NET35
-        /// <summary>
-        /// Check to see if a flags enumeration has a specific flag set.
-        /// </summary>
-        /// <param name="variable">Flags enumeration to check</param>
-        /// <param name="flag"></param>
-        public static bool HasFlag(this Enum variable, Enum flag)
-        {
-            if (variable == null)
-            {
-                return false;
-            }
-
-            if (flag == null)
-            {
-                throw new ArgumentNullException("flag");
-            }
-
-            if (flag.GetType() != variable.GetType())
-            {
-                throw new ArgumentException(string.Format("Enumeration type mismatch.  The flag is of type '{0}', was expecting '{1}'.", flag.GetType(), variable.GetType()));
-            }
-
-            var uFlag = Convert.ToUInt64(flag);
-            var uVar = Convert.ToUInt64(variable);
-            return ((uVar & uFlag) == uFlag);
-        }
-#endif
-
         public static IEnumerable CreateDynamicallyTypedList(IEnumerable source)
         {
             var type = GetCommonBaseClass(source);

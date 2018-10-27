@@ -8,10 +8,6 @@ using System.Windows.Media;
 using System.Reflection;
 using System.Collections;
 using System.Windows.Controls.Primitives;
-#if NET35
-using Microsoft.Windows.Controls;
-using Microsoft.Windows.Controls.Primitives;
-#endif
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {

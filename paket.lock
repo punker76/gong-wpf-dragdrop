@@ -1,10 +1,9 @@
-RESTRICTION: >= net35
+RESTRICTION: >= net45
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    ControlzEx (3.0.2.4) - restriction: >= net40
+    ControlzEx (3.0.2.4)
     Faker.Net (1.0.3)
     gitlink (3.2.0-unstable0040) - copy_local: true
     JetBrains.Annotations (2018.2.1) - copy_local: true
     MahApps.Metro.IconPacks.Material (2.3)
-      ControlzEx (>= 3.0.2.4 < 4.0) - restriction: >= net40
-    WPFToolkit (3.5.50211.1) - restriction: == net35
+      ControlzEx (>= 3.0.2.4 < 4.0)

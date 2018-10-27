@@ -3,12 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-#if NET35
-using Microsoft.Windows.Controls;
-using Microsoft.Windows.Controls.Primitives;
-#else
 using System.Windows.Controls.Primitives;
-#endif
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {

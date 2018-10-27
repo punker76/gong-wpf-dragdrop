@@ -2,9 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-#if !NET35
-using System.Threading.Tasks;
-#endif
 using System.Windows;
 using System.Windows.Controls;
 

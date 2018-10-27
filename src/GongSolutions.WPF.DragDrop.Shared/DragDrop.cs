@@ -9,9 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
-#if NET35
-using Microsoft.Windows.Controls;
-#endif
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -196,11 +193,9 @@ namespace GongSolutions.Wpf.DragDrop
             borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(3));
             borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(1));
             borderFactory.SetValue(Border.SnapsToDevicePixelsProperty, true);
-#if !NET35
             borderFactory.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
             borderFactory.SetValue(TextOptions.TextRenderingModeProperty, TextRenderingMode.ClearType);
             borderFactory.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Fixed);
-#endif
             borderFactory.AppendChild(stackPanelFactory);
 
             // Finally add content to template

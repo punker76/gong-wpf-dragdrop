@@ -1,4 +1,4 @@
-framework: >= net35
+framework: >= net45
 
 source https://api.nuget.org/v3/index.json
 
@@ -7,5 +7,3 @@ nuget gitlink prerelease copy_local: true // => PrivateAssets=All, mean all thes
 
 nuget MahApps.Metro.IconPacks.Material
 nuget Faker.Net
-
-nuget WPFToolkit framework: net35
