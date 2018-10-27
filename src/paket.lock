@@ -1,7 +1,0 @@
-NUGET
-  remote: https://www.nuget.org/api/v2
-    Faker.Net (1.0.3) - restriction: >= net35
-    gitlink (3.0) - restriction: >= net35
-    JetBrains.Annotations (11.0) - restriction: >= net35
-    MahApps.Metro.IconPacks.Material (1.9) - restriction: >= net35
-    WPFToolkit (3.5.50211.1) - restriction: == net35
