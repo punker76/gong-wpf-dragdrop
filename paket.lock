@@ -7,3 +7,15 @@ NUGET
     JetBrains.Annotations (2018.2.1) - copy_local: true
     MahApps.Metro.IconPacks.Material (2.3)
       ControlzEx (>= 3.0.2.4 < 4.0)
+
+GROUP cake
+RESTRICTION: == net45
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Cake (0.30)
+    Cake.Figlet (1.2)
+    Cake.Paket (4.0)
+    Cake.Paket.Module (4.0)
+    gitreleasemanager (0.7.1)
+    GitVersion.CommandLine (4.0.1-beta1-26)
+    vswhere (2.5.2)

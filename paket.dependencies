@@ -7,3 +7,15 @@ nuget gitlink prerelease copy_local: true // => PrivateAssets=All, mean all thes
 
 nuget MahApps.Metro.IconPacks.Material
 nuget Faker.Net
+
+group cake
+	source https://api.nuget.org/v3/index.json
+	framework: net45
+	
+	nuget Cake
+	nuget Cake.Figlet
+	nuget Cake.Paket
+	nuget Cake.Paket.Module
+	nuget vswhere
+	nuget GitVersion.CommandLine prerelease
+	nuget gitreleasemanager
