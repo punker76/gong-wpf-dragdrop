@@ -141,29 +141,29 @@ Task("Pack")
 {
   EnsureDirectoryExists(Directory(publishDir));
 
-  // var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath };
+  var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath };
  
-  // var projects = GetFiles("./src/**/GongSolutions.WPF.DragDrop*.csproj");
+  var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
 
-  // foreach(var project in projects)
-  // {
-  //   Information("Packing {0}", project);
+  foreach(var project in projects)
+  {
+    Information("Packing {0}", project);
 
-  //   DeleteFiles(GetFiles("./src/**/*.nuspec"));
+    DeleteFiles(GetFiles("./src/**/*.nuspec"));
 
-  //   MSBuild(project, msBuildSettings
-  //     .SetConfiguration(configuration)
-  //     .SetVerbosity(Verbosity.Normal)
-  //     .WithTarget("pack")
-  //     .WithProperty("PackageOutputPath", "../" + publishDir)
-  //     .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
-  //     .WithProperty("RepositoryBranch", branchName)
-  //     .WithProperty("RepositoryCommit", gitVersion.Sha)
-  //     .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
-  //     .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
-  //     .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
-  //   );
-  // }
+    MSBuild(project, msBuildSettings
+      .SetConfiguration(configuration)
+      .SetVerbosity(Verbosity.Normal)
+      .WithTarget("pack")
+      .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
+      .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
+      .WithProperty("RepositoryBranch", branchName)
+      .WithProperty("RepositoryCommit", gitVersion.Sha)
+      .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
+      .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
+      .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+    );
+  }
 
 });
 

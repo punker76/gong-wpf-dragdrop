@@ -1,0 +1,40 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- Project properties -->
+    <PropertyGroup>
+        <TargetFrameworks>net47;net46;net45</TargetFrameworks>
+        <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+        <ExtrasDefaultResourceIncludes>$(ExtrasDefaultResourceIncludes);$(MSBuildProjectDirectory)\Resources\*.xaml</ExtrasDefaultResourceIncludes>
+        <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    </PropertyGroup>
+    <!-- AssemblyInfo -->
+    <PropertyGroup>
+        <Company>GongSolutions.WPF.DragDrop</Company>
+        <Product>GongSolutions.WPF.DragDrop</Product>
+        <Copyright>Copyright © 2013 - $([System.DateTime]::Today.ToString(yyyy)) GongSolutions.WPF.DragDrop</Copyright>
+        <Description>An easy to use drag'n'drop framework for WPF applications.</Description>
+        <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">2.0.0.0</AssemblyVersion>
+        <FileVersion Condition="'$(FileVersion)' == ''">2.0.0.0</FileVersion>
+        <InformationalVersion Condition="'$(InformationalVersion)' == ''">2.0.0.0</InformationalVersion>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="**\*.png;**\*.jpg;**\*.ico"/>
+        <Resource Include="**\*.png;**\*.jpg;**\*.ico"/>
+    </ItemGroup>
+    <!-- known issue https://github.com/NuGet/Home/issues/3891
+         Feature : Allow project reference DLLs to be added to the parent nupkg for pack target like IncludeReferencedProjects in nuget.exe
+
+         Workaround: https://github.com/nuget/home/issues/3891#issuecomment-377319939
+
+         maybe use also BuildOnlySettings -->
+    <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+        <ItemGroup>
+            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+        </ItemGroup>
+    </Target>
+</Project>
