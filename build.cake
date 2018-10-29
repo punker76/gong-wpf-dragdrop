@@ -49,9 +49,6 @@ GitVersion gitVersion = GitVersion(new GitVersionSettings { OutputType = GitVers
 var latestInstallationPath = VSWhereProducts("*", new VSWhereProductSettings { Version = "[\"15.0\",\"16.0\"]" }).FirstOrDefault();
 var msBuildPath = latestInstallationPath.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
 
-// Should MSBuild treat any errors as warnings?
-var treatWarningsAsErrors = false;
-
 var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
 var branchName = gitVersion.BranchName;
 var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branchName);
@@ -126,11 +123,10 @@ Task("Build")
   .Does(() =>
 {
   var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
-
-  Information("Build: Release");
   MSBuild(iconPacksSolution, msBuildSettings
+            .UseToolVersion(MSBuildToolVersion.VS2015) // for now
             .SetMaxCpuCount(0)
-            .SetConfiguration("Release") //.SetConfiguration(configuration)
+            .SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Normal)
             //.WithRestore() only with cake 0.28.x            
             .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
@@ -147,13 +143,13 @@ Task("Pack")
 
   // var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath };
  
-  // var projects = GetFiles("./MahApps.Metro.IconPacks/*.csproj");
+  // var projects = GetFiles("./src/**/GongSolutions.WPF.DragDrop*.csproj");
 
   // foreach(var project in projects)
   // {
   //   Information("Packing {0}", project);
 
-  //   DeleteFiles(GetFiles("./MahApps.Metro.IconPacks/obj/**/*.nuspec"));
+  //   DeleteFiles(GetFiles("./src/**/*.nuspec"));
 
   //   MSBuild(project, msBuildSettings
   //     .SetConfiguration(configuration)
@@ -175,7 +171,7 @@ Task("Zip")
   .Does(() =>
 {
   EnsureDirectoryExists(Directory(publishDir));
-  Zip($"./src/Showcase.WPF.DragDrop.NET45/bin/{configuration}/", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
+  Zip($"./src/bin/Showcase.WPF.DragDrop/", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
 });
 
 Task("CreateRelease")
@@ -194,7 +190,7 @@ Task("CreateRelease")
         throw new Exception("The GITHUB_TOKEN environment variable is not defined.");
     }
 
-    GitReleaseManagerCreate(username, token, "MahApps", repoName, new GitReleaseManagerCreateSettings {
+    GitReleaseManagerCreate(username, token, "punker76", repoName, new GitReleaseManagerCreateSettings {
         Milestone         = gitVersion.MajorMinorPatch,
         Name              = gitVersion.AssemblySemFileVer,
         Prerelease        = isDevelopBranch,
@@ -208,7 +204,7 @@ Task("Default")
     .IsDependentOn("CleanOutput")
     .IsDependentOn("Restore")
     .IsDependentOn("Build")
-    // .IsDependentOn("Zip")
+    .IsDependentOn("Zip")
     ;
 
 Task("appveyor")
