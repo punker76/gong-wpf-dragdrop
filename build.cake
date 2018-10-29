@@ -124,7 +124,6 @@ Task("Build")
 {
   var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
   MSBuild(iconPacksSolution, msBuildSettings
-            .UseToolVersion(MSBuildToolVersion.VS2015) // for now
             .SetMaxCpuCount(0)
             .SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Normal)
@@ -171,7 +170,7 @@ Task("Zip")
   .Does(() =>
 {
   EnsureDirectoryExists(Directory(publishDir));
-  Zip($"./src/bin/Showcase.WPF.DragDrop/", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
+  Zip($"./src/Showcase/bin/{configuration}", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
 });
 
 Task("CreateRelease")

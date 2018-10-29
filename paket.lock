@@ -2,7 +2,10 @@ RESTRICTION: >= net45
 NUGET
   remote: https://api.nuget.org/v3/index.json
     ControlzEx (3.0.2.4)
+    Costura.Fody (3.1.6)
+      Fody (>= 3.2.12) - restriction: >= net46
     Faker.Net (1.0.3)
+    Fody (3.2.14)
     gitlink (3.2.0-unstable0040) - copy_local: true
     JetBrains.Annotations (2018.2.1) - copy_local: true
     MahApps.Metro.IconPacks.Material (2.3)
