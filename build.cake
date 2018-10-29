@@ -1,10 +1,13 @@
 
 //////////////////////////////////////////////////////////////////////
-// TOOLS
+// TOOLS / ADDINS
 //////////////////////////////////////////////////////////////////////
 
-#tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
-#tool "nuget:?package=vswhere&version=2.2.7"
+#tool paket:?package=GitVersion.CommandLine
+#tool paket:?package=gitreleasemanager
+#tool paket:?package=vswhere
+#addin paket:?package=Cake.Figlet
+#addin paket:?package=Cake.Paket
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -16,52 +19,74 @@ if (string.IsNullOrWhiteSpace(target))
     target = "Default";
 }
 
+var configuration = Argument("configuration", "Release");
+if (string.IsNullOrWhiteSpace(configuration))
+{
+    configuration = "Release";
+}
+
+var verbosity = Argument("verbosity", Verbosity.Normal);
+if (string.IsNullOrWhiteSpace(configuration))
+{
+    verbosity = Verbosity.Normal;
+}
+
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
-// Build configuration
+var repoName = "gong-wpf-dragdrop";
 var local = BuildSystem.IsLocalBuild;
-var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
-var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", AppVeyor.Environment.Repository.Branch);
-var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", AppVeyor.Environment.Repository.Branch);
-var isTagged = AppVeyor.Environment.Repository.Tag?.IsTag;
 
-var githubOwner = "punker76";
-var githubRepository = "gong-wpf-dragdrop";
-var githubUrl = string.Format("https://github.com/{0}/{1}", githubOwner, githubRepository);
+// Set build version
+if (local == false
+    || verbosity == Verbosity.Verbose)
+{
+    GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.BuildServer });
+}
+GitVersion gitVersion = GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.Json });
+
+var latestInstallationPath = VSWhereProducts("*", new VSWhereProductSettings { Version = "[\"15.0\",\"16.0\"]" }).FirstOrDefault();
+var msBuildPath = latestInstallationPath.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
+
+var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
+var branchName = gitVersion.BranchName;
+var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branchName);
+var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branchName);
+var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
 
 // Version
-GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.BuildServer });
-var gitVersion = GitVersion(new GitVersionSettings { UpdateAssemblyInfo = true, UpdateAssemblyInfoFilePath = "./src/GlobalAssemblyInfo.cs" });
-var majorMinorPatch = gitVersion.MajorMinorPatch;
-var informationalVersion = gitVersion.InformationalVersion;
-var nugetVersion = gitVersion.NuGetVersion;
-var buildVersion = gitVersion.FullBuildMetaData;
+var nugetVersion = isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion;
+
+// Directories and Paths
+var iconPacksSolution = "./src/GongSolutions.WPF.DragDrop.sln";
+var publishDir = "./Publish";
 
 // Define global marcos.
 Action Abort = () => { throw new Exception("a non-recoverable fatal error occurred."); };
 
-var nuGetPackSettings = new NuGetPackSettings {
-  Version         = nugetVersion,
-  BasePath        = "./src/bin/GongSolutions.WPF.DragDrop/",
-  OutputDirectory = "./Build",
-  Id              = "gong-wpf-dragdrop",
-  Title           = "gong-wpf-dragdrop",
-  Copyright       = string.Format("Copyright © GongSolutions.WPF.DragDrop 2013 - {0}", DateTime.Now.Year)
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
+
 Setup(context =>
 {
     if (!IsRunningOnWindows())
     {
-        throw new NotImplementedException("gong-wpf-dragdrop will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
+        throw new NotImplementedException($"{repoName} will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
     }
 
-    Information("Building version {0} of gong-wpf-dragdrop. (isTagged: {1})", informationalVersion, isTagged);
+    Information(Figlet(repoName));
+
+    Information("Informational Version  : {0}", gitVersion.InformationalVersion);
+    Information("SemVer Version         : {0}", gitVersion.SemVer);
+    Information("AssemblySemVer Version : {0}", gitVersion.AssemblySemVer);
+    Information("MajorMinorPatch Version: {0}", gitVersion.MajorMinorPatch);
+    Information("NuGet Version          : {0}", gitVersion.NuGetVersion);
+    Information("IsLocalBuild           : {0}", local);
+    Information("Branch                 : {0}", branchName);
+    Information("Configuration          : {0}", configuration);
+    Information("MSBuildPath            : {0}", msBuildPath);
 });
 
 Teardown(context =>
@@ -73,57 +98,117 @@ Teardown(context =>
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("Build")
-  .Does(() =>
-{
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Release").UseToolVersion(MSBuildToolVersion.VS2017));
-});
-
-Task("Build_Debug")
-  .Does(() =>
-{
-  MSBuild("./src/GongSolutions.WPF.DragDrop.sln", settings => settings.SetConfiguration("Debug").UseToolVersion(MSBuildToolVersion.VS2017));
-});
-
-Task("NuGetPack")
-  .Does(() =>
-{
-  NuGetPack("./Build/GongSolutions.Wpf.DragDrop.nuspec", nuGetPackSettings);
-});
-
-Task("ZipShowcase")
-  .Does(() =>
-{
-  Zip("./src/bin/Showcase.WPF.DragDrop/Release_NET45/", "./Build/Showcase.WPF.DragDrop." + nugetVersion + ".zip");
-});
-
-Task("ZipShowcase_Debug")
-  .Does(() =>
-{
-  Zip("./src/bin/Showcase.WPF.DragDrop/Debug_NET45/", "./Build/Showcase.WPF.DragDrop.Debug." + nugetVersion + ".zip");
-});
-
 Task("CleanOutput")
   .ContinueOnError()
   .Does(() =>
 {
-  CleanDirectories("./src/bin");
+    var directoriesToDelete = GetDirectories("./**/obj").Concat(GetDirectories("./**/bin")).Concat(GetDirectories("./**/Publish"));
+    DeleteDirectories(directoriesToDelete, new DeleteDirectorySettings { Recursive = true, Force = true });
+});
+
+Task("Restore")
+    .Does(() =>
+{
+    PaketRestore();
+
+    var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
+    MSBuild(iconPacksSolution, msBuildSettings
+            //.SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Minimal)
+            .WithTarget("restore")
+            );
+});
+
+Task("Build")
+  .Does(() =>
+{
+  var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
+  MSBuild(iconPacksSolution, msBuildSettings
+            .SetMaxCpuCount(0)
+            .SetConfiguration(configuration)
+            .SetVerbosity(Verbosity.Normal)
+            //.WithRestore() only with cake 0.28.x            
+            .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
+            .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
+            .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+            );
+});
+
+Task("Pack")
+  .WithCriteria(() => !isPullRequest)
+  .Does(() =>
+{
+  EnsureDirectoryExists(Directory(publishDir));
+
+  var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath };
+ 
+  var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
+
+  foreach(var project in projects)
+  {
+    Information("Packing {0}", project);
+
+    DeleteFiles(GetFiles("./src/**/*.nuspec"));
+
+    MSBuild(project, msBuildSettings
+      .SetConfiguration(configuration)
+      .SetVerbosity(Verbosity.Normal)
+      .WithTarget("pack")
+      .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
+      .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
+      .WithProperty("RepositoryBranch", branchName)
+      .WithProperty("RepositoryCommit", gitVersion.Sha)
+      .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
+      .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
+      .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+    );
+  }
+
+});
+
+Task("Zip")
+  .Does(() =>
+{
+  EnsureDirectoryExists(Directory(publishDir));
+  Zip($"./src/Showcase/bin/{configuration}", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
+});
+
+Task("CreateRelease")
+    .WithCriteria(() => !isTagged)
+    .Does(() =>
+{
+    var username = EnvironmentVariable("GITHUB_USERNAME");
+    if (string.IsNullOrEmpty(username))
+    {
+        throw new Exception("The GITHUB_USERNAME environment variable is not defined.");
+    }
+
+    var token = EnvironmentVariable("GITHUB_TOKEN");
+    if (string.IsNullOrEmpty(token))
+    {
+        throw new Exception("The GITHUB_TOKEN environment variable is not defined.");
+    }
+
+    GitReleaseManagerCreate(username, token, "punker76", repoName, new GitReleaseManagerCreateSettings {
+        Milestone         = gitVersion.MajorMinorPatch,
+        Name              = gitVersion.AssemblySemFileVer,
+        Prerelease        = isDevelopBranch,
+        TargetCommitish   = branchName,
+        WorkingDirectory  = "."
+    });
 });
 
 // Task Targets
 Task("Default")
-  .IsDependentOn("CleanOutput")
-  .IsDependentOn("Build_Debug").IsDependentOn("Build")
-  .IsDependentOn("ZipShowcase_Debug").IsDependentOn("ZipShowcase");
+    .IsDependentOn("CleanOutput")
+    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
+    .IsDependentOn("Zip")
+    ;
 
-Task("Release")
-  .IsDependentOn("CleanOutput")
-  .IsDependentOn("Build")
-  .IsDependentOn("ZipShowcase");
-
-Task("Appveyor")
-  .IsDependentOn("Release")
-  .IsDependentOn("NuGetPack");
+Task("appveyor")
+    .IsDependentOn("Default")
+    .IsDependentOn("Pack");
 
 // Execution
 RunTarget(target);

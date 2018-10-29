@@ -1,53 +1,24 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-# configuration for dev
+# configuration for develop/CI and master/Release branch
 -
   branches:
     only:
       - dev
-
-  skip_tags: true
-  image: Visual Studio 2017
-  configuration: Release
-  platform: Any CPU
-
-  pull_requests:
-    do_not_increment_build_number: false
-
-  build_script:
-    - ./build.cmd Appveyor
-
-  cache:
-    - tools -> build.*
-    - src\packages -> **\packages.config
-    # - '%USERPROFILE%\.nuget\packages -> **\project.json'
-
-  artifacts:
-    - path: Build\gong-wpf-dragdrop.*.nupkg
-    - path: Build\Showcase.WPF.DragDrop.*.zip
-
-# configuration for master
--
-  branches:
-    only:
       - master
 
   skip_tags: true
   image: Visual Studio 2017
-  configuration: Release
-  platform: Any CPU
+  test: off
 
   pull_requests:
     do_not_increment_build_number: false
 
   build_script:
-    - ./build.cmd Appveyor
-
-  cache:
-    - tools -> build.*
-    - src\packages -> **\packages.config
-    # - '%USERPROFILE%\.nuget\packages -> **\project.json'
+    - ps: .\build.ps1 -target appveyor
 
   artifacts:
-    - path: Build\gong-wpf-dragdrop.*.nupkg
-    - path: Build\Showcase.WPF.DragDrop.*.zip
+    - path: \Publish\*.*
+
+  nuget:
+    disable_publish_on_pr: true
