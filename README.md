@@ -148,6 +148,6 @@ In this example, we're checking that the item being dragged and the item being d
 
 For more information, check out the [Showcase application](src/Showcase.WPF.DragDrop.NET45).
 
-#### + [[Strong naming|Strong-naming]]
-#### + [[Release History|Release History]]
-#### + [[License|License]]
+#### + [Strong naming](../../wiki/Strong-naming)
+#### + [Release History](../../wiki/Release-History)
+#### + [License](https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE)
