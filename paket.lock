@@ -5,7 +5,7 @@ NUGET
     Costura.Fody (3.1.6)
       Fody (>= 3.2.12) - restriction: >= net46
     Faker.Net (1.0.3)
-    Fody (3.2.14)
+    Fody (3.2.16)
     gitlink (3.2.0-unstable0040) - copy_local: true
     JetBrains.Annotations (2018.2.1) - copy_local: true
     MahApps.Metro.IconPacks.Material (2.3)

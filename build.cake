@@ -98,7 +98,7 @@ Teardown(context =>
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("CleanOutput")
+Task("Clean")
   .ContinueOnError()
   .Does(() =>
 {
@@ -128,6 +128,7 @@ Task("Build")
             .SetConfiguration(configuration)
             .SetVerbosity(Verbosity.Normal)
             //.WithRestore() only with cake 0.28.x            
+            .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
             .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
             .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
             .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
@@ -155,9 +156,9 @@ Task("Pack")
       .SetVerbosity(Verbosity.Normal)
       .WithTarget("pack")
       .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
-      .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
       .WithProperty("RepositoryBranch", branchName)
       .WithProperty("RepositoryCommit", gitVersion.Sha)
+      .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
       .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
       .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
       .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
@@ -200,7 +201,7 @@ Task("CreateRelease")
 
 // Task Targets
 Task("Default")
-    .IsDependentOn("CleanOutput")
+    .IsDependentOn("Clean")
     .IsDependentOn("Restore")
     .IsDependentOn("Build")
     .IsDependentOn("Zip")

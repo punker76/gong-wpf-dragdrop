@@ -5,22 +5,9 @@
         <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
         <ExtrasDefaultResourceIncludes>$(ExtrasDefaultResourceIncludes);$(MSBuildProjectDirectory)\Resources\*.xaml</ExtrasDefaultResourceIncludes>
         <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    </PropertyGroup>
-    <!-- AssemblyInfo -->
-    <PropertyGroup>
-        <Company>GongSolutions.WPF.DragDrop</Company>
-        <Product>GongSolutions.WPF.DragDrop</Product>
-        <Copyright>Copyright © 2013 - $([System.DateTime]::Today.ToString(yyyy)) GongSolutions.WPF.DragDrop</Copyright>
-        <Description>An easy to use drag'n'drop framework for WPF applications.</Description>
-        <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">2.0.0.0</AssemblyVersion>
-        <FileVersion Condition="'$(FileVersion)' == ''">2.0.0.0</FileVersion>
-        <InformationalVersion Condition="'$(InformationalVersion)' == ''">2.0.0.0</InformationalVersion>
         <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="**\*.png;**\*.jpg;**\*.ico"/>
