@@ -1013,6 +1013,56 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="TLCGen">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="TLCGen sample from @mennowo" />
+                        <Button CommandParameter="https://github.com/mennowo/TLCGen"
+                                Style="{StaticResource OpenLinkButtonStyle}"
+                                ToolTip="Open TLCGen on Github" />
+                    </Grid>
+                    <ListView Margin="2"
+                              dd:DragDrop.DropHandler="{Binding}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.UseDefaultDragAdorner="True"
+                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                              AlternationCount="2"
+                              ItemsSource="{Binding Path=Data.Collection1}"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                        <Setter Property="Background" Value="LightGray" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="DarkGray" />
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Margin" Value="2" />
+                                <Setter Property="MaxWidth" Value="120" />
+                                <Setter Property="MinWidth" Value="120" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5"
+                                           Background="Transparent"
+                                           Text="{Binding Path=Caption}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>

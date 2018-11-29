@@ -84,17 +84,22 @@ namespace GongSolutions.Wpf.DragDrop
                           point2;
                     double rotation = 0;
 
-                    var viewportWidth = double.MaxValue;
-                    var viewportHeight = double.MaxValue;
-                    if( DropInfo.TargetScrollViewer != null ) {
-                        if( DropInfo.TargetScrollViewer.ScrollableWidth != 0 ) {
-                            viewportWidth = DropInfo.TargetScrollViewer.ViewportWidth;
-                        }
-
-                        if( DropInfo.TargetScrollViewer.ScrollableHeight != 0 ) {
-                            viewportHeight = DropInfo.TargetScrollViewer.ViewportHeight;
-                        }
-                    }
+                    // I really don't know why I did this
+                    //
+                    // var viewportWidth = double.MaxValue;
+                    // var viewportHeight = double.MaxValue;
+                    // if (DropInfo.TargetScrollViewer != null)
+                    // {
+                    //     if (DropInfo.TargetScrollViewer.ScrollableWidth != 0)
+                    //     {
+                    //         viewportWidth = DropInfo.TargetScrollViewer.ViewportWidth;
+                    //     }
+                    //
+                    //     if (DropInfo.TargetScrollViewer.ScrollableHeight != 0)
+                    //     {
+                    //         viewportHeight = DropInfo.TargetScrollViewer.ViewportHeight;
+                    //     }
+                    // }
 
                     if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
                     {
@@ -122,11 +127,12 @@ namespace GongSolutions.Wpf.DragDrop
                                         itemRect.Y += header.RenderSize.Height;
                                     }
                                 }
+
                                 itemRect.Y += this.Pen.Thickness;
                             }
                         }
 
-                        var itemRectRight = Math.Min(itemRect.Right, viewportWidth);
+                        var itemRectRight = itemRect.Right; //Math.Min(itemRect.Right, viewportWidth);
                         var itemRectLeft = itemRect.X < 0 ? 0 : itemRect.X;
                         point1 = new Point(itemRectLeft, itemRect.Y);
                         point2 = new Point(itemRectRight, itemRect.Y);
@@ -157,7 +163,7 @@ namespace GongSolutions.Wpf.DragDrop
                         }
 
                         var itemRectTop = itemRect.Y < 0 ? 0 : itemRect.Y;
-                        var itemRectBottom = Math.Min(itemRect.Bottom, viewportHeight);
+                        var itemRectBottom = itemRect.Bottom; //Math.Min(itemRect.Bottom, viewportHeight);
 
                         point1 = new Point(itemRect.X, itemRectTop);
                         point2 = new Point(itemRect.X, itemRectBottom);

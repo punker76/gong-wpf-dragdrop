@@ -65,6 +65,20 @@
                 <Setter Property="Command" Value="{Binding OpenPullRequestCommand}" />
             </Style>
 
+            <Style x:Key="OpenLinkButtonStyle"
+                   x:Shared="False"
+                   BasedOn="{StaticResource GitHubIssueButtonStyle}"
+                   TargetType="{x:Type Button}">
+                <Setter Property="Command" Value="{Binding OpenLinkCommand}" />
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <iconPacks:PackIconFeatherIcons Width="20"
+                                                        Height="20"
+                                                        Kind="ExternalLink" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style x:Key="DefaultTabItemStyle" TargetType="{x:Type TabItem}" />
             <Style x:Key="DefaultTabControlStyle" TargetType="{x:Type TabControl}">
                 <Setter Property="Height" Value="100" />

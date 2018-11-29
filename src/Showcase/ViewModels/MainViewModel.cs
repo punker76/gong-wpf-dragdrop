@@ -10,6 +10,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
         private SampleData _data;
         private ICommand _openIssueCommand;
         private ICommand _openPullRequestCommand;
+        private ICommand _openLinkCommand;
         private ICommand _filterCollectionCommand;
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
             this.Data = new SampleData();
             this.OpenIssueCommand = new SimpleCommand(issue => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}"); });
             this.OpenPullRequestCommand = new SimpleCommand(pr => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/pull/{pr}"); });
+            this.OpenLinkCommand = new SimpleCommand(link => { Process.Start(link.ToString()); });
             this.FilterCollectionCommand = new SimpleCommand(isChecked =>
                 {
                     var coll = Data.FilterCollection1;
@@ -70,11 +72,22 @@ namespace Showcase.WPF.DragDrop.ViewModels
 
         public ICommand OpenPullRequestCommand
         {
-            get { return _openIssueCommand; }
+            get { return _openPullRequestCommand; }
             set
             {
                 if (Equals(value, _openPullRequestCommand)) return;
                 _openPullRequestCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand OpenLinkCommand
+        {
+            get { return _openLinkCommand; }
+            set
+            {
+                if (Equals(value, _openLinkCommand)) return;
+                _openLinkCommand = value;
                 OnPropertyChanged();
             }
         }
