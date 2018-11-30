@@ -3,11 +3,10 @@
 // TOOLS / ADDINS
 //////////////////////////////////////////////////////////////////////
 
-#tool paket:?package=GitVersion.CommandLine
-#tool paket:?package=gitreleasemanager
-#tool paket:?package=vswhere
-#addin paket:?package=Cake.Figlet
-#addin paket:?package=Cake.Paket
+#tool GitVersion.CommandLine
+#tool gitreleasemanager
+#tool vswhere
+#addin Cake.Figlet
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -46,7 +45,7 @@ if (local == false
 }
 GitVersion gitVersion = GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.Json });
 
-var latestInstallationPath = VSWhereProducts("*", new VSWhereProductSettings { Version = "[\"15.0\",\"16.0\"]" }).FirstOrDefault();
+var latestInstallationPath = VSWhereLatest();
 var msBuildPath = latestInstallationPath.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
 
 var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
@@ -59,7 +58,7 @@ var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
 var nugetVersion = isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion;
 
 // Directories and Paths
-var iconPacksSolution = "./src/GongSolutions.WPF.DragDrop.sln";
+var solution = "./src/GongSolutions.WPF.DragDrop.sln";
 var publishDir = "./Publish";
 
 // Define global marcos.
@@ -109,25 +108,32 @@ Task("Clean")
 Task("Restore")
     .Does(() =>
 {
-    PaketRestore();
+    //PaketRestore();
 
-    var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
-    MSBuild(iconPacksSolution, msBuildSettings
-            //.SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Minimal)
-            .WithTarget("restore")
-            );
+    var msBuildSettings = new MSBuildSettings {
+        Verbosity = Verbosity.Minimal,
+        ToolVersion = MSBuildToolVersion.VS2017,
+        Configuration = configuration,
+        // Restore = true, // only with cake 0.28.x
+        ArgumentCustomization = args => args.Append("/m")
+    };
+
+    MSBuild(solution, msBuildSettings.WithTarget("restore"));
 });
 
 Task("Build")
   .Does(() =>
 {
-  var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath, ArgumentCustomization = args => args.Append("/m") };
-  MSBuild(iconPacksSolution, msBuildSettings
+    var msBuildSettings = new MSBuildSettings {
+        Verbosity = Verbosity.Normal,
+        ToolVersion = MSBuildToolVersion.VS2017,
+        Configuration = configuration,
+        // Restore = true, // only with cake 0.28.x     
+        ArgumentCustomization = args => args.Append("/m")
+    };
+
+    MSBuild(solution, msBuildSettings
             .SetMaxCpuCount(0)
-            .SetConfiguration(configuration)
-            .SetVerbosity(Verbosity.Normal)
-            //.WithRestore() only with cake 0.28.x            
             .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
             .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
             .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
@@ -139,31 +145,33 @@ Task("Pack")
   .WithCriteria(() => !isPullRequest)
   .Does(() =>
 {
-  EnsureDirectoryExists(Directory(publishDir));
+    EnsureDirectoryExists(Directory(publishDir));
 
-  var msBuildSettings = new MSBuildSettings { ToolPath = msBuildPath };
- 
-  var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
+    var msBuildSettings = new MSBuildSettings {
+        Verbosity = Verbosity.Normal,
+        ToolVersion = MSBuildToolVersion.VS2017,
+        Configuration = configuration
+        // PlatformTarget = PlatformTarget.MSIL
+    };
+    var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
 
-  foreach(var project in projects)
-  {
-    Information("Packing {0}", project);
+    foreach(var project in projects)
+    {
+        Information("Packing {0}", project);
 
-    DeleteFiles(GetFiles("./src/**/*.nuspec"));
+        DeleteFiles(GetFiles("./src/**/*.nuspec"));
 
-    MSBuild(project, msBuildSettings
-      .SetConfiguration(configuration)
-      .SetVerbosity(Verbosity.Normal)
-      .WithTarget("pack")
-      .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
-      .WithProperty("RepositoryBranch", branchName)
-      .WithProperty("RepositoryCommit", gitVersion.Sha)
-      .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
-      .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
-      .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
-      .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
-    );
-  }
+        MSBuild(project, msBuildSettings
+        .WithTarget("pack")
+        .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
+        .WithProperty("RepositoryBranch", branchName)
+        .WithProperty("RepositoryCommit", gitVersion.Sha)
+        .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
+        .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
+        .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
+        .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+        );
+    }
 
 });
 

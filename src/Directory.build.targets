@@ -18,13 +18,25 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <NoWarn>1591</NoWarn>
-        <DebugType>full</DebugType>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <Optimize>false</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <Optimize>true</Optimize>
         <NoWarn>0067,1591,0168</NoWarn>
-        <DebugType>pdbonly</DebugType>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Page Update="@(Page)" SubType="Designer" Generator="MSBuild:Compile" />
+    </ItemGroup>
+
+    <!--
+    Workaround to fix IntelliSense file generation for XAML projects
+    ISSUE: https://github.com/dotnet/project-system/issues/2488
+  -->
+    <Target Name="_SdkDesignTimeBuildAndIntelliSenseWorkaround" AfterTargets="_CheckCompileDesignTimePrerequisite">
+        <PropertyGroup>
+            <BuildingProject>false</BuildingProject>
+            <DesignTimeBuild>true</DesignTimeBuild>
+        </PropertyGroup>
+    </Target>
 </Project>

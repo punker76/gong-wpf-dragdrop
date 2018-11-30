@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="MSBuild.Sdk.Extras">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <!-- Project properties -->
     <PropertyGroup>
+        <TargetFrameworks>net45;net46;net47;netcoreapp3.0</TargetFrameworks>
         <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
         <Title>gong-wpf-dragdrop</Title>
         <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
-    <!-- Items include -->
+    <!-- reference includes -->
     <ItemGroup>
-        <None Include="paket.references"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta*" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
-        <Compile DependentUpon="%(Filename)" SubType="Code" Update="$(MSBuildProjectDirectory)\obj\**\*.g$(_SdkLanguageExtension)"/>
+        <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
+        <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
     </ItemGroup>
-    <Import Project="..\..\.paket\Paket.Restore.targets"/>
 </Project>
