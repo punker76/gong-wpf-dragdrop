@@ -707,6 +707,30 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or Sets a DataTemplate for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerTemplateProperty
+            = DependencyProperty.RegisterAttached("DropAdornerTemplate",
+                                                  typeof(DataTemplate),
+                                                  typeof(DragDrop));
+
+        /// <summary>
+        /// Gets the DataTemplate for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static DataTemplate GetDropAdornerTemplate(UIElement target)
+        {
+            return (DataTemplate)target.GetValue(DropAdornerTemplateProperty);
+        }
+
+        /// <summary>
+        /// Sets the DataTemplate for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static void SetDropAdornerTemplate(UIElement target, DataTemplate value)
+        {
+            target.SetValue(DropAdornerTemplateProperty, value);
+        }
+
+        /// <summary>
         /// Gets or Sets a DataTemplateSelector for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTemplateSelectorProperty
@@ -729,6 +753,31 @@ namespace GongSolutions.Wpf.DragDrop
         public static DataTemplateSelector GetDragAdornerTemplateSelector(DependencyObject element)
         {
             return (DataTemplateSelector)element.GetValue(DragAdornerTemplateSelectorProperty);
+        }
+
+        /// <summary>
+        /// Gets or Sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerTemplateSelectorProperty
+            = DependencyProperty.RegisterAttached("DropAdornerTemplateSelector",
+                                                  typeof(DataTemplateSelector),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(DataTemplateSelector)));
+
+        /// <summary>
+        /// Gets the DataTemplateSelector for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static void SetDropAdornerTemplateSelector(DependencyObject element, DataTemplateSelector value)
+        {
+            element.SetValue(DropAdornerTemplateSelectorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the DataTemplateSelector for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static DataTemplateSelector GetDropAdornerTemplateSelector(DependencyObject element)
+        {
+            return (DataTemplateSelector)element.GetValue(DropAdornerTemplateSelectorProperty);
         }
 
         /// <summary>

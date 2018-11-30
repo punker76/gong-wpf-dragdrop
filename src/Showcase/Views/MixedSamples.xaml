@@ -262,6 +262,23 @@
                     <models:DragAdornerTemplateSelector x:Key="DragAdornerTemplateSelector"
                                                         TemplateEven="{StaticResource Even}"
                                                         TemplateOdd="{StaticResource Odd}" />
+                    <DataTemplate x:Key="DropAdornerTemplate">
+                        <Border Background="GhostWhite"
+                                BorderBrush="Black"
+                                BorderThickness="1">
+                            <DockPanel LastChildFill="True">
+                                <iconPacks:PackIconOcticons Margin="4"
+                                                            VerticalAlignment="Center"
+                                                            DockPanel.Dock="Left"
+                                                            Kind="Hubot" />
+                                <TextBlock Margin="4"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="Crimson"
+                                           Text="{Binding}" />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
                 </TabItem.Resources>
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Top"
@@ -283,6 +300,7 @@
                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <ListBox Grid.Column="1"
+                                         dd:DragDrop.DropAdornerTemplate="{StaticResource DropAdornerTemplate}"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.UseDefaultDragAdorner="True"

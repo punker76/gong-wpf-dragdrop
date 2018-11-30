@@ -16,16 +16,16 @@ namespace GongSolutions.Wpf.DragDrop
     {
         private static void CreateDragAdorner(DropInfo dropInfo)
         {
-            var dragInfo = m_DragInfo;
-            var template = GetDragAdornerTemplate(dragInfo.VisualSource);
-            var templateSelector = GetDragAdornerTemplateSelector(dragInfo.VisualSource);
+            var dragInfo = dropInfo.DragInfo;
+            var template = GetDropAdornerTemplate(dropInfo.VisualTarget) ?? GetDragAdornerTemplate(dragInfo.VisualSource);
+            var templateSelector = GetDropAdornerTemplateSelector(dropInfo.VisualTarget) ?? GetDragAdornerTemplateSelector(dragInfo.VisualSource);
 
             UIElement adornment = null;
 
-            var useDefaultDragAdorner = GetUseDefaultDragAdorner(dragInfo.VisualSource);
+            var useDefaultDragAdorner = template == null && templateSelector == null && GetUseDefaultDragAdorner(dragInfo.VisualSource);
             var useVisualSourceItemSizeForDragAdorner = GetUseVisualSourceItemSizeForDragAdorner(dragInfo.VisualSource);
 
-            if (template == null && templateSelector == null && useDefaultDragAdorner)
+            if (useDefaultDragAdorner)
             {
                 template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
             }
