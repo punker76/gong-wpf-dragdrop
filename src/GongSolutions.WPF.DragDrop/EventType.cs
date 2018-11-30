@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GongSolutions.Wpf.DragDrop
+﻿namespace GongSolutions.Wpf.DragDrop
 {
     public enum EventType
     {

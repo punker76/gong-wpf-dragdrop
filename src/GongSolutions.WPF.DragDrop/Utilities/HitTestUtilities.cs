@@ -61,7 +61,12 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 var rowHeader = GetHitTestElement4Type<DataGridRowHeader>(sender, elementPosition);
                 if (rowHeader != null && rowHeader.Visibility == Visibility.Visible)
                 {
-                    return true;
+                    // no drag&drop for row header gripper
+                    var thumb = GetHitTestElement4Type<Thumb>(sender, elementPosition);
+                    if (thumb != null)
+                    {
+                        return true;
+                    }
                 }
                 // drag&drop only for data grid row
                 var dataRow = GetHitTestElement4Type<DataGridRow>(sender, elementPosition);
