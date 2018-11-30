@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -109,7 +110,14 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
         /// a custom instance if custom drag and drop behavior is needed.
         /// </summary>
-        IDataObject DataObject { get; set; }
+        object DataObject { get; set; }
+
+        /// <summary>Initiates a drag-and-drop operation.</summary>
+        /// <param name="dragSource">A reference to the dependency object that is the source of the data being dragged.</param>
+        /// <param name="data">A data object that contains the data being dragged.</param>
+        /// <param name="allowedEffects">One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies permitted effects of the drag-and-drop operation.</param>
+        /// <returns>One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies the final effect that was performed during the drag-and-drop operation.</returns>
+        Func<DependencyObject, object, DragDropEffects, DragDropEffects> DragDropHandler { get; set; }
 
         /// <summary>
         /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
