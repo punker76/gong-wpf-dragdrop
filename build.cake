@@ -111,6 +111,7 @@ Task("Restore")
 });
 
 Task("Build")
+  .IsDependentOn("Restore")
   .Does(() =>
 {
     var msBuildSettings = new MSBuildSettings {
@@ -249,9 +250,8 @@ Task("CreateRelease")
 // Task Targets
 Task("Default")
     .IsDependentOn("Clean")
-    // .IsDependentOn("Restore")
-    // .IsDependentOn("Build")
-    .IsDependentOn("dotnetBuild")
+    .IsDependentOn("Build")
+    // .IsDependentOn("dotnetBuild")
     .IsDependentOn("Zip")
     ;
 
