@@ -1,45 +1,32 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-# configuration for dev
--
-  branches:
-    only:
-      - dev
+# configuration for develop/CI and master/Release branch
 
-  version: 1.1.0-alpha{build}
-  pull_requests:
-    do_not_increment_build_number: true
-  skip_tags: true
-  image: Visual Studio 2015
-  configuration: Release
+branches:
+  only:
+    - dev
+    - master
 
-  platform: Any CPU
+skip_tags: true
+image: Visual Studio 2019 Preview
+configuration: Release
+test: off
 
-  build_script:
-  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target AppveyorDev
+# Install dotnet core 3.0 latest (alpha!!), as this is not provided on AppVeyor yet
+install:
+  #- ps: Start-FileDownload 'https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/dotnet-sdk-latest-win-x64.exe'
+  #- ps: Start-Process .\dotnet-sdk-latest-win-x64.exe "/install /norestart /quiet /log sdkinstall.log" -NoNewWindow -Wait
+  - ps: Start-FileDownload 'https://download.visualstudio.microsoft.com/download/pr/31b5b67f-b787-4f73-a728-5ec61f10a4de/be6430bcd9a62f610cd9f12f8cc2c736/dotnet-sdk-3.0.100-preview3-010431-win-x64.exe'
+  - ps: Start-Process .\dotnet-sdk-3.0.100-preview3-010431-win-x64.exe "/install /norestart /quiet /log sdkinstall.log" -NoNewWindow -Wait
 
-  artifacts:
-  - path: Build\gong-wpf-dragdrop.*.nupkg
-  - path: Build\Showcase.WPF.DragDrop.*.zip
+pull_requests:
+  do_not_increment_build_number: false
 
-# configuration for master
--
-  branches:
-    only:
-      - master
+build_script:
+  - ps: .\build.ps1 -target appveyor
 
-  version: 1.1.0.0
-  pull_requests:
-    do_not_increment_build_number: true
-  skip_tags: true
-  image: Visual Studio 2015
-  configuration: Release
+artifacts:
+  - path: \Publish\*.*
 
-  platform: Any CPU
-
-  build_script:
-  - ps: .\Build\build.ps1 -Script .\Build\build.cake -Target Appveyor
-
-  artifacts:
-  - path: Build\gong-wpf-dragdrop.*.nupkg
-  - path: Build\Showcase.WPF.DragDrop.*.zip
+nuget:
+  disable_publish_on_pr: true

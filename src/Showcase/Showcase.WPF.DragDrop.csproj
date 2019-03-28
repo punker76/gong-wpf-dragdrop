@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <!-- Project properties -->
+    <PropertyGroup>
+        <TargetFrameworks>net45;net46;net47;netcoreapp3.0</TargetFrameworks>
+        <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
+        <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
+        <DisableFody Condition="'$(Configuration)' == 'Debug' or '$(TargetFramework)' == 'netcoreapp3.0'">true</DisableFody>
+        <Description>Showcase application for GongSolutions.WPF.DragDrop</Description>
+    </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <NoWarn>SA1652</NoWarn>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj"/>
+    </ItemGroup>
+    <!-- reference includes -->
+    <ItemGroup>
+        <PackageReference Include="Fody" Version="4.*" PrivateAssets="All" />
+        <PackageReference Include="Costura.Fody" Version="3.*" PrivateAssets="All" />
+        <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.0-alpha*" />
+        <PackageReference Include="Faker.Net" Version="1.*" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="app.manifest"/>
+        <None Remove="App.config"/>
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
+        <AppConfigWithTargetPath Include="App.$(TargetFramework).config">
+            <TargetPath>$(AssemblyName).config</TargetPath>
+        </AppConfigWithTargetPath>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
+        <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
+    </ItemGroup>
+</Project>

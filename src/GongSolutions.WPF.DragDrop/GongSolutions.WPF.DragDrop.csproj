@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <!-- Project properties -->
+    <PropertyGroup>
+        <TargetFrameworks>net45;net46;net47;netcoreapp3.0</TargetFrameworks>
+        <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
+        <Title>gong-wpf-dragdrop</Title>
+        <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <!-- reference includes -->
+    <ItemGroup>
+        <PackageReference Include="WpfAnalyzers" Version="2.2.*" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2*" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
+        <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
+    </ItemGroup>
+</Project>

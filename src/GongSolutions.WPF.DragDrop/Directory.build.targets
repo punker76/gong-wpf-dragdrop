@@ -1,0 +1,25 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- NuGet -->
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <Authors>Jan Karger, Steven Kirk, mitchell.jon</Authors>
+        <PackageId>gong-wpf-dragdrop</PackageId>
+        <PackageLicenseUrl>https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/punker76/gong-wpf-dragdrop</PackageProjectUrl>
+        <PackageIconUrl>https://raw.github.com/punker76/gong-wpf-dragdrop/master/GongSolutions.Wpf.DragDrop.png</PackageIconUrl>
+        <PackageTags>WPF;Windows;UI;XAML;Toolkit;Library;.NET</PackageTags>
+        <PackageReleaseNotes>https://github.com/punker76/gong-wpf-dragdrop/releases</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/punker76/gong-wpf-dragdrop.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    </PropertyGroup>
+    <!-- Sign assembly -->
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>$(MSBuildProjectDirectory)\..\gong.public.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+        <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    </PropertyGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))"/>
+</Project>
