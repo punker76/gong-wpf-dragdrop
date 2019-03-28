@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
+    /// <summary>
+    /// The default drag and drop data wrapper for GongSolutions.Wpf.DragDrop.
+    /// </summary>
+    public class DefaultDataWrapper
+    {
+        public IEnumerable Items { get; set; }
+    }
+
     /// <summary>
     /// The default drag handler for GongSolutions.Wpf.DragDrop.
     /// </summary>
@@ -20,18 +29,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// </remarks>
         public virtual void StartDrag(IDragInfo dragInfo)
         {
-            var itemCount = dragInfo.SourceItems.Cast<object>().Count();
-
-            if (itemCount == 1)
-            {
-                dragInfo.Data = dragInfo.SourceItems.Cast<object>().First();
-            }
-            else if (itemCount > 1)
-            {
-                dragInfo.Data = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems);
-            }
-
-            dragInfo.Effects = (dragInfo.Data != null) ? DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.None;
+            var items = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems).Cast<object>().ToList();
+            var wrapper = new DefaultDataWrapper() { Items = items };
+            dragInfo.Data = wrapper;
+            dragInfo.Effects = items.Count > 0 ? DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.None;
         }
 
         /// <summary>

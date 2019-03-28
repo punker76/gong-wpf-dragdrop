@@ -68,14 +68,17 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static IEnumerable ExtractData(object data)
         {
+            if (data is DefaultDataWrapper defaultDataWrapper)
+            {
+                return defaultDataWrapper.Items;
+            }
+
             if (data is IEnumerable && !(data is string))
             {
                 return (IEnumerable)data;
             }
-            else
-            {
-                return Enumerable.Repeat(data, 1);
-            }
+
+            return Enumerable.Repeat(data, 1);
         }
 
         /// <summary>
