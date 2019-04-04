@@ -51,14 +51,15 @@
 + Can display Adorners to give the user visual feedback of the operation in progress.
 + Has sensible defaults so that you have to write less code for common operations.
 
-## Want to say thanks?
+## Let's get started
 
-This framework is free and can be used for free, open source and commercial applications. It's tested and contributed by many people... So mainly hit the :star: button, that's all... thx :squirrel: (:dollar:, :euro:, :beer: or some other gifts are also being accepted...).
-
-## Installation
-
-You can download or fork the source code and compile it. You need at least VS Community 2015 or higher.  
-Or: You take the latest version from NuGet: [https://www.nuget.org/packages/gong-wpf-dragdrop](https://www.nuget.org/packages/gong-wpf-dragdrop/)
+- [Building](../../wiki/Building) the `gong-wpf-dragdrop` solution
+- [Example](../../wiki/Usage)
+- [Releases and Release Notes](https://github.com/MahApps/MahApps.Metro/releases)
+- [Release History](../../wiki/Release-History)
+- [Strong naming](../../wiki/Strong-naming)
+- [Wiki](../../wiki)
+- [License](https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE)
 
 ## Namespace
 
@@ -74,6 +75,10 @@ or
 xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 ```
 
+## Want to say thanks?
+
+This framework is free and can be used for free, open source and commercial applications. It's tested and contributed by many people... So mainly hit the :star: button, that's all... thx :squirrel: (:dollar:, :euro:, :beer: or some other gifts are also being accepted...).
+
 ## In action
 
 ![screenshot01](./screenshots/2016-09-03_00h51_35.png)
@@ -85,69 +90,3 @@ xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.Dr
 ![screenshot04](./screenshots/2016-09-03_00h53_21.png)
 
 ![gif01](./screenshots/DragDropSample01.gif)
-
-## Default Behaviour
-
-A simple example of adding drag/drop to a ListBox:
-
-```xml
-<ListBox ItemsSource="{Binding Collection}"
-         dd:DragDrop.IsDragSource="True"
-         dd:DragDrop.IsDropTarget="True" />
-```
-
-Setting the IsDragSource and IsDropTarget attached propeties to True on an ItemsControl such as ListBox enables drag and drop. The default behaviour is to allow re-ordering of items within the control.
-
-If your project contains another ItemsControl with drag/drop enabled in this manner, and it is bound to a collection of the same type, then items can also be dragged and dropped between the controls.
-
-## Adding a Drop Handler
-
-While the defaults can be useful in simple cases, you will usually want more control of what happens when data is dragged/dropped onto your control. You can delegate that responsibility to your ViewModel by setting the DropHandler attached property:
-
-```xml
-<ListBox ItemsSource="{Binding Collection}"
-         dd:DragDrop.IsDragSource="True"
-         dd:DragDrop.IsDropTarget="True"
-         dd:DragDrop.DropHandler="{Binding}" />
-```
-
-In this example, we're binding the drop handler to the current DataContext, which will usually be your ViewModel.
-
-You handle the drop in your ViewModel by implementing the IDropTarget interface:
-
-```csharp
-class ExampleViewModel : IDropTarget
-{
-	public ObservableCollection<ExampleItemViewModel> Items;
-	
-	void IDropTarget.DragOver(IDropInfo dropInfo) {
-		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
-		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
-		
-		if (sourceItem != null && targetItem != null && targetItem.CanAcceptChildren) {
-			dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-			dropInfo.Effects = DragDropEffects.Copy;
-		}
-	}
-	
-	void IDropTarget.Drop(IDropInfo dropInfo) {
-		ExampleItemViewModel sourceItem = dropInfo.Data as ExampleItemViewModel;
-		ExampleItemViewModel targetItem = dropInfo.TargetItem as ExampleItemViewModel;
-		targetItem.Children.Add(sourceItem);
-	}
-}
-
-class ExampleItemViewModel
-{
-	public bool CanAcceptChildren { get; set; }
-	public ObservableCollection<ExampleItemViewModel> Children { get; private set; }
-}
-```
-
-In this example, we're checking that the item being dragged and the item being dropped onto are both ExampleItemViewModels and that the target item allows items to be added to its Children collection. If the drag satisfies both of these conditions, then the function tells the framework to display a Copy mouse pointer, and to use a Highlight drop target adorner.
-
-For more information, check out the [Showcase application](src/Showcase.WPF.DragDrop.NET45).
-
-#### + [Strong naming](../../wiki/Strong-naming)
-#### + [Release History](../../wiki/Release-History)
-#### + [License](https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE)
