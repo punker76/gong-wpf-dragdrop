@@ -54,26 +54,12 @@
 ## Let's get started
 
 - [Building](../../wiki/Building) the `gong-wpf-dragdrop` solution
-- [Example](../../wiki/Usage)
+- [How to...](../../wiki/Usage)
 - [Releases and Release Notes](https://github.com/MahApps/MahApps.Metro/releases)
 - [Release History](../../wiki/Release-History)
 - [Strong naming](../../wiki/Strong-naming)
 - [Wiki](../../wiki)
 - [License](https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE)
-
-## Namespace
-
-To use `GongSolutions.WPF.DragDrop` in your application you need to add the namespace to your Xaml files.
-
-```xaml
-xmlns:dd="urn:gong-wpf-dragdrop"
-```
-
-or
-
-```xaml
-xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-```
 
 ## Want to say thanks?
 
