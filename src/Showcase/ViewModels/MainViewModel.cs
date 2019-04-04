@@ -5,6 +5,19 @@ using Showcase.WPF.DragDrop.Models;
 
 namespace Showcase.WPF.DragDrop.ViewModels
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
+    public class ListMember : List<SubMember>
+    {
+        public string Name { get; set; }
+    }
+
+    public class SubMember
+    {
+        public string Name { get; set; }
+    }
+
     public class MainViewModel : ViewModelBase
     {
         private SampleData _data;
@@ -12,6 +25,8 @@ namespace Showcase.WPF.DragDrop.ViewModels
         private ICommand _openPullRequestCommand;
         private ICommand _openLinkCommand;
         private ICommand _filterCollectionCommand;
+
+        public ObservableCollection<ListMember> Members { get; set; } = new ObservableCollection<ListMember>();
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -26,6 +41,17 @@ namespace Showcase.WPF.DragDrop.ViewModels
             ////{
             ////    // Code runs "for real"
             ////}
+
+            var listMember = new ListMember() { Name = "Item 1" };
+            Members.Add(listMember);
+
+            listMember = new ListMember() { Name = "Item 2 with SubItems" };
+            listMember.Add(new SubMember() { Name = "SubItem 1" });
+            listMember.Add(new SubMember() { Name = "SubItem 2" });
+            Members.Add(listMember);
+
+            listMember = new ListMember() { Name = "Item 3" };
+            Members.Add(listMember);
 
             this.Data = new SampleData();
             this.OpenIssueCommand = new SimpleCommand(issue => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}"); });

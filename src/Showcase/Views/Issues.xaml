@@ -1063,6 +1063,32 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#309">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <Button CommandParameter="309"
+                                Style="{StaticResource GitHubPullRequestButtonStyle}"
+                                ToolTip="Open #309 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Dragdrop tool throws an exception when trying to reorder ListBox items that are themselves collections." />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <ListBox MinWidth="200"
+                                         ItemsSource="{Binding Members}"
+                                         DisplayMemberPath="Name"
+                                         dd:DragDrop.IsDragSource="True"
+                                         dd:DragDrop.IsDropTarget="True" />
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>
