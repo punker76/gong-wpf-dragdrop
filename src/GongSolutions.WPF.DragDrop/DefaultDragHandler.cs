@@ -7,14 +7,6 @@ using GongSolutions.Wpf.DragDrop.Utilities;
 namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
-    /// The default drag and drop data wrapper for GongSolutions.Wpf.DragDrop.
-    /// </summary>
-    public class DefaultDataWrapper
-    {
-        public IEnumerable Items { get; set; }
-    }
-
-    /// <summary>
     /// The default drag handler for GongSolutions.Wpf.DragDrop.
     /// </summary>
     public class DefaultDragHandler : IDragSource
@@ -30,9 +22,25 @@ namespace GongSolutions.Wpf.DragDrop
         public virtual void StartDrag(IDragInfo dragInfo)
         {
             var items = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems).Cast<object>().ToList();
-            var wrapper = new DefaultDataWrapper() { Items = items };
-            dragInfo.Data = wrapper;
-            dragInfo.Effects = items.Count > 0 ? DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.None;
+            if (items.Count > 1)
+            {
+                dragInfo.Data = items;
+            }
+            else
+            {
+                // special case: if the single item is an enumerable then we can not drop it as single item
+                var singleItem = items.FirstOrDefault();
+                if (singleItem is IEnumerable && !(singleItem is string))
+                {
+                    dragInfo.Data = items;
+                }
+                else
+                {
+                    dragInfo.Data = singleItem;
+                }
+            }
+
+            dragInfo.Effects = dragInfo.Data != null ? DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.None;
         }
 
         /// <summary>
