@@ -55,7 +55,7 @@
 
 - [Building](../../wiki/Building) the `gong-wpf-dragdrop` solution
 - [How to...](../../wiki/Usage)
-- [Releases and Release Notes](https://github.com/MahApps/MahApps.Metro/releases)
+- [Releases and Release Notes](../../releases)
 - [Release History](../../wiki/Release-History)
 - [Strong naming](../../wiki/Strong-naming)
 - [Wiki](../../wiki)
