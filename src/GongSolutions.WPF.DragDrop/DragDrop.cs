@@ -313,7 +313,11 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             var dragInfo = new DragInfo(sender, e);
-            dragInfo.VisualSource?.Focus();
+
+            if (dragInfo.VisualSource is ItemsControl control && control.CanSelectMultipleItems())
+            {
+                control.Focus();
+            }
 
             if (dragInfo.VisualSourceItem == null)
             {
