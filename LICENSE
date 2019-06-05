@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-Copyright (c) 2015-16, Jan Karger (Steven Kirk)
+Copyright (c) 2015-2019, Jan Karger (Steven Kirk)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

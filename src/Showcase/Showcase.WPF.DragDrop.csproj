@@ -18,8 +18,8 @@
     </ItemGroup>
     <!-- reference includes -->
     <ItemGroup>
-        <PackageReference Include="Fody" Version="4.*" PrivateAssets="All" />
-        <PackageReference Include="Costura.Fody" Version="3.*" PrivateAssets="All" />
+        <PackageReference Include="Fody" Version="5.*" PrivateAssets="All" />
+        <PackageReference Include="Costura.Fody" Version="4.*" PrivateAssets="All" />
         <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.0-alpha*" />
         <PackageReference Include="Faker.Net" Version="1.*" />
     </ItemGroup>

@@ -41,7 +41,9 @@
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
                                           dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                          dd:DragDrop.SelectDroppedItems="True"
                                           ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
+                                          Loaded="LeftBoundTreeView_Loaded"
                                           ItemsSource="{Binding Data.TreeCollection1}">
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
