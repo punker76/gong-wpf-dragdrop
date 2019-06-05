@@ -4,7 +4,7 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <Authors>Jan Karger, Steven Kirk, mitchell.jon</Authors>
         <PackageId>gong-wpf-dragdrop</PackageId>
-        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/punker76/gong-wpf-dragdrop</PackageProjectUrl>
         <PackageIconUrl>https://raw.github.com/punker76/gong-wpf-dragdrop/master/GongSolutions.Wpf.DragDrop.png</PackageIconUrl>
         <PackageTags>WPF;Windows;UI;XAML;Toolkit;Library;.NET</PackageTags>
@@ -23,7 +23,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\..\LICENSE.md" Pack="true" PackagePath=""/>
+        <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
     </ItemGroup>
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))"/>
