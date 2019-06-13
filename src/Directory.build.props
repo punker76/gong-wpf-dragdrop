@@ -15,12 +15,12 @@
 
     <!-- Add the references for all projects and targets -->
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2018.*" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="2019.*" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="**\*.png;**\*.jpg;**\*.ico"/>
-        <Resource Include="**\*.png;**\*.jpg;**\*.ico"/>
+        <None Remove="**\*.png;**\*.jpg;**\*.ico" />
+        <Resource Include="**\*.png;**\*.jpg;**\*.ico" />
     </ItemGroup>
 
     <!-- SourceLink -->
