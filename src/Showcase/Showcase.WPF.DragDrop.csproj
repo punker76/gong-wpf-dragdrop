@@ -14,7 +14,7 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj"/>
+        <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj" />
     </ItemGroup>
     <!-- reference includes -->
     <ItemGroup>
@@ -24,8 +24,8 @@
         <PackageReference Include="Faker.Net" Version="1.*" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="app.manifest"/>
-        <None Remove="App.config"/>
+        <None Include="app.manifest" />
+        <None Remove="App.config" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
         <AppConfigWithTargetPath Include="App.$(TargetFramework).config">
