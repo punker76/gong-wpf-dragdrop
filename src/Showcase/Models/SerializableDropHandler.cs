@@ -7,6 +7,7 @@ namespace Showcase.WPF.DragDrop.Models
 {
     public class SerializableDropHandler : IDropTarget
     {
+        /// <inheritdoc />
         public void DragOver(IDropInfo dropInfo)
         {
             var wrapper = GetSerializableWrapper(dropInfo);
@@ -17,6 +18,7 @@ namespace Showcase.WPF.DragDrop.Models
             }
         }
 
+        /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)
         {
             var wrapper = GetSerializableWrapper(dropInfo);

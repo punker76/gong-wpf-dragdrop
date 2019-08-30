@@ -8,13 +8,9 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDropTarget
     {
         /// <summary>
-        /// Updates the current drag state.
+        /// Notifies the drop handler about the current drag operation state.
         /// </summary>
-        /// 
-        /// <param name="dropInfo">
-        ///   Information about the drag.
-        /// </param>
-        /// 
+        /// <param name="dropInfo">Object which contains several drop information.</param>
         /// <remarks>
         /// To allow a drop at the current drag position, the <see cref="DropInfo.Effects"/> property on 
         /// <paramref name="dropInfo"/> should be set to a value other than <see cref="DragDropEffects.None"/>
@@ -25,10 +21,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Performs a drop.
         /// </summary>
-        /// 
-        /// <param name="dropInfo">
-        ///   Information about the drop.
-        /// </param>
+        /// <param name="dropInfo">Object which contains several drop information.</param>
         void Drop(IDropInfo dropInfo);
     }
 }

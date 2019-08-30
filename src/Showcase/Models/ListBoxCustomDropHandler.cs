@@ -4,6 +4,7 @@ namespace Showcase.WPF.DragDrop.Models
 {
     public class ListBoxCustomDropHandler : DefaultDropHandler
     {
+        /// <inheritdoc />
         public override void DragOver(IDropInfo dropInfo)
         {
             if (dropInfo.VisualTarget == dropInfo.DragInfo.VisualSource)
@@ -16,6 +17,7 @@ namespace Showcase.WPF.DragDrop.Models
             }
         }
 
+        /// <inheritdoc />
         public override void Drop(IDropInfo dropInfo)
         {
             if (dropInfo.VisualTarget == dropInfo.DragInfo.VisualSource)

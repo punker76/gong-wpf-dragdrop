@@ -235,61 +235,25 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        /// <summary>
-        /// Gets the drag data.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the drag came from within the framework, this will hold:
-        /// 
-        /// - The dragged data if a single item was dragged.
-        /// - A typed IEnumerable if multiple items were dragged.
-        /// </remarks>
+        /// <inheritdoc />
         public object Data { get; private set; }
 
-        /// <summary>
-        /// Gets a <see cref="DragInfo"/> object holding information about the source of the drag, 
-        /// if the drag came from within the framework.
-        /// </summary>
+        /// <inheritdoc />
         public IDragInfo DragInfo { get; private set; }
 
-        /// <summary>
-        /// Gets the mouse position relative to the VisualTarget
-        /// </summary>
+        /// <inheritdoc />
         public Point DropPosition { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the class of drop target to display.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// The standard drop target adorner classes are held in the <see cref="DropTargetAdorners"/>
-        /// class.
-        /// </remarks>
+        /// <inheritdoc />
         public Type DropTargetAdorner { get; set; }
 
-        /// <summary>
-        /// Gets or sets the allowed effects for the drop.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// This must be set to a value other than <see cref="DragDropEffects.None"/> by a drop handler in order 
-        /// for a drop to be possible.
-        /// </remarks>
+        /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
-        /// <summary>
-        /// Gets the current insert position within <see cref="TargetCollection"/>.
-        /// </summary>
+        /// <inheritdoc />
         public int InsertIndex { get; private set; }
 
-        /// <summary>
-        /// Gets the current insert position within the source (unfiltered) <see cref="TargetCollection"/>.
-        /// </summary>
-        /// <remarks>
-        /// This should be only used in a Drop action.
-        /// This works only correct with different objects (string, int, etc won't work correct).
-        /// </remarks>
+        /// <inheritdoc />
         public int UnfilteredInsertIndex
         {
             get
@@ -322,32 +286,13 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        /// <summary>
-        /// Gets the collection that the target ItemsControl is bound to.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the current drop target is unbound or not an ItemsControl, this will be null.
-        /// </remarks>
+        /// <inheritdoc />
         public IEnumerable TargetCollection { get; private set; }
 
-        /// <summary>
-        /// Gets the object that the current drop target is bound to.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the current drop target is unbound or not an ItemsControl, this will be null.
-        /// </remarks>
+        /// <inheritdoc />
         public object TargetItem { get; private set; }
 
-        /// <summary>
-        /// Gets the current group target.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the drag is currently over an ItemsControl with groups, describes the group that
-        /// the drag is currently over.
-        /// </remarks>
+        /// <inheritdoc />
         public CollectionViewGroup TargetGroup { get; private set; }
 
         /// <summary>
@@ -360,55 +305,34 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         public ScrollingMode TargetScrollingMode { get; set; }
 
-        /// <summary>
-        /// Gets the control that is the current drop target.
-        /// </summary>
+        /// <inheritdoc />
         public UIElement VisualTarget { get; private set; }
 
-        /// <summary>
-        /// Gets the item in an ItemsControl that is the current drop target.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the current drop target is unbound or not an ItemsControl, this will be null.
-        /// </remarks>
+        /// <inheritdoc />
         public UIElement VisualTargetItem { get; private set; }
 
-        /// <summary>
-        /// Gets the orientation of the current drop target.
-        /// </summary>
+        /// <inheritdoc />
         public Orientation VisualTargetOrientation { get; private set; }
 
-        /// <summary>
-        /// Gets the orientation of the current drop target.
-        /// </summary>
+        /// <inheritdoc />
         public FlowDirection VisualTargetFlowDirection { get; private set; }
 
-        /// <summary>
-        /// Gets and sets the text displayed in the DropDropEffects adorner.
-        /// </summary>
+        /// <inheritdoc />
         public string DestinationText { get; set; }
 
-        /// <summary>
-        /// Gets and sets the effect text displayed in the DropDropEffects adorner.
-        /// </summary>
+        /// <inheritdoc />
         public string EffectText { get; set; }
 
-        /// <summary>
-        /// Gets the relative position the item will be inserted to compared to the TargetItem
-        /// </summary>
+        /// <inheritdoc />
         public RelativeInsertPosition InsertPosition { get; private set; }
 
-        /// <summary>
-        /// Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
-        /// </summary>
+        /// <inheritdoc />
         public DragDropKeyStates KeyStates { get; private set; }
 
+        /// <inheritdoc />
         public bool NotHandled { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the target is in the same context as the source, <see cref="DragDrop.DragDropContextProperty" />.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsSameDragDropContextAsSource
         {
             get
@@ -435,9 +359,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        /// <summary>
-        /// Gets the current mode of the underlying routed event.
-        /// </summary>
+        /// <inheritdoc />
         public EventType EventType { get; }
     }
 
