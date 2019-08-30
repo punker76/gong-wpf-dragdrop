@@ -8,12 +8,14 @@ namespace Showcase.WPF.DragDrop.Models
 {
     public class TextBoxCustomDropHandler : IDropTarget
     {
+        /// <inheritdoc />
         public void DragOver(IDropInfo dropInfo)
         {
             dropInfo.DropTargetAdorner = typeof(DropTargetHighlightAdorner);
             dropInfo.Effects = DragDropEffects.Move;
         }
 
+        /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)
         {
             var dataAsList = DefaultDropHandler.ExtractData(dropInfo.Data);

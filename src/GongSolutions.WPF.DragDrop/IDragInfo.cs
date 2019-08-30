@@ -17,7 +17,6 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets or sets the drag data.
         /// </summary>
-        /// 
         /// <remarks>
         /// This must be set by a drag handler in order for a drag to start.
         /// </remarks>
@@ -36,7 +35,6 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets or sets the allowed effects for the drag.
         /// </summary>
-        /// 
         /// <remarks>
         /// This must be set to a value other than <see cref="DragDropEffects.None"/> by a drag handler in order 
         /// for a drag to start.
@@ -51,9 +49,8 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets the collection that the source ItemsControl is bound to.
         /// </summary>
-        /// 
         /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be null.
+        /// If the control that initiated the drag is unbound or not an ItemsControl, this will be null.
         /// </remarks>
         IEnumerable SourceCollection { get; }
 
@@ -65,18 +62,16 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets the object that a dragged item is bound to.
         /// </summary>
-        /// 
         /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be null.
+        /// If the control that initiated the drag is unbound or not an ItemsControl, this will be null.
         /// </remarks>
         object SourceItem { get; }
 
         /// <summary>
         /// Gets a collection of objects that the selected items in an ItemsControl are bound to.
         /// </summary>
-        /// 
         /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be empty.
+        /// If the control that initiated the drag is unbound or not an ItemsControl, this will be empty.
         /// </remarks>
         IEnumerable SourceItems { get; }
 
@@ -93,7 +88,6 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets the item in an ItemsControl that started the drag.
         /// </summary>
-        /// 
         /// <remarks>
         /// If the control that initiated the drag is an ItemsControl, this property will hold the item
         /// container of the clicked item. For example, if <see cref="VisualSource"/> is a ListBox this

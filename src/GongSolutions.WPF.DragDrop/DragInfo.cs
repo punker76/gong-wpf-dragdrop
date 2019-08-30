@@ -169,121 +169,55 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        /// <summary>
-        /// Gets or sets the data format which will be used for the drag and drop actions.
-        /// </summary>
-        /// <value>The data format.</value>
+        /// <inheritdoc />
         public DataFormat DataFormat { get; set; } = DragDrop.DataFormat;
 
-        /// <summary>
-        /// Gets or sets the drag data.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// This must be set by a drag handler in order for a drag to start.
-        /// </remarks>
+        /// <inheritdoc />
         public object Data { get; set; }
 
-        /// <summary>
-        /// Gets the position of the click that initiated the drag, relative to <see cref="VisualSource"/>.
-        /// </summary>
+        /// <inheritdoc />
         public Point DragStartPosition { get; private set; }
 
-        /// <summary>
-        /// Gets the point where the cursor was relative to the item being dragged when the drag was started.
-        /// </summary>
+        /// <inheritdoc />
         public Point PositionInDraggedItem { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the allowed effects for the drag.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// This must be set to a value other than <see cref="DragDropEffects.None"/> by a drag handler in order 
-        /// for a drag to start.
-        /// </remarks>
+        /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
-        /// <summary>
-        /// Gets the mouse button that initiated the drag.
-        /// </summary>
+        /// <inheritdoc />
         public MouseButton MouseButton { get; private set; }
 
-        /// <summary>
-        /// Gets the collection that the source ItemsControl is bound to.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be null.
-        /// </remarks>
+        /// <inheritdoc />
         public IEnumerable SourceCollection { get; private set; }
 
-        /// <summary>
-        /// Gets the position from where the item was dragged.
-        /// </summary>
-        /// <value>The index of the source.</value>
+        /// <inheritdoc />
         public int SourceIndex { get; private set; }
 
-        /// <summary>
-        /// Gets the object that a dragged item is bound to.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be null.
-        /// </remarks>
+        /// <inheritdoc />
         public object SourceItem { get; private set; }
 
-        /// <summary>
-        /// Gets a collection of objects that the selected items in an ItemsControl are bound to.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the control that initated the drag is unbound or not an ItemsControl, this will be empty.
-        /// </remarks>
+        /// <inheritdoc />
         public IEnumerable SourceItems { get; private set; }
 
-        /// <summary>
-        /// Gets the group from a dragged item if the drag is currently from an ItemsControl with groups.
-        /// </summary>
+        /// <inheritdoc />
         public CollectionViewGroup SourceGroup { get; private set; }
 
-        /// <summary>
-        /// Gets the control that initiated the drag.
-        /// </summary>
+        /// <inheritdoc />
         public UIElement VisualSource { get; private set; }
 
-        /// <summary>
-        /// Gets the item in an ItemsControl that started the drag.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// If the control that initiated the drag is an ItemsControl, this property will hold the item
-        /// container of the clicked item. For example, if <see cref="VisualSource"/> is a ListBox this
-        /// will hold a ListBoxItem.
-        /// </remarks>
+        /// <inheritdoc />
         public UIElement VisualSourceItem { get; private set; }
 
-        /// <summary>
-        /// Gets the FlowDirection of the current drag source.
-        /// </summary>
+        /// <inheritdoc />
         public FlowDirection VisualSourceFlowDirection { get; private set; }
 
-        /// <summary>
-        /// Gets the <see cref="IDataObject"/> which is used by the drag and drop operation. Set it to
-        /// a custom instance if custom drag and drop behavior is needed.
-        /// </summary>
+        /// <inheritdoc />
         public object DataObject { get; set; }
 
-        /// <summary>Initiates a drag-and-drop operation.</summary>
-        /// <param name="dragSource">A reference to the dependency object that is the source of the data being dragged.</param>
-        /// <param name="data">A data object that contains the data being dragged.</param>
-        /// <param name="allowedEffects">One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies permitted effects of the drag-and-drop operation.</param>
-        /// <returns>One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies the final effect that was performed during the drag-and-drop operation.</returns>
+        /// <inheritdoc />
         public Func<DependencyObject, object, DragDropEffects, DragDropEffects> DragDropHandler { get; set; } = System.Windows.DragDrop.DoDragDrop;
 
-        /// <summary>
-        /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
-        /// </summary>
+        /// <inheritdoc />
         public DragDropKeyStates DragDropCopyKeyState { get; private set; }
     }
 }

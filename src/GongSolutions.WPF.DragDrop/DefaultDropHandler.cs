@@ -141,15 +141,7 @@ namespace GongSolutions.Wpf.DragDrop
             return copyData;
         }
 
-        /// <summary>
-        /// Updates the current drag state.
-        /// </summary>
-        /// <param name="dropInfo">Information about the drag.</param>
-        /// <remarks>
-        /// To allow a drop at the current drag position, the <see cref="DropInfo.Effects" /> property on
-        /// <paramref name="dropInfo" /> should be set to a value other than <see cref="DragDropEffects.None" />
-        /// and <see cref="DropInfo.Data" /> should be set to a non-null value.
-        /// </remarks>
+        /// <inheritdoc />
         public virtual void DragOver(IDropInfo dropInfo)
         {
             if (CanAcceptData(dropInfo))
@@ -160,10 +152,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        /// <summary>
-        /// Performs a drop.
-        /// </summary>
-        /// <param name="dropInfo">Information about the drop.</param>
+        /// <inheritdoc />
         public virtual void Drop(IDropInfo dropInfo)
         {
             if (dropInfo == null || dropInfo.DragInfo == null)
