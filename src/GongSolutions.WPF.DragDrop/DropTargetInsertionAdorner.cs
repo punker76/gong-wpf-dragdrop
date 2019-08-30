@@ -9,12 +9,6 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public class DropTargetInsertionAdorner : DropTargetAdorner
     {
-        [Obsolete("This constructor is obsolete and will be deleted in next major release.")]
-        public DropTargetInsertionAdorner(UIElement adornedElement)
-            : base(adornedElement, (DropInfo)null)
-        {
-        }
-
         public DropTargetInsertionAdorner(UIElement adornedElement, DropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
