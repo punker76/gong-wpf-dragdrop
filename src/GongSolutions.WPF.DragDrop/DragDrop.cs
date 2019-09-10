@@ -524,42 +524,7 @@ namespace GongSolutions.Wpf.DragDrop
                 CreateDragAdorner(dropInfo);
             }
 
-            if (DragAdorner != null)
-            {
-                var tempAdornerPos = e.GetPosition(DragAdorner.AdornedElement);
-
-                if (tempAdornerPos.X >= 0 && tempAdornerPos.Y >= 0)
-                {
-                    _adornerPos = tempAdornerPos;
-                }
-
-                // Fixed the flickering adorner - Size changes to zero 'randomly'...?
-                if (DragAdorner.RenderSize.Width > 0 && DragAdorner.RenderSize.Height > 0)
-                {
-                    _adornerSize = DragAdorner.RenderSize;
-                }
-
-                if (dragInfo != null)
-                {
-                    // move the adorner
-                    var offsetX = _adornerSize.Width * -GetDragMouseAnchorPoint(dragInfo.VisualSource).X;
-                    var offsetY = _adornerSize.Height * -GetDragMouseAnchorPoint(dragInfo.VisualSource).Y;
-                    _adornerPos.Offset(offsetX, offsetY);
-                    var maxAdornerPosX = DragAdorner.AdornedElement.RenderSize.Width;
-                    var adornerPosRightX = (_adornerPos.X + _adornerSize.Width);
-                    if (adornerPosRightX > maxAdornerPosX)
-                    {
-                        _adornerPos.Offset(-adornerPosRightX + maxAdornerPosX, 0);
-                    }
-                    if (_adornerPos.Y < 0)
-                    {
-                        _adornerPos.Y = 0;
-                    }
-                }
-
-                DragAdorner.MousePosition = _adornerPos;
-                DragAdorner.InvalidateVisual();
-            }
+            DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), dragInfo != null ? GetDragMouseAnchorPoint(dragInfo.VisualSource) : default(Point), ref _adornerMousePosition, ref _adornerSize);
 
             Scroll(dropInfo, e);
 
@@ -623,13 +588,7 @@ namespace GongSolutions.Wpf.DragDrop
                 CreateEffectAdorner(dropInfo);
             }
 
-            if (EffectAdorner != null)
-            {
-                var adornerPos = e.GetPosition(EffectAdorner.AdornedElement);
-                //adornerPos.Offset(20, 20);
-                EffectAdorner.MousePosition = adornerPos;
-                EffectAdorner.InvalidateVisual();
-            }
+            EffectAdorner?.Move(e.GetPosition(EffectAdorner.AdornedElement), default(Point), ref _effectAdornerMousePosition, ref _effectAdornerSize);
 
             e.Effects = dropInfo.Effects;
             e.Handled = !dropInfo.NotHandled;
@@ -732,7 +691,11 @@ namespace GongSolutions.Wpf.DragDrop
         private static DragInfo m_DragInfo;
         private static bool m_DragInProgress;
         private static object m_ClickSupressItem;
-        private static Point _adornerPos;
+
+        private static Point _adornerMousePosition;
         private static Size _adornerSize;
+
+        private static Point _effectAdornerMousePosition;
+        private static Size _effectAdornerSize;
     }
 }
