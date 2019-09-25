@@ -1,6 +1,6 @@
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // TOOLS / ADDINS
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 #module nuget:?package=Cake.DotNetTool.Module
 #tool "dotnet:?package=NuGetKeyVaultSignTool&version=1.2.18"
@@ -11,18 +11,18 @@
 #tool vswhere
 #addin Cake.Figlet
 
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var verbosity = Argument("verbosity", Verbosity.Minimal);
 var dotnetcoreverbosity = Argument("dotnetcoreverbosity", DotNetCoreVerbosity.Minimal);
 
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // PREPARATION
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 var repoName = "gong-wpf-dragdrop";
 var isLocal = BuildSystem.IsLocalBuild;
@@ -34,6 +34,12 @@ if (isLocal == false || verbosity == Verbosity.Verbose)
 }
 GitVersion gitVersion = GitVersion(new GitVersionSettings { OutputType = GitVersionOutput.Json });
 
+var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
+var branchName = gitVersion.BranchName;
+var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branchName);
+var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branchName);
+var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
+
 var latestInstallationPath = VSWhereLatest(new VSWhereLatestSettings { IncludePrerelease = true });
 var msBuildPath = latestInstallationPath.Combine("./MSBuild/Current/Bin");
 var msBuildPathExe = msBuildPath.CombineWithFilePath("./MSBuild.exe");
@@ -42,12 +48,6 @@ if (FileExists(msBuildPathExe) == false)
 {
     throw new NotImplementedException("You need at least Visual Studio 2019 to build this project.");
 }
-
-var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
-var branchName = gitVersion.BranchName;
-var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branchName);
-var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branchName);
-var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
 
 // Directories and Paths
 var solution = "./src/GongSolutions.WPF.DragDrop.sln";
@@ -60,10 +60,8 @@ Action Abort = () => { throw new Exception("a non-recoverable fatal error occurr
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
-Setup(context =>
+Setup(ctx =>
 {
-    // Executed BEFORE the first task.
-
     if (!IsRunningOnWindows())
     {
         throw new NotImplementedException($"{repoName} will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
@@ -71,29 +69,28 @@ Setup(context =>
 
     Information(Figlet(repoName));
 
-    Information("Informational Version  : {0}", gitVersion.InformationalVersion);
-    Information("SemVer Version         : {0}", gitVersion.SemVer);
-    Information("AssemblySemVer Version : {0}", gitVersion.AssemblySemVer);
+    Information("Informational   Version: {0}", gitVersion.InformationalVersion);
+    Information("SemVer          Version: {0}", gitVersion.SemVer);
+    Information("AssemblySemVer  Version: {0}", gitVersion.AssemblySemVer);
     Information("MajorMinorPatch Version: {0}", gitVersion.MajorMinorPatch);
-    Information("NuGet Version          : {0}", gitVersion.NuGetVersion);
+    Information("NuGet           Version: {0}", gitVersion.NuGetVersion);
     Information("IsLocalBuild           : {0}", isLocal);
     Information("Branch                 : {0}", branchName);
     Information("Configuration          : {0}", configuration);
     Information("MSBuildPath            : {0}", msBuildPath);
 });
 
-Teardown(context =>
+Teardown(ctx =>
 {
-    // Executed AFTER the last task.
 });
 
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 // TASKS
-//////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 Task("Clean")
-  .ContinueOnError()
-  .Does(() =>
+    .ContinueOnError()
+    .Does(() =>
 {
     var directoriesToDelete = GetDirectories("./**/obj")
         .Concat(GetDirectories("./**/bin"))
@@ -104,24 +101,18 @@ Task("Clean")
 Task("Restore")
     .Does(() =>
 {
-    var msBuildSettings = new MSBuildSettings {
-        Verbosity = verbosity
-        , ToolPath = msBuildPathExe
-        , Configuration = configuration
-        , ArgumentCustomization = args => args.Append("/m")
-    };
-    MSBuild(solution, msBuildSettings.WithTarget("restore"));
+    NuGetRestore(solution, new NuGetRestoreSettings { MSBuildPath = msBuildPath.ToString() });
 });
 
 Task("Build")
-  .IsDependentOn("Restore")
-  .Does(() =>
+    .IsDependentOn("Restore")
+    .Does(() =>
 {
     var msBuildSettings = new MSBuildSettings {
         Verbosity = verbosity
         , ToolPath = msBuildPathExe
         , Configuration = configuration
-        , ArgumentCustomization = args => args.Append("/m")
+        , ArgumentCustomization = args => args.Append("/m").Append("/nr:false") // The /nr switch tells msbuild to quite once it’s done
         , BinaryLogger = new MSBuildBinaryLogSettings() { Enabled = isLocal }
     };
     MSBuild(solution, msBuildSettings
@@ -139,7 +130,7 @@ Task("dotnetBuild")
     var buildSettings = new DotNetCoreBuildSettings {
         Verbosity = dotnetcoreverbosity,
         Configuration = configuration,
-        ArgumentCustomization = args => args.Append("/m"),
+        ArgumentCustomization = args => args.Append("/m").Append("/nr:false"), // The /nr switch tells msbuild to quite once it’s done
         MSBuildSettings = new DotNetCoreMSBuildSettings()
             .SetMaxCpuCount(0)
             .SetConfiguration(configuration)
@@ -153,43 +144,8 @@ Task("dotnetBuild")
 });
 
 Task("Pack")
-  .WithCriteria(() => !isPullRequest)
-  .Does(() =>
-{
-    EnsureDirectoryExists(Directory(publishDir));
-
-    var msBuildSettings = new MSBuildSettings {
-        Verbosity = verbosity
-        , ToolPath = msBuildPathExe
-        , Configuration = configuration
-    };
-    var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
-
-    foreach(var project in projects)
-    {
-        Information("Packing {0}", project);
-
-        DeleteFiles(GetFiles("./src/**/*.nuspec"));
-
-        MSBuild(project, msBuildSettings
-            .WithTarget("pack")
-            .WithProperty("NoBuild", "true")
-            .WithProperty("IncludeBuildOutput", "true")
-            .WithProperty("PackageOutputPath", MakeAbsolute(Directory(publishDir)).FullPath)
-            .WithProperty("RepositoryBranch", branchName)
-            .WithProperty("RepositoryCommit", gitVersion.Sha)
-            .WithProperty("Version", isReleaseBranch ? gitVersion.MajorMinorPatch : gitVersion.NuGetVersion)
-            .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
-            .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
-            .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
-        );
-    }
-
-});
-
-Task("dotnetPack")
-  .WithCriteria(() => !isPullRequest)
-  .Does(() =>
+    .WithCriteria(() => !isPullRequest)
+    .Does(() =>
 {
     EnsureDirectoryExists(Directory(publishDir));
 
@@ -212,7 +168,6 @@ Task("dotnetPack")
     };
 
     var projects = GetFiles("./src/GongSolutions.WPF.DragDrop/*.csproj");
-
     foreach(var project in projects)
     {
         Information("Packing {0}", project);
@@ -221,38 +176,6 @@ Task("dotnetPack")
 
         DotNetCorePack(project.ToString(), buildSettings);
     }
-});
-
-Task("Zip")
-  .Does(() =>
-{
-  EnsureDirectoryExists(Directory(publishDir));
-  Zip($"./src/Showcase/bin/{configuration}", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
-});
-
-Task("CreateRelease")
-    .WithCriteria(() => !isTagged)
-    .Does(() =>
-{
-    var username = EnvironmentVariable("GITHUB_USERNAME");
-    if (string.IsNullOrEmpty(username))
-    {
-        throw new Exception("The GITHUB_USERNAME environment variable is not defined.");
-    }
-
-    var token = EnvironmentVariable("GITHUB_TOKEN");
-    if (string.IsNullOrEmpty(token))
-    {
-        throw new Exception("The GITHUB_TOKEN environment variable is not defined.");
-    }
-
-    GitReleaseManagerCreate(username, token, "punker76", repoName, new GitReleaseManagerCreateSettings {
-        Milestone         = gitVersion.MajorMinorPatch,
-        Name              = gitVersion.AssemblySemFileVer,
-        Prerelease        = isDevelopBranch,
-        TargetCommitish   = branchName,
-        WorkingDirectory  = "."
-    });
 });
 
 void SignFiles(IEnumerable<FilePath> files, string description)
@@ -405,6 +328,39 @@ Task("SignNuGet")
         }
     }
 });
+
+Task("Zip")
+    .Does(() =>
+{
+    EnsureDirectoryExists(Directory(publishDir));
+    Zip($"./src/Showcase/bin/{configuration}", $"{publishDir}/Showcase.DragDrop.{configuration}-v" + gitVersion.NuGetVersion + ".zip");
+});
+
+Task("CreateRelease")
+    .WithCriteria(() => !isTagged)
+    .Does(() =>
+{
+    var username = EnvironmentVariable("GITHUB_USERNAME");
+    if (string.IsNullOrEmpty(username))
+    {
+        throw new Exception("The GITHUB_USERNAME environment variable is not defined.");
+    }
+
+    var token = EnvironmentVariable("GITHUB_TOKEN");
+    if (string.IsNullOrEmpty(token))
+    {
+        throw new Exception("The GITHUB_TOKEN environment variable is not defined.");
+    }
+
+    GitReleaseManagerCreate(username, token, "punker76", repoName, new GitReleaseManagerCreateSettings {
+        Milestone         = gitVersion.MajorMinorPatch,
+        Name              = gitVersion.AssemblySemFileVer,
+        Prerelease        = isDevelopBranch,
+        TargetCommitish   = branchName,
+        WorkingDirectory  = "."
+    });
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 ///////////////////////////////////////////////////////////////////////////////
@@ -417,11 +373,9 @@ Task("Default")
 Task("appveyor")
     .IsDependentOn("Default")
     .IsDependentOn("Sign")
-    // .IsDependentOn("Pack");
-    .IsDependentOn("dotnetPack")
+    .IsDependentOn("Pack")
     .IsDependentOn("SignNuGet")
-    .IsDependentOn("Zip")
-    ;
+    .IsDependentOn("Zip");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION

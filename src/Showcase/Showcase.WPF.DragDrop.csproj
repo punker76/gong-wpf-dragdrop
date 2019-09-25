@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <!-- Project properties -->
     <PropertyGroup>
-        <TargetFrameworks>net45;net46;net47;netcoreapp3.0</TargetFrameworks>
         <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
         <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
         <DisableFody Condition="'$(Configuration)' == 'Debug' or '$(TargetFramework)' == 'netcoreapp3.0'">true</DisableFody>
