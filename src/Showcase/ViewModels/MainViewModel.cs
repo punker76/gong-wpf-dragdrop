@@ -54,9 +54,12 @@ namespace Showcase.WPF.DragDrop.ViewModels
             Members.Add(listMember);
 
             this.Data = new SampleData();
-            this.OpenIssueCommand = new SimpleCommand(issue => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}"); });
-            this.OpenPullRequestCommand = new SimpleCommand(pr => { Process.Start($"https://github.com/punker76/gong-wpf-dragdrop/pull/{pr}"); });
-            this.OpenLinkCommand = new SimpleCommand(link => { Process.Start(link.ToString()); });
+            this.OpenIssueCommand = new SimpleCommand(issue =>
+            {
+                OpenUrlLink($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}");
+            });
+            this.OpenPullRequestCommand = new SimpleCommand(pr => { OpenUrlLink($"https://github.com/punker76/gong-wpf-dragdrop/pull/{pr}"); });
+            this.OpenLinkCommand = new SimpleCommand(link => { OpenUrlLink(link.ToString()); });
             this.FilterCollectionCommand = new SimpleCommand(isChecked =>
                 {
                     var coll = Data.FilterCollection1;
@@ -72,6 +75,14 @@ namespace Showcase.WPF.DragDrop.ViewModels
                             return (number & 0x01) == 0;
                         };
                 });
+
+            static void OpenUrlLink(string link) => Process.Start(new ProcessStartInfo
+            {
+                FileName = link ?? throw new System.ArgumentNullException(nameof(link)),
+                // UseShellExecute is default to false on .NET Core while true on .NET Framework.
+                // Only this value is set to true, the url link can be opened.
+                UseShellExecute = true,
+            });
         }
 
         public SampleData Data
