@@ -13,6 +13,7 @@ export:
 issue-labels-include:
 - Breaking Change
 - Bug
+- Bug Fix
 - Feature
 - Feature Request
 - Enhancement

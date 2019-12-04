@@ -1,22 +1,17 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- Project properties -->
     <PropertyGroup>
-        <TargetFrameworks>net45;net46;net47;netcoreapp3.0</TargetFrameworks>
+        <TargetFrameworks>net45;net46;net47;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
         <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <LangVersion>latest</LangVersion>
+        <AutoGenerateBindingRedirects Condition=" $(TargetFramework.StartsWith('net4')) ">true</AutoGenerateBindingRedirects>
+        <LangVersion>8.0</LangVersion>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NoError>$(NoError);CS1591</NoError>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
-
-    <!-- Add the references for all projects and targets -->
-    <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2019.*" PrivateAssets="All" />
-    </ItemGroup>
 
     <ItemGroup>
         <None Remove="**\*.png;**\*.jpg;**\*.ico" />
@@ -35,4 +30,8 @@
         <!-- <EmbedAllSources>true</EmbedAllSources>-->
     </PropertyGroup>
 
+    <!-- Add the references for all projects and targets -->
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2019.*" PrivateAssets="All" />
+    </ItemGroup>
 </Project>
