@@ -267,7 +267,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
             else
             {
-                return target is IList || target is IEditableCollectionView;
+                return target is IList || target is ICollectionView;
             }
         }
     }
