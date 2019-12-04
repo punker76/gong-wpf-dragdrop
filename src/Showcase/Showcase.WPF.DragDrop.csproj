@@ -4,7 +4,7 @@
     <PropertyGroup>
         <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
         <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
-        <DisableFody Condition="'$(Configuration)' == 'Debug' or '$(TargetFramework)' == 'netcoreapp3.0'">true</DisableFody>
+        <DisableFody Condition=" '$(Configuration)' == 'Debug' or $(TargetFramework.StartsWith('netcoreapp')) ">true</DisableFody>
         <Description>Showcase application for GongSolutions.WPF.DragDrop</Description>
     </PropertyGroup>
     <PropertyGroup>
@@ -29,7 +29,7 @@
         <None Include="app.manifest" />
         <None Remove="App.config" />
     </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
         <AppConfigWithTargetPath Include="App.$(TargetFramework).config">
             <TargetPath>$(AssemblyName).config</TargetPath>
         </AppConfigWithTargetPath>
