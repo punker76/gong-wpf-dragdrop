@@ -254,20 +254,20 @@ namespace GongSolutions.Wpf.DragDrop
 
         protected static bool TestCompatibleTypes(IEnumerable target, object data)
         {
-            TypeFilter filter = (t, o) => { return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)); };
+            bool InterfaceFilter(Type t, object o) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
-            var enumerableInterfaces = target.GetType().FindInterfaces(filter, null);
+            var enumerableInterfaces = target.GetType().FindInterfaces(InterfaceFilter, null);
             var enumerableTypes = from i in enumerableInterfaces
                                   select i.GetGenericArguments().Single();
 
-            if (enumerableTypes.Count() > 0)
+            if (enumerableTypes.Any())
             {
                 var dataType = TypeUtilities.GetCommonBaseClass(ExtractData(data));
                 return enumerableTypes.Any(t => t.IsAssignableFrom(dataType));
             }
             else
             {
-                return target is IList;
+                return target is IList || target is ICollectionView;
             }
         }
     }
