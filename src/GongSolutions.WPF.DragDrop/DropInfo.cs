@@ -171,7 +171,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                         if (currentYPos > topGap && currentYPos < bottomGap)
                         {
-                            if (tvItem != null)
+                            if (tvItem != null && DragDrop.GetCanTreeViewItemAcceptChildren(tvItem))
                             {
                                 this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
                                 this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;
@@ -212,7 +212,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                         if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
                         {
-                            if (tvItem != null)
+                            if (tvItem != null && DragDrop.GetCanTreeViewItemAcceptChildren(tvItem))
                             {
                                 this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
                                 this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;

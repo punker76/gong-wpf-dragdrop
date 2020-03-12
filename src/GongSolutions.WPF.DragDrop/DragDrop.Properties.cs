@@ -1113,5 +1113,31 @@ namespace GongSolutions.Wpf.DragDrop
         {
             return (ScrollViewer)element?.GetValue(DropTargetScrollViewerProperty);
         }
+
+        /// <summary>
+        /// Gets or sets whether a <see cref="TreeViewItem"/> can accept children.
+        /// Default is <see langword="true" />.
+        /// </summary>
+        public static readonly DependencyProperty CanTreeViewItemAcceptChildrenProperty = DependencyProperty.RegisterAttached(
+            "CanTreeViewItemAcceptChildren",
+            typeof(bool),
+            typeof(DragDrop),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Sets whether a <see cref="TreeViewItem"/> can accept children.
+        /// </summary>
+        public static void SetCanTreeViewItemAcceptChildren(DependencyObject element, bool value)
+        {
+            element.SetValue(CanTreeViewItemAcceptChildrenProperty, value);
+        }
+
+        /// <summary>
+        /// Gets whether a <see cref="TreeViewItem"/> can accept children.
+        /// </summary>
+        public static bool GetCanTreeViewItemAcceptChildren(DependencyObject element)
+        {
+            return (bool)element.GetValue(CanTreeViewItemAcceptChildrenProperty);
+        }
     }
 }
