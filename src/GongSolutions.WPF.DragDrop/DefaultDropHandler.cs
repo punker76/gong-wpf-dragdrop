@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop.Utilities;
@@ -147,8 +146,16 @@ namespace GongSolutions.Wpf.DragDrop
             if (CanAcceptData(dropInfo))
             {
                 dropInfo.Effects = ShouldCopyData(dropInfo) ? DragDropEffects.Copy : DragDropEffects.Move;
-                var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
-                dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
+                if (dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter)
+                    && dropInfo.VisualTargetItem is TreeViewItem treeViewItem
+                    && DragDrop.GetCanTreeViewItemAcceptChildren(treeViewItem))
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
+                }
+                else
+                {
+                    dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+                }
             }
         }
 
