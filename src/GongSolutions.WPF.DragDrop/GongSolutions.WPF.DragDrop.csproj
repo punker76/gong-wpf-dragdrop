@@ -1,18 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-    <!-- Project properties -->
-    <PropertyGroup>
-        <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
-        <Title>gong-wpf-dragdrop</Title>
-        <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-    <!-- reference includes -->
-    <ItemGroup>
-        <PackageReference Include="WpfAnalyzers" Version="2.2.*" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5AD73B2D-DE25-41CC-AFB1-A6EE8A12CD77}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GongSolutions.Wpf.DragDrop</RootNamespace>
+    <AssemblyName>GongSolutions.Wpf.DragDrop</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefaultDragHandler.cs" />
+    <Compile Include="DefaultDropHandler.cs" />
+    <Compile Include="DragAdorner.cs" />
+    <Compile Include="DragDrop.cs" />
+    <Compile Include="DragDrop.Properties.cs" />
+    <Compile Include="DragInfo.cs" />
+    <Compile Include="DropInfo.cs" />
+    <Compile Include="DropTargetAdorner.cs" />
+    <Compile Include="DropTargetAdorners.cs" />
+    <Compile Include="DropTargetHighlightAdorner.cs" />
+    <Compile Include="DropTargetInsertionAdorner.cs" />
+    <Compile Include="EventType.cs" />
+    <Compile Include="Icons\IconFactory.cs" />
+    <Compile Include="IDragInfo.cs" />
+    <Compile Include="IDragSource.cs" />
+    <Compile Include="IDropInfo.cs" />
+    <Compile Include="IDropTarget.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScrollingMode.cs" />
+    <Compile Include="Utilities\DpiHelper.cs" />
+    <Compile Include="Utilities\DragDropExtensions.cs" />
+    <Compile Include="Utilities\HitTestUtilities.cs" />
+    <Compile Include="Utilities\ItemsControlExtensions.cs" />
+    <Compile Include="Utilities\RootElementFinder.cs" />
+    <Compile Include="Utilities\TreeViewItemExtensions.cs" />
+    <Compile Include="Utilities\TypeUtilities.cs" />
+    <Compile Include="Utilities\VisualTreeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\EffectCopy.png" />
+    <Content Include="Icons\EffectLink.png" />
+    <Content Include="Icons\EffectMove.png" />
+    <Content Include="Icons\EffectNone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Link>LICENSE</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

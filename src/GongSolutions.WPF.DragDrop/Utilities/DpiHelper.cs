@@ -1,10 +1,14 @@
-﻿namespace GongSolutions.Wpf.DragDrop.Utilities
-{
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
-    using System.Windows;
-    using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Media;
 
+namespace GongSolutions.Wpf.DragDrop
+{
     /// <summary>
     /// A helper class for Dpi logicm cause Microsoft hides this with the internal flag.
     /// </summary>

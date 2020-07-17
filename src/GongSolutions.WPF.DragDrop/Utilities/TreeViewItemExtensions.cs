@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
-namespace GongSolutions.Wpf.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
     /// Extension methods for TreeViewItem

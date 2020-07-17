@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Reflection;
-using System.Collections;
 using System.Windows.Controls.Primitives;
 
-namespace GongSolutions.Wpf.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop
 {
     public static class ItemsControlExtensions
     {
@@ -131,41 +132,41 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
             VisualTreeHelper.HitTest(itemsControl,
                                      obj =>
+                                     {
+                                         // Viewport3D is not good for us
+                                         // Stop on ScrollBar to improve performance (e.g. at DataGrid)
+                                         if (obj is Viewport3D || (itemsControl is DataGrid && obj is ScrollBar))
                                          {
-                                             // Viewport3D is not good for us
-                                             // Stop on ScrollBar to improve performance (e.g. at DataGrid)
-                                             if (obj is Viewport3D || (itemsControl is DataGrid && obj is ScrollBar))
-                                             {
-                                                 return HitTestFilterBehavior.Stop;
-                                             }
-                                             return HitTestFilterBehavior.Continue;
-                                         },
+                                             return HitTestFilterBehavior.Stop;
+                                         }
+                                         return HitTestFilterBehavior.Continue;
+                                     },
                                      result =>
+                                     {
+                                         var itemContainer = isItemContainer
+                                             ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
+                                             : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl, itemsControl.GetType());
+                                         if (itemContainer != null && ((UIElement)itemContainer).IsVisible == true)
                                          {
-                                             var itemContainer = isItemContainer
-                                                 ? result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl)
-                                                 : result.VisualHit.GetVisualAncestor(itemContainerType, itemsControl, itemsControl.GetType());
-                                             if (itemContainer != null && ((UIElement)itemContainer).IsVisible == true)
+                                             var tvItem = itemContainer as TreeViewItem;
+                                             if (tvItem != null)
                                              {
-                                                 var tvItem = itemContainer as TreeViewItem;
-                                                 if (tvItem != null)
+                                                 var tv = tvItem.GetVisualAncestor<TreeView>();
+                                                 if (tv == itemsControl)
                                                  {
-                                                     var tv = tvItem.GetVisualAncestor<TreeView>();
-                                                     if (tv == itemsControl)
-                                                     {
-                                                         hits.Add(itemContainer);
-                                                     }
-                                                 }
-                                                 else
-                                                 {
-                                                     if (itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) >= 0)
-                                                     {
-                                                         hits.Add(itemContainer);
-                                                     }
+                                                     hits.Add(itemContainer);
                                                  }
                                              }
-                                             return HitTestResultBehavior.Continue;
-                                         },
+                                             else
+                                             {
+                                                 if (itemsControl.ItemContainerGenerator.IndexFromContainer(itemContainer) >= 0)
+                                                 {
+                                                     hits.Add(itemContainer);
+                                                 }
+                                             }
+                                         }
+                                         return HitTestResultBehavior.Continue;
+                                     },
                                      new GeometryHitTestParameters(hitTestGeometry));
 
             return GetClosest(itemsControl, hits, position, searchDirection);

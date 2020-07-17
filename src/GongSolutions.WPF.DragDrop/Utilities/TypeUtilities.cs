@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Collections;
+using System.Text;
 
-namespace GongSolutions.Wpf.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop
 {
     public static class TypeUtilities
     {

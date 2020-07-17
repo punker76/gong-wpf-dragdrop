@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Collections.Generic;
 using System.Windows.Media.Media3D;
-using JetBrains.Annotations;
+//using JetBrains.Annotations;
 
-namespace GongSolutions.Wpf.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop
 {
     public static class VisualTreeExtensions
     {
@@ -79,7 +80,9 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// <summary>
         /// find the visual ancestor item by type
         /// </summary>
-        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl, [NotNull] Type itemContainerSearchType)
+        /// When using Resharper and JetBrains.Annotations, the following signature is handy.
+        /// public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl, [NotNull] Type itemContainerSearchType)
+        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, ItemsControl itemsControl, Type itemContainerSearchType)
         {
             if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
             if (itemContainerSearchType == null) throw new ArgumentNullException(nameof(itemContainerSearchType));
@@ -111,7 +114,9 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// <summary>
         /// find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
         /// </summary>
-        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl)
+        /// When using Resharper and JetBrains.Annotations, the following signature is handy.
+        /// public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, [NotNull] ItemsControl itemsControl)
+        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type itemSearchType, ItemsControl itemsControl)
         {
             if (itemsControl == null) throw new ArgumentNullException(nameof(itemsControl));
 

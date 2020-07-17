@@ -5,8 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using GongSolutions.Wpf.DragDrop.Utilities;
-using JetBrains.Annotations;
+//using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -43,7 +42,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="eventType">
         /// The type of the underlying event (tunneled or bubbled).
         /// </param>
-        public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo, EventType eventType)
+
+        /// When using Resharper and JetBrains.Annotations, the following signature is handy.
+        /// public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo, EventType eventType)
+        public DropInfo(object sender, DragEventArgs e, DragInfo dragInfo, EventType eventType)
         {
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;

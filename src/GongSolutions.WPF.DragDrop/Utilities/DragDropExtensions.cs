@@ -1,12 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
-namespace GongSolutions.Wpf.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop
 {
-    using System;
-    using System.Windows.Controls;
-    using System.Windows.Media.Imaging;
-
     public static class DragDropExtensions
     {
         /// <summary>
@@ -38,7 +40,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             return element != null && DragDrop.GetIsDropTarget(element);
         }
-        
+
         /// <summary>
         /// Gets if drop position is directly over element
         /// </summary>
@@ -53,7 +55,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
             var relativeItemPosition = element.TranslatePoint(new Point(0, 0), relativeToElement);
             var relativeDropPosition = new Point(dropPosition.X - relativeItemPosition.X, dropPosition.Y - relativeItemPosition.Y);
-            return VisualTreeHelper.GetDescendantBounds(element).Contains(relativeDropPosition); 
+            return VisualTreeHelper.GetDescendantBounds(element).Contains(relativeDropPosition);
         }
 
         /// <summary>

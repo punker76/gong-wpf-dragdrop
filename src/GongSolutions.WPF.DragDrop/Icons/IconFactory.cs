@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace GongSolutions.Wpf.DragDrop.Icons
+namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
     /// Static class to provide access to standard application images
@@ -41,7 +41,7 @@ namespace GongSolutions.Wpf.DragDrop.Icons
         /// <returns>The image to be displayed</returns>
         private static BitmapImage GetImage(string iconName, int size)
         {
-            var uri = new Uri($@"pack://application:,,,/GongSolutions.Wpf.DragDrop;component/Icons/{iconName}", UriKind.RelativeOrAbsolute);
+            var uri = new Uri($@"pack://application:,,,/GongSolutionsWPFDragDrop;component/Icons/{iconName}", UriKind.RelativeOrAbsolute);
             var icon = new BitmapImage(uri);
             icon.DecodePixelHeight = size;
             icon.DecodePixelWidth = size;

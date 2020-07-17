@@ -7,8 +7,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GongSolutions.Wpf.DragDrop.Icons;
-using GongSolutions.Wpf.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -142,7 +140,7 @@ namespace GongSolutions.Wpf.DragDrop
             imageFactory.SetValue(FrameworkElement.WidthProperty, 12d);
 
             // Only the icon for no effect
-            if (Equals(effectIcon, GongSolutions.Wpf.DragDrop.Icons.IconFactory.EffectNone))
+            if (Equals(effectIcon, IconFactory.EffectNone))
             {
                 return new DataTemplate { VisualTree = imageFactory };
             }
