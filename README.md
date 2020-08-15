@@ -17,11 +17,11 @@
   <a href="https://twitter.com/punker76">
 	  <img src="https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square">
   </a>
-  <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/master">
-	  <img alt="masterstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/master.svg?style=flat-square&&label=master">
+  <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/main">
+	  <img alt="mainstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/main.svg?style=flat-square&&label=main">
   </a>
-  <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/dev">
-	  <img alt="devstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/dev.svg?style=flat-square&&label=dev">
+  <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/develop">
+	  <img alt="devstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/develop.svg?style=flat-square&&label=develop">
   </a>
   <a href="https://github.com/punker76/gong-wpf-dragdrop/releases/latest">
 	  <img src="https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square">
@@ -62,7 +62,7 @@
 - [Release History](../../wiki/Release-History)
 - [Strong naming](../../wiki/Strong-naming)
 - [Wiki](../../wiki)
-- [License](https://github.com/punker76/gong-wpf-dragdrop/blob/dev/LICENSE)
+- [License](./LICENSE)
 
 ## Want to say thanks?
 

@@ -6,7 +6,7 @@
 #tool "dotnet:?package=NuGetKeyVaultSignTool&version=1.2.18"
 #tool "dotnet:?package=AzureSignTool&version=2.0.17"
 
-#tool GitVersion.CommandLine&version=5.0.1
+#tool GitVersion.CommandLine&version=5.3.7
 #tool gitreleasemanager
 #tool vswhere
 #addin Cake.Figlet
@@ -36,8 +36,8 @@ GitVersion gitVersion = GitVersion(new GitVersionSettings { OutputType = GitVers
 
 var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
 var branchName = gitVersion.BranchName;
-var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branchName);
-var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branchName);
+var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("develop", branchName);
+var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("main", branchName);
 var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
 
 var latestInstallationPath = VSWhereLatest(new VSWhereLatestSettings { IncludePrerelease = true });
@@ -105,7 +105,6 @@ Task("Restore")
 });
 
 Task("Build")
-    .IsDependentOn("Restore")
     .Does(() =>
 {
     var msBuildSettings = new MSBuildSettings {
@@ -121,6 +120,7 @@ Task("Build")
             .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
             .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
             .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+            .WithProperty("ContinuousIntegrationBuild", "true")
             );
 });
 
@@ -138,6 +138,7 @@ Task("dotnetBuild")
             .WithProperty("AssemblyVersion", gitVersion.AssemblySemVer)
             .WithProperty("FileVersion", gitVersion.AssemblySemFileVer)
             .WithProperty("InformationalVersion", gitVersion.InformationalVersion)
+            .WithProperty("ContinuousIntegrationBuild", "true")
     };
 
     DotNetCoreBuild(solution, buildSettings);
@@ -246,6 +247,7 @@ void SignFiles(IEnumerable<FilePath> files, string description)
 }
 
 Task("Sign")
+    .WithCriteria(() => !isPullRequest)
     .ContinueOnError()
     .Does(() =>
 {
@@ -257,6 +259,7 @@ Task("Sign")
 });
 
 Task("SignNuGet")
+    .WithCriteria(() => !isPullRequest)
     .ContinueOnError()
     .Does(() =>
 {
@@ -338,6 +341,7 @@ Task("Zip")
 
 Task("CreateRelease")
     .WithCriteria(() => !isTagged)
+    .WithCriteria(() => !isPullRequest)
     .Does(() =>
 {
     var username = EnvironmentVariable("GITHUB_USERNAME");
@@ -367,6 +371,7 @@ Task("CreateRelease")
 
 Task("Default")
     .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
     .IsDependentOn("Build");
     // .IsDependentOn("dotnetBuild") // doesn't work with Fody
 

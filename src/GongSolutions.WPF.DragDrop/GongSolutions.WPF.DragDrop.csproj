@@ -9,7 +9,6 @@
     </PropertyGroup>
     <!-- reference includes -->
     <ItemGroup>
-        <PackageReference Include="WpfAnalyzers" Version="2.2.*" PrivateAssets="All" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
