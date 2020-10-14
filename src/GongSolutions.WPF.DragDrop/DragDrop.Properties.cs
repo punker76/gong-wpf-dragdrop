@@ -72,6 +72,11 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewMouseLeftButtonDown += DragSourceOnMouseLeftButtonDown;
                 uiElement.PreviewMouseLeftButtonUp += DragSourceOnMouseLeftButtonUp;
                 uiElement.PreviewMouseMove += DragSourceOnMouseMove;
+
+                uiElement.PreviewTouchDown += DragSourceOnTouchDown;
+                uiElement.PreviewTouchUp += DragSourceOnTouchUp;
+                uiElement.PreviewTouchMove += DragSourceOnTouchMove;
+
                 uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
             }
             else
@@ -79,6 +84,11 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewMouseLeftButtonDown -= DragSourceOnMouseLeftButtonDown;
                 uiElement.PreviewMouseLeftButtonUp -= DragSourceOnMouseLeftButtonUp;
                 uiElement.PreviewMouseMove -= DragSourceOnMouseMove;
+
+                uiElement.PreviewTouchDown -= DragSourceOnTouchDown;
+                uiElement.PreviewTouchUp -= DragSourceOnTouchUp;
+                uiElement.PreviewTouchMove -= DragSourceOnTouchMove;
+
                 uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
             }
         }
