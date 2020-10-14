@@ -299,13 +299,7 @@ namespace GongSolutions.Wpf.DragDrop
             if ((sender as UIElement).IsDragSourceIgnored()
                 || (e.Source as UIElement).IsDragSourceIgnored()
                 || (e.OriginalSource as UIElement).IsDragSourceIgnored()
-                || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
-                || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
+                || GetHitTestResult(sender, elementPosition)
                 || HitTestUtilities.IsNotPartOfSender(sender, e))
             {
                 return;
@@ -326,13 +320,7 @@ namespace GongSolutions.Wpf.DragDrop
                 || (sender as UIElement).IsDragSourceIgnored()
                 || (e.Source as UIElement).IsDragSourceIgnored()
                 || (e.OriginalSource as UIElement).IsDragSourceIgnored()
-                || (sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
-                || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
+                || GetHitTestResult(sender, elementPosition)
                 || HitTestUtilities.IsNotPartOfSender(sender, e))
             {
                 return;
@@ -711,6 +699,18 @@ namespace GongSolutions.Wpf.DragDrop
                     Mouse.OverrideCursor = null;
                 }
             }
+        }
+
+        private static bool GetHitTestResult(object sender, Point elementPosition)
+        {
+            return (sender is TabControl) 
+                && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
+                || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
+                || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
+                || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
         }
 
         private static DragAdorner _DragAdorner;
