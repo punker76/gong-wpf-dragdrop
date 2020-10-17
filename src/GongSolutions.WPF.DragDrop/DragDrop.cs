@@ -219,11 +219,25 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 if (position.X >= scrollViewer.ActualWidth - scrollMargin && scrollViewer.HorizontalOffset < scrollViewer.ExtentWidth - scrollViewer.ViewportWidth)
                 {
-                    scrollViewer.LineRight();
+                    if (scrollViewer.CanContentScroll)
+                    {
+                        scrollViewer.LineRight();
+                    }
+                    else
+                    {
+                        scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + 4);
+                    }
                 }
                 else if (position.X < scrollMargin && scrollViewer.HorizontalOffset > 0)
                 {
-                    scrollViewer.LineLeft();
+                    if (scrollViewer.CanContentScroll)
+                    {
+                        scrollViewer.LineLeft();
+                    }
+                    else
+                    {
+                        scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - 4);
+                    }
                 }
             }
 
@@ -231,11 +245,25 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 if (position.Y >= scrollViewer.ActualHeight - scrollMargin && scrollViewer.VerticalOffset < scrollViewer.ExtentHeight - scrollViewer.ViewportHeight)
                 {
-                    scrollViewer.LineDown();
+                    if (scrollViewer.CanContentScroll)
+                    {
+                        scrollViewer.LineDown();
+                    }
+                    else
+                    {
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + 4);
+                    }
                 }
                 else if (position.Y < scrollMargin && scrollViewer.VerticalOffset > 0)
                 {
-                    scrollViewer.LineUp();
+                    if (scrollViewer.CanContentScroll)
+                    {
+                        scrollViewer.LineUp();
+                    }
+                    else
+                    {
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - 4);
+                    }
                 }
             }
         }
