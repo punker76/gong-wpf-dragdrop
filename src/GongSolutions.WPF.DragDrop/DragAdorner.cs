@@ -11,7 +11,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             this.Translation = translation;
             this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
-            this.m_AdornerLayer.Add(this);
+            this.m_AdornerLayer?.Add(this);
             this.m_Adornment = adornment;
             this.IsHitTestVisible = false;
             this.Effects = effects;
@@ -23,7 +23,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public Point MousePosition
         {
-            get { return this.m_MousePosition; }
+            get => this.m_MousePosition;
             set
             {
                 if (this.m_MousePosition != value)
@@ -64,6 +64,12 @@ namespace GongSolutions.Wpf.DragDrop
             if (this.RenderSize.Width > 0 && this.RenderSize.Height > 0)
             {
                 adornerSize = this.RenderSize;
+            }
+
+            // flickering fix
+            if (adornerSize.Width <= 0 || adornerSize.Height <= 0)
+            {
+                return;
             }
 
             var offsetX = adornerSize.Width * -anchorPoint.X;
@@ -113,10 +119,7 @@ namespace GongSolutions.Wpf.DragDrop
             return this.m_Adornment.DesiredSize;
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         private readonly AdornerLayer m_AdornerLayer;
         private readonly UIElement m_Adornment;

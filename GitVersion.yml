@@ -1,9 +1,10 @@
 assembly-versioning-scheme: Major
 assembly-file-versioning-scheme: MajorMinorPatchTag
-next-version: 2.2.0
+next-version: 2.3.0
 mode: ContinuousDeployment
 branches:
   master:
+    regex: ^main
     mode: ContinuousDeployment
     tag: rc
     prevent-increment-of-merged-branch-version: true

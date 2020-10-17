@@ -13,15 +13,11 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
-    <ItemGroup>
-        <None Remove="**\*.png;**\*.jpg;**\*.ico" />
-        <Resource Include="**\*.png;**\*.jpg;**\*.ico" />
-    </ItemGroup>
-
     <!-- SourceLink -->
     <PropertyGroup>
         <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <!-- <IncludeSymbols>true</IncludeSymbols> -->
         <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <!-- Optional: Include PDB in the built .nupkg -->
@@ -32,6 +28,17 @@
 
     <!-- Add the references for all projects and targets -->
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2019.*" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.*" PrivateAssets="All" />
+        <PackageReference Include="WpfAnalyzers" Version="2.4.*" PrivateAssets="All" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
+        <Resource Include="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
+    </ItemGroup>
+
 </Project>

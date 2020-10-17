@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GongSolutions.WPF.DragDrop.Utilities;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -72,6 +73,11 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewMouseLeftButtonDown += DragSourceOnMouseLeftButtonDown;
                 uiElement.PreviewMouseLeftButtonUp += DragSourceOnMouseLeftButtonUp;
                 uiElement.PreviewMouseMove += DragSourceOnMouseMove;
+
+                uiElement.PreviewTouchDown += DragSourceOnTouchDown;
+                uiElement.PreviewTouchUp += DragSourceOnTouchUp;
+                uiElement.PreviewTouchMove += DragSourceOnTouchMove;
+
                 uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
             }
             else
@@ -79,6 +85,11 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewMouseLeftButtonDown -= DragSourceOnMouseLeftButtonDown;
                 uiElement.PreviewMouseLeftButtonUp -= DragSourceOnMouseLeftButtonUp;
                 uiElement.PreviewMouseMove -= DragSourceOnMouseMove;
+
+                uiElement.PreviewTouchDown -= DragSourceOnTouchDown;
+                uiElement.PreviewTouchUp -= DragSourceOnTouchUp;
+                uiElement.PreviewTouchMove -= DragSourceOnTouchMove;
+
                 uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
             }
         }
@@ -1112,6 +1123,30 @@ namespace GongSolutions.Wpf.DragDrop
         public static ScrollViewer GetDropTargetScrollViewer(DependencyObject element)
         {
             return (ScrollViewer)element?.GetValue(DropTargetScrollViewerProperty);
+        }
+
+        /// <summary>
+        /// Gets or sets the root element finder.
+        /// </summary>
+        public static readonly DependencyProperty RootElementFinderProperty
+            = DependencyProperty.RegisterAttached("RootElementFinder",
+                                                  typeof(IRootElementFinder),
+                                                  typeof(DragDrop));
+
+        /// <summary>
+        /// Gets the root element finder.
+        /// </summary>
+        public static IRootElementFinder GetRootElementFinder(UIElement target)
+        {
+            return (IRootElementFinder)target.GetValue(RootElementFinderProperty);
+        }
+
+        /// <summary>
+        /// Sets the root element finder.
+        /// </summary>
+        public static void SetRootElementFinder(UIElement target, IRootElementFinder value)
+        {
+            target.SetValue(RootElementFinderProperty, value);
         }
     }
 }

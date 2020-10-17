@@ -6,6 +6,8 @@
         <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
         <DisableFody Condition=" '$(Configuration)' == 'Debug' or $(TargetFramework.StartsWith('netcoreapp')) ">true</DisableFody>
         <Description>Showcase application for GongSolutions.WPF.DragDrop</Description>
+        <!-- Workaround for https://github.com/dotnet/sourcelink/issues/91 -->
+        <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
     </PropertyGroup>
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -17,21 +19,21 @@
     </ItemGroup>
     <!-- reference includes -->
     <ItemGroup>
-        <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.0-alpha*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.FeatherIcons" Version="4.*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.Octicons" Version="4.*" />
         <PackageReference Include="Faker.Net" Version="1.*" />
         <PackageReference Include="Fody" Version="6.*">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Costura.Fody" Version="4.*" />
+        <PackageReference Include="Costura.Fody" Version="4.*" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
         <None Include="app.manifest" />
         <None Remove="App.config" />
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
         <AppConfigWithTargetPath Include="App.$(TargetFramework).config">
-            <TargetPath>$(AssemblyName).config</TargetPath>
+            <TargetPath>$(AssemblyName).exe.config</TargetPath>
         </AppConfigWithTargetPath>
     </ItemGroup>
 </Project>

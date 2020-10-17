@@ -23,7 +23,7 @@
                     <Setter.Value>
                         <iconPacks:PackIconMaterial Width="24"
                                                     Height="24"
-                                                    Kind="GithubCircle" />
+                                                    Kind="Github" />
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Cursor" Value="Hand" />

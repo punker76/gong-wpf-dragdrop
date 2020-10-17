@@ -16,6 +16,7 @@ issue-labels-include:
 - Bug Fix
 - Feature
 - Feature Request
+- Improvement
 - Enhancement
 - Hacktoberfest
 issue-labels-exclude:
@@ -24,7 +25,12 @@ issue-labels-exclude:
 - Question
 - WontFix
 - Duplicate
+- Housekeeping
+- Documentation
 issue-labels-alias:
     - name:    Documentation
       header:  Documentation
       plural:  Documentation
+    - name:    Hacktoberfest
+      header:  Hacktoberfest
+      plural:  Hacktoberfest
