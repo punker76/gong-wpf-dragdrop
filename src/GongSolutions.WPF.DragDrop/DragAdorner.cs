@@ -15,8 +15,6 @@ namespace GongSolutions.Wpf.DragDrop
             this.m_Adornment = adornment;
             this.IsHitTestVisible = false;
             this.Effects = effects;
-            // another flicker fix
-            this.UpdateLayout();
         }
 
         public Point Translation { get; private set; }
@@ -25,7 +23,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public Point MousePosition
         {
-            get { return this.m_MousePosition; }
+            get => this.m_MousePosition;
             set
             {
                 if (this.m_MousePosition != value)
@@ -121,10 +119,7 @@ namespace GongSolutions.Wpf.DragDrop
             return this.m_Adornment.DesiredSize;
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         private readonly AdornerLayer m_AdornerLayer;
         private readonly UIElement m_Adornment;
