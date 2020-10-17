@@ -98,12 +98,23 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// </summary>
         public static bool IsNotPartOfSender(object sender, MouseButtonEventArgs e)
         {
-            var visual = e.OriginalSource as Visual;
+            return IsNotPartOfSender(sender, e.OriginalSource, e.GetPosition((IInputElement)e.OriginalSource));
+        }
+
+        public static bool IsNotPartOfSender(object sender, TouchEventArgs e)
+        {
+            return IsNotPartOfSender(sender, e.OriginalSource, e.GetTouchPoint((IInputElement)e.OriginalSource).Position);
+        }
+
+        private static bool IsNotPartOfSender(object sender, object originalSource, Point position)
+        {
+            var visual = originalSource as Visual;
+
             if (visual == null)
             {
                 return false;
             }
-            var hit = VisualTreeHelper.HitTest(visual, e.GetPosition((IInputElement)visual));
+            var hit = VisualTreeHelper.HitTest(visual, position);
 
             if (hit == null)
             {
@@ -111,7 +122,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else
             {
-                var depObj = e.OriginalSource as DependencyObject;
+                var depObj = originalSource as DependencyObject;
                 if (depObj == null)
                 {
                     return false;
