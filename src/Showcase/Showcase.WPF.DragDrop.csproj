@@ -19,7 +19,9 @@
     </ItemGroup>
     <!-- reference includes -->
     <ItemGroup>
-        <PackageReference Include="MahApps.Metro.IconPacks" Version="4.*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.FeatherIcons" Version="4.*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.*" />
+        <PackageReference Include="MahApps.Metro.IconPacks.Octicons" Version="4.*" />
         <PackageReference Include="Faker.Net" Version="1.*" />
         <PackageReference Include="Fody" Version="6.*">
             <PrivateAssets>all</PrivateAssets>
