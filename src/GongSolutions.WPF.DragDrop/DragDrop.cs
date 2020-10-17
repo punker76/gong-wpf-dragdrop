@@ -573,7 +573,7 @@ namespace GongSolutions.Wpf.DragDrop
                 CreateDragAdorner(dropInfo);
             }
 
-            DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), dragInfo != null ? GetDragMouseAnchorPoint(dragInfo.VisualSource) : default(Point), ref _adornerMousePosition, ref _adornerSize);
+            DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), dragInfo != null ? GetDragMouseAnchorPoint(dragInfo.VisualSource) : default, ref _adornerMousePosition, ref _adornerSize);
 
             Scroll(dropInfo, e);
 
@@ -637,7 +637,7 @@ namespace GongSolutions.Wpf.DragDrop
                 CreateEffectAdorner(dropInfo);
             }
 
-            EffectAdorner?.Move(e.GetPosition(EffectAdorner.AdornedElement), default(Point), ref _effectAdornerMousePosition, ref _effectAdornerSize);
+            EffectAdorner?.Move(e.GetPosition(EffectAdorner.AdornedElement), default, ref _effectAdornerMousePosition, ref _effectAdornerSize);
 
             e.Effects = dropInfo.Effects;
             e.Handled = !dropInfo.NotHandled;

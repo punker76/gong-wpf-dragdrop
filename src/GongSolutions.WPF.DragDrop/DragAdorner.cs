@@ -11,7 +11,7 @@ namespace GongSolutions.Wpf.DragDrop
         {
             this.Translation = translation;
             this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
-            this.m_AdornerLayer.Add(this);
+            this.m_AdornerLayer?.Add(this);
             this.m_Adornment = adornment;
             this.IsHitTestVisible = false;
             this.Effects = effects;
@@ -64,6 +64,12 @@ namespace GongSolutions.Wpf.DragDrop
             if (this.RenderSize.Width > 0 && this.RenderSize.Height > 0)
             {
                 adornerSize = this.RenderSize;
+            }
+
+            // flickering fix
+            if (adornerSize.Width <= 0 || adornerSize.Height <= 0)
+            {
+                return;
             }
 
             var offsetX = adornerSize.Width * -anchorPoint.X;
