@@ -15,6 +15,8 @@ namespace GongSolutions.Wpf.DragDrop
             this.m_Adornment = adornment;
             this.IsHitTestVisible = false;
             this.Effects = effects;
+            // another flicker fix
+            this.UpdateLayout();
         }
 
         public Point Translation { get; private set; }
