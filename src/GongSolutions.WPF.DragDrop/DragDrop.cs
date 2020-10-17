@@ -9,12 +9,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
+using GongSolutions.WPF.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
     public static partial class DragDrop
     {
-        private static void CreateDragAdorner(DropInfo dropInfo)
+        private static void CreateDragAdorner(DropInfo dropInfo, UIElement sender)
         {
             var dragInfo = dropInfo.DragInfo;
             var template = GetDropAdornerTemplate(dropInfo.VisualTarget) ?? GetDragAdornerTemplate(dragInfo.VisualSource);
@@ -81,19 +82,19 @@ namespace GongSolutions.Wpf.DragDrop
                     adornment.Opacity = GetDefaultDragAdornerOpacity(dragInfo.VisualSource);
                 }
 
-                var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
+                var rootElement = TryGetRootElementFinder(sender).FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
                 DragAdorner = new DragAdorner(rootElement, adornment, GetDragAdornerTranslation(dragInfo.VisualSource));
             }
         }
 
-        private static void CreateEffectAdorner(DropInfo dropInfo)
+        private static void CreateEffectAdorner(DropInfo dropInfo, UIElement sender)
         {
             var dragInfo = m_DragInfo;
             var template = GetEffectAdornerTemplate(dragInfo.VisualSource, dropInfo.Effects, dropInfo.DestinationText, dropInfo.EffectText);
 
             if (template != null)
             {
-                var rootElement = RootElementFinder.FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
+                var rootElement = TryGetRootElementFinder(sender).FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
 
                 var adornment = new ContentPresenter();
                 adornment.Content = dragInfo.Data;
@@ -306,6 +307,21 @@ namespace GongSolutions.Wpf.DragDrop
                 dropHandler = GetDropHandler(sender);
             }
             return dropHandler ?? DefaultDropHandler;
+        }
+
+        /// <summary>
+        /// Gets the root element handler from the sender or uses the default implementation, if it is null.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IRootElementFinder TryGetRootElementFinder(UIElement sender)
+        {
+            IRootElementFinder rootElementFinder = null;
+            if (sender != null)
+            {
+                rootElementFinder = GetRootElementFinder(sender);
+            }
+            return rootElementFinder ?? new RootElementFinder();
         }
 
         private static void DragSourceOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -598,7 +614,7 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (DragAdorner == null && dragInfo != null)
             {
-                CreateDragAdorner(dropInfo);
+                CreateDragAdorner(dropInfo, sender as UIElement);
             }
 
             DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), dragInfo != null ? GetDragMouseAnchorPoint(dragInfo.VisualSource) : default, ref _adornerMousePosition, ref _adornerSize);
@@ -662,7 +678,7 @@ namespace GongSolutions.Wpf.DragDrop
             // Set the drag effect adorner if there is one
             if (dragInfo != null && (EffectAdorner == null || EffectAdorner.Effects != dropInfo.Effects))
             {
-                CreateEffectAdorner(dropInfo);
+                CreateEffectAdorner(dropInfo, sender as UIElement);
             }
 
             EffectAdorner?.Move(e.GetPosition(EffectAdorner.AdornedElement), default, ref _effectAdornerMousePosition, ref _effectAdornerSize);

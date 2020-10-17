@@ -1,11 +1,12 @@
-﻿using System.Windows;
+﻿using GongSolutions.WPF.DragDrop.Utilities;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
-    public static class RootElementFinder
+    public class RootElementFinder : IRootElementFinder
     {
-        public static UIElement FindRoot(DependencyObject visual)
+        public UIElement FindRoot(DependencyObject visual)
         {
             var parentWindow = Window.GetWindow(visual);
             var rootElement = parentWindow != null ? parentWindow.Content as UIElement : null;
@@ -20,6 +21,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     rootElement = visual.GetVisualAncestor<Page>() ?? visual.GetVisualAncestor<UserControl>() as UIElement;
                 }
             }
+
             //      i don't want the fu... windows forms reference
             //      if (rootElement == null) {
             //          var elementHost = m_DragInfo.VisualSource.GetVisualAncestor<ElementHost>();
