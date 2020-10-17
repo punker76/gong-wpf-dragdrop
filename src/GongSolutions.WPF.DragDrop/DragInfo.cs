@@ -33,12 +33,24 @@ namespace GongSolutions.Wpf.DragDrop
         /// </param>
         public DragInfo(object sender, MouseButtonEventArgs e)
         {
-            InitializeDragInfo(sender, e.OriginalSource, (item) => e.GetPosition(item));
+            this.InitializeDragInfo(sender, e.OriginalSource, item => e.GetPosition(item));
+            this.MouseButton = e.ChangedButton;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the DragInfo class.
+        /// </summary>
+        /// 
+        /// <param name="sender">
+        /// The sender of the mouse event that initiated the drag.
+        /// </param>
+        /// 
+        /// <param name="e">
+        /// The touch event that initiated the drag.
+        /// </param>
         public DragInfo(object sender, TouchEventArgs e)
         {
-            InitializeDragInfo(sender, e.OriginalSource, (item) => e.GetTouchPoint(item).Position);
+            this.InitializeDragInfo(sender, e.OriginalSource, item => e.GetTouchPoint(item).Position);
         }
 
         internal void RefreshSelectedItems(object sender)
@@ -116,7 +128,6 @@ namespace GongSolutions.Wpf.DragDrop
         private void InitializeDragInfo(object sender, object originalSource, Func<IInputElement, Point> getPosition)
         {
             this.Effects = DragDropEffects.None;
-            this.MouseButton = MouseButton.Left;
             this.VisualSource = sender as UIElement;
             this.DragStartPosition = getPosition(this.VisualSource);
             this.DragDropCopyKeyState = DragDrop.GetDragDropCopyKeyState(this.VisualSource);
