@@ -1,5 +1,4 @@
-﻿using GongSolutions.WPF.DragDrop.Utilities;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities

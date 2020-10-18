@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GongSolutions.Wpf.DragDrop.Icons;
 using GongSolutions.Wpf.DragDrop.Utilities;
-using GongSolutions.WPF.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
