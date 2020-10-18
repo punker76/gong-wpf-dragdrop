@@ -4,7 +4,7 @@
     <PropertyGroup>
         <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
         <Title>gong-wpf-dragdrop</Title>
-        <RootNamespace>GongSolutions.WPF.DragDrop</RootNamespace>
+        <RootNamespace>GongSolutions.Wpf.DragDrop</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <!-- reference includes -->
