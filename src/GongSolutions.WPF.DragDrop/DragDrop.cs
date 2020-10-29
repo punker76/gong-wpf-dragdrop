@@ -14,7 +14,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public static partial class DragDrop
     {
-        private static void CreateDragAdorner(DropInfo dropInfo, UIElement sender)
+        private static DragDropPreview GetDragDropPreview(DropInfo dropInfo, UIElement target)
         {
             var dragInfo = dropInfo.DragInfo;
             var template = GetDropAdornerTemplate(dropInfo.VisualTarget) ?? GetDragAdornerTemplate(dragInfo.VisualSource);
@@ -81,9 +81,17 @@ namespace GongSolutions.Wpf.DragDrop
                     adornment.Opacity = GetDefaultDragAdornerOpacity(dragInfo.VisualSource);
                 }
 
-                var rootElement = TryGetRootElementFinder(sender).FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
-                DragAdorner = new DragAdorner(rootElement, adornment, GetDragAdornerTranslation(dragInfo.VisualSource));
+                var rootElement = TryGetRootElementFinder(target).FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
+
+                var preview = new DragDropPreview(rootElement,
+                                                  adornment,
+                                                  GetDragAdornerTranslation(dragInfo.VisualSource),
+                                                  GetDragMouseAnchorPoint(dragInfo.VisualSource)
+                              ) { IsOpen = true };
+                return preview;
             }
+
+            return null;
         }
 
         private static void CreateEffectAdorner(DropInfo dropInfo, UIElement sender)
@@ -184,10 +192,10 @@ namespace GongSolutions.Wpf.DragDrop
                                      new GradientStop(Colors.AliceBlue, 1.0)
                                  };
             var gradientBrush = new LinearGradientBrush(stopCollection)
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(0, 1)
-            };
+                                {
+                                    StartPoint = new Point(0, 0),
+                                    EndPoint = new Point(0, 1)
+                                };
             borderFactory.SetValue(Panel.BackgroundProperty, gradientBrush);
             borderFactory.SetValue(Border.BorderBrushProperty, Brushes.DimGray);
             borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(3));
@@ -253,10 +261,12 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 dragHandler = GetDragHandler(dragInfo.VisualSource);
             }
+
             if (dragHandler == null && sender != null)
             {
                 dragHandler = GetDragHandler(sender);
             }
+
             return dragHandler ?? DefaultDragHandler;
         }
 
@@ -273,10 +283,12 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 dropHandler = GetDropHandler(dropInfo.VisualTarget);
             }
+
             if (dropHandler == null && sender != null)
             {
                 dropHandler = GetDropHandler(sender);
             }
+
             return dropHandler ?? DefaultDropHandler;
         }
 
@@ -292,6 +304,7 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 rootElementFinder = GetRootElementFinder(sender);
             }
+
             return rootElementFinder ?? new RootElementFinder();
         }
 
@@ -455,9 +468,10 @@ namespace GongSolutions.Wpf.DragDrop
                     m_DragInfo = null;
                     return;
                 }
+
                 if (GetCanDragWithMouseRightButton(m_DragInfo.VisualSource)
-                 && m_DragInfo.MouseButton == MouseButton.Right
-                 && e.RightButton == MouseButtonState.Released)
+                    && m_DragInfo.MouseButton == MouseButton.Right
+                    && e.RightButton == MouseButtonState.Released)
                 {
                     m_DragInfo = null;
                     return;
@@ -502,18 +516,24 @@ namespace GongSolutions.Wpf.DragDrop
                                     m_DragInfo = null; // maybe not necessary or should not set here to null
                                     return;
                                 }
+
                                 dataObject = new DataObject(dragInfo.DataFormat.Name, dragInfo.Data);
                             }
+
+                            var hookId = IntPtr.Zero;
 
                             try
                             {
                                 m_DragInProgress = true;
+                                hookId = NativeMethods.HookMouseMove(point => DragDropPreview?.Move(DragDropPreview.PlacementTarget.PointFromScreen(point)));
+
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
                                 var dragDropEffects = dragDropHandler(dragInfo.VisualSource, dataObject, dragInfo.Effects);
                                 if (dragDropEffects == DragDropEffects.None)
                                 {
                                     dragHandler.DragCancelled();
                                 }
+
                                 dragHandler.DragDropOperationFinished(dragDropEffects, dragInfo);
                             }
                             catch (Exception ex)
@@ -525,6 +545,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                             finally
                             {
+                                NativeMethods.RemoveHook(hookId);
                                 m_DragInProgress = false;
                                 m_DragInfo = null;
                             }
@@ -536,9 +557,9 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
         {
-            if (e.Action == DragAction.Cancel || e.EscapePressed)
+            if (e.Action == DragAction.Cancel || e.EscapePressed || (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton) == false && e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton) == false))
             {
-                DragAdorner = null;
+                DragDropPreview = null;
                 EffectAdorner = null;
                 DropTargetAdorner = null;
                 Mouse.OverrideCursor = null;
@@ -557,7 +578,6 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDragLeave(object sender, DragEventArgs e)
         {
-            DragAdorner = null;
             EffectAdorner = null;
             DropTargetAdorner = null;
         }
@@ -583,15 +603,13 @@ namespace GongSolutions.Wpf.DragDrop
 
             dropHandler.DragOver(dropInfo);
 
-            if (DragAdorner == null && dragInfo != null)
+            if (DragDropPreview is null && dragInfo is { })
             {
-                CreateDragAdorner(dropInfo, sender as UIElement);
-                DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), GetDragMouseAnchorPoint(dragInfo.VisualSource), ref _adornerMousePosition, ref _adornerSize);
+                DragDropPreview = GetDragDropPreview(dropInfo, sender as UIElement);
+                DragDropPreview?.Move(e.GetPosition(DragDropPreview.PlacementTarget));
             }
 
             Scroll(dropInfo, e);
-
-            DragAdorner?.Move(e.GetPosition(DragAdorner.AdornedElement), dragInfo != null ? GetDragMouseAnchorPoint(dragInfo.VisualSource) : default, ref _adornerMousePosition, ref _adornerSize);
 
             if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
                 || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
@@ -641,6 +659,7 @@ namespace GongSolutions.Wpf.DragDrop
                         {
                             adorner.Pen.Brush = adornerBrush;
                         }
+
                         adorner.DropInfo = dropInfo;
                         adorner.InvalidateVisual();
                     }
@@ -681,7 +700,7 @@ namespace GongSolutions.Wpf.DragDrop
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
 
-            DragAdorner = null;
+            DragDropPreview = null;
             EffectAdorner = null;
             DropTargetAdorner = null;
 
@@ -719,25 +738,29 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static bool GetHitTestResult(object sender, Point elementPosition)
         {
-            return (sender is TabControl) 
-                && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
-                || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
-                || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
+            return (sender is TabControl)
+                   && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
+                   || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
         }
 
-        private static DragAdorner _DragAdorner;
+        private static DragDropPreview dragDropPreview;
 
-        private static DragAdorner DragAdorner
+        private static DragDropPreview DragDropPreview
         {
-            get { return _DragAdorner; }
+            get { return dragDropPreview; }
             set
             {
-                _DragAdorner?.Detatch();
-                _DragAdorner = value;
+                if (dragDropPreview is { })
+                {
+                    dragDropPreview.SetCurrentValue(Popup.IsOpenProperty, false);
+                }
+
+                dragDropPreview = value;
             }
         }
 
@@ -768,9 +791,6 @@ namespace GongSolutions.Wpf.DragDrop
         private static DragInfo m_DragInfo;
         private static bool m_DragInProgress;
         private static object m_ClickSupressItem;
-
-        private static Point _adornerMousePosition;
-        private static Size _adornerSize;
 
         private static Point _effectAdornerMousePosition;
         private static Size _effectAdornerSize;
