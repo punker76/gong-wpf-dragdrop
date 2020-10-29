@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace GongSolutions.WPF.DragDrop.Utilities
+namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     /// <summary>
     /// Interface implemented by the root element finder.
