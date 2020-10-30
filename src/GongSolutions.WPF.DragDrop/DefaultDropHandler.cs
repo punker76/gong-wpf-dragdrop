@@ -186,7 +186,7 @@ namespace GongSolutions.Wpf.DragDrop
             var copyData = ShouldCopyData(dropInfo);
             if (!copyData)
             {
-                var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();                  
+                var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
                 if (sourceList != null)
                 {
                     forceMoveBehavior = SameObservableCollection(sourceList, destinationList);
