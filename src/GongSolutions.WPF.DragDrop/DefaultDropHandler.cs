@@ -265,7 +265,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static bool SameObservableCollection(IList collection1, IList collection2)
         {
-            return Equals(collection1, collection2) && IsObservableCollection(collection1);
+            return ReferenceEquals(collection1, collection2) && IsObservableCollection(collection1);
         }
 
         private static bool IsObservableCollection(IList collection) 
