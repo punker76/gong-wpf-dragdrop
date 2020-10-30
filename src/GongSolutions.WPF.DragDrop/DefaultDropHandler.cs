@@ -225,7 +225,7 @@ namespace GongSolutions.Wpf.DragDrop
                         {
                             obj2Insert = cloneable.Clone();
                         }
-                    }                   
+                    }
 
                     objects2Insert.Add(obj2Insert);
                     if (!cloneData && forceMoveBehavior)
