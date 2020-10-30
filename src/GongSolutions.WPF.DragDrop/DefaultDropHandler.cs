@@ -259,7 +259,6 @@ namespace GongSolutions.Wpf.DragDrop
                 System.Reflection.BindingFlags.Instance
                 | System.Reflection.BindingFlags.Public);            
             method.Invoke(list, new object[] { sourceIndex, destinationIndex });            
-
         }
 
         private static bool SameObservableCollection(IList collection1, IList collection2)
