@@ -258,7 +258,6 @@ namespace GongSolutions.Wpf.DragDrop
             var method = list.GetType().GetMethod("Move",
                 System.Reflection.BindingFlags.Instance
                 | System.Reflection.BindingFlags.Public);            
-            //method = method.MakeGenericMethod(listItemType);
             method.Invoke(list, new object[] { sourceIndex, destinationIndex });            
 
         }
