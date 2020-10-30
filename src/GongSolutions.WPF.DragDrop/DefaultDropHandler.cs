@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop.Utilities;
@@ -181,23 +183,27 @@ namespace GongSolutions.Wpf.DragDrop
 
             var destinationList = dropInfo.TargetCollection.TryGetList();
             var data = ExtractData(dropInfo.Data).OfType<object>().ToList();
-
+            bool forceMoveBehavior = false;
             var copyData = ShouldCopyData(dropInfo);
             if (!copyData)
             {
-                var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
+                var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();                  
                 if (sourceList != null)
                 {
-                    foreach (var o in data)
+                    forceMoveBehavior = SameObservableCollection(sourceList, destinationList);
+                    if (!forceMoveBehavior)
                     {
-                        var index = sourceList.IndexOf(o);
-                        if (index != -1)
+                        foreach (var o in data)
                         {
-                            sourceList.RemoveAt(index);
-                            // so, is the source list the destination list too ?
-                            if (destinationList != null && Equals(sourceList, destinationList) && index < insertIndex)
+                            var index = sourceList.IndexOf(o);
+                            if (index != -1)
                             {
-                                --insertIndex;
+                                sourceList.RemoveAt(index);
+                                // so, is the source list the destination list too ?
+                                if (destinationList != null && Equals(sourceList, destinationList) && index < insertIndex)
+                                {
+                                    --insertIndex;
+                                }
                             }
                         }
                     }
@@ -220,10 +226,22 @@ namespace GongSolutions.Wpf.DragDrop
                         {
                             obj2Insert = cloneable.Clone();
                         }
-                    }
+                    }                   
 
                     objects2Insert.Add(obj2Insert);
-                    destinationList.Insert(insertIndex++, obj2Insert);
+                    if (!cloneData && forceMoveBehavior)
+                    {
+                        int index = destinationList.IndexOf(o);
+                        if (insertIndex > index)
+                        {
+                            insertIndex--;
+                        }
+                        Move(destinationList, index, insertIndex++);
+                    }
+                    else
+                    {
+                        destinationList.Insert(insertIndex++, obj2Insert);
+                    }
                 }
 
                 var selectDroppedItems = itemsControl is TabControl || (itemsControl != null && DragDrop.GetSelectDroppedItems(itemsControl));
@@ -232,6 +250,30 @@ namespace GongSolutions.Wpf.DragDrop
                     SelectDroppedItems(dropInfo, objects2Insert);
                 }
             }
+        }
+
+        private static void Move(IList list, int sourceIndex, int destinationIndex)
+        {
+            if (!IsObservableCollection(list))
+                throw new ArgumentException("ObservableCollection<T> was expected",nameof(list));
+            var method = list.GetType().GetMethod("Move",
+                System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.Public);            
+            //method = method.MakeGenericMethod(listItemType);
+            method.Invoke(list, new object[] { sourceIndex, destinationIndex });            
+
+        }
+
+        private static bool SameObservableCollection(IList collection1, IList collection2)
+        {
+            return Equals(collection1, collection2) && IsObservableCollection(collection1);
+        }
+
+        private static bool IsObservableCollection(IList collection) 
+        {
+            return 
+                collection.GetType().IsGenericType &&
+                collection.GetType().GetGenericTypeDefinition() == typeof(ObservableCollection<>);
         }
 
         protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
