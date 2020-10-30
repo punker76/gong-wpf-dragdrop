@@ -254,7 +254,7 @@ namespace GongSolutions.Wpf.DragDrop
         private static void Move(IList list, int sourceIndex, int destinationIndex)
         {
             if (!IsObservableCollection(list))
-                throw new ArgumentException("ObservableCollection<T> was expected",nameof(list));
+                throw new ArgumentException("ObservableCollection<T> was expected", nameof(list));
             var method = list.GetType().GetMethod("Move",
                 System.Reflection.BindingFlags.Instance
                 | System.Reflection.BindingFlags.Public);            
