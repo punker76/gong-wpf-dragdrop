@@ -5,6 +5,7 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -23,44 +24,38 @@
                                Text="ListBox Bound" />
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with two ListBoxes bound to two collections of the same type. Just try drag and drop some Items from left ListBox to right ListBox." />
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with two ListBoxes bound to two collections of the same type. Just try drag and drop some Items from ListBox to ListBox." />
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
                                 <ListBox x:Name="LeftBoundListBox"
                                          Grid.Column="0"
+                                         Grid.Row="0"
                                          dd:DragDrop.CanDragWithMouseRightButton="True"
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                          ItemsSource="{Binding Data.Collection1}" />
-                                <ListBox Grid.Column="1"
+                                <ListBox x:Name="RightBoundListBox"
+                                         Grid.Column="1"
+                                         Grid.Row="0"
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                          ItemsSource="{Binding Data.Collection2}" />
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left ListBox)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="CanDragWithMouseRightButton"
-                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=LeftBoundListBox, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Column="0" Grid.Row="1" Caption="Customization (for left ListBox)" DataContext="{x:Reference LeftBoundListBox}" />
+                                <views:SettingsView Grid.Column="1" Grid.Row="1" Caption="Customization (for right ListBox)" DataContext="{x:Reference RightBoundListBox}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

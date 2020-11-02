@@ -6,8 +6,10 @@
         xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
         xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
         Title="GongSolutions.WPF.DragDrop"
-        Width="900"
-        Height="600"
+        Width="1000"
+        Height="700"
+        MinWidth="700"
+        MinHeight="600"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
