@@ -6,9 +6,9 @@ using GongSolutions.Wpf.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-    public class DragDropPreview : Popup
+    internal class DragDropPreview : Popup
     {
-        public DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint, DragDropEffects effects = DragDropEffects.None)
+        public DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
         {
             this.PlacementTarget = rootElement;
             this.AllowsTransparency = true;
@@ -22,17 +22,14 @@ namespace GongSolutions.Wpf.DragDrop
             this.IsHitTestVisible = false;
             this.AllowDrop = false;
 
+            this.Child = previewElement;
             this.Translation = translation;
             this.AnchorPoint = anchorPoint;
-            this.Effects = effects;
-            this.Child = previewElement;
         }
 
         public Point Translation { get; }
 
         public Point AnchorPoint { get; }
-
-        public DragDropEffects Effects { get; }
 
         internal void Move(Point point)
         {
