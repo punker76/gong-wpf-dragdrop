@@ -1,12 +1,11 @@
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
-    using System;
-    using System.Windows.Controls;
-    using System.Windows.Media.Imaging;
-
     public static class DragDropExtensions
     {
         /// <summary>
@@ -38,7 +37,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             return element != null && DragDrop.GetIsDropTarget(element);
         }
-        
+
         /// <summary>
         /// Gets if drop position is directly over element
         /// </summary>
@@ -53,7 +52,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
             var relativeItemPosition = element.TranslatePoint(new Point(0, 0), relativeToElement);
             var relativeDropPosition = new Point(dropPosition.X - relativeItemPosition.X, dropPosition.Y - relativeItemPosition.Y);
-            return VisualTreeHelper.GetDescendantBounds(element).Contains(relativeDropPosition); 
+            return VisualTreeHelper.GetDescendantBounds(element).Contains(relativeDropPosition);
         }
 
         /// <summary>
@@ -78,6 +77,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 factory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Top);
                 template = new DataTemplate { VisualTree = factory };
             }
+
             return template;
         }
 
@@ -90,11 +90,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 return null;
             }
 
+            var bounds = VisualTreeHelper.GetDescendantBounds(target);
+
+#if NET461 || NET46 || NET452 || NET451 || NET45
             var dpiX = DpiHelper.DpiX;
             var dpiY = DpiHelper.DpiY;
 
-            var bounds = VisualTreeHelper.GetDescendantBounds(target);
             var dpiBounds = DpiHelper.LogicalRectToDevice(bounds);
+#else
+            var dpiScale = VisualTreeHelper.GetDpi(target);
+            var dpiX = dpiScale.PixelsPerInchX;
+            var dpiY = dpiScale.PixelsPerInchY;
+
+            var dpiBounds = DpiHelper.LogicalRectToDevice(bounds, dpiScale.DpiScaleX, dpiScale.DpiScaleY);
+#endif
 
             var pixelWidth = (int)Math.Ceiling(dpiBounds.Width);
             var pixelHeight = (int)Math.Ceiling(dpiBounds.Height);
@@ -116,6 +125,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width - 1, 0));
                     ctx.PushTransform(transformGroup);
                 }
+
                 ctx.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
             }
 
