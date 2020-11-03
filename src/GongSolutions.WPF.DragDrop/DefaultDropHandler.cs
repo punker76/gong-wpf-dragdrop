@@ -95,25 +95,30 @@ namespace GongSolutions.Wpf.DragDrop
                         : itemsControl;
                 itemsParent ??= itemsControl;
 
+                (dropInfo.DragInfo.VisualSourceItem as TreeViewItem)?.ClearSelectedItems();
                 itemsParent.ClearSelectedItems();
 
-                foreach (var item in items)
+                var selectDroppedItems = dropInfo.VisualTarget is TabControl || (dropInfo.VisualTarget != null && DragDrop.GetSelectDroppedItems(dropInfo.VisualTarget));
+                if (selectDroppedItems)
                 {
-                    if (applyTemplate)
+                    foreach (var item in items)
                     {
-                        // call ApplyTemplate for TabItem in TabControl to avoid this error:
-                        //
-                        // System.Windows.Data Error: 4 : Cannot find source for binding with reference
-                        var container = itemsParent.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
-                        container?.ApplyTemplate();
+                        if (applyTemplate)
+                        {
+                            // call ApplyTemplate for TabItem in TabControl to avoid this error:
+                            //
+                            // System.Windows.Data Error: 4 : Cannot find source for binding with reference
+                            var container = itemsParent.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
+                            container?.ApplyTemplate();
+                        }
+
+                        itemsParent.SetItemSelected(item, true);
                     }
 
-                    itemsParent.SetItemSelected(item, true);
-                }
-
-                if (focusVisualTarget)
-                {
-                    itemsControl.Focus();
+                    if (focusVisualTarget)
+                    {
+                        itemsControl.Focus();
+                    }
                 }
             }
         }
@@ -197,6 +202,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                 // check for cloning
                 var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+
                 foreach (var o in data)
                 {
                     var obj2Insert = o;
@@ -226,11 +232,7 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                 }
 
-                var selectDroppedItems = dropInfo.VisualTarget is TabControl || (dropInfo.VisualTarget != null && DragDrop.GetSelectDroppedItems(dropInfo.VisualTarget));
-                if (selectDroppedItems)
-                {
-                    SelectDroppedItems(dropInfo, objects2Insert);
-                }
+                SelectDroppedItems(dropInfo, objects2Insert);
             }
         }
 
