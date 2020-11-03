@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -22,7 +21,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dropInfo">The drop information.</param>
         public static bool CanAcceptData(IDropInfo dropInfo)
         {
-            if (dropInfo == null || dropInfo.DragInfo == null)
+            if (dropInfo?.DragInfo == null)
             {
                 return false;
             }
@@ -40,37 +39,31 @@ namespace GongSolutions.Wpf.DragDrop
                 return false;
             }
 
-            if (dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
+            if (dropInfo.TargetCollection is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(dropInfo.DragInfo.SourceCollection, dropInfo.TargetCollection))
             {
                 var targetList = dropInfo.TargetCollection.TryGetList();
                 return targetList != null;
             }
-            //      else if (dropInfo.DragInfo.SourceCollection is ItemCollection) {
-            //        return false;
-            //      }
-            else if (dropInfo.TargetCollection == null)
+
+            if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data))
             {
-                return false;
+                var isChildOf = IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
+                return !isChildOf;
             }
-            else
-            {
-                if (TestCompatibleTypes(dropInfo.TargetCollection, dropInfo.Data))
-                {
-                    var isChildOf = IsChildOf(dropInfo.VisualTargetItem, dropInfo.DragInfo.VisualSourceItem);
-                    return !isChildOf;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+
+            return false;
         }
 
         public static IEnumerable ExtractData(object data)
         {
-            if (data is IEnumerable && !(data is string))
+            if (data is IEnumerable enumerable && !(enumerable is string))
             {
-                return (IEnumerable)data;
+                return enumerable;
             }
 
             return Enumerable.Repeat(data, 1);
@@ -89,28 +82,33 @@ namespace GongSolutions.Wpf.DragDrop
         {
             if (dropInfo == null) throw new ArgumentNullException(nameof(dropInfo));
             if (items == null) throw new ArgumentNullException(nameof(items));
-            var itemsControl = dropInfo.VisualTarget as ItemsControl;
-            if (itemsControl != null)
+
+            if (dropInfo.VisualTarget is ItemsControl itemsControl)
             {
                 var tvItem = dropInfo.VisualTargetItem as TreeViewItem;
                 var tvItemIsExpanded = tvItem != null && tvItem.HasHeader && tvItem.HasItems && tvItem.IsExpanded;
 
-                var itemsParent = tvItemIsExpanded ? tvItem : (dropInfo.VisualTargetItem != null ? ItemsControl.ItemsControlFromItemContainer(dropInfo.VisualTargetItem) : itemsControl);
-                itemsParent = itemsParent ?? itemsControl;
+                var itemsParent = tvItemIsExpanded
+                    ? tvItem
+                    : dropInfo.VisualTargetItem != null
+                        ? ItemsControl.ItemsControlFromItemContainer(dropInfo.VisualTargetItem)
+                        : itemsControl;
+                itemsParent ??= itemsControl;
 
                 itemsParent.ClearSelectedItems();
 
-                foreach (var obj in items)
+                foreach (var item in items)
                 {
                     if (applyTemplate)
                     {
                         // call ApplyTemplate for TabItem in TabControl to avoid this error:
                         //
                         // System.Windows.Data Error: 4 : Cannot find source for binding with reference
-                        var container = itemsParent.ItemContainerGenerator.ContainerFromItem(obj) as FrameworkElement;
+                        var container = itemsParent.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
                         container?.ApplyTemplate();
                     }
-                    itemsParent.SetItemSelected(obj, true);
+
+                    itemsParent.SetItemSelected(item, true);
                 }
 
                 if (focusVisualTarget)
@@ -127,14 +125,14 @@ namespace GongSolutions.Wpf.DragDrop
         public static bool ShouldCopyData(IDropInfo dropInfo)
         {
             // default should always the move action/effect
-            if (dropInfo == null || dropInfo.DragInfo == null)
+            if (dropInfo?.DragInfo == null)
             {
                 return false;
             }
-            var copyData = ((dropInfo.DragInfo.DragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState))
+
+            var copyData = ((dropInfo.DragInfo.DragDropCopyKeyState != default) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState))
                            || dropInfo.DragInfo.DragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton);
             copyData = copyData
-                       //&& (dropInfo.DragInfo.VisualSource != dropInfo.VisualTarget)
                        && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
                        && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
                        && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
@@ -146,7 +144,8 @@ namespace GongSolutions.Wpf.DragDrop
         {
             if (CanAcceptData(dropInfo))
             {
-                dropInfo.Effects = ShouldCopyData(dropInfo) ? DragDropEffects.Copy : DragDropEffects.Move;
+                var copyData = ShouldCopyData(dropInfo);
+                dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
                 var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
                 dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
             }
@@ -155,41 +154,23 @@ namespace GongSolutions.Wpf.DragDrop
         /// <inheritdoc />
         public virtual void Drop(IDropInfo dropInfo)
         {
-            if (dropInfo == null || dropInfo.DragInfo == null)
+            if (dropInfo?.DragInfo == null)
             {
                 return;
             }
 
-            var insertIndex = dropInfo.UnfilteredInsertIndex;
-
-            var itemsControl = dropInfo.VisualTarget as ItemsControl;
-            if (itemsControl != null)
-            {
-                var editableItems = itemsControl.Items as IEditableCollectionView;
-                if (editableItems != null)
-                {
-                    var newItemPlaceholderPosition = editableItems.NewItemPlaceholderPosition;
-                    if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtBeginning && insertIndex == 0)
-                    {
-                        ++insertIndex;
-                    }
-                    else if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtEnd && insertIndex == itemsControl.Items.Count)
-                    {
-                        --insertIndex;
-                    }
-                }
-            }
-
+            var insertIndex = GetInsertIndex(dropInfo);
             var destinationList = dropInfo.TargetCollection.TryGetList();
             var data = ExtractData(dropInfo.Data).OfType<object>().ToList();
             bool forceMoveBehavior = false;
+
             var copyData = ShouldCopyData(dropInfo);
             if (!copyData)
             {
                 var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
                 if (sourceList != null)
                 {
-                    forceMoveBehavior = SameObservableCollection(sourceList, destinationList);
+                    forceMoveBehavior = sourceList.IsSameObservableCollection(destinationList);
                     if (!forceMoveBehavior)
                     {
                         foreach (var o in data)
@@ -198,8 +179,9 @@ namespace GongSolutions.Wpf.DragDrop
                             if (index != -1)
                             {
                                 sourceList.RemoveAt(index);
-                                // so, is the source list the destination list too ?
-                                if (destinationList != null && Equals(sourceList, destinationList) && index < insertIndex)
+
+                                // If source is destination too fix the insertion index
+                                if (destinationList != null && ReferenceEquals(sourceList, destinationList) && index < insertIndex)
                                 {
                                     --insertIndex;
                                 }
@@ -220,21 +202,22 @@ namespace GongSolutions.Wpf.DragDrop
                     var obj2Insert = o;
                     if (cloneData)
                     {
-                        var cloneable = o as ICloneable;
-                        if (cloneable != null)
+                        if (o is ICloneable cloneable)
                         {
                             obj2Insert = cloneable.Clone();
                         }
                     }
 
                     objects2Insert.Add(obj2Insert);
+
                     if (!cloneData && forceMoveBehavior)
                     {
-                        int index = destinationList.IndexOf(o);
+                        var index = destinationList.IndexOf(o);
                         if (insertIndex > index)
                         {
                             insertIndex--;
                         }
+
                         Move(destinationList, index, insertIndex++);
                     }
                     else
@@ -243,7 +226,7 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                 }
 
-                var selectDroppedItems = itemsControl is TabControl || (itemsControl != null && DragDrop.GetSelectDroppedItems(itemsControl));
+                var selectDroppedItems = dropInfo.VisualTarget is TabControl || (dropInfo.VisualTarget != null && DragDrop.GetSelectDroppedItems(dropInfo.VisualTarget));
                 if (selectDroppedItems)
                 {
                     SelectDroppedItems(dropInfo, objects2Insert);
@@ -251,26 +234,38 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static void Move(IList list, int sourceIndex, int destinationIndex)
+        protected static int GetInsertIndex(IDropInfo dropInfo)
         {
-            if (!IsObservableCollection(list))
+            var insertIndex = dropInfo.UnfilteredInsertIndex;
+
+            if (dropInfo.VisualTarget is ItemsControl itemsControl)
+            {
+                if (itemsControl.Items is IEditableCollectionView editableItems)
+                {
+                    var newItemPlaceholderPosition = editableItems.NewItemPlaceholderPosition;
+                    if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtBeginning && insertIndex == 0)
+                    {
+                        ++insertIndex;
+                    }
+                    else if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtEnd && insertIndex == itemsControl.Items.Count)
+                    {
+                        --insertIndex;
+                    }
+                }
+            }
+
+            return insertIndex;
+        }
+
+        protected static void Move(IList list, int sourceIndex, int destinationIndex)
+        {
+            if (!list.IsObservableCollection())
+            {
                 throw new ArgumentException("ObservableCollection<T> was expected", nameof(list));
-            var method = list.GetType().GetMethod("Move",
-                System.Reflection.BindingFlags.Instance
-                | System.Reflection.BindingFlags.Public);            
-            method.Invoke(list, new object[] { sourceIndex, destinationIndex });            
-        }
+            }
 
-        private static bool SameObservableCollection(IList collection1, IList collection2)
-        {
-            return ReferenceEquals(collection1, collection2) && IsObservableCollection(collection1);
-        }
-
-        private static bool IsObservableCollection(IList collection) 
-        {
-            return 
-                collection.GetType().IsGenericType &&
-                collection.GetType().GetGenericTypeDefinition() == typeof(ObservableCollection<>);
+            var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            method.Invoke(list, new object[] { sourceIndex, destinationIndex });
         }
 
         protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
