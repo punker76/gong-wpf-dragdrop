@@ -412,7 +412,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceUp(object sender, Point elementPosition)
         {
-            if ((sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition))
+            if (sender is TabControl && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition))
             {
                 _dragInfo = null;
                 _clickSupressItem = null;
@@ -423,10 +423,9 @@ namespace GongSolutions.Wpf.DragDrop
 
             // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
             // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
-            var itemsControl = sender as ItemsControl;
-            if (itemsControl != null && dragInfo != null && _clickSupressItem != null && _clickSupressItem == dragInfo.SourceItem)
+            if (sender is ItemsControl itemsControl && dragInfo != null && _clickSupressItem != null && _clickSupressItem == dragInfo.SourceItem)
             {
-                if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+                if ((Keyboard.Modifiers & ModifierKeys.Control) != 0 || itemsControl is ListBox listBox && listBox.SelectionMode == SelectionMode.Multiple)
                 {
                     itemsControl.SetItemSelected(dragInfo.SourceItem, false);
                 }
