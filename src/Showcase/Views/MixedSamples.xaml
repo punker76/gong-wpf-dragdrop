@@ -48,12 +48,13 @@
                         <DockPanel LastChildFill="True">
                             <TextBlock DockPanel.Dock="Top"
                                        Style="{StaticResource DefaultTextBlockStyle}"
-                                       Text="ListBox" />
+                                       Text="ListBox -- drag preview has sorted items" />
                             <ListBox Height="Auto"
                                      dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.DragSortHandler="{Binding}"
                                      ItemsSource="{Binding Data.Collection1}" />
                         </DockPanel>
 

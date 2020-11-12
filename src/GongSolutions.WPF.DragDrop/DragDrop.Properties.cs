@@ -1148,5 +1148,29 @@ namespace GongSolutions.Wpf.DragDrop
         {
             target.SetValue(RootElementFinderProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets the handler for the dragged items sorter
+        /// </summary>
+        public static readonly DependencyProperty DragSortHandlerProperty
+            = DependencyProperty.RegisterAttached("DragSortHandler",
+                                                typeof(IDragEnumerableSorter),
+                                                typeof(DragDrop));
+
+        /// <summary>
+        /// Get the dragged items sorter handler
+        /// </summary>
+        public static IDragEnumerableSorter GetDragSortHandler(UIElement target)
+        {
+            return (IDragEnumerableSorter)target.GetValue(DragSortHandlerProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the dragged items sorter
+        /// </summary>
+        public static void SetDragSortHandler(UIElement target, IDragEnumerableSorter value)
+        {
+            target.SetValue(DragSortHandlerProperty, value);
+        }
     }
 }
