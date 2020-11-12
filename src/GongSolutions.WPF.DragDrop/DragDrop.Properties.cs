@@ -1152,8 +1152,8 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets or sets the handler for the dragged items sorter
         /// </summary>
-        public static readonly DependencyProperty DragSortHandlerProperty
-            = DependencyProperty.RegisterAttached("DragSortHandler",
+        public static readonly DependencyProperty DragPreviewSortHandlerProperty
+            = DependencyProperty.RegisterAttached("DragPreviewSortHandler",
                                                   typeof(IDragPreviewItemsSorter),
                                                   typeof(DragDrop),
                                                   new PropertyMetadata(null));
@@ -1161,17 +1161,17 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Get the dragged items sorter handler
         /// </summary>
-        public static IDragPreviewItemsSorter GetDragSortHandler(UIElement target)
+        public static IDragPreviewItemsSorter GetDragPreviewSortHandler(UIElement target)
         {
-            return (IDragPreviewItemsSorter)target.GetValue(DragSortHandlerProperty);
+            return (IDragPreviewItemsSorter)target.GetValue(DragPreviewSortHandlerProperty);
         }
 
         /// <summary>
         /// Sets the handler for the dragged items sorter
         /// </summary>
-        public static void SetDragSortHandler(UIElement target, IDragPreviewItemsSorter value)
+        public static void SetDragPreviewSortHandler(UIElement target, IDragPreviewItemsSorter value)
         {
-            target.SetValue(DragSortHandlerProperty, value);
+            target.SetValue(DragPreviewSortHandlerProperty, value);
         }
     }
 }

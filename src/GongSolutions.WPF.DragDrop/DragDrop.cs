@@ -312,18 +312,19 @@ namespace GongSolutions.Wpf.DragDrop
             return rootElementFinder ?? new RootElementFinder();
         }
 
-        private static IDragPreviewItemsSorter TryGetDragPreviewSorter(IDragInfo info, UIElement sender)
+        private static IDragPreviewItemsSorter TryGetDragPreviewSorter(IDragInfo dragInfo, UIElement sender)
         {
             IDragPreviewItemsSorter handler = null;
-            if (info != null && info.VisualSource != null)
+            if (dragInfo != null && dragInfo.VisualSource != null)
             {
-                handler = (IDragPreviewItemsSorter)info.VisualSource.GetValue(DragDrop.DragSortHandlerProperty);
+                handler = GetDragPreviewSortHandler(dragInfo.VisualSource);
             }
             if (handler == null && sender != null)
             {
-                handler = (IDragPreviewItemsSorter)sender.GetValue(DragDrop.DragSortHandlerProperty);
+                handler = GetDragPreviewSortHandler(sender);
             }
-            return handler ?? null;
+
+            return handler;
         }
 
         private static void DragSourceOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
