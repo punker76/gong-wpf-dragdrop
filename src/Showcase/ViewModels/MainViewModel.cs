@@ -21,7 +21,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
         public string Name { get; set; }
     }
 
-    public class MainViewModel : ViewModelBase, IDragEnumerableSorter
+    public class MainViewModel : ViewModelBase, IDragPreviewItemsSorter
     {
         private SampleData _data;
         private ICommand _openIssueCommand;
