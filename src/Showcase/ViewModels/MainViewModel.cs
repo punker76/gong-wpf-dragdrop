@@ -5,8 +5,11 @@ using Showcase.WPF.DragDrop.Models;
 
 namespace Showcase.WPF.DragDrop.ViewModels
 {
+    using GongSolutions.Wpf.DragDrop;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     public class ListMember : List<SubMember>
     {
@@ -18,7 +21,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
         public string Name { get; set; }
     }
 
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDragPreviewItemsSorter, IDropTargetItemsSorter
     {
         private SampleData _data;
         private ICommand _openIssueCommand;
@@ -138,6 +141,24 @@ namespace Showcase.WPF.DragDrop.ViewModels
                 _filterCollectionCommand = value;
                 OnPropertyChanged();
             }
+        }
+
+        public IEnumerable SortDropTargetItems(IEnumerable items)
+        {
+            return SortDragPreviewItems(items);
+        }
+
+        public IEnumerable SortDragPreviewItems(IEnumerable items)
+        {
+            var allItems = items.Cast<object>().ToList();
+            if (allItems.Count > 0)
+            {
+                if (allItems[0] is ItemModel)
+                {
+                    return allItems.OrderBy(x => ((ItemModel)x).Index);
+                }
+            }
+            return items;
         }
     }
 }

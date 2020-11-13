@@ -1148,5 +1148,55 @@ namespace GongSolutions.Wpf.DragDrop
         {
             target.SetValue(RootElementFinderProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets the handler for the dragged preview items sorter
+        /// </summary>
+        public static readonly DependencyProperty DragPreviewItemsSorterProperty
+            = DependencyProperty.RegisterAttached("DragPreviewItemsSorter",
+                                                  typeof(IDragPreviewItemsSorter),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get the drag preview items sorter handler
+        /// </summary>
+        public static IDragPreviewItemsSorter GetDragPreviewItemsSorter(UIElement target)
+        {
+            return (IDragPreviewItemsSorter)target.GetValue(DragPreviewItemsSorterProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the drag preview items sorter
+        /// </summary>
+        public static void SetDragPreviewItemsSorter(UIElement target, IDragPreviewItemsSorter value)
+        {
+            target.SetValue(DragPreviewItemsSorterProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the handler for the drop target items sorter
+        /// </summary>
+        public static readonly DependencyProperty DropTargetItemsSorterProperty
+            = DependencyProperty.RegisterAttached("DropTargetItemsSorter",
+                                                  typeof(IDropTargetItemsSorter),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get the drop target items sorter handler
+        /// </summary>
+        public static IDropTargetItemsSorter GetDropTargetItemsSorter(UIElement target)
+        {
+            return (IDropTargetItemsSorter)target.GetValue(DropTargetItemsSorterProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the drop target items sorter
+        /// </summary>
+        public static void SetDropTargetItemsSorter(UIElement target, IDropTargetItemsSorter value)
+        {
+            target.SetValue(DropTargetItemsSorterProperty, value);
+        }
     }
 }
