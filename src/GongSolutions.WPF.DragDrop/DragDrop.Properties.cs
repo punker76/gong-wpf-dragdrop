@@ -1159,7 +1159,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   new PropertyMetadata(null));
 
         /// <summary>
-        /// Get the dragged preview items sorter handler
+        /// Get the drag preview items sorter handler
         /// </summary>
         public static IDragPreviewItemsSorter GetDragPreviewItemsSorter(UIElement target)
         {
@@ -1167,7 +1167,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets the handler for the dragged preview items sorter
+        /// Sets the handler for the drag preview items sorter
         /// </summary>
         public static void SetDragPreviewItemsSorter(UIElement target, IDragPreviewItemsSorter value)
         {
@@ -1175,7 +1175,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or sets the handler for the dragged preview items sorter
+        /// Gets or sets the handler for the drop target items sorter
         /// </summary>
         public static readonly DependencyProperty DropTargetItemsSorterProperty
             = DependencyProperty.RegisterAttached("DropTargetItemsSorter",

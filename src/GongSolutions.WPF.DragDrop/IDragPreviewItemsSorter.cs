@@ -3,7 +3,7 @@
 namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
-    /// Interface for objects that sort an IEnumerable of drag drop items
+    /// Interface for objects that sort an IEnumerable of drag preview items
     /// </summary>
     public interface IDragPreviewItemsSorter
     {
