@@ -61,7 +61,7 @@
                         <DockPanel LastChildFill="True">
                             <TextBlock DockPanel.Dock="Top"
                                        Style="{StaticResource DefaultTextBlockStyle}"
-                                       Text="ListView" />
+                                       Text="ListView -- dropped items are added in sorted order" />
                             <ListView Height="Auto"
                                       dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
                                       dd:DragDrop.IsDragSource="True"
