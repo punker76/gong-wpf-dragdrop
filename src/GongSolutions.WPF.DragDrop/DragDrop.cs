@@ -40,7 +40,7 @@ namespace GongSolutions.Wpf.DragDrop
                         itemsControl.ItemsSource = (IEnumerable)dragInfo.Data;
 
                         // sort items if necessary before creating the preview
-                        var sorter = TryGetDragPreviewSorter(dragInfo, target);
+                        var sorter = TryGetDragPreviewItemsSorter(dragInfo, target);
                         if (sorter != null)
                         {
                             itemsControl.ItemsSource = sorter.SortDragDropItems(itemsControl.ItemsSource);
@@ -312,16 +312,16 @@ namespace GongSolutions.Wpf.DragDrop
             return rootElementFinder ?? new RootElementFinder();
         }
 
-        private static IDragPreviewItemsSorter TryGetDragPreviewSorter(IDragInfo dragInfo, UIElement sender)
+        private static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
         {
             IDragPreviewItemsSorter handler = null;
             if (dragInfo != null && dragInfo.VisualSource != null)
             {
-                handler = GetDragPreviewSortHandler(dragInfo.VisualSource);
+                handler = GetDragPreviewItemsSorter(dragInfo.VisualSource);
             }
             if (handler == null && sender != null)
             {
-                handler = GetDragPreviewSortHandler(sender);
+                handler = GetDragPreviewItemsSorter(sender);
             }
 
             return handler;
