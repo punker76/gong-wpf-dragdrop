@@ -43,7 +43,15 @@ namespace GongSolutions.Wpf.DragDrop
                         var sorter = TryGetDragPreviewItemsSorter(dragInfo, target);
                         if (sorter != null)
                         {
-                            itemsControl.ItemsSource = sorter.SortDragPreviewItems(itemsControl.ItemsSource);
+                            try
+                            {
+                                itemsControl.ItemsSource = sorter.SortDragPreviewItems(itemsControl.ItemsSource);
+                            }
+                            catch 
+                            { 
+                                // Silently ignore any sorting exceptions -- better to let the drag & drop continue
+                                // as sorting is not required in order to finish the drag & drop operation
+                            }
                         }
                         
                         itemsControl.ItemTemplate = template;
@@ -775,7 +783,15 @@ namespace GongSolutions.Wpf.DragDrop
             dropHandler.DragOver(dropInfo);
             if (dropTargetSorterHandler != null && dropInfo.Data is IEnumerable enumerable)
             {
-                dropInfo.Data = dropTargetSorterHandler.SortDropTargetItems(enumerable);
+                try
+                {
+                    dropInfo.Data = dropTargetSorterHandler.SortDropTargetItems(enumerable);
+                }
+                catch
+                {
+                    // Silently ignore any sorting exceptions -- better to let the drag & drop continue
+                    // as sorting is not required in order to finish the drag & drop operation
+                }
             }
             dropHandler.Drop(dropInfo);
             dragHandler.Dropped(dropInfo);
