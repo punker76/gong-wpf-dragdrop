@@ -43,7 +43,7 @@ namespace GongSolutions.Wpf.DragDrop
                         var sorter = TryGetDragPreviewItemsSorter(dragInfo, target);
                         if (sorter != null)
                         {
-                            itemsControl.ItemsSource = sorter.SortDragDropItems(itemsControl.ItemsSource);
+                            itemsControl.ItemsSource = sorter.SortDragPreviewItems(itemsControl.ItemsSource);
                         }
                         
                         itemsControl.ItemTemplate = template;
@@ -322,6 +322,21 @@ namespace GongSolutions.Wpf.DragDrop
             if (handler == null && sender != null)
             {
                 handler = GetDragPreviewItemsSorter(sender);
+            }
+
+            return handler;
+        }
+
+        private static IDropTargetItemsSorter TryGetDropTargetItemsSorter(DropInfo dropInfo, UIElement sender)
+        {
+            IDropTargetItemsSorter handler = null;
+            if (dropInfo != null && dropInfo.VisualTarget != null)
+            {
+                handler = GetDropTargetItemsSorter(dropInfo.VisualTarget);
+            }
+            if (handler == null && sender != null)
+            {
+                handler = GetDropTargetItemsSorter(sender);
             }
 
             return handler;
@@ -751,12 +766,17 @@ namespace GongSolutions.Wpf.DragDrop
             var dropInfo = new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
+            var dropTargetSorterHandler = TryGetDropTargetItemsSorter(dropInfo, sender as UIElement);
 
             DragDropPreview = null;
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
 
             dropHandler.DragOver(dropInfo);
+            if (dropTargetSorterHandler != null && dropInfo.Data is IEnumerable enumerable)
+            {
+                dropInfo.Data = dropTargetSorterHandler.SortDropTargetItems(enumerable);
+            }
             dropHandler.Drop(dropInfo);
             dragHandler.Dropped(dropInfo);
 

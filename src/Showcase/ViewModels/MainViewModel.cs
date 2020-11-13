@@ -21,7 +21,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
         public string Name { get; set; }
     }
 
-    public class MainViewModel : ViewModelBase, IDragPreviewItemsSorter
+    public class MainViewModel : ViewModelBase, IDragPreviewItemsSorter, IDropTargetItemsSorter
     {
         private SampleData _data;
         private ICommand _openIssueCommand;
@@ -143,7 +143,12 @@ namespace Showcase.WPF.DragDrop.ViewModels
             }
         }
 
-        public IEnumerable SortDragDropItems(IEnumerable items)
+        public IEnumerable SortDropTargetItems(IEnumerable items)
+        {
+            return SortDragPreviewItems(items);
+        }
+
+        public IEnumerable SortDragPreviewItems(IEnumerable items)
         {
             var allItems = items.Cast<object>().ToList();
             if (allItems.Count > 0)

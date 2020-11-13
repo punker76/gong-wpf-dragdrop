@@ -1173,5 +1173,30 @@ namespace GongSolutions.Wpf.DragDrop
         {
             target.SetValue(DragPreviewItemsSorterProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets the handler for the dragged preview items sorter
+        /// </summary>
+        public static readonly DependencyProperty DropTargetItemsSorterProperty
+            = DependencyProperty.RegisterAttached("DropTargetItemsSorter",
+                                                  typeof(IDropTargetItemsSorter),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get the drop target items sorter handler
+        /// </summary>
+        public static IDropTargetItemsSorter GetDropTargetItemsSorter(UIElement target)
+        {
+            return (IDropTargetItemsSorter)target.GetValue(DropTargetItemsSorterProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the drop target items sorter
+        /// </summary>
+        public static void SetDropTargetItemsSorter(UIElement target, IDropTargetItemsSorter value)
+        {
+            target.SetValue(DropTargetItemsSorterProperty, value);
+        }
     }
 }

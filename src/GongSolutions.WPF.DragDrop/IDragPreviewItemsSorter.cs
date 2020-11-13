@@ -8,10 +8,10 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDragPreviewItemsSorter
     {
         /// <summary>
-        /// Sort the IEnumerable of items
+        /// Sort the IEnumerable of items that are being shown in a drag preview
         /// </summary>
         /// <param name="items">Enumerable of dragged items to sort</param>
         /// <returns>The sorted list of dragged items</returns>
-        IEnumerable SortDragDropItems(IEnumerable items);
+        IEnumerable SortDragPreviewItems(IEnumerable items);
     }
 }
