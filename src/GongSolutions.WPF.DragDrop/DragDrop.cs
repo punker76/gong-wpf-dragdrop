@@ -35,7 +35,8 @@ namespace GongSolutions.Wpf.DragDrop
                 if (dragInfo.Data is IEnumerable items && !(items is string))
                 {
                     var itemsCount = items.Cast<object>().Count();
-                    if (!useDefaultDragAdorner && itemsCount <= 10)
+                    var maxItemsCount = TryGetDragPreviewMaxItemsCount(dragInfo, target);
+                    if (!useDefaultDragAdorner && itemsCount <= maxItemsCount)
                     {
                         var itemsControl = new ItemsControl();
 
@@ -300,6 +301,17 @@ namespace GongSolutions.Wpf.DragDrop
             var rootElementFinder = sender != null ? GetRootElementFinder(sender) : null;
 
             return rootElementFinder ?? DefaultRootElementFinder;
+        }
+
+        private static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)
+        {
+            var itemsCount = dragInfo?.VisualSource != null ? GetDragPreviewMaxItemsCount(dragInfo.VisualSource) : -1;
+            if (itemsCount < 0 && sender != null)
+            {
+                itemsCount = GetDragPreviewMaxItemsCount(sender);
+            }
+
+            return itemsCount < 0 || itemsCount >= int.MaxValue ? 10 : itemsCount;
         }
 
         private static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
