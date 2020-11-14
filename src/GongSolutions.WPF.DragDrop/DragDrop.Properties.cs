@@ -342,6 +342,11 @@ namespace GongSolutions.Wpf.DragDrop
         public static IDropTarget DefaultDropHandler { get; } = new DefaultDropHandler();
 
         /// <summary>
+        /// Gets the default RootElementFinder.
+        /// </summary>
+        public static IRootElementFinder DefaultRootElementFinder { get; } = new RootElementFinder();
+
+        /// <summary>
         /// Gets or Sets the handler for the drag action.
         /// </summary>
         public static readonly DependencyProperty DragHandlerProperty
