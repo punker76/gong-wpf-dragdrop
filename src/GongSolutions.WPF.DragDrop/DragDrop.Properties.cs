@@ -195,6 +195,7 @@ namespace GongSolutions.Wpf.DragDrop
                         uiElement.PreviewDrop += DropTargetOnPreviewDrop;
                         uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
                     }
+
                     break;
 
                 case EventType.Tunneled:
@@ -254,6 +255,7 @@ namespace GongSolutions.Wpf.DragDrop
                         uiElement.PreviewDrop -= DropTargetOnPreviewDrop;
                         uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
                     }
+
                     break;
 
                 case EventType.Tunneled:
@@ -1152,6 +1154,36 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetRootElementFinder(UIElement target, IRootElementFinder value)
         {
             target.SetValue(RootElementFinderProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static readonly DependencyProperty DragPreviewMaxItemsCountProperty
+            = DependencyProperty.RegisterAttached("DragPreviewMaxItemsCount",
+                                                  typeof(int),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(10, null, (d, baseValue) =>
+                                                      {
+                                                          var itemsCount = (int)baseValue;
+                                                          // Checking for MaxValue is maybe not necessary
+                                                          return itemsCount < 0 ? 0 : itemsCount >= int.MaxValue ? int.MaxValue : itemsCount;
+                                                      }));
+
+        /// <summary>
+        /// Gets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static int GetDragPreviewMaxItemsCount(UIElement target)
+        {
+            return (int)target.GetValue(DragPreviewMaxItemsCountProperty);
+        }
+
+        /// <summary>
+        /// Sets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static void SetDragPreviewMaxItemsCount(UIElement target, int value)
+        {
+            target.SetValue(DragPreviewMaxItemsCountProperty, value);
         }
 
         /// <summary>
