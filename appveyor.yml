@@ -16,16 +16,19 @@ environment:
     secure: BSPdW2TgnQtoQXXbeDECug==
 
 skip_tags: true
-image: Visual Studio 2019
+image: Visual Studio 2019 Preview
 test: off
 
 install:
-  #- cinst dotnetcore-sdk --version=3.1.100
+  #- cinst dotnetcore-sdk --version=5.0.100
+  - ps: Invoke-WebRequest 'https://dotnet.microsoft.com/download/dotnet-core/scripts/v1/dotnet-install.ps1' -OutFile 'dotnet-install.ps1'
+  - ps: ./dotnet-install.ps1 -Version 5.0.100 -InstallDir "C:\Program Files\dotnet"
 
 pull_requests:
   do_not_increment_build_number: false
 
 build_script:
+  - ps: dotnet --list-sdks
   - ps: .\build.ps1 -target appveyor
 
 artifacts:
