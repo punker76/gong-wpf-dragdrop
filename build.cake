@@ -372,8 +372,9 @@ Task("CreateRelease")
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
-    .IsDependentOn("Build");
-    // .IsDependentOn("dotnetBuild") // doesn't work with Fody
+    //.IsDependentOn("Build")
+    .IsDependentOn("dotnetBuild") // doesn't work with Fody
+    ;
 
 Task("appveyor")
     .IsDependentOn("Default")
