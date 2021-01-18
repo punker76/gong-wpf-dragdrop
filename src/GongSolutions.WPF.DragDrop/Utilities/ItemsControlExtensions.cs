@@ -268,6 +268,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0)
             {
                 var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                if (itemsPanel is UniformGrid uniformGrid)
+                {
+                    return uniformGrid.Columns == 1 ? Orientation.Vertical : Orientation.Horizontal;
+                }
+
                 var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
                 if (orientationProperty != null)
                 {
