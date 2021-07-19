@@ -1,16 +1,25 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <IsBuildingWpfTempProj Condition="$(MSBuildProjectName.Contains('_wpftmp')) != 'true'">false</IsBuildingWpfTempProj>
+        <IsBuildingWpfTempProj Condition="$(MSBuildProjectName.Contains('_wpftmp')) == 'true'">true</IsBuildingWpfTempProj>
+    </PropertyGroup>
+
     <!-- Project properties -->
     <PropertyGroup>
         <TargetFrameworks>net45;net46;net462;net47;netcoreapp3.0;netcoreapp3.1;net5-windows</TargetFrameworks>
         <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <AutoGenerateBindingRedirects Condition=" $(TargetFramework.StartsWith('net4')) ">true</AutoGenerateBindingRedirects>
-        <LangVersion>8.0</LangVersion>
+        <LangVersion>latest</LangVersion>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NoError>$(NoError);CS1591</NoError>
         <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants Condition="'$(TargetFramework)' == 'net5.0-windows'">$(DefineConstants);NET5_0_OR_GREATER</DefineConstants>
     </PropertyGroup>
 
     <!-- SourceLink -->
@@ -28,8 +37,8 @@
 
     <!-- Add the references for all projects and targets -->
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2020.*" PrivateAssets="All" />
-        <PackageReference Include="WpfAnalyzers" Version="2.4.*" PrivateAssets="All" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.*" PrivateAssets="All" IncludeAssets="build;compile" />
+        <PackageReference Include="WpfAnalyzers" Version="3.5.*" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
