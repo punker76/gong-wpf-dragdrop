@@ -517,29 +517,31 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
                 if (itemsControl is DataGrid dataGrid)
                 {
-                    DataGridCell cell = dataGrid.ItemContainerGenerator.ContainerFromItem(item)?.GetVisualDescendent<DataGridCell>();
+                    DataGridCellInfo? currentAnchorCellInfo = DataGridSelectionAnchorFieldInfo.GetValue(dataGrid) as DataGridCellInfo?;
 
-                    if (cell != null)
+                    if (itemSelected)
                     {
-                        DataGridCellInfo cellInfo = new DataGridCellInfo(cell);
+                        DataGridCell cell = dataGrid.ItemContainerGenerator.ContainerFromItem(item)?.GetVisualDescendent<DataGridCell>();
 
-                        if (itemSelected)
+                        if (cell != null)
                         {
-                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, cellInfo);
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, new DataGridCellInfo(cell));
                         }
-                        else if (dataGrid.SelectedCells.Any())
+                    }
+                    else if (dataGrid.SelectedItems.Count > 0 && dataGrid.SelectedCells.Count > 0)
+                    {
+                        // We've deselected a row but there are still selected cells.
+                        // If the cell anchor needs updating, fall back to the last valid cell, if possible.
+                        if (    currentAnchorCellInfo == null
+                            ||  !currentAnchorCellInfo.Value.IsValid
+                            ||  !dataGrid.SelectedCells.Contains(currentAnchorCellInfo.Value))
                         {
-                            // We've deselected a row but there are still selected cells.
-                            // If we need to, fall back to the last valid cell, if possible.
-                            if (!cellInfo.IsValid || !dataGrid.SelectedCells.Contains(cellInfo))
-                            {
-                                DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().LastOrDefault(sc => sc.Value.IsValid));
-                            }
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().LastOrDefault(sc => sc.Value.IsValid));
                         }
-                        else
-                        {
-                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
-                        }
+                    }
+                    else if (dataGrid.SelectedItems.Count == 0 || (!currentAnchorCellInfo?.IsValid ?? true))
+                    {
+                        DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
                     }
                 }
             }
