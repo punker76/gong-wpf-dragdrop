@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -310,17 +310,33 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             if (itemsControl is MultiSelector multiSelector)
             {
-                multiSelector.SetCurrentValue(Selector.SelectedItemProperty, null);
+                object[] itemsToDeselect = multiSelector.SelectedItems.Cast<object>().Where(si => si != item).ToArray();
+
+                for (int i = 0; i < itemsToDeselect.Length; ++i)
+                {
+                    multiSelector.SelectedItems.Remove(itemsToDeselect[i]);
+                }
+
                 multiSelector.SetCurrentValue(Selector.SelectedItemProperty, item);
             }
             else if (itemsControl is ListBox listBox)
             {
                 var selectionMode = listBox.SelectionMode;
+
+                if (selectionMode != SelectionMode.Single)
+                {
+                    object[] itemsToDeselect = listBox.SelectedItems.Cast<object>().Where(si => si != item).ToArray();
+
+                    for (int i = 0; i < itemsToDeselect.Length; ++i)
+                    {
+                        listBox.SelectedItems.Remove(itemsToDeselect[i]);
+                    }
+                }
+
                 try
                 {
                     // change SelectionMode for UpdateAnchorAndActionItem
                     listBox.SetCurrentValue(ListBox.SelectionModeProperty, SelectionMode.Single);
-                    listBox.SetCurrentValue(Selector.SelectedItemProperty, null);
                     listBox.SetCurrentValue(Selector.SelectedItemProperty, item);
                 }
                 finally
