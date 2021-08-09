@@ -448,6 +448,81 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="UniformGrid">
+                <DockPanel LastChildFill="True">
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        Style="{StaticResource SampleHeaderTextBlockStyle}"
+                        Text="UniformGrid" />
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates insert drop target adorner in ListBox with UniformGrid panel" />
+                            <ListBox
+                                Height="NaN"
+                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                dd:DragDrop.IsDragSource="True"
+                                dd:DragDrop.IsDropTarget="True"
+                                dd:DragDrop.UseDefaultDragAdorner="True">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid
+                                            HorizontalAlignment="Center"
+                                            IsItemsHost="True"
+                                            Rows="1" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem Height="32" Content="Horizontal Item 1" />
+                                <ListBoxItem Content="Horizontal Item 2" />
+                                <ListBoxItem Content="Horizontal Item 3" />
+                            </ListBox>
+                            <ListBox
+                                Height="NaN"
+                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                dd:DragDrop.IsDragSource="True"
+                                dd:DragDrop.IsDropTarget="True"
+                                dd:DragDrop.UseDefaultDragAdorner="True">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid
+                                            VerticalAlignment="Center"
+                                            Columns="1"
+                                            IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem Height="32" Content="Vertical Item 1" />
+                                <ListBoxItem Content="Vertical Item 2" />
+                                <ListBoxItem Content="Vertical Item 3" />
+                            </ListBox>
+                            <ListBox
+                                Height="NaN"
+                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                dd:DragDrop.IsDragSource="True"
+                                dd:DragDrop.IsDropTarget="True"
+                                dd:DragDrop.UseDefaultDragAdorner="True">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid
+                                            VerticalAlignment="Center"
+                                            Columns="3"
+                                            FirstColumn="1"
+                                            IsItemsHost="True"
+                                            Rows="3" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem Height="50" Content="Item 1" />
+                                <ListBoxItem Content="Item 2" />
+                                <ListBoxItem Content="Item 3" />
+                                <ListBoxItem Content="Item 4" />
+                                <ListBoxItem Content="Item 5" />
+                                <ListBoxItem Content="Item 6" />
+                                <ListBoxItem Content="Item 7" />
+                                <ListBoxItem Content="Item 8" />
+                            </ListBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
 
     </Grid>
