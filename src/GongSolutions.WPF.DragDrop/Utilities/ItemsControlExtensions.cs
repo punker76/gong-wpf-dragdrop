@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -13,6 +13,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     public static class ItemsControlExtensions
     {
+        private static FieldInfo DataGridSelectionAnchorFieldInfo { get; } = typeof(DataGrid).GetField("_selectionAnchor", BindingFlags.Instance | BindingFlags.NonPublic);
+
         public static CollectionViewGroup FindGroup(this ItemsControl itemsControl, Point position)
         {
             if (itemsControl.Items.Groups == null || itemsControl.Items.Groups.Count == 0)
@@ -317,6 +319,14 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 multiSelector.SetCurrentValue(Selector.SelectedItemProperty, null);
                 multiSelector.SetCurrentValue(Selector.SelectedItemProperty, item);
+
+                if(itemsControl is DataGrid dataGrid)
+                {
+                    if (dataGrid.SelectedCells.Count > 0)
+                    {
+                        DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().FirstOrDefault(sc => sc.Value.IsValid));
+                    }
+                }
             }
             else if (itemsControl is ListBox listBox)
             {
@@ -388,6 +398,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 }
 
                 multiSelector.SetCurrentValue(Selector.SelectedItemProperty, null);
+
+                if (itemsControl is DataGrid dataGrid)
+                {
+                    DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
+                }
             }
             else if (itemsControl is ListBox listBox)
             {
@@ -502,6 +517,36 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                     if (itemSelected)
                     {
                         multiSelector.SelectedItem = item;
+                    }
+                }
+
+                if (itemsControl is DataGrid dataGrid)
+                {
+                    DataGridCellInfo? currentAnchorCellInfo = DataGridSelectionAnchorFieldInfo.GetValue(dataGrid) as DataGridCellInfo?;
+
+                    if (itemSelected)
+                    {
+                        DataGridCell cell = dataGrid.ItemContainerGenerator.ContainerFromItem(item)?.GetVisualDescendent<DataGridCell>();
+
+                        if (cell != null)
+                        {
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, new DataGridCellInfo(cell));
+                        }
+                    }
+                    else if (dataGrid.SelectedItems.Count > 0 && dataGrid.SelectedCells.Count > 0)
+                    {
+                        // We've deselected a row but there are still selected cells.
+                        // If the cell anchor needs updating, fall back to the last valid cell, if possible.
+                        if (    currentAnchorCellInfo == null
+                            ||  !currentAnchorCellInfo.Value.IsValid
+                            ||  !dataGrid.SelectedCells.Contains(currentAnchorCellInfo.Value))
+                        {
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().LastOrDefault(sc => sc.Value.IsValid));
+                        }
+                    }
+                    else if (dataGrid.SelectedItems.Count == 0 || (!currentAnchorCellInfo?.IsValid ?? true))
+                    {
+                        DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
                     }
                 }
             }
