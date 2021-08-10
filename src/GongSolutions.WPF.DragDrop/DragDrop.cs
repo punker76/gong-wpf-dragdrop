@@ -455,7 +455,7 @@ namespace GongSolutions.Wpf.DragDrop
 
             // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
             // by setting 'e.Handled = true' and a drag was not initiated, manually set the selection here.
-            if (sender is ItemsControl itemsControl && dragInfo != null && _clickSupressItem != null && _clickSupressItem == dragInfo.SourceItem)
+            if (dragInfo?.VisualSource is ItemsControl itemsControl && _clickSupressItem != null && _clickSupressItem == dragInfo.SourceItem)
             {
                 if ((Keyboard.Modifiers & ModifierKeys.Control) != 0 || itemsControl is ListBox listBox && listBox.SelectionMode == SelectionMode.Multiple)
                 {
@@ -464,6 +464,21 @@ namespace GongSolutions.Wpf.DragDrop
                 else if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0)
                 {
                     itemsControl.SetSelectedItem(dragInfo.SourceItem);
+
+                    if (sender != itemsControl && sender is ItemsControl ancestorItemsControl)
+                    {
+                        var ancestorItemContainer = ancestorItemsControl.ContainerFromElement(itemsControl);
+
+                        if (ancestorItemContainer != null)
+                        {
+                            var ancestorItem = ancestorItemsControl.ItemContainerGenerator.ItemFromContainer(ancestorItemContainer);
+
+                            if (ancestorItem != null)
+                            {
+                                ancestorItemsControl.SetSelectedItem(ancestorItem);
+                            }
+                        }
+                    }
                 }
             }
 
