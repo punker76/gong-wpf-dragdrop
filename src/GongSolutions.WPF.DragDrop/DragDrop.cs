@@ -57,7 +57,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                         if (useVisualSourceItemSizeForDragAdorner)
                         {
-                            var bounds = VisualTreeHelper.GetDescendantBounds(dragInfo.VisualSourceItem);
+                            var bounds = VisualTreeExtensions.GetVisibleDescendantBounds(dragInfo.VisualSourceItem);
                             itemsControl.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
                         }
 
@@ -78,7 +78,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                     if (useVisualSourceItemSizeForDragAdorner)
                     {
-                        var bounds = VisualTreeHelper.GetDescendantBounds(dragInfo.VisualSourceItem);
+                        var bounds = VisualTreeExtensions.GetVisibleDescendantBounds(dragInfo.VisualSourceItem);
                         contentPresenter.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
                         contentPresenter.SetValue(FrameworkElement.MinHeightProperty, bounds.Height);
                     }

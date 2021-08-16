@@ -165,5 +165,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
             yield break;
         }
+
+        public static Rect GetVisibleDescendantBounds(Visual visual)
+        {
+            return VisualTreeDescendantBoundsHelper.GetVisibleDescendantBounds(visual);
+        }
     }
 }
