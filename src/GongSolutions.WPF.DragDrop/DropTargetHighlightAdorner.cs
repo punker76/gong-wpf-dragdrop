@@ -36,10 +36,12 @@ namespace GongSolutions.Wpf.DragDrop
                     translatePoint.Offset(1, 0);
                     rect = new Rect(translatePoint, new Size(descendant.Width - translatePoint.X - 1, tvItem.ActualHeight));
                 }
+
                 if (rect.IsEmpty)
                 {
                     rect = new Rect(visualTargetItem.TranslatePoint(new Point(), this.AdornedElement), VisualTreeExtensions.GetVisibleDescendantBounds(visualTargetItem).Size);
                 }
+
                 drawingContext.DrawRoundedRectangle(null, this.Pen, rect, 2, 2);
             }
         }

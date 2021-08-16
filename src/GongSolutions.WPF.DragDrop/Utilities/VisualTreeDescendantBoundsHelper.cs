@@ -7,35 +7,46 @@ using System.Windows.Media.Effects;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
-    public static class VisualTreeDescendantBoundsHelper
+    internal static class VisualTreeDescendantBoundsHelper
     {
         private static Assembly PresentationCoreAssembly { get; } = typeof(ContentElement).Assembly;
+
         private static Assembly WindowsBaseAssembly { get; } = typeof(System.ComponentModel.GroupDescription).Assembly;
 
         private static FieldInfo OffsetFieldInfo { get; } = typeof(Visual).GetField("_offset", BindingFlags.Instance | BindingFlags.NonPublic);
 
         private static Type UncommonFieldType { get; } = WindowsBaseAssembly.GetType("System.Windows.UncommonField`1");
+
         private static Func<Type, MethodInfo> GetValueMethodInfo { get; } = t => UncommonFieldType.MakeGenericType(t).GetMethod("GetValue", BindingFlags.Instance | BindingFlags.Public);
 
         private static Type BitmapEffectStateType { get; } = PresentationCoreAssembly.GetType("System.Windows.Media.Effects.BitmapEffectState");
+
         private static Type VisualFlagsType { get; } = PresentationCoreAssembly.GetType("System.Windows.Media.VisualFlags");
 
         // UncommonFields
         private static FieldInfo ScrollableAreaClipFieldFieldInfo { get; } = typeof(Visual).GetField("ScrollableAreaClipField", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static FieldInfo EffectFieldFieldInfo { get; } = typeof(Visual).GetField("EffectField", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static FieldInfo TransformFieldFieldInfo { get; } = typeof(Visual).GetField("TransformField", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static FieldInfo BitmapEffectStateFieldFieldInfo { get; } = typeof(Visual).GetField("BitmapEffectStateField", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static FieldInfo ClipFieldFieldInfo { get; } = typeof(Visual).GetField("ClipField", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static MethodInfo IsEmptyRenderBoundsMethodInfo { get; } = typeof(Visual).GetMethod("IsEmptyRenderBounds", BindingFlags.Instance | BindingFlags.NonPublic);
+
         private static MethodInfo CheckFlagsAndMethodInfo { get; } = typeof(Visual).GetMethod("CheckFlagsAnd", BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { VisualFlagsType }, null);
 
         private static PropertyInfo EffectMappingPropertyInfo { get; } = typeof(Effect).GetProperty("EffectMapping", BindingFlags.Instance | BindingFlags.NonPublic);
+
         private static MethodInfo UnitToWorldMethodInfo { get; } = typeof(Effect).GetMethod("UnitToWorld", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof(Rect), typeof(Rect) }, null);
 
         private static PropertyInfo IsIdentityPropertyInfo { get; } = typeof(Transform).GetProperty("IsIdentity", BindingFlags.Instance | BindingFlags.NonPublic);
 
         // Microsoft utility methods
         private static MethodInfo TransformRectMethodInfo { get; } = WindowsBaseAssembly.GetType("MS.Internal.MatrixUtil").GetMethod("TransformRect", BindingFlags.Static | BindingFlags.NonPublic);
+
         private static MethodInfo RectHasNaNMethodInfo { get; } = WindowsBaseAssembly.GetType("MS.Internal.DoubleUtil").GetMethod("RectHasNaN", BindingFlags.Static | BindingFlags.Public);
 
         public static Rect GetVisibleDescendantBounds(Visual visual)
@@ -49,6 +60,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 boundingBoxSubGraph.Width = Double.PositiveInfinity;
                 boundingBoxSubGraph.Height = Double.PositiveInfinity;
             }
+
             return boundingBoxSubGraph;
         }
 

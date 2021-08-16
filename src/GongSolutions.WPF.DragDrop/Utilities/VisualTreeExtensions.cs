@@ -22,6 +22,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 return null;
             }
+
             var ancestor = element.GetVisualAncestor<UIElement>();
             while (ancestor != null)
             {
@@ -29,8 +30,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return ancestor;
                 }
+
                 ancestor = ancestor.GetVisualAncestor<UIElement>();
             }
+
             return null;
         }
 
@@ -70,6 +73,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return itemAsT;
                 }
+
                 item = VisualTreeHelper.GetParent(item);
             }
 
@@ -97,11 +101,13 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                         return currentVisual;
                     }
                 }
+
                 if (itemContainerSearchType.IsAssignableFrom(currentVisualType))
                 {
                     // ok, we found an ItemsControl (maybe an empty)
                     return null;
                 }
+
                 currentVisual = VisualTreeHelper.GetParent(currentVisual);
             }
 
@@ -125,12 +131,14 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return lastFoundItemByType;
                 }
+
                 var currentVisualType = currentVisual.GetType();
                 if ((currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
                     && (itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1))
                 {
                     lastFoundItemByType = currentVisual;
                 }
+
                 currentVisual = VisualTreeHelper.GetParent(currentVisual);
             }
 
@@ -166,6 +174,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             yield break;
         }
 
+        /// <summary>
+        /// GetVisibleDescendantBounds returns the union of all of the content bounding boxes of the specified Visual's sub-graph.
+        /// It's a work around of VisualTreeHelper.GetDescendantBounds() including collapsed Visuals in its bounds calculations.
+        /// </summary>
         public static Rect GetVisibleDescendantBounds(Visual visual)
         {
             return VisualTreeDescendantBoundsHelper.GetVisibleDescendantBounds(visual);
