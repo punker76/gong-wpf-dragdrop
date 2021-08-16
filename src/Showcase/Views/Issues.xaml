@@ -903,6 +903,75 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#342">
+                <TabItem.Resources>
+                    <ObjectDataProvider x:Key="SelectionModeEnumValues"
+                                        MethodName="GetValues"
+                                        ObjectType="{x:Type SelectionMode}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="SelectionMode" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </TabItem.Resources>
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="ListView extended selection issue." />
+                        <Button CommandParameter="342"
+                                Style="{StaticResource GitHubPullRequestButtonStyle}"
+                                ToolTip="Open #342 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ListView selection should not change if CheckBox will be checked or the Menu will be opened." />
+                            <Grid>
+                                <ListView x:Name="LeftItemsControlIssue342"
+                                          ItemsSource="{Binding Data.Collection1}" 
+                                          dd:DragDrop.IsDragSource="True"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          SelectionMode="Extended">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
+                                                <TextBlock Text="{Binding Caption}" Margin="2" />
+                                                <Menu Margin="2">
+                                                    <MenuItem Header="Menu">
+                                                        <MenuItem Header="Some Menu Item"></MenuItem>
+                                                        <MenuItem Header="Some Other Menu Item"></MenuItem>
+                                                    </MenuItem>
+                                                </Menu>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization" />
+                            <StackPanel Margin="10 5" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="SelectionMode" />
+                                <ComboBox Width="200"
+                                          Margin="5 0 0 0"
+                                          VerticalAlignment="Center"
+                                          ItemsSource="{Binding Source={StaticResource SelectionModeEnumValues}}"
+                                          SelectedItem="{Binding ElementName=LeftItemsControlIssue342, Path=SelectionMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <CheckBox Margin="10 5"
+                                      Content="IsDragSource"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="IsDropTarget"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultDragAdorner"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultEffectDataTemplate"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="#244">
                 <DockPanel LastChildFill="True">
                     <Grid DockPanel.Dock="Top">

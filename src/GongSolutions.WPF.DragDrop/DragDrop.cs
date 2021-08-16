@@ -820,12 +820,13 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static bool GetHitTestResult(object sender, Point elementPosition)
         {
-            return (sender is TabControl)
-                   && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition)
+            return ((sender is TabControl) && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition))
                    || HitTestUtilities.HitTest4Type<RangeBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<ToggleButton>(sender, elementPosition)
+                   || HitTestUtilities.HitTest4Type<MenuBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
                    || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
         }
