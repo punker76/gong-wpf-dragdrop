@@ -738,6 +738,10 @@ namespace GongSolutions.Wpf.DragDrop
                 }
                 else if (DragDropEffectPreview.Effects != dropInfo.Effects || DragDropEffectPreview.EffectText != dropInfo.EffectText || DragDropEffectPreview.DestinationText != dropInfo.DestinationText)
                 {
+                    DragDropEffectPreview.Effects = dropInfo.Effects;
+                    DragDropEffectPreview.EffectText = dropInfo.EffectText;
+                    DragDropEffectPreview.DestinationText = dropInfo.DestinationText;
+
                     var template = GetDragDropEffecTemplate(dragInfo.VisualSource, dropInfo);
                     if (template is null)
                     {

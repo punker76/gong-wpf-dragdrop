@@ -12,10 +12,10 @@ namespace GongSolutions.Wpf.DragDrop
             this.DestinationText = destinationText;
         }
 
-        public DragDropEffects Effects { get; }
+        public DragDropEffects Effects { get; set; }
 
-        public string EffectText { get; }
+        public string EffectText { get; set; }
 
-        public string DestinationText { get; }
+        public string DestinationText { get; set; }
     }
 }
