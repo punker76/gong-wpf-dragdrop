@@ -176,6 +176,7 @@ namespace GongSolutions.Wpf.DragDrop
                                 this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
                                 this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;
                             }
+
                             this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
                         //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, Y={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentYPos, item);
@@ -217,6 +218,7 @@ namespace GongSolutions.Wpf.DragDrop
                                 this.TargetCollection = tvItem.ItemsSource ?? tvItem.Items;
                                 this.InsertIndex = this.TargetCollection != null ? this.TargetCollection.OfType<object>().Count() : 0;
                             }
+
                             this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
                         //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
@@ -282,6 +284,7 @@ namespace GongSolutions.Wpf.DragDrop
                         }
                     }
                 }
+
                 return insertIndex;
             }
         }
@@ -338,24 +341,23 @@ namespace GongSolutions.Wpf.DragDrop
             get
             {
                 // Check if DragInfo stuff exists
-                if (this.DragInfo == null || this.DragInfo.VisualSource == null)
+                if (this.DragInfo?.VisualSource is null)
                 {
                     return true;
                 }
+
                 // A target should be exists
-                if (this.VisualTarget == null)
+                if (this.VisualTarget is null)
                 {
                     return true;
                 }
 
                 // Source element has a drag context constraint, we need to check the target property matches.
-                var sourceContext = this.DragInfo.VisualSource.GetValue(DragDrop.DragDropContextProperty) as string;
-                if (String.IsNullOrEmpty(sourceContext))
-                {
-                    return true;
-                }
-                var targetContext = this.VisualTarget.GetValue(DragDrop.DragDropContextProperty) as string;
-                return string.Equals(sourceContext, targetContext);
+                var sourceContext = DragDrop.GetDragDropContext(this.DragInfo.VisualSource);
+                var targetContext = DragDrop.GetDragDropContext(this.VisualTarget);
+
+                return string.Equals(sourceContext, targetContext)
+                       || string.IsNullOrEmpty(targetContext);
             }
         }
 
