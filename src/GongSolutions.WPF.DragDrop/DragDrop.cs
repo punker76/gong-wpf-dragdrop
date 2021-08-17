@@ -444,13 +444,6 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceUp(object sender, Point elementPosition)
         {
-            if (sender is TabControl && !HitTestUtilities.HitTest4Type<TabPanel>(sender, elementPosition))
-            {
-                _dragInfo = null;
-                _clickSupressItem = null;
-                return;
-            }
-
             var dragInfo = _dragInfo;
 
             // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown

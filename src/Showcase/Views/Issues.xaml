@@ -1050,6 +1050,88 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#336">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Item selection in ItemsControl is not handled" />
+                        <Button CommandParameter="336"
+                                Style="{StaticResource GitHubIssueButtonStyle}"
+                                ToolTip="Open #336 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Item selection/deselection in ItemsControl should be handled when multiple/extended selection is enabled inside a TabControl." />
+                            
+                            <TabControl dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.DragDropContext="TabControl">
+                                <TabItem Header="ListBox 1 Extended">
+                                    <ListBox dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                             Margin="5"
+                                             SelectionMode="Extended">
+                                        <ListBoxItem Content="Item 1" />
+                                        <ListBoxItem Content="Item 2" />
+                                        <ListBoxItem Content="Item 3" />
+                                        <ListBoxItem Content="Item 4" />
+                                        <ListBoxItem Content="Item 5" />
+                                    </ListBox>
+                                </TabItem>
+                                <TabItem Header="ListBox 2 Multiple">
+                                    <ListBox dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.DragDropContext="ListBox"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                             Margin="5"
+                                             SelectionMode="Multiple">
+                                        <ListBoxItem Content="Item 11" />
+                                        <ListBoxItem Content="Item 12" />
+                                        <ListBoxItem Content="Item 13" />
+                                        <ListBoxItem Content="Item 14" />
+                                        <ListBoxItem Content="Item 15" />
+                                    </ListBox>
+                                </TabItem>
+
+                                <TabItem Header="ListView 1 Extended">
+                                    <ListView dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
+                                              dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.UseDefaultDragAdorner="True"
+                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                              Margin="5"
+                                              SelectionMode="Extended">
+                                        <ListViewItem Content="Item 1" />
+                                        <ListViewItem Content="Item 2" />
+                                        <ListViewItem Content="Item 3" />
+                                        <ListViewItem Content="Item 4" />
+                                        <ListViewItem Content="Item 5" />
+                                    </ListView>
+                                </TabItem>
+                                <TabItem Header="ListView 2 Multiple">
+                                    <ListView dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
+                                              dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.UseDefaultDragAdorner="True"
+                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                              Margin="5"
+                                              SelectionMode="Multiple">
+                                        <ListViewItem Content="Item 11" />
+                                        <ListViewItem Content="Item 12" />
+                                        <ListViewItem Content="Item 13" />
+                                        <ListViewItem Content="Item 14" />
+                                        <ListViewItem Content="Item 15" />
+                                    </ListView>
+                                </TabItem>
+                            </TabControl>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="#296">
                 <DockPanel LastChildFill="True">
                     <Grid DockPanel.Dock="Top">
