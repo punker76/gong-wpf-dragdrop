@@ -5,7 +5,7 @@
 #module nuget:?package=Cake.DotNetTool.Module&version=0.5.0
 #tool dotnet:?package=NuGetKeyVaultSignTool&version=1.2.28
 #tool dotnet:?package=AzureSignTool&version=2.0.17
-#tool dotnet:?package=GitReleaseManager.Tool&version=0.11.0
+#tool dotnet:?package=GitReleaseManager.Tool&version=0.12.0
 #tool dotnet:?package=GitVersion.Tool&version=5.6.6
 
 #tool vswhere&version=2.8.4
@@ -111,7 +111,7 @@ Task("Build")
         Verbosity = verbosity
         , ToolPath = msBuildPathExe
         , Configuration = configuration
-        , ArgumentCustomization = args => args.Append("/m").Append("/nr:false") // The /nr switch tells msbuild to quite once it’s done
+        , ArgumentCustomization = args => args.Append("/m").Append("/nr:false") // The /nr switch tells msbuild to quite once itï¿½s done
         , BinaryLogger = new MSBuildBinaryLogSettings() { Enabled = isLocal }
     };
     MSBuild(solution, msBuildSettings
@@ -130,7 +130,7 @@ Task("dotnetBuild")
     var buildSettings = new DotNetCoreBuildSettings {
         Verbosity = dotnetcoreverbosity,
         Configuration = configuration,
-        ArgumentCustomization = args => args.Append("/m").Append("/nr:false"), // The /nr switch tells msbuild to quite once it’s done
+        ArgumentCustomization = args => args.Append("/m").Append("/nr:false"), // The /nr switch tells msbuild to quite once itï¿½s done
         MSBuildSettings = new DotNetCoreMSBuildSettings()
             .SetMaxCpuCount(0)
             .SetConfiguration(configuration)
@@ -344,19 +344,13 @@ Task("CreateRelease")
     .WithCriteria(() => !isPullRequest)
     .Does(() =>
 {
-    var username = EnvironmentVariable("GITHUB_USERNAME");
-    if (string.IsNullOrEmpty(username))
-    {
-        throw new Exception("The GITHUB_USERNAME environment variable is not defined.");
-    }
-
     var token = EnvironmentVariable("GITHUB_TOKEN");
     if (string.IsNullOrEmpty(token))
     {
         throw new Exception("The GITHUB_TOKEN environment variable is not defined.");
     }
 
-    GitReleaseManagerCreate(username, token, "punker76", repoName, new GitReleaseManagerCreateSettings {
+    GitReleaseManagerCreate(token, "punker76", repoName, new GitReleaseManagerCreateSettings {
         Milestone         = gitVersion.MajorMinorPatch,
         Name              = gitVersion.AssemblySemFileVer,
         Prerelease        = isDevelopBranch,
