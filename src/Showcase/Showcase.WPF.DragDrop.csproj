@@ -1,39 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <!-- Project properties -->
     <PropertyGroup>
         <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
         <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
-        <DisableFody Condition=" '$(Configuration)' == 'Debug' or $(TargetFramework.StartsWith('netcoreapp')) ">true</DisableFody>
+        <DisableFody Condition=" '$(Configuration)' == 'Debug' ">true</DisableFody>
         <Description>Showcase application for GongSolutions.WPF.DragDrop</Description>
         <!-- Workaround for https://github.com/dotnet/sourcelink/issues/91 -->
         <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
     </PropertyGroup>
+
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <NoWarn>SA1652</NoWarn>
+        <NoWarn>SA1652;WPF0041</NoWarn>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj" />
     </ItemGroup>
-    <!-- reference includes -->
+
     <ItemGroup>
         <PackageReference Include="MahApps.Metro.IconPacks.FeatherIcons" Version="4.*" />
         <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.*" />
         <PackageReference Include="MahApps.Metro.IconPacks.Octicons" Version="4.*" />
         <PackageReference Include="Faker.Net" Version="1.*" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
         <PackageReference Include="Fody" Version="6.*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Costura.Fody" Version="4.*" PrivateAssets="All" />
     </ItemGroup>
+
     <ItemGroup>
         <None Include="app.manifest" />
         <None Remove="App.config" />
-        <AppConfigWithTargetPath Include="App.$(TargetFramework).config">
+        <AppConfigWithTargetPath Include="App.$(TargetFramework).config" Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
             <TargetPath>$(AssemblyName).exe.config</TargetPath>
         </AppConfigWithTargetPath>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
+        <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
     </ItemGroup>
 </Project>

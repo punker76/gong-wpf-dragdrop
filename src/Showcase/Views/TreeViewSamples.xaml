@@ -5,6 +5,7 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -35,8 +36,14 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
                                 <TreeView x:Name="LeftBoundTreeView"
                                           Grid.Column="0"
+                                          Grid.Row="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
@@ -51,7 +58,9 @@
                                         </HierarchicalDataTemplate>
                                     </TreeView.ItemTemplate>
                                 </TreeView>
-                                <TreeView Grid.Column="1"
+                                <TreeView x:Name="RightBoundTreeView"
+                                          Grid.Column="1"
+                                          Grid.Row="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
@@ -63,21 +72,10 @@
                                         </HierarchicalDataTemplate>
                                     </TreeView.ItemTemplate>
                                 </TreeView>
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left TreeView)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=LeftBoundTreeView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=LeftBoundTreeView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=LeftBoundTreeView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=LeftBoundTreeView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Column="0" Grid.Row="1" Caption="Customization (for left TreeView)" DataContext="{x:Reference LeftBoundTreeView}" />
+                                <views:SettingsView Grid.Column="1" Grid.Row="1" Caption="Customization (for right TreeView)" DataContext="{x:Reference RightBoundTreeView}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

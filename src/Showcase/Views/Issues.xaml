@@ -903,6 +903,75 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#342">
+                <TabItem.Resources>
+                    <ObjectDataProvider x:Key="SelectionModeEnumValues"
+                                        MethodName="GetValues"
+                                        ObjectType="{x:Type SelectionMode}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="SelectionMode" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </TabItem.Resources>
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="ListView extended selection issue." />
+                        <Button CommandParameter="342"
+                                Style="{StaticResource GitHubPullRequestButtonStyle}"
+                                ToolTip="Open #342 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ListView selection should not change if CheckBox will be checked or the Menu will be opened." />
+                            <Grid>
+                                <ListView x:Name="LeftItemsControlIssue342"
+                                          ItemsSource="{Binding Data.Collection1}" 
+                                          dd:DragDrop.IsDragSource="True"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          SelectionMode="Extended">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
+                                                <TextBlock Text="{Binding Caption}" Margin="2" />
+                                                <Menu Margin="2">
+                                                    <MenuItem Header="Menu">
+                                                        <MenuItem Header="Some Menu Item"></MenuItem>
+                                                        <MenuItem Header="Some Other Menu Item"></MenuItem>
+                                                    </MenuItem>
+                                                </Menu>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization" />
+                            <StackPanel Margin="10 5" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="SelectionMode" />
+                                <ComboBox Width="200"
+                                          Margin="5 0 0 0"
+                                          VerticalAlignment="Center"
+                                          ItemsSource="{Binding Source={StaticResource SelectionModeEnumValues}}"
+                                          SelectedItem="{Binding ElementName=LeftItemsControlIssue342, Path=SelectionMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <CheckBox Margin="10 5"
+                                      Content="IsDragSource"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="IsDropTarget"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultDragAdorner"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Margin="10 5"
+                                      Content="UseDefaultEffectDataTemplate"
+                                      IsChecked="{Binding ElementName=LeftItemsControlIssue342, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="#244">
                 <DockPanel LastChildFill="True">
                     <Grid DockPanel.Dock="Top">
@@ -975,6 +1044,88 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="#336">
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Item selection in ItemsControl is not handled" />
+                        <Button CommandParameter="336"
+                                Style="{StaticResource GitHubIssueButtonStyle}"
+                                ToolTip="Open #336 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Item selection/deselection in ItemsControl should be handled when multiple/extended selection is enabled inside a TabControl." />
+                            
+                            <TabControl dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.DragDropContext="TabControl">
+                                <TabItem Header="ListBox 1 Extended">
+                                    <ListBox dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                             Margin="5"
+                                             SelectionMode="Extended">
+                                        <ListBoxItem Content="Item 1" />
+                                        <ListBoxItem Content="Item 2" />
+                                        <ListBoxItem Content="Item 3" />
+                                        <ListBoxItem Content="Item 4" />
+                                        <ListBoxItem Content="Item 5" />
+                                    </ListBox>
+                                </TabItem>
+                                <TabItem Header="ListBox 2 Multiple">
+                                    <ListBox dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.DragDropContext="ListBox"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                             Margin="5"
+                                             SelectionMode="Multiple">
+                                        <ListBoxItem Content="Item 11" />
+                                        <ListBoxItem Content="Item 12" />
+                                        <ListBoxItem Content="Item 13" />
+                                        <ListBoxItem Content="Item 14" />
+                                        <ListBoxItem Content="Item 15" />
+                                    </ListBox>
+                                </TabItem>
+
+                                <TabItem Header="ListView 1 Extended">
+                                    <ListView dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
+                                              dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.UseDefaultDragAdorner="True"
+                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                              Margin="5"
+                                              SelectionMode="Extended">
+                                        <ListViewItem Content="Item 1" />
+                                        <ListViewItem Content="Item 2" />
+                                        <ListViewItem Content="Item 3" />
+                                        <ListViewItem Content="Item 4" />
+                                        <ListViewItem Content="Item 5" />
+                                    </ListView>
+                                </TabItem>
+                                <TabItem Header="ListView 2 Multiple">
+                                    <ListView dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
+                                              dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.UseDefaultDragAdorner="True"
+                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                              Margin="5"
+                                              SelectionMode="Multiple">
+                                        <ListViewItem Content="Item 11" />
+                                        <ListViewItem Content="Item 12" />
+                                        <ListViewItem Content="Item 13" />
+                                        <ListViewItem Content="Item 14" />
+                                        <ListViewItem Content="Item 15" />
+                                    </ListView>
+                                </TabItem>
+                            </TabControl>
 
                         </StackPanel>
                     </ScrollViewer>

@@ -12,6 +12,7 @@ namespace Showcase.WPF.DragDrop.Models
     {
         private double _bindableDoubleValue;
         private string _selectedSubItem;
+        private bool _isChecked;
 
         public ItemModel()
         {
@@ -42,6 +43,17 @@ namespace Showcase.WPF.DragDrop.Models
             {
                 if (value == _selectedSubItem) return;
                 _selectedSubItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (value == _isChecked) return;
+                _isChecked = value;
                 OnPropertyChanged();
             }
         }

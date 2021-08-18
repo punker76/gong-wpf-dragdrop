@@ -195,6 +195,7 @@ namespace GongSolutions.Wpf.DragDrop
                         uiElement.PreviewDrop += DropTargetOnPreviewDrop;
                         uiElement.PreviewGiveFeedback += DropTargetOnGiveFeedback;
                     }
+
                     break;
 
                 case EventType.Tunneled:
@@ -254,6 +255,7 @@ namespace GongSolutions.Wpf.DragDrop
                         uiElement.PreviewDrop -= DropTargetOnPreviewDrop;
                         uiElement.PreviewGiveFeedback -= DropTargetOnGiveFeedback;
                     }
+
                     break;
 
                 case EventType.Tunneled:
@@ -340,6 +342,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the default DropHandler.
         /// </summary>
         public static IDropTarget DefaultDropHandler { get; } = new DefaultDropHandler();
+
+        /// <summary>
+        /// Gets the default RootElementFinder.
+        /// </summary>
+        public static IRootElementFinder DefaultRootElementFinder { get; } = new RootElementFinder();
 
         /// <summary>
         /// Gets or Sets the handler for the drag action.
@@ -1147,6 +1154,86 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetRootElementFinder(UIElement target, IRootElementFinder value)
         {
             target.SetValue(RootElementFinderProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static readonly DependencyProperty DragPreviewMaxItemsCountProperty
+            = DependencyProperty.RegisterAttached("DragPreviewMaxItemsCount",
+                                                  typeof(int),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(10, null, (d, baseValue) =>
+                                                      {
+                                                          var itemsCount = (int)baseValue;
+                                                          // Checking for MaxValue is maybe not necessary
+                                                          return itemsCount < 0 ? 0 : itemsCount >= int.MaxValue ? int.MaxValue : itemsCount;
+                                                      }));
+
+        /// <summary>
+        /// Gets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static int GetDragPreviewMaxItemsCount(UIElement target)
+        {
+            return (int)target.GetValue(DragPreviewMaxItemsCountProperty);
+        }
+
+        /// <summary>
+        /// Sets the maximum items count which will be used for the dragged preview.
+        /// </summary>
+        public static void SetDragPreviewMaxItemsCount(UIElement target, int value)
+        {
+            target.SetValue(DragPreviewMaxItemsCountProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the handler for the dragged preview items sorter
+        /// </summary>
+        public static readonly DependencyProperty DragPreviewItemsSorterProperty
+            = DependencyProperty.RegisterAttached("DragPreviewItemsSorter",
+                                                  typeof(IDragPreviewItemsSorter),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get the drag preview items sorter handler
+        /// </summary>
+        public static IDragPreviewItemsSorter GetDragPreviewItemsSorter(UIElement target)
+        {
+            return (IDragPreviewItemsSorter)target.GetValue(DragPreviewItemsSorterProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the drag preview items sorter
+        /// </summary>
+        public static void SetDragPreviewItemsSorter(UIElement target, IDragPreviewItemsSorter value)
+        {
+            target.SetValue(DragPreviewItemsSorterProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the handler for the drop target items sorter
+        /// </summary>
+        public static readonly DependencyProperty DropTargetItemsSorterProperty
+            = DependencyProperty.RegisterAttached("DropTargetItemsSorter",
+                                                  typeof(IDropTargetItemsSorter),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get the drop target items sorter handler
+        /// </summary>
+        public static IDropTargetItemsSorter GetDropTargetItemsSorter(UIElement target)
+        {
+            return (IDropTargetItemsSorter)target.GetValue(DropTargetItemsSorterProperty);
+        }
+
+        /// <summary>
+        /// Sets the handler for the drop target items sorter
+        /// </summary>
+        public static void SetDropTargetItemsSorter(UIElement target, IDropTargetItemsSorter value)
+        {
+            target.SetValue(DropTargetItemsSorterProperty, value);
         }
     }
 }

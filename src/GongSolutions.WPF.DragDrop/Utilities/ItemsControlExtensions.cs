@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -13,6 +13,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     public static class ItemsControlExtensions
     {
+        private static FieldInfo DataGridSelectionAnchorFieldInfo { get; } = typeof(DataGrid).GetField("_selectionAnchor", BindingFlags.Instance | BindingFlags.NonPublic);
+
         public static CollectionViewGroup FindGroup(this ItemsControl itemsControl, Point position)
         {
             if (itemsControl.Items.Groups == null || itemsControl.Items.Groups.Count == 0)
@@ -45,6 +47,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                         }
                     }
                 }
+
                 if (groupItem != null)
                 {
                     return groupItem.Content as CollectionViewGroup;
@@ -138,6 +141,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                                              {
                                                  return HitTestFilterBehavior.Stop;
                                              }
+
                                              return HitTestFilterBehavior.Continue;
                                          },
                                      result =>
@@ -164,6 +168,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                                                      }
                                                  }
                                              }
+
                                              return HitTestResultBehavior.Continue;
                                          },
                                      new GeometryHitTestParameters(hitTestGeometry));
@@ -239,8 +244,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         /// <summary>
         /// Gets the Orientation which will be used for the drag drop action.
-        /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
-        /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+        /// Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+        /// but sometimes it's necessary to force the orientation, if the look up is wrong.
         /// If so, the ItemsPanelOrientation value is taken.
         /// </summary>
         /// <param name="itemsControl">The ItemsControl for the look up.</param>
@@ -265,6 +270,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             if (itemsPresenter != null && VisualTreeHelper.GetChildrenCount(itemsPresenter) > 0)
             {
                 var itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0);
+                if (itemsPanel is UniformGrid uniformGrid)
+                {
+                    return uniformGrid.Columns == 1 ? Orientation.Vertical : Orientation.Horizontal;
+                }
+
                 var orientationProperty = itemsPanel.GetType().GetProperty("Orientation", typeof(Orientation));
                 if (orientationProperty != null)
                 {
@@ -299,80 +309,97 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         }
 
         /// <summary>
-        /// Sets the given object as selected item at the ItemsControl.
+        /// Sets the given item as selected item at the ItemsControl.
         /// </summary>
-        /// <param name="itemsControl">The ItemsControl which contains the item.</param>
-        /// <param name="item">The object which should be selected.</param>
-        public static void SetSelectedItem(this ItemsControl itemsControl, object item)
+        /// <param name="itemsControl">The control which contains the item.</param>
+        /// <param name="item2Select">The item which should be selected.</param>
+        public static void SetSelectedItem(this ItemsControl itemsControl, object item2Select)
         {
-            if (itemsControl is MultiSelector)
+            if (itemsControl is MultiSelector multiSelector)
             {
-                ((MultiSelector)itemsControl).SelectedItem = null;
-                ((MultiSelector)itemsControl).SelectedItem = item;
+                var itemsToDeselect = multiSelector.SelectedItems.Cast<object>().Where(si => si != item2Select).ToArray();
+
+                foreach (var item in itemsToDeselect)
+                {
+                    multiSelector.SelectedItems.Remove(item);
+                }
+
+                multiSelector.SetCurrentValue(Selector.SelectedItemProperty, item2Select);
+
+                if (itemsControl is DataGrid dataGrid)
+                {
+                    if (dataGrid.SelectedCells.Count > 0)
+                    {
+                        DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().FirstOrDefault(sc => sc is { IsValid: true }));
+                    }
+                }
             }
-            else if (itemsControl is ListBox)
+            else if (itemsControl is ListBox listBox)
             {
-                var selectionMode = ((ListBox)itemsControl).SelectionMode;
+                var selectionMode = listBox.SelectionMode;
+
+                if (selectionMode != SelectionMode.Single)
+                {
+                    var itemsToDeselect = listBox.SelectedItems.Cast<object>().Where(si => si != item2Select).ToArray();
+
+                    foreach (var item in itemsToDeselect)
+                    {
+                        listBox.SelectedItems.Remove(item);
+                    }
+                }
+
                 try
                 {
                     // change SelectionMode for UpdateAnchorAndActionItem
-                    ((ListBox)itemsControl).SelectionMode = SelectionMode.Single;
-                    ((ListBox)itemsControl).SelectedItem = null;
-                    ((ListBox)itemsControl).SelectedItem = item;
+                    listBox.SetCurrentValue(ListBox.SelectionModeProperty, SelectionMode.Single);
+                    listBox.SetCurrentValue(Selector.SelectedItemProperty, item2Select);
                 }
                 finally
                 {
-                    ((ListBox)itemsControl).SelectionMode = selectionMode;
+                    listBox.SetCurrentValue(ListBox.SelectionModeProperty, selectionMode);
                 }
             }
-            else if (itemsControl is TreeViewItem)
+            else if (itemsControl is TreeViewItem treeViewItem)
             {
                 // clear old selected item
-                var treeView = ItemsControl.ItemsControlFromItemContainer((TreeViewItem)itemsControl);
+                var treeView = ItemsControl.ItemsControlFromItemContainer(treeViewItem);
                 if (treeView != null)
                 {
                     var prevSelectedItem = treeView.GetValue(TreeView.SelectedItemProperty);
                     if (prevSelectedItem != null)
                     {
                         var prevSelectedTreeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
-                        if (prevSelectedTreeViewItem != null)
-                        {
-                            prevSelectedTreeViewItem.IsSelected = false;
-                        }
+                        prevSelectedTreeViewItem?.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
                     }
                 }
+
                 // set new selected item
                 // TreeView.SelectedItemProperty is a read only property, so we must set the selection on the TreeViewItem itself
-                var treeViewItem = ((TreeViewItem)itemsControl).ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
-                if (treeViewItem != null)
-                {
-                    treeViewItem.IsSelected = true;
-                }
+                var newSelectedTreeViewItem = treeViewItem.ItemContainerGenerator.ContainerFromItem(item2Select) as TreeViewItem;
+                newSelectedTreeViewItem?.SetCurrentValue(TreeViewItem.IsSelectedProperty, true);
             }
-            else if (itemsControl is TreeView)
+            else if (itemsControl is TreeView treeView)
             {
                 // clear old selected item
-                var prevSelectedItem = ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+                var prevSelectedItem = treeView.GetValue(TreeView.SelectedItemProperty);
                 if (prevSelectedItem != null)
                 {
-                    var prevSelectedTreeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
-                    if (prevSelectedTreeViewItem != null)
-                    {
-                        prevSelectedTreeViewItem.IsSelected = false;
-                    }
+                    var prevSelectedTreeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+                    prevSelectedTreeViewItem?.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
                 }
+
                 // set new selected item
                 // TreeView.SelectedItemProperty is a read only property, so we must set the selection on the TreeViewItem itself
-                var treeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
-                if (treeViewItem != null)
-                {
-                    treeViewItem.IsSelected = true;
-                }
+                var newSelectedTreeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(item2Select) as TreeViewItem;
+                newSelectedTreeViewItem?.SetCurrentValue(TreeViewItem.IsSelectedProperty, true);
             }
-            else if (itemsControl is Selector)
+            else if (itemsControl is Selector selector)
             {
-                ((Selector)itemsControl).SelectedItem = null;
-                ((Selector)itemsControl).SelectedItem = item;
+                // The original issue (#21) would only have occurred for scenarios where multiple items are selected.
+                // Selector doesn't provide public APIs to allow for the selection of multiple items.
+                // So it seems that we don't need this here.
+                // selector.SetCurrentValue(Selector.SelectedItemProperty, null);
+                selector.SetCurrentValue(Selector.SelectedItemProperty, item2Select);
             }
         }
 
@@ -382,65 +409,62 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// <param name="itemsControl">The items control.</param>
         public static void ClearSelectedItems(this ItemsControl itemsControl)
         {
-            if (itemsControl is MultiSelector)
+            if (itemsControl is MultiSelector multiSelector)
             {
-                if (((MultiSelector)itemsControl).CanSelectMultipleItems())
+                if (multiSelector.CanSelectMultipleItems())
                 {
-                    ((MultiSelector)itemsControl).SelectedItems.Clear();
+                    multiSelector.SelectedItems.Clear();
                 }
-                ((MultiSelector)itemsControl).SelectedItem = null;
-            }
-            else if (itemsControl is ListBox)
-            {
-                if (((ListBox)itemsControl).CanSelectMultipleItems())
+
+                multiSelector.SetCurrentValue(Selector.SelectedItemProperty, null);
+
+                if (itemsControl is DataGrid dataGrid)
                 {
-                    ((ListBox)itemsControl).SelectedItems.Clear();
-                    ((ListBox)itemsControl).SelectedItem = null;
+                    DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
                 }
             }
-            else if (itemsControl is TreeViewItem)
+            else if (itemsControl is ListBox listBox)
             {
-                var treeView = ItemsControl.ItemsControlFromItemContainer((TreeViewItem)itemsControl);
+                if (listBox.CanSelectMultipleItems())
+                {
+                    listBox.SelectedItems.Clear();
+                }
+
+                listBox.SetCurrentValue(Selector.SelectedItemProperty, null);
+            }
+            else if (itemsControl is TreeViewItem treeViewItem)
+            {
+                treeViewItem.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
+
+                var treeView = ItemsControl.ItemsControlFromItemContainer(treeViewItem);
                 treeView?.ClearSelectedItems();
             }
-            else if (itemsControl is TreeView)
+            else if (itemsControl is TreeView treeView)
             {
                 // clear old selected item
-                var prevSelectedItem = ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
+                var prevSelectedItem = treeView.GetValue(TreeView.SelectedItemProperty);
                 if (prevSelectedItem != null)
                 {
-                    var prevSelectedTreeViewItem = ((TreeView)itemsControl).ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
-                    if (prevSelectedTreeViewItem != null)
-                    {
-                        prevSelectedTreeViewItem.IsSelected = false;
-                    }
+                    var prevSelectedTreeViewItem = treeView.ItemContainerGenerator.ContainerFromItem(prevSelectedItem) as TreeViewItem;
+                    prevSelectedTreeViewItem?.SetCurrentValue(TreeViewItem.IsSelectedProperty, false);
                 }
             }
-            else if (itemsControl is Selector)
+            else if (itemsControl is Selector selector)
             {
-                ((Selector)itemsControl).SelectedItem = null;
+                selector.SetCurrentValue(Selector.SelectedItemProperty, null);
             }
         }
 
         public static object GetSelectedItem(this ItemsControl itemsControl)
         {
-            if (itemsControl is MultiSelector)
+            return itemsControl switch
             {
-                return ((MultiSelector)itemsControl).SelectedItem;
-            }
-            else if (itemsControl is ListBox)
-            {
-                return ((ListBox)itemsControl).SelectedItem;
-            }
-            else if (itemsControl is TreeView)
-            {
-                return ((TreeView)itemsControl).GetValue(TreeView.SelectedItemProperty);
-            }
-            else if (itemsControl is Selector)
-            {
-                return ((Selector)itemsControl).SelectedItem;
-            }
-            return null;
+                MultiSelector multiSelector => multiSelector.SelectedItem,
+                ListBox listBox => listBox.SelectedItem,
+                TreeView treeView => treeView.GetValue(TreeView.SelectedItemProperty),
+                Selector selector => selector.SelectedItem,
+                _ => null
+            };
         }
 
         public static IEnumerable GetSelectedItems(this ItemsControl itemsControl)
@@ -481,34 +505,20 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
         public static bool GetItemSelected(this ItemsControl itemsControl, object item)
         {
-            if (itemsControl is MultiSelector)
+            return itemsControl switch
             {
-                return ((MultiSelector)itemsControl).SelectedItems.Contains(item);
-            }
-            else if (itemsControl is ListBox)
-            {
-                return ((ListBox)itemsControl).SelectedItems.Contains(item);
-            }
-            else if (itemsControl is TreeView)
-            {
-                return ((TreeView)itemsControl).SelectedItem == item;
-            }
-            else if (itemsControl is Selector)
-            {
-                return ((Selector)itemsControl).SelectedItem == item;
-            }
-            else
-            {
-                return false;
-            }
+                MultiSelector multiSelector => multiSelector.SelectedItems.Contains(item),
+                ListBox listBox => listBox.SelectedItems.Contains(item),
+                TreeView treeView => treeView.SelectedItem == item,
+                Selector selector => selector.SelectedItem == item,
+                _ => false
+            };
         }
 
         public static void SetItemSelected(this ItemsControl itemsControl, object item, bool itemSelected)
         {
-            if (itemsControl is MultiSelector)
+            if (itemsControl is MultiSelector multiSelector)
             {
-                var multiSelector = (MultiSelector)itemsControl;
-
                 if (multiSelector.CanSelectMultipleItems())
                 {
                     if (itemSelected)
@@ -528,11 +538,37 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                         multiSelector.SelectedItem = item;
                     }
                 }
-            }
-            else if (itemsControl is ListBox)
-            {
-                var listBox = (ListBox)itemsControl;
 
+                if (itemsControl is DataGrid dataGrid)
+                {
+                    DataGridCellInfo? currentAnchorCellInfo = DataGridSelectionAnchorFieldInfo.GetValue(dataGrid) as DataGridCellInfo?;
+
+                    if (itemSelected)
+                    {
+                        DataGridCell cell = dataGrid.ItemContainerGenerator.ContainerFromItem(item)?.GetVisualDescendent<DataGridCell>();
+
+                        if (cell != null)
+                        {
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, new DataGridCellInfo(cell));
+                        }
+                    }
+                    else if (dataGrid.SelectedItems.Count > 0 && dataGrid.SelectedCells.Count > 0)
+                    {
+                        // We've deselected a row but there are still selected cells.
+                        // If the cell anchor needs updating, fall back to the last valid cell, if possible.
+                        if (currentAnchorCellInfo is not { IsValid: true } || !dataGrid.SelectedCells.Contains(currentAnchorCellInfo.Value))
+                        {
+                            DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, dataGrid.SelectedCells.Cast<DataGridCellInfo?>().LastOrDefault(sc => sc is { IsValid: true }));
+                        }
+                    }
+                    else if (dataGrid.SelectedItems.Count == 0 || (!currentAnchorCellInfo?.IsValid ?? true))
+                    {
+                        DataGridSelectionAnchorFieldInfo.SetValue(dataGrid, null);
+                    }
+                }
+            }
+            else if (itemsControl is ListBox listBox)
+            {
                 if (listBox.SelectionMode != SelectionMode.Single)
                 {
                     if (itemSelected)
@@ -555,64 +591,52 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             }
             else
             {
-                if (itemSelected)
-                {
-                    itemsControl.SetSelectedItem(item);
-                }
-                else
-                {
-                    itemsControl.SetSelectedItem(null);
-                }
+                itemsControl.SetSelectedItem(itemSelected ? item : null);
             }
         }
 
-        private static UIElement GetClosest(ItemsControl itemsControl, IEnumerable<DependencyObject> items,
-                                            Point position, Orientation searchDirection)
+        private static UIElement GetClosest(ItemsControl itemsControl, IEnumerable<DependencyObject> items, Point position, Orientation searchDirection)
         {
             //Console.WriteLine("GetClosest - {0}", itemsControl.ToString());
 
             UIElement closest = null;
             var closestDistance = double.MaxValue;
 
-            foreach (var i in items)
+            foreach (var uiElement in items.OfType<UIElement>())
             {
-                var uiElement = i as UIElement;
+                var p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                var distance = double.MaxValue;
 
-                if (uiElement != null)
+                if (itemsControl is TreeView)
                 {
-                    var p = uiElement.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
-                    var distance = double.MaxValue;
-
-                    if (itemsControl is TreeView)
+                    var xDiff = position.X - p.X;
+                    var yDiff = position.Y - p.Y;
+                    var hyp = Math.Sqrt(Math.Pow(xDiff, 2d) + Math.Pow(yDiff, 2d));
+                    distance = Math.Abs(hyp);
+                }
+                else
+                {
+                    var itemParent = ItemsControl.ItemsControlFromItemContainer(uiElement);
+                    if (itemParent != null && itemParent != itemsControl)
                     {
-                        var xDiff = position.X - p.X;
-                        var yDiff = position.Y - p.Y;
-                        var hyp = Math.Sqrt(Math.Pow(xDiff, 2d) + Math.Pow(yDiff, 2d));
-                        distance = Math.Abs(hyp);
-                    }
-                    else
-                    {
-                        var itemParent = ItemsControl.ItemsControlFromItemContainer(uiElement);
-                        if (itemParent != null && itemParent != itemsControl)
-                        {
-                            searchDirection = itemParent.GetItemsPanelOrientation();
-                        }
-                        switch (searchDirection)
-                        {
-                            case Orientation.Horizontal:
-                                distance = position.X <= p.X ? p.X - position.X : position.X - uiElement.RenderSize.Width - p.X;
-                                break;
-                            case Orientation.Vertical:
-                                distance = position.Y <= p.Y ? p.Y - position.Y : position.Y - uiElement.RenderSize.Height - p.Y;
-                                break;
-                        }
+                        searchDirection = itemParent.GetItemsPanelOrientation();
                     }
 
-                    if (distance < closestDistance)
+                    switch (searchDirection)
                     {
-                        closest = uiElement;
-                        closestDistance = distance;
+                        case Orientation.Horizontal:
+                            distance = position.X <= p.X ? p.X - position.X : position.X - uiElement.RenderSize.Width - p.X;
+                            break;
+                        case Orientation.Vertical:
+                            distance = position.Y <= p.Y ? p.Y - position.Y : position.Y - uiElement.RenderSize.Height - p.Y;
+                            break;
                     }
+                }
+
+                if (distance < closestDistance)
+                {
+                    closest = uiElement;
+                    closestDistance = distance;
                 }
             }
 

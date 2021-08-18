@@ -22,6 +22,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 return null;
             }
+
             var ancestor = element.GetVisualAncestor<UIElement>();
             while (ancestor != null)
             {
@@ -29,8 +30,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return ancestor;
                 }
+
                 ancestor = ancestor.GetVisualAncestor<UIElement>();
             }
+
             return null;
         }
 
@@ -70,6 +73,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return itemAsT;
                 }
+
                 item = VisualTreeHelper.GetParent(item);
             }
 
@@ -97,11 +101,13 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                         return currentVisual;
                     }
                 }
+
                 if (itemContainerSearchType.IsAssignableFrom(currentVisualType))
                 {
                     // ok, we found an ItemsControl (maybe an empty)
                     return null;
                 }
+
                 currentVisual = VisualTreeHelper.GetParent(currentVisual);
             }
 
@@ -125,12 +131,14 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     return lastFoundItemByType;
                 }
+
                 var currentVisualType = currentVisual.GetType();
                 if ((currentVisualType == itemSearchType || currentVisualType.IsSubclassOf(itemSearchType))
                     && (itemsControl.ItemContainerGenerator.IndexFromContainer(currentVisual) != -1))
                 {
                     lastFoundItemByType = currentVisual;
                 }
+
                 currentVisual = VisualTreeHelper.GetParent(currentVisual);
             }
 
@@ -140,10 +148,22 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         public static T GetVisualDescendent<T>(this DependencyObject d)
             where T : DependencyObject
         {
-            return d.GetVisualDescendents<T>().FirstOrDefault();
+            return d.GetVisualDescendents<T>(null).FirstOrDefault();
+        }
+
+        public static T GetVisualDescendent<T>(this DependencyObject d, string childName)
+            where T : DependencyObject
+        {
+            return d.GetVisualDescendents<T>(childName).FirstOrDefault();
         }
 
         public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d)
+            where T : DependencyObject
+        {
+            return d.GetVisualDescendents<T>(null);
+        }
+
+        public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d, string childName)
             where T : DependencyObject
         {
             var childCount = VisualTreeHelper.GetChildrenCount(d);
@@ -152,18 +172,31 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 var child = VisualTreeHelper.GetChild(d, n);
 
-                if (child is T)
+                if (child is T descendent)
                 {
-                    yield return (T)child;
+                    if (string.IsNullOrEmpty(childName)
+                        || descendent is IFrameworkInputElement frameworkInputElement && frameworkInputElement.Name == childName)
+                    {
+                        yield return descendent;
+                    }
                 }
 
-                foreach (var match in GetVisualDescendents<T>(child))
+                foreach (var match in GetVisualDescendents<T>(child, childName))
                 {
                     yield return match;
                 }
             }
 
             yield break;
+        }
+
+        /// <summary>
+        /// GetVisibleDescendantBounds returns the union of all of the content bounding boxes of the specified Visual's sub-graph.
+        /// It's a work around of VisualTreeHelper.GetDescendantBounds() including collapsed Visuals in its bounds calculations.
+        /// </summary>
+        public static Rect GetVisibleDescendantBounds(Visual visual)
+        {
+            return VisualTreeDescendantBoundsHelper.GetVisibleDescendantBounds(visual);
         }
     }
 }
