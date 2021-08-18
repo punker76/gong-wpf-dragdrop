@@ -8,7 +8,7 @@
     An easy to use drag'n'drop framework for WPF.
   </p>
   <p>
-    Supporting .NET Framework 4.5+, .NET Core 3 (3.0 and 3.1), and .NET 5 on Windows
+    Supporting .NET Framework 4.5+, .NET Core 3 (3.0 and 3.1), and .NET 5 (on Windows)
   </p>
 
   <a href="https://gitter.im/punker76/gong-wpf-dragdrop">
@@ -17,16 +17,20 @@
   <a href="https://twitter.com/punker76">
 	  <img src="https://img.shields.io/badge/twitter-%40punker76-55acee.svg?style=flat-square">
   </a>
+  <br />
   <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/main">
 	  <img alt="mainstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/main.svg?style=flat-square&&label=main">
   </a>
   <a href="https://ci.appveyor.com/project/punker76/gong-wpf-dragdrop/branch/develop">
 	  <img alt="devstatus" src="https://img.shields.io/appveyor/ci/punker76/gong-wpf-dragdrop/develop.svg?style=flat-square&&label=develop">
   </a>
+  <a href="https://github.com/punker76/gong-wpf-dragdrop/issues">
+    <img src="https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square">
+  </a>
+  <br />
   <a href="https://github.com/punker76/gong-wpf-dragdrop/releases/latest">
 	  <img src="https://img.shields.io/github/release/punker76/gong-wpf-dragdrop.svg?style=flat-square">
   </a>
-  <br />
   <a href="https://www.nuget.org/packages/gong-wpf-dragdrop">
     <img src="https://img.shields.io/nuget/dt/gong-wpf-dragdrop.svg?style=flat-square">
   </a>
@@ -36,9 +40,6 @@
   <a href="https://www.nuget.org/packages/gong-wpf-dragdrop">
     <img src="https://img.shields.io/nuget/vpre/gong-wpf-dragdrop.svg?style=flat-square&label=nuget-pre">
   </a>
-  <a href="https://github.com/punker76/gong-wpf-dragdrop/issues">
-    <img src="https://img.shields.io/github/issues/punker76/gong-wpf-dragdrop.svg?style=flat-square">
-  </a>
   <br />
   <br />
 
@@ -46,12 +47,13 @@
 
 ## Features
 
-+ Works with MVVM : the logic for the drag and drop can be placed in a ViewModel. No code needs to be placed in codebehind, instead attached properties are used to bind to a drag handler/drop handler in a ViewModel.
++ Works with MVVM : the logic for the drag and drop can be placed in a ViewModel. No code needs to be placed in code-behind, instead attached properties are used to bind to a drag handler/drop handler in a ViewModel.
 + Works with multiple selections.
-+ Can drag data within the same control to re-order, or between controls.
++ Can drag data within the same control to re-order, or between (different) controls.
 + Works with `ListBox`, `ListView`, `TreeView`, `DataGrid` and any other `ItemsControl`.
-+ Can insert, move or copy an item into a collection of the same control or into another.
++ Can insert, move or copy an item into a collection of the same/another control (same item type).
 + Can display Adorners to give the user visual feedback of the operation in progress.
++ Can display a preview of the dragged item (the preview is always visible).
 + Has sensible defaults so that you have to write less code for common operations.
 
 ## Let's get started
@@ -64,11 +66,25 @@
 - [Wiki](../../wiki)
 - [License](./LICENSE)
 
+## License
+
+Copyright © Jan Karger, Steven Kirk and Contributors. All rights reserved.
+
+`GongSolutions.WPF.DragDrop` is provided as-is under the BSD 3-Clause License. For more information see [LICENSE](./LICENSE).
+
 ## Want to say thanks?
 
-This framework is free and can be used for free, open source and commercial applications. It's tested and contributed by many people... So mainly hit the :star: button, that's all... thx :squirrel: (:dollar:, :euro:, :beer: or some other gifts are also being accepted...).
+This framework is free and can be used for free, open source and commercial applications. It's tested, used and contributed by many awesome people.  So hit the magic :star: button, we appreciate it!!! :pray:
+
+[Become a sponsor](https://github.com/sponsors/punker76) and show your support to this open source project.
+
+If you use `GongSolutions.WPF.DragDrop` as serious task, and you'd like to honor my work on it, please donate, I'll appreciate it.
+
+Does your company use `GongSolutions.WPF.DragDrop`?  Ask your manager or marketing team if your company would be interested in supporting this project.  Your company's logo can be shown [on GitHub](https://github.com/punker76/gong-wpf-dragdrop#readme) - who doesn't want a little extra exposure?
 
 ## In action
+
+![gif01](./screenshots/gong_240.gif)
 
 ![screenshot01](./screenshots/2016-09-03_00h51_35.png)
 
@@ -78,4 +94,4 @@ This framework is free and can be used for free, open source and commercial appl
 
 ![screenshot04](./screenshots/2016-09-03_00h53_21.png)
 
-![gif01](./screenshots/DragDropSample01.gif)
+![gif02](./screenshots/DragDropSample01.gif)
