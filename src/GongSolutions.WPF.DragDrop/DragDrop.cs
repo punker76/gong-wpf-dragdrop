@@ -794,6 +794,28 @@ namespace GongSolutions.Wpf.DragDrop
             Mouse.OverrideCursor = null;
         }
 
+        private static void DragSourceOnGiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if (DragDropEffectPreview != null)
+            {
+                e.UseDefaultCursors = false;
+                e.Handled = true;
+                if (Mouse.OverrideCursor != Cursors.Arrow)
+                {
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                }
+            }
+            else
+            {
+                e.UseDefaultCursors = true;
+                e.Handled = true;
+                if (Mouse.OverrideCursor != null)
+                {
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
         private static void DropTargetOnGiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
             if (DragDropEffectPreview != null)
