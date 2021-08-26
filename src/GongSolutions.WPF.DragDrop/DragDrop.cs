@@ -560,10 +560,11 @@ namespace GongSolutions.Wpf.DragDrop
                             try
                             {
                                 _dragInProgress = true;
-                                hookId = NativeMethods.HookMouseMove(point =>
+
+                                hookId = MouseHelper.HookMouseMove(point =>
                                     {
-                                        DragDropPreview?.Move(DragDropPreview.PlacementTarget.PointFromScreen(point));
-                                        DragDropEffectPreview?.Move(DragDropEffectPreview.PlacementTarget.PointFromScreen(point));
+                                        DragDropPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropPreview.PlacementTarget, point));
+                                        DragDropEffectPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropEffectPreview.PlacementTarget, point));
                                     });
 
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
@@ -584,7 +585,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                             finally
                             {
-                                NativeMethods.RemoveHook(hookId);
+                                MouseHelper.RemoveHook(hookId);
                                 _dragInProgress = false;
                                 _dragInfo = null;
                             }
