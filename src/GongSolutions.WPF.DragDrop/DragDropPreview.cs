@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
@@ -11,10 +11,9 @@ namespace GongSolutions.Wpf.DragDrop
         public DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
         {
             this.PlacementTarget = rootElement;
+            this.Placement = PlacementMode.Relative;
             this.AllowsTransparency = true;
             this.Focusable = false;
-            this.Placement = PlacementMode.Relative;
-            this.PlacementTarget = rootElement;
             this.PopupAnimation = PopupAnimation.Fade;
             this.StaysOpen = true;
             this.HorizontalOffset = -9999;
@@ -33,8 +32,9 @@ namespace GongSolutions.Wpf.DragDrop
 
         internal void Move(Point point)
         {
-            var translationX = point.X + this.Translation.X;
-            var translationY = point.Y + this.Translation.Y;
+            var translation = this.Translation;
+            var translationX = point.X + translation.X;
+            var translationY = point.Y + translation.Y;
 
             var renderSize = this.Child.RenderSize;
 
@@ -59,12 +59,12 @@ namespace GongSolutions.Wpf.DragDrop
             if (PresentationSource.FromVisual(this.Child) is HwndSource hwndSource)
             {
                 var windowHandle = hwndSource.Handle;
-                var wsex = NativeMethods.GetWindowStyleEx(windowHandle);
+                var wsex = WindowStyleHelper.GetWindowStyleEx(windowHandle);
 
-                wsex |= NativeMethods.WS_EX.NOACTIVATE; // We don't want our this window to be activated
-                wsex |= NativeMethods.WS_EX.TRANSPARENT;
+                wsex |= WindowStyleHelper.WS_EX.NOACTIVATE; // We don't want our this window to be activated
+                wsex |= WindowStyleHelper.WS_EX.TRANSPARENT;
 
-                NativeMethods.SetWindowStyleEx(windowHandle, wsex);
+                WindowStyleHelper.SetWindowStyleEx(windowHandle, wsex);
             }
         }
     }
