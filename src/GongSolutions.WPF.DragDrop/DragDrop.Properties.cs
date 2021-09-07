@@ -15,7 +15,7 @@ namespace GongSolutions.Wpf.DragDrop
         public static DataFormat DataFormat { get; } = DataFormats.GetDataFormat("GongSolutions.Wpf.DragDrop");
 
         /// <summary>
-        /// Gets or sets the data format which will be used for the drag and drop actions.
+        /// Gets or sets the data format which will be used for the drag and drop operations.
         /// </summary>
         public static readonly DependencyProperty DataFormatProperty
             = DependencyProperty.RegisterAttached("DataFormat",
@@ -24,7 +24,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   new PropertyMetadata(DragDrop.DataFormat));
 
         /// <summary>
-        /// Gets the data format which will be used for the drag and drop actions.
+        /// Gets the data format which will be used for the drag and drop operations.
         /// </summary>
         public static DataFormat GetDataFormat(UIElement source)
         {
@@ -32,7 +32,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets the data format which will be used for the drag and drop actions.
+        /// Sets the data format which will be used for the drag and drop operations.
         /// </summary>
         public static void SetDataFormat(UIElement source, DataFormat value)
         {
@@ -40,7 +40,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether the control can be used as drag source.
+        /// Gets or sets whether the control can be used as drag source.
         /// </summary>
         public static readonly DependencyProperty IsDragSourceProperty
             = DependencyProperty.RegisterAttached("IsDragSource",
@@ -79,6 +79,7 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewTouchMove += DragSourceOnTouchMove;
 
                 uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
+                uiElement.GiveFeedback += DragSourceOnGiveFeedback;
             }
             else
             {
@@ -91,11 +92,12 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewTouchMove -= DragSourceOnTouchMove;
 
                 uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
+                uiElement.GiveFeedback -= DragSourceOnGiveFeedback;
             }
         }
 
         /// <summary>
-        /// Gets or Sets whether the control can be used as drop target.
+        /// Gets or sets whether the control can be used as drop target.
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty
             = DependencyProperty.RegisterAttached("IsDropTarget",
@@ -156,10 +158,13 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or sets the events which are subscribed for the drag and drop events
+        /// Gets or sets the events which are subscribed for the drag and drop events.
         /// </summary>
-        public static readonly DependencyProperty DropEventTypeProperty =
-            DependencyProperty.RegisterAttached("DropEventType", typeof(EventType), typeof(DragDrop), new PropertyMetadata(EventType.Auto, DropEventTypeChanged));
+        public static readonly DependencyProperty DropEventTypeProperty
+            = DependencyProperty.RegisterAttached("DropEventType",
+                                                  typeof(EventType),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(EventType.Auto, DropEventTypeChanged));
 
         private static void DropEventTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -293,7 +298,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether the control can be used as drag source together with the right mouse.
+        /// Gets or sets whether the control can be used as drag source together with the right mouse.
         /// </summary>
         public static readonly DependencyProperty CanDragWithMouseRightButtonProperty
             = DependencyProperty.RegisterAttached("CanDragWithMouseRightButton",
@@ -349,7 +354,7 @@ namespace GongSolutions.Wpf.DragDrop
         public static IRootElementFinder DefaultRootElementFinder { get; } = new RootElementFinder();
 
         /// <summary>
-        /// Gets or Sets the handler for the drag action.
+        /// Gets or sets the handler for the drag operation.
         /// </summary>
         public static readonly DependencyProperty DragHandlerProperty
             = DependencyProperty.RegisterAttached("DragHandler",
@@ -357,7 +362,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   typeof(DragDrop));
 
         /// <summary>
-        /// Gets the handler for the drag action.
+        /// Gets the handler for the drag operation.
         /// </summary>
         public static IDragSource GetDragHandler(UIElement target)
         {
@@ -365,7 +370,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets the handler for the drag action.
+        /// Sets the handler for the drag operation.
         /// </summary>
         public static void SetDragHandler(UIElement target, IDragSource value)
         {
@@ -373,7 +378,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the handler for the drop action.
+        /// Gets or sets the handler for the drop operation.
         /// </summary>
         public static readonly DependencyProperty DropHandlerProperty
             = DependencyProperty.RegisterAttached("DropHandler",
@@ -381,7 +386,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   typeof(DragDrop));
 
         /// <summary>
-        /// Gets the handler for the drop action.
+        /// Gets the handler for the drop operation.
         /// </summary>
         public static IDropTarget GetDropHandler(UIElement target)
         {
@@ -389,7 +394,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets the handler for the drop action.
+        /// Sets the handler for the drop operation.
         /// </summary>
         public static void SetDropHandler(UIElement target, IDropTarget value)
         {
@@ -397,7 +402,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the ScrollingMode for the drop action.
+        /// Gets or sets the ScrollingMode for the drop operation.
         /// </summary>
         public static readonly DependencyProperty DropScrollingModeProperty
             = DependencyProperty.RegisterAttached("DropScrollingMode",
@@ -406,7 +411,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   new PropertyMetadata(ScrollingMode.Both));
 
         /// <summary>
-        /// Gets the ScrollingMode for the drop action.
+        /// Gets the ScrollingMode for the drop operation.
         /// </summary>
         public static ScrollingMode GetDropScrollingMode(UIElement target)
         {
@@ -414,7 +419,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets the ScrollingMode for the drop action.
+        /// Sets the ScrollingMode for the drop operation.
         /// </summary>
         public static void SetDropScrollingMode(UIElement target, ScrollingMode value)
         {
@@ -422,7 +427,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
+        /// Gets or sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
         /// </summary>
         public static readonly DependencyProperty ShowAlwaysDropTargetAdornerProperty
             = DependencyProperty.RegisterAttached("ShowAlwaysDropTargetAdorner",
@@ -447,7 +452,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the brush for the DropTargetAdorner.
+        /// Gets or sets the brush for the DropTargetAdorner.
         /// </summary>
         public static readonly DependencyProperty DropTargetAdornerBrushProperty
             = DependencyProperty.RegisterAttached("DropTargetAdornerBrush",
@@ -472,7 +477,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a context for a control. Only controls with the same context are allowed for drag or drop actions.
+        /// Gets or sets a context for a control. Only controls with the same context are allowed for drag or drop actions.
         /// </summary>
         public static readonly DependencyProperty DragDropContextProperty
             = DependencyProperty.RegisterAttached("DragDropContext",
@@ -497,7 +502,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether an element under the mouse should be ignored for the drag action.
+        /// Gets or sets whether an element under the mouse should be ignored for the drag operation.
         /// </summary>
         public static readonly DependencyProperty DragSourceIgnoreProperty
             = DependencyProperty.RegisterAttached("DragSourceIgnore",
@@ -506,7 +511,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         /// <summary>
-        /// Gets whether an element under the mouse should be ignored for the drag action.
+        /// Gets whether an element under the mouse should be ignored for the drag operation.
         /// </summary>
         public static bool GetDragSourceIgnore(UIElement source)
         {
@@ -514,7 +519,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets whether an element under the mouse should be ignored for the drag action.
+        /// Sets whether an element under the mouse should be ignored for the drag operation.
         /// </summary>
         public static void SetDragSourceIgnore(UIElement source, bool value)
         {
@@ -522,7 +527,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets wheter the drag action should be started only directly on a selected item
+        /// Gets or sets whether the drag action should be started only directly on a selected item.
         /// or also on the free control space (e.g. in a ListBox).
         /// </summary>
         public static readonly DependencyProperty DragDirectlySelectedOnlyProperty
@@ -576,7 +581,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether if the default DragAdorner should be use.
+        /// Gets or sets whether if the default DragAdorner should be use.
         /// </summary>
         public static readonly DependencyProperty UseDefaultDragAdornerProperty
             = DependencyProperty.RegisterAttached("UseDefaultDragAdorner",
@@ -601,7 +606,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the opacity of the default DragAdorner.
+        /// Gets or sets the opacity of the default DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DefaultDragAdornerOpacityProperty
             = DependencyProperty.RegisterAttached("DefaultDragAdornerOpacity",
@@ -626,7 +631,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
+        /// Gets or sets the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragMouseAnchorPointProperty
             = DependencyProperty.RegisterAttached("DragMouseAnchorPoint",
@@ -651,7 +656,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the translation transform which will be used for the DragAdorner.
+        /// Gets or sets the translation transform which will be used for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTranslationProperty
             = DependencyProperty.RegisterAttached("DragAdornerTranslation",
@@ -676,7 +681,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the translation transform which will be used for the EffectAdorner.
+        /// Gets or sets the translation transform which will be used for the EffectAdorner.
         /// </summary>
         public static readonly DependencyProperty EffectAdornerTranslationProperty
             = DependencyProperty.RegisterAttached("EffectAdornerTranslation",
@@ -701,7 +706,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a DataTemplate for the DragAdorner.
+        /// Gets or sets a DataTemplate for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("DragAdornerTemplate",
@@ -725,7 +730,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a DataTemplate for the DragAdorner based on the DropTarget.
+        /// Gets or sets a DataTemplate for the DragAdorner based on the DropTarget.
         /// </summary>
         public static readonly DependencyProperty DropAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("DropAdornerTemplate",
@@ -749,7 +754,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a DataTemplateSelector for the DragAdorner.
+        /// Gets or sets a DataTemplateSelector for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTemplateSelectorProperty
             = DependencyProperty.RegisterAttached("DragAdornerTemplateSelector",
@@ -774,7 +779,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
+        /// Gets or sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
         /// </summary>
         public static readonly DependencyProperty DropAdornerTemplateSelectorProperty
             = DependencyProperty.RegisterAttached("DropAdornerTemplateSelector",
@@ -824,7 +829,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets whether if the default DataTemplate for the effects should be use.
+        /// Gets or sets whether if the default DataTemplate for the effects should be use.
         /// </summary>
         public static readonly DependencyProperty UseDefaultEffectDataTemplateProperty
             = DependencyProperty.RegisterAttached("UseDefaultEffectDataTemplate",
@@ -849,7 +854,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type None.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type None.
         /// </summary>
         public static readonly DependencyProperty EffectNoneAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectNoneAdornerTemplate",
@@ -874,7 +879,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type Copy.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type Copy.
         /// </summary>
         public static readonly DependencyProperty EffectCopyAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectCopyAdornerTemplate",
@@ -899,7 +904,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type Move.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type Move.
         /// </summary>
         public static readonly DependencyProperty EffectMoveAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectMoveAdornerTemplate",
@@ -924,7 +929,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type Link.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type Link.
         /// </summary>
         public static readonly DependencyProperty EffectLinkAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectLinkAdornerTemplate",
@@ -949,7 +954,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type All.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type All.
         /// </summary>
         public static readonly DependencyProperty EffectAllAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectAllAdornerTemplate",
@@ -974,7 +979,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets a EffectAdorner DataTemplate for effect type Scroll.
+        /// Gets or sets a EffectAdorner DataTemplate for effect type Scroll.
         /// </summary>
         public static readonly DependencyProperty EffectScrollAdornerTemplateProperty
             = DependencyProperty.RegisterAttached("EffectScrollAdornerTemplate",
@@ -999,9 +1004,9 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or Sets the Orientation which should be used for the drag drop action (default null).
-        /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
-        /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+        /// Gets or sets the Orientation which should be used for the drag drop action (default null).
+        /// Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+        /// but sometimes it's necessary to force the orientation, if the look up is wrong.
         /// </summary>
         public static readonly DependencyProperty ItemsPanelOrientationProperty
             = DependencyProperty.RegisterAttached("ItemsPanelOrientation",
@@ -1011,8 +1016,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <summary>
         /// Gets the Orientation which should be used for the drag drop action (default null).
-        /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
-        /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+        /// Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+        /// but sometimes it's necessary to force the orientation, if the look up is wrong.
         /// </summary>
         public static Orientation? GetItemsPanelOrientation(UIElement source)
         {
@@ -1021,8 +1026,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <summary>
         /// Sets the Orientation which should be used for the drag drop action (default null).
-        /// Normally it will be look up to find the correct orientaion of the inner ItemsPanel,
-        /// but sometimes it's necessary to force the oreintation, if the look up is wrong.
+        /// Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+        /// but sometimes it's necessary to force the orientation, if the look up is wrong.
         /// </summary>
         public static void SetItemsPanelOrientation(UIElement source, Orientation? value)
         {

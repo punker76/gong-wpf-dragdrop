@@ -33,6 +33,9 @@
                   Content="UseDefaultDragAdorner"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 5 5 5"
+                  Content="UseVisualSourceItemSizeForDragAdorner"
+                  IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox Margin="10 5 5 5"
                   Content="UseDefaultEffectDataTemplate"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>

@@ -120,8 +120,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             {
                 var vb = new VisualBrush(target);
 
-                vb.ViewportUnits = BrushMappingMode.Absolute;
-                vb.Viewport = bounds;
+                // vb.ViewportUnits = BrushMappingMode.Absolute;
+                // vb.Viewport = bounds;
 
                 if (flowDirection == FlowDirection.RightToLeft)
                 {
