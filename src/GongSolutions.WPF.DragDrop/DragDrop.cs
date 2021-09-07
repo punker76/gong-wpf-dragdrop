@@ -14,89 +14,64 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public static partial class DragDrop
     {
-        private static DragDropPreview GetDragDropPreview(DropInfo dropInfo, UIElement target)
+        internal static DataTemplate TryGetDragAdornerTemplate(UIElement source, UIElement sender)
         {
-            var dragInfo = dropInfo.DragInfo;
-            var template = GetDropAdornerTemplate(dropInfo.VisualTarget) ?? GetDragAdornerTemplate(dragInfo.VisualSource);
-            var templateSelector = GetDropAdornerTemplateSelector(dropInfo.VisualTarget) ?? GetDragAdornerTemplateSelector(dragInfo.VisualSource);
-
-            UIElement adornment = null;
-
-            var useDefaultDragAdorner = template == null && templateSelector == null && GetUseDefaultDragAdorner(dragInfo.VisualSource);
-            var useVisualSourceItemSizeForDragAdorner = GetUseVisualSourceItemSizeForDragAdorner(dragInfo.VisualSource);
-
-            if (useDefaultDragAdorner)
+            var template = source is not null ? GetDragAdornerTemplate(source) : null;
+            if (template is null && sender is not null)
             {
-                template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
+                template = GetDragAdornerTemplate(sender);
             }
 
-            if (template != null || templateSelector != null)
+            return template;
+        }
+
+        internal static DataTemplateSelector TryGetDragAdornerTemplateSelector(UIElement source, UIElement sender)
+        {
+            var templateSelector = source is not null ? GetDragAdornerTemplateSelector(source) : null;
+            if (templateSelector is null && sender is not null)
             {
-                if (dragInfo.Data is IEnumerable items && !(items is string))
-                {
-                    var itemsCount = items.Cast<object>().Count();
-                    var maxItemsCount = TryGetDragPreviewMaxItemsCount(dragInfo, target);
-                    if (!useDefaultDragAdorner && itemsCount <= maxItemsCount)
-                    {
-                        var itemsControl = new ItemsControl();
-
-                        // sort items if necessary before creating the preview
-                        var sorter = TryGetDragPreviewItemsSorter(dragInfo, target);
-                        if (sorter != null)
-                        {
-                            itemsControl.ItemsSource = sorter.SortDragPreviewItems(items);
-                        }
-                        else
-                        {
-                            itemsControl.ItemsSource = items;
-                        }
-
-                        itemsControl.ItemTemplate = template;
-                        itemsControl.ItemTemplateSelector = templateSelector;
-                        itemsControl.Tag = dragInfo;
-
-                        if (useVisualSourceItemSizeForDragAdorner)
-                        {
-                            var bounds = VisualTreeExtensions.GetVisibleDescendantBounds(dragInfo.VisualSourceItem);
-                            itemsControl.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
-                        }
-
-                        // The ItemsControl doesn't display unless we create a grid to contain it.
-                        // Not quite sure why we need this...
-                        var grid = new Grid();
-                        grid.Children.Add(itemsControl);
-                        adornment = grid;
-                    }
-                }
-                else
-                {
-                    var contentPresenter = new ContentPresenter();
-                    contentPresenter.Content = dragInfo.Data;
-                    contentPresenter.ContentTemplate = template;
-                    contentPresenter.ContentTemplateSelector = templateSelector;
-                    contentPresenter.Tag = dragInfo;
-
-                    if (useVisualSourceItemSizeForDragAdorner)
-                    {
-                        var bounds = VisualTreeExtensions.GetVisibleDescendantBounds(dragInfo.VisualSourceItem);
-                        contentPresenter.SetValue(FrameworkElement.MinWidthProperty, bounds.Width);
-                        contentPresenter.SetValue(FrameworkElement.MinHeightProperty, bounds.Height);
-                    }
-
-                    adornment = contentPresenter;
-                }
+                templateSelector = GetDragAdornerTemplateSelector(sender);
             }
 
-            if (adornment != null)
+            return templateSelector;
+        }
+
+        internal static DataTemplate TryGetDropAdornerTemplate(UIElement source, UIElement sender)
+        {
+            var template = source is not null ? GetDropAdornerTemplate(source) : null;
+            if (template is null && sender is not null)
             {
-                if (useDefaultDragAdorner)
-                {
-                    adornment.Opacity = GetDefaultDragAdornerOpacity(dragInfo.VisualSource);
-                }
+                template = GetDropAdornerTemplate(sender);
+            }
 
-                var rootElement = TryGetRootElementFinder(target).FindRoot(dropInfo.VisualTarget ?? dragInfo.VisualSource);
+            return template;
+        }
 
-                var preview = new DragDropPreview(rootElement, adornment, GetDragAdornerTranslation(dragInfo.VisualSource), GetDragMouseAnchorPoint(dragInfo.VisualSource)) { IsOpen = true };
+        internal static DataTemplateSelector TryGetDropAdornerTemplateSelector(UIElement source, UIElement sender)
+        {
+            var templateSelector = source is not null ? GetDropAdornerTemplateSelector(source) : null;
+            if (templateSelector is null && sender is not null)
+            {
+                templateSelector = GetDropAdornerTemplateSelector(sender);
+            }
+
+            return templateSelector;
+        }
+
+        private static DragDropPreview GetDragDropPreview(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
+        {
+            var visualSource = dragInfo?.VisualSource;
+            if (visualSource is null)
+            {
+                return null;
+            }
+
+            var rootElement = TryGetRootElementFinder(sender).FindRoot(visualTarget ?? visualSource);
+
+            var preview = new DragDropPreview(rootElement, dragInfo, visualTarget ?? visualSource, sender);
+            if (preview.Child != null)
+            {
+                preview.IsOpen = true;
                 return preview;
             }
 
@@ -106,7 +81,7 @@ namespace GongSolutions.Wpf.DragDrop
         private static DragDropEffectPreview GetDragDropEffectPreview(DropInfo dropInfo, UIElement sender)
         {
             var dragInfo = dropInfo.DragInfo;
-            var template = GetDragDropEffecTemplate(dragInfo.VisualSource, dropInfo);
+            var template = GetDragDropEffectTemplate(dragInfo.VisualSource, dropInfo);
 
             if (template != null)
             {
@@ -114,14 +89,18 @@ namespace GongSolutions.Wpf.DragDrop
 
                 var adornment = new ContentPresenter { Content = dragInfo.Data, ContentTemplate = template };
 
-                var preview = new DragDropEffectPreview(rootElement, adornment, GetEffectAdornerTranslation(dragInfo.VisualSource), dropInfo.Effects, dropInfo.EffectText, dropInfo.DestinationText) { IsOpen = true };
+                var preview = new DragDropEffectPreview(rootElement, adornment, GetEffectAdornerTranslation(dragInfo.VisualSource), dropInfo.Effects, dropInfo.EffectText, dropInfo.DestinationText)
+                              {
+                                  IsOpen = true
+                              };
+
                 return preview;
             }
 
             return null;
         }
 
-        private static DataTemplate GetDragDropEffecTemplate(UIElement target, DropInfo dropInfo)
+        private static DataTemplate GetDragDropEffectTemplate(UIElement target, DropInfo dropInfo)
         {
             if (target is null)
             {
@@ -303,7 +282,7 @@ namespace GongSolutions.Wpf.DragDrop
             return rootElementFinder ?? DefaultRootElementFinder;
         }
 
-        private static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)
+        internal static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)
         {
             var itemsCount = dragInfo?.VisualSource != null ? GetDragPreviewMaxItemsCount(dragInfo.VisualSource) : -1;
             if (itemsCount < 0 && sender != null)
@@ -314,7 +293,7 @@ namespace GongSolutions.Wpf.DragDrop
             return itemsCount < 0 || itemsCount >= int.MaxValue ? 10 : itemsCount;
         }
 
-        private static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
+        internal static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
         {
             var itemsSorter = dragInfo?.VisualSource != null ? GetDragPreviewItemsSorter(dragInfo.VisualSource) : null;
             if (itemsSorter is null && sender != null)
@@ -490,7 +469,7 @@ namespace GongSolutions.Wpf.DragDrop
                     return;
                 }
 
-                DoDragSourceMove(sender, e.GetTouchPoint((IInputElement)sender).Position);
+                DoDragSourceMove(sender, element => e.GetTouchPoint(element).Position);
             }
         }
 
@@ -512,11 +491,11 @@ namespace GongSolutions.Wpf.DragDrop
                     return;
                 }
 
-                DoDragSourceMove(sender, e.GetPosition((IInputElement)sender));
+                DoDragSourceMove(sender, element => e.GetPosition(element));
             }
         }
 
-        private static void DoDragSourceMove(object sender, Point position)
+        private static void DoDragSourceMove(object sender, Func<IInputElement, Point> getPosition)
         {
             var dragInfo = _dragInfo;
             if (dragInfo != null && !_dragInProgress)
@@ -528,6 +507,7 @@ namespace GongSolutions.Wpf.DragDrop
                 dragInfo.VisualSource?.ReleaseMouseCapture();
 
                 // only if the sender is the source control and the mouse point differs from an offset
+                var position = getPosition((IInputElement)sender);
                 if (dragInfo.VisualSource == sender
                     && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(dragInfo.VisualSource) ||
                         Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(dragInfo.VisualSource)))
@@ -560,6 +540,12 @@ namespace GongSolutions.Wpf.DragDrop
                             try
                             {
                                 _dragInProgress = true;
+
+                                if (DragDropPreview is null)
+                                {
+                                    DragDropPreview = GetDragDropPreview(dragInfo, null, sender as UIElement);
+                                    DragDropPreview?.Move(getPosition(DragDropPreview.PlacementTarget));
+                                }
 
                                 hookId = MouseHelper.HookMouseMove(point =>
                                     {
@@ -659,10 +645,15 @@ namespace GongSolutions.Wpf.DragDrop
 
             dropHandler.DragOver(dropInfo);
 
-            if (DragDropPreview is null && dragInfo is { })
+            if (dragInfo is not null)
             {
-                DragDropPreview = GetDragDropPreview(dropInfo, sender as UIElement);
-                DragDropPreview?.Move(e.GetPosition(DragDropPreview.PlacementTarget));
+                if (DragDropPreview is null)
+                {
+                    DragDropPreview = GetDragDropPreview(dragInfo, dropInfo.VisualTarget, sender as UIElement);
+                    DragDropPreview?.Move(e.GetPosition(DragDropPreview.PlacementTarget));
+                }
+
+                DragDropPreview?.UpdatePreviewPresenter(dragInfo, dropInfo.VisualTarget, sender as UIElement);
             }
 
             Scroll(dropInfo, e);
@@ -736,7 +727,7 @@ namespace GongSolutions.Wpf.DragDrop
                     DragDropEffectPreview.EffectText = dropInfo.EffectText;
                     DragDropEffectPreview.DestinationText = dropInfo.DestinationText;
 
-                    var template = GetDragDropEffecTemplate(dragInfo.VisualSource, dropInfo);
+                    var template = GetDragDropEffectTemplate(dragInfo.VisualSource, dropInfo);
                     if (template is null)
                     {
                         DragDropEffectPreview = null;
