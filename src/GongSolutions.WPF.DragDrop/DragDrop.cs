@@ -66,13 +66,17 @@ namespace GongSolutions.Wpf.DragDrop
                 return null;
             }
 
-            var rootElement = TryGetRootElementFinder(sender).FindRoot(visualTarget ?? visualSource);
-
-            var preview = new DragDropPreview(rootElement, dragInfo, visualTarget ?? visualSource, sender);
-            if (preview.Child != null)
+            var hasDragDropPreview = DragDropPreview.HasDragDropPreview(dragInfo, visualTarget ?? visualSource, sender);
+            if (hasDragDropPreview)
             {
-                preview.IsOpen = true;
-                return preview;
+                var rootElement = TryGetRootElementFinder(sender).FindRoot(visualTarget ?? visualSource);
+
+                var preview = new DragDropPreview(rootElement, dragInfo, visualTarget ?? visualSource, sender);
+                if (preview.Child != null)
+                {
+                    preview.IsOpen = true;
+                    return preview;
+                }
             }
 
             return null;
