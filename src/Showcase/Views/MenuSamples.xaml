@@ -18,11 +18,10 @@
               ItemsSource="{Binding Data.TreeCollection1}">
             <Menu.Resources>
                 <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
-                    <Setter Property="Header"
-                                            Value="{Binding Caption}" />
-                    <Setter Property="ItemsSource"
-                            Value="{Binding Children}" />
-                   
+                    <Setter Property="Header" Value="{Binding Caption}" />
+                    <Setter Property="ItemsSource" Value="{Binding Children}" />
+                    <!--<Setter Property="dd:DragDrop.IsDropTarget" Value="True" />
+                    <Setter Property="dd:DragDrop.IsDragSource" Value="True" />-->
                 </Style>
 
                 <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" />
