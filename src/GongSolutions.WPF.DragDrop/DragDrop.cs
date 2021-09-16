@@ -841,7 +841,7 @@ namespace GongSolutions.Wpf.DragDrop
                    || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<ToggleButton>(sender, elementPosition)
-                   || HitTestUtilities.HitTest4Type<MenuBase>(sender, elementPosition)
+                   //|| HitTestUtilities.HitTest4Type<MenuBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
                    || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
         }

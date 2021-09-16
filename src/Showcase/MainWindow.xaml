@@ -32,6 +32,9 @@
             <TabItem Header="TabControl">
                 <views:TabControlSamples />
             </TabItem>
+            <TabItem Header="Menu">
+                <views:MenuSamples />
+            </TabItem>
             <TabItem Header="Mixed">
                 <views:MixedSamples />
             </TabItem>
