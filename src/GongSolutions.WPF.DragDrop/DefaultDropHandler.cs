@@ -167,7 +167,7 @@ namespace GongSolutions.Wpf.DragDrop
             var insertIndex = GetInsertIndex(dropInfo);
             var destinationList = dropInfo.TargetCollection.TryGetList();
             var data = ExtractData(dropInfo.Data).OfType<object>().ToList();
-            bool forceMoveBehavior = false;
+            bool isSameCollection = false;
 
             var copyData = ShouldCopyData(dropInfo);
             if (!copyData)
@@ -175,8 +175,8 @@ namespace GongSolutions.Wpf.DragDrop
                 var sourceList = dropInfo.DragInfo.SourceCollection.TryGetList();
                 if (sourceList != null)
                 {
-                    forceMoveBehavior = sourceList.IsSameObservableCollection(destinationList);
-                    if (!forceMoveBehavior)
+                    isSameCollection = sourceList.IsSameObservableCollection(destinationList);
+                    if (!isSameCollection)
                     {
                         foreach (var o in data)
                         {
@@ -216,15 +216,18 @@ namespace GongSolutions.Wpf.DragDrop
 
                     objects2Insert.Add(obj2Insert);
 
-                    if (!cloneData && forceMoveBehavior)
+                    if (!cloneData && isSameCollection)
                     {
                         var index = destinationList.IndexOf(o);
-                        if (insertIndex > index)
+                        if (index != -1)
                         {
-                            insertIndex--;
-                        }
+                            if (insertIndex > index)
+                            {
+                                insertIndex--;
+                            }
 
-                        Move(destinationList, index, insertIndex++);
+                            Move(destinationList, index, insertIndex++);
+                        }
                     }
                     else
                     {
@@ -266,8 +269,11 @@ namespace GongSolutions.Wpf.DragDrop
                 throw new ArgumentException("ObservableCollection<T> was expected", nameof(list));
             }
 
-            var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-            method.Invoke(list, new object[] { sourceIndex, destinationIndex });
+            if (sourceIndex != destinationIndex)
+            {
+                var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+                _ = method?.Invoke(list, new object[] { sourceIndex, destinationIndex });
+            }
         }
 
         protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
