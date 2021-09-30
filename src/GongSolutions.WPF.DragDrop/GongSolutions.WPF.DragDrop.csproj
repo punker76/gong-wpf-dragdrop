@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <!-- Project properties -->
     <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
         <AssemblyName>GongSolutions.WPF.DragDrop</AssemblyName>
         <Title>gong-wpf-dragdrop</Title>
         <RootNamespace>GongSolutions.Wpf.DragDrop</RootNamespace>
