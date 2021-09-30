@@ -4,7 +4,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
     /// Interface implemented by Drag Info Builders.
-    /// It enables custom construction of DragInfo objects from 3rd party controls like DevExpress, Telerik, etc.
+    /// It enables custom construction of DragInfo objects to support 3rd party controls like DevExpress, Telerik, etc.
     /// </summary>
     public interface IDragInfoBuilder
     {
