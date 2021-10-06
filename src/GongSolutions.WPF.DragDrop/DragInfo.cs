@@ -81,40 +81,40 @@ namespace GongSolutions.Wpf.DragDrop
         public object Data { get; set; }
 
         /// <inheritdoc />
-        public Point DragStartPosition { get; private set; }
+        public Point DragStartPosition { get; protected set; }
 
         /// <inheritdoc />
-        public Point PositionInDraggedItem { get; private set; }
+        public Point PositionInDraggedItem { get; protected set; }
 
         /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
         /// <inheritdoc />
-        public MouseButton MouseButton { get; private set; }
+        public MouseButton MouseButton { get; protected set; }
 
         /// <inheritdoc />
-        public IEnumerable SourceCollection { get; private set; }
+        public IEnumerable SourceCollection { get; protected set; }
 
         /// <inheritdoc />
-        public int SourceIndex { get; private set; }
+        public int SourceIndex { get; protected set; }
 
         /// <inheritdoc />
-        public object SourceItem { get; private set; }
+        public object SourceItem { get; protected set; }
 
         /// <inheritdoc />
-        public IEnumerable SourceItems { get; private set; }
+        public IEnumerable SourceItems { get; protected set; }
 
         /// <inheritdoc />
-        public CollectionViewGroup SourceGroup { get; private set; }
+        public CollectionViewGroup SourceGroup { get; protected set; }
 
         /// <inheritdoc />
-        public UIElement VisualSource { get; private set; }
+        public UIElement VisualSource { get; protected set; }
 
         /// <inheritdoc />
-        public UIElement VisualSourceItem { get; private set; }
+        public UIElement VisualSourceItem { get; protected set; }
 
         /// <inheritdoc />
-        public FlowDirection VisualSourceFlowDirection { get; private set; }
+        public FlowDirection VisualSourceFlowDirection { get; protected set; }
 
         /// <inheritdoc />
         public object DataObject { get; set; }
@@ -123,9 +123,9 @@ namespace GongSolutions.Wpf.DragDrop
         public Func<DependencyObject, object, DragDropEffects, DragDropEffects> DragDropHandler { get; set; } = System.Windows.DragDrop.DoDragDrop;
 
         /// <inheritdoc />
-        public DragDropKeyStates DragDropCopyKeyState { get; private set; }
+        public DragDropKeyStates DragDropCopyKeyState { get; protected set; }
 
-        private void InitializeDragInfo(object sender, object originalSource, Func<IInputElement, Point> getPosition)
+        protected virtual void InitializeDragInfo(object sender, object originalSource, Func<IInputElement, Point> getPosition)
         {
             this.Effects = DragDropEffects.None;
             this.VisualSource = sender as UIElement;

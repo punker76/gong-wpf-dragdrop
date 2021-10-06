@@ -275,6 +275,16 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets the drag info builder from the sender.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IDragInfoBuilder TryGetDragInfoBuilder(DependencyObject sender)
+        {
+            return GetDragInfoBuilder(sender);
+        }
+
+        /// <summary>
         /// Gets the RootElementFinder from the sender or uses the default implementation, if it's null.
         /// </summary>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
@@ -344,7 +354,8 @@ namespace GongSolutions.Wpf.DragDrop
                 return;
             }
 
-            var dragInfo = new DragInfo(sender, e);
+            var infoBuilder = TryGetDragInfoBuilder(sender as DependencyObject);
+            var dragInfo = infoBuilder?.CreateDragInfo(sender, e) ?? new DragInfo(sender, e);
 
             DragSourceDown(sender, dragInfo, e);
         }
@@ -365,7 +376,8 @@ namespace GongSolutions.Wpf.DragDrop
                 return;
             }
 
-            var dragInfo = new DragInfo(sender, e);
+            var infoBuilder = TryGetDragInfoBuilder(sender as DependencyObject);
+            var dragInfo = infoBuilder?.CreateDragInfo(sender, e) ?? new DragInfo(sender, e);
 
             DragSourceDown(sender, dragInfo, e);
         }
