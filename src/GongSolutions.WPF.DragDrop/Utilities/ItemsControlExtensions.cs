@@ -340,12 +340,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 
                 if (selectionMode != SelectionMode.Single)
                 {
-                    var itemsToDeselect = listBox.SelectedItems.Cast<object>().Where(si => si != item2Select).ToArray();
-
-                    foreach (var item in itemsToDeselect)
-                    {
-                        listBox.SelectedItems.Remove(item);
-                    }
+                    listBox.UnselectAll();
                 }
 
                 try
