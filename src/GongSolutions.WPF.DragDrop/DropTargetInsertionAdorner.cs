@@ -133,18 +133,7 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                     else
                     {
-                        if (dropInfo.VisualTargetFlowDirection == FlowDirection.LeftToRight && dropInfo.InsertIndex == itemsCount)
-                        {
-                            if (itemsCount > 0)
-                            {
-                                itemRect.X += itemContainer.RenderSize.Width;
-                            }
-                            else
-                            {
-                                itemRect.X += this.Pen.Thickness;
-                            }
-                        }
-                        else if (dropInfo.VisualTargetFlowDirection == FlowDirection.RightToLeft && dropInfo.InsertIndex != itemsCount)
+                        if (dropInfo.InsertIndex == itemsCount)
                         {
                             if (itemsCount > 0)
                             {

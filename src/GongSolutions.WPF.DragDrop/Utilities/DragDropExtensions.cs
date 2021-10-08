@@ -127,7 +127,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 {
                     var transformGroup = new TransformGroup();
                     transformGroup.Children.Add(new ScaleTransform(-1, 1));
-                    transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width - 1, 0));
+                    transformGroup.Children.Add(new TranslateTransform(bounds.Size.Width, 0));
                     ctx.PushTransform(transformGroup);
                 }
 
