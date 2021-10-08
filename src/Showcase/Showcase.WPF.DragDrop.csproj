@@ -28,19 +28,15 @@
     </ItemGroup>
 
     <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
-        <PackageReference Include="Fody" Version="6.*">
+        <PackageReference Include="Fody" Version="6.5.*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Costura.Fody" Version="4.*" PrivateAssets="All" />
+        <PackageReference Include="Costura.Fody" Version="5.6.*" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="app.manifest" />
-        <None Remove="App.config" />
-        <AppConfigWithTargetPath Include="App.$(TargetFramework).config" Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
-            <TargetPath>$(AssemblyName).exe.config</TargetPath>
-        </AppConfigWithTargetPath>
     </ItemGroup>
 
     <ItemGroup>
