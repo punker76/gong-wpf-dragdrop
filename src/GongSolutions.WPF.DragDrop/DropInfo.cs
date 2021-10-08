@@ -179,7 +179,8 @@ namespace GongSolutions.Wpf.DragDrop
 
                             this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
-                        //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, Y={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentYPos, item);
+
+                        // System.Diagnostics.Debug.WriteLine($"==> DropInfo: pos={this.InsertPosition}, index={this.InsertIndex}, currentXPos={currentXPos}, Item={this.item}");
                     }
                     else
                     {
@@ -188,57 +189,27 @@ namespace GongSolutions.Wpf.DragDrop
 
                         if (this.VisualTargetFlowDirection == FlowDirection.RightToLeft)
                         {
-                            if (itemsControl.FlowDirection == FlowDirection.LeftToRight)
+                            if (currentXPos < targetWidth / 2)
                             {
-                                if (currentXPos > targetWidth / 2)
-                                {
-                                    this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
-                                }
-                                else
-                                {
-                                    this.InsertIndex++;
-                                    this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-                                }
+                                this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
                             }
                             else
                             {
-                                if (currentXPos < targetWidth / 2)
-                                {
-                                    this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
-                                }
-                                else
-                                {
-                                    this.InsertIndex++;
-                                    this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-                                }
+                                this.InsertIndex++;
+                                this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
                             }
                         }
                         else if (this.VisualTargetFlowDirection == FlowDirection.LeftToRight)
                         {
-                            if (itemsControl.FlowDirection == FlowDirection.LeftToRight)
+                            if (currentXPos > targetWidth / 2)
                             {
-                                if (currentXPos > targetWidth / 2)
-                                {
-                                    this.InsertIndex++;
-                                    this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-                                }
-                                else
-                                {
-                                    this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
-                                }
+                                this.InsertIndex++;
+                                this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
                             }
                             else
                             {
-                                if (currentXPos < targetWidth / 2)
-                                {
-                                    this.InsertIndex++;
-                                    this.InsertPosition = RelativeInsertPosition.AfterTargetItem;
-                                }
-                                else
-                                {
-                                    this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
-                                }
-                            }    
+                                this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
+                            }
                         }
 
                         if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
@@ -251,7 +222,8 @@ namespace GongSolutions.Wpf.DragDrop
 
                             this.InsertPosition |= RelativeInsertPosition.TargetItemCenter;
                         }
-                        //System.Diagnostics.Debug.WriteLine("==> DropInfo: pos={0}, idx={1}, X={2}, Item={3}", this.InsertPosition, this.InsertIndex, currentXPos, item);
+
+                        // System.Diagnostics.Debug.WriteLine($"==> DropInfo: pos={this.InsertPosition}, index={this.InsertIndex}, currentXPos={currentXPos}, Item={this.item}");
                     }
                 }
                 else
