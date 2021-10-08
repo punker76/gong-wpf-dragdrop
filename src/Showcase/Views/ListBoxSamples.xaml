@@ -123,11 +123,36 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with horizontal ListBoxes and right to left flow direction." />
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Unbound ListBox" />
-                            <ListBox Height="Auto"
+                            <ListBox MinHeight="30"
+                                     Height="Auto"
                                      dd:DragDrop.DefaultDragAdornerOpacity="0.5"
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultDragAdorner="True"
+                                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                     SelectionMode="Extended">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="1" Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem>ListBoxItem1</ListBoxItem>
+                                <ListBoxItem>ListBoxItem2</ListBoxItem>
+                                <ListBoxItem>ListBoxItem3</ListBoxItem>
+                                <ListBoxItem>ListBoxItem4</ListBoxItem>
+                                <ListBoxItem>ListBoxItem5</ListBoxItem>
+                            </ListBox>
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ListBox with right to left flow direction" />
+                            <ListBox MinHeight="30"
+                                     Height="Auto"
+                                     FlowDirection="RightToLeft"
+                                     dd:DragDrop.DefaultDragAdornerOpacity="0.5"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.UseDefaultDragAdorner="True"
+                                     dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                      SelectionMode="Extended">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
