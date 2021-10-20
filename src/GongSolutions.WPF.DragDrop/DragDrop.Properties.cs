@@ -426,6 +426,30 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets the drop info builder for the drop operation.
+        /// </summary>
+        public static readonly DependencyProperty DropInfoBuilderProperty
+            = DependencyProperty.RegisterAttached("DropInfoBuilder",
+                                                  typeof(IDropInfoBuilder),
+                                                  typeof(DragDrop));
+
+        /// <summary>
+        /// Gets the drop info builder for the drop operation.
+        /// </summary>
+        public static void SetDropInfoBuilder(DependencyObject element, IDropInfoBuilder value)
+        {
+            element.SetValue(DropInfoBuilderProperty, value);
+        }
+
+        /// <summary>
+        /// Sets the drop info builder for the drop operation.
+        /// </summary>
+        public static IDropInfoBuilder GetDropInfoBuilder(DependencyObject element)
+        {
+            return (IDropInfoBuilder)element.GetValue(DropInfoBuilderProperty);
+        }
+
+        /// <summary>
         /// Gets or sets the ScrollingMode for the drop operation.
         /// </summary>
         public static readonly DependencyProperty DropScrollingModeProperty

@@ -82,7 +82,7 @@ namespace GongSolutions.Wpf.DragDrop
             return null;
         }
 
-        private static DragDropEffectPreview GetDragDropEffectPreview(DropInfo dropInfo, UIElement sender)
+        private static DragDropEffectPreview GetDragDropEffectPreview(IDropInfo dropInfo, UIElement sender)
         {
             var dragInfo = dropInfo.DragInfo;
             var template = GetDragDropEffectTemplate(dragInfo.VisualSource, dropInfo);
@@ -104,7 +104,7 @@ namespace GongSolutions.Wpf.DragDrop
             return null;
         }
 
-        private static DataTemplate GetDragDropEffectTemplate(UIElement target, DropInfo dropInfo)
+        private static DataTemplate GetDragDropEffectTemplate(UIElement target, IDropInfo dropInfo)
         {
             if (target is null)
             {
@@ -202,7 +202,7 @@ namespace GongSolutions.Wpf.DragDrop
             return new DataTemplate { VisualTree = borderFactory };
         }
 
-        private static void Scroll(DropInfo dropInfo, DragEventArgs e)
+        private static void Scroll(IDropInfo dropInfo, DragEventArgs e)
         {
             if (dropInfo?.TargetScrollViewer is null)
             {
@@ -263,7 +263,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dropInfo">the drop info object</param>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
         /// <returns></returns>
-        private static IDropTarget TryGetDropHandler(DropInfo dropInfo, UIElement sender)
+        private static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
         {
             var dropHandler = dropInfo?.VisualTarget != null ? GetDropHandler(dropInfo.VisualTarget) : null;
             if (dropHandler is null && sender != null)
@@ -282,6 +282,17 @@ namespace GongSolutions.Wpf.DragDrop
         private static IDragInfoBuilder TryGetDragInfoBuilder(DependencyObject sender)
         {
             return GetDragInfoBuilder(sender);
+        }
+
+
+        /// <summary>
+        /// Gets the drop info builder from the sender.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
+        {
+            return GetDropInfoBuilder(sender);
         }
 
         /// <summary>
@@ -655,7 +666,8 @@ namespace GongSolutions.Wpf.DragDrop
             var elementPosition = e.GetPosition((IInputElement)sender);
 
             var dragInfo = _dragInfo;
-            var dropInfo = new DropInfo(sender, e, dragInfo, eventType);
+            var dropInfoBuilder = TryGetDropInfoBuilder(sender as DependencyObject);
+            var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var itemsControl = dropInfo.VisualTarget;
 
@@ -777,7 +789,8 @@ namespace GongSolutions.Wpf.DragDrop
         private static void DropTargetOnDrop(object sender, DragEventArgs e, EventType eventType)
         {
             var dragInfo = _dragInfo;
-            var dropInfo = new DropInfo(sender, e, dragInfo, eventType);
+            var dropInfoBuilder = TryGetDropInfoBuilder(sender as DependencyObject);
+            var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
             var itemsSorter = TryGetDropTargetItemsSorter(dropInfo, sender as UIElement);
@@ -787,9 +800,9 @@ namespace GongSolutions.Wpf.DragDrop
             DropTargetAdorner = null;
 
             dropHandler.DragOver(dropInfo);
-            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable && !(enumerable is string))
+            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable && !(enumerable is string) && dropInfo is DropInfo info)
             {
-                dropInfo.Data = itemsSorter.SortDropTargetItems(enumerable);
+                info.Data = itemsSorter.SortDropTargetItems(enumerable);
             }
 
             dropHandler.Drop(dropInfo);
