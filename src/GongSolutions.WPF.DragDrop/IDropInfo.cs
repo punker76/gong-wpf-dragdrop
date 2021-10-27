@@ -88,6 +88,16 @@ namespace GongSolutions.Wpf.DragDrop
         CollectionViewGroup TargetGroup { get; }
 
         /// <summary>
+        /// Gets the ScrollViewer control for the visual target.
+        /// </summary>
+        ScrollViewer TargetScrollViewer { get; }
+
+        /// <summary>
+        /// Gets or Sets the ScrollingMode for the drop action.
+        /// </summary>
+        ScrollingMode TargetScrollingMode { get; }
+
+        /// <summary>
         /// Gets the control that is the current drop target.
         /// </summary>
         UIElement VisualTarget { get; }
