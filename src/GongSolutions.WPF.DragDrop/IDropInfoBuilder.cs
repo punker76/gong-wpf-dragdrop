@@ -28,6 +28,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="eventType">
         /// The mode of the underlying routed event.
         /// </param>
-        [CanBeNull] IDropInfo CreateDropInfo(object sender, [CanBeNull] DragEventArgs e, DragInfo dragInfo, EventType eventType);
+        [CanBeNull]
+        IDropInfo CreateDropInfo(object sender, [CanBeNull] DragEventArgs e, DragInfo dragInfo, EventType eventType);
     }
 }

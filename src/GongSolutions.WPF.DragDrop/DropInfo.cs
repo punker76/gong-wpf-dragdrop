@@ -240,7 +240,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <inheritdoc />
-        public object Data { get; internal set; }
+        public object Data { get; set; }
 
         /// <inheritdoc />
         public IDragInfo DragInfo { get; private set; }

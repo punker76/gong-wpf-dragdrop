@@ -14,6 +14,64 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public static partial class DragDrop
     {
+        /// <summary>
+        /// Gets the drag handler from the drag info or from the sender, if the drag info is null
+        /// </summary>
+        /// <param name="dragInfo">the drag info object</param>
+        /// <param name="sender">the sender from an event, e.g. mouse down, mouse move</param>
+        /// <returns></returns>
+        private static IDragSource TryGetDragHandler(IDragInfo dragInfo, UIElement sender)
+        {
+            var dragHandler = (dragInfo?.VisualSource != null ? GetDragHandler(dragInfo.VisualSource) : null) ?? (sender != null ? GetDragHandler(sender) : null);
+
+            return dragHandler ?? DefaultDragHandler;
+        }
+
+        /// <summary>
+        /// Gets the drop handler from the drop info or from the sender, if the drop info is null
+        /// </summary>
+        /// <param name="dropInfo">the drop info object</param>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
+        {
+            var dropHandler = (dropInfo?.VisualTarget != null ? GetDropHandler(dropInfo.VisualTarget) : null) ?? (sender != null ? GetDropHandler(sender) : null);
+
+            return dropHandler ?? DefaultDropHandler;
+        }
+
+        /// <summary>
+        /// Gets the drag info builder from the sender.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IDragInfoBuilder TryGetDragInfoBuilder(DependencyObject sender)
+        {
+            return sender != null ? GetDragInfoBuilder(sender) : null;
+        }
+
+        /// <summary>
+        /// Gets the drop info builder from the sender.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
+        {
+            return sender != null ? GetDropInfoBuilder(sender) : null;
+        }
+
+        /// <summary>
+        /// Gets the RootElementFinder from the sender or uses the default implementation, if it's null.
+        /// </summary>
+        /// <param name="sender">the sender from an event, e.g. drag over</param>
+        /// <returns></returns>
+        private static IRootElementFinder TryGetRootElementFinder(UIElement sender)
+        {
+            var rootElementFinder = sender != null ? GetRootElementFinder(sender) : null;
+
+            return rootElementFinder ?? DefaultRootElementFinder;
+        }
+
         internal static DataTemplate TryGetDragAdornerTemplate(UIElement source, UIElement sender)
         {
             var template = source is not null ? GetDragAdornerTemplate(source) : null;
@@ -56,6 +114,39 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             return templateSelector;
+        }
+
+        internal static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)
+        {
+            var itemsCount = dragInfo?.VisualSource != null ? GetDragPreviewMaxItemsCount(dragInfo.VisualSource) : -1;
+            if (itemsCount < 0 && sender != null)
+            {
+                itemsCount = GetDragPreviewMaxItemsCount(sender);
+            }
+
+            return itemsCount < 0 || itemsCount >= int.MaxValue ? 10 : itemsCount;
+        }
+
+        internal static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
+        {
+            var itemsSorter = dragInfo?.VisualSource != null ? GetDragPreviewItemsSorter(dragInfo.VisualSource) : null;
+            if (itemsSorter is null && sender != null)
+            {
+                itemsSorter = GetDragPreviewItemsSorter(sender);
+            }
+
+            return itemsSorter;
+        }
+
+        private static IDropTargetItemsSorter TryGetDropTargetItemsSorter(IDropInfo dropInfo, UIElement sender)
+        {
+            var itemsSorter = dropInfo?.VisualTarget != null ? GetDropTargetItemsSorter(dropInfo.VisualTarget) : null;
+            if (itemsSorter is null && sender != null)
+            {
+                itemsSorter = GetDropTargetItemsSorter(sender);
+            }
+
+            return itemsSorter;
         }
 
         private static DragDropPreview GetDragDropPreview(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
@@ -238,106 +329,6 @@ namespace GongSolutions.Wpf.DragDrop
                     scrollViewer.LineUp();
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the drag handler from the drag info or from the sender, if the drag info is null
-        /// </summary>
-        /// <param name="dragInfo">the drag info object</param>
-        /// <param name="sender">the sender from an event, e.g. mouse down, mouse move</param>
-        /// <returns></returns>
-        private static IDragSource TryGetDragHandler(IDragInfo dragInfo, UIElement sender)
-        {
-            var dragHandler = dragInfo?.VisualSource != null ? GetDragHandler(dragInfo.VisualSource) : null;
-            if (dragHandler is null && sender != null)
-            {
-                dragHandler = GetDragHandler(sender);
-            }
-
-            return dragHandler ?? DefaultDragHandler;
-        }
-
-        /// <summary>
-        /// Gets the drop handler from the drop info or from the sender, if the drop info is null
-        /// </summary>
-        /// <param name="dropInfo">the drop info object</param>
-        /// <param name="sender">the sender from an event, e.g. drag over</param>
-        /// <returns></returns>
-        private static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
-        {
-            var dropHandler = dropInfo?.VisualTarget != null ? GetDropHandler(dropInfo.VisualTarget) : null;
-            if (dropHandler is null && sender != null)
-            {
-                dropHandler = GetDropHandler(sender);
-            }
-
-            return dropHandler ?? DefaultDropHandler;
-        }
-
-        /// <summary>
-        /// Gets the drag info builder from the sender.
-        /// </summary>
-        /// <param name="sender">the sender from an event, e.g. drag over</param>
-        /// <returns></returns>
-        private static IDragInfoBuilder TryGetDragInfoBuilder(DependencyObject sender)
-        {
-            return GetDragInfoBuilder(sender);
-        }
-
-
-        /// <summary>
-        /// Gets the drop info builder from the sender.
-        /// </summary>
-        /// <param name="sender">the sender from an event, e.g. drag over</param>
-        /// <returns></returns>
-        private static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
-        {
-            return GetDropInfoBuilder(sender);
-        }
-
-        /// <summary>
-        /// Gets the RootElementFinder from the sender or uses the default implementation, if it's null.
-        /// </summary>
-        /// <param name="sender">the sender from an event, e.g. drag over</param>
-        /// <returns></returns>
-        private static IRootElementFinder TryGetRootElementFinder(UIElement sender)
-        {
-            var rootElementFinder = sender != null ? GetRootElementFinder(sender) : null;
-
-            return rootElementFinder ?? DefaultRootElementFinder;
-        }
-
-        internal static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)
-        {
-            var itemsCount = dragInfo?.VisualSource != null ? GetDragPreviewMaxItemsCount(dragInfo.VisualSource) : -1;
-            if (itemsCount < 0 && sender != null)
-            {
-                itemsCount = GetDragPreviewMaxItemsCount(sender);
-            }
-
-            return itemsCount < 0 || itemsCount >= int.MaxValue ? 10 : itemsCount;
-        }
-
-        internal static IDragPreviewItemsSorter TryGetDragPreviewItemsSorter(IDragInfo dragInfo, UIElement sender)
-        {
-            var itemsSorter = dragInfo?.VisualSource != null ? GetDragPreviewItemsSorter(dragInfo.VisualSource) : null;
-            if (itemsSorter is null && sender != null)
-            {
-                itemsSorter = GetDragPreviewItemsSorter(sender);
-            }
-
-            return itemsSorter;
-        }
-
-        private static IDropTargetItemsSorter TryGetDropTargetItemsSorter(IDropInfo dropInfo, UIElement sender)
-        {
-            var itemsSorter = dropInfo?.VisualTarget != null ? GetDropTargetItemsSorter(dropInfo.VisualTarget) : null;
-            if (itemsSorter is null && sender != null)
-            {
-                itemsSorter = GetDropTargetItemsSorter(sender);
-            }
-
-            return itemsSorter;
         }
 
         private static void DragSourceOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -800,9 +791,10 @@ namespace GongSolutions.Wpf.DragDrop
             DropTargetAdorner = null;
 
             dropHandler.DragOver(dropInfo);
-            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable && !(enumerable is string) && dropInfo is DropInfo info)
+
+            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable && !(enumerable is string))
             {
-                info.Data = itemsSorter.SortDropTargetItems(enumerable);
+                dropInfo.Data = itemsSorter.SortDropTargetItems(enumerable);
             }
 
             dropHandler.Drop(dropInfo);

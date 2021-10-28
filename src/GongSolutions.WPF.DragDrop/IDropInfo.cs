@@ -17,7 +17,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// - The dragged data if a single item was dragged.
         /// - A typed IEnumerable if multiple items were dragged.
         /// </remarks>
-        object Data { get; }
+        object Data { get; set; }
 
         /// <summary>
         /// Gets a <see cref="DragInfo"/> object holding information about the source of the drag, 
