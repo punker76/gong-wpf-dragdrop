@@ -24,26 +24,141 @@ namespace GongSolutions.Wpf.DragDrop
         private ItemsControl itemParent = null;
         private UIElement item = null;
 
+        /// <inheritdoc />
+        public object Data { get; set; }
+
+        /// <inheritdoc />
+        public IDragInfo DragInfo { get; private set; }
+
+        /// <inheritdoc />
+        public Point DropPosition { get; private set; }
+
+        /// <inheritdoc />
+        public Type DropTargetAdorner { get; set; }
+
+        /// <inheritdoc />
+        public DragDropEffects Effects { get; set; }
+
+        /// <inheritdoc />
+        public int InsertIndex { get; private set; }
+
+        /// <inheritdoc />
+        public int UnfilteredInsertIndex
+        {
+            get
+            {
+                var insertIndex = this.InsertIndex;
+                if (itemParent != null)
+                {
+                    var itemSourceAsList = itemParent.ItemsSource.TryGetList();
+                    if (itemSourceAsList != null && itemParent.Items != null && itemParent.Items.Count != itemSourceAsList.Count)
+                    {
+                        if (insertIndex >= 0 && insertIndex < itemParent.Items.Count)
+                        {
+                            var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex]);
+                            if (indexOf >= 0)
+                            {
+                                return indexOf;
+                            }
+                        }
+                        else if (itemParent.Items.Count > 0 && insertIndex == itemParent.Items.Count)
+                        {
+                            var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex - 1]);
+                            if (indexOf >= 0)
+                            {
+                                return indexOf + 1;
+                            }
+                        }
+                    }
+                }
+
+                return insertIndex;
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable TargetCollection { get; private set; }
+
+        /// <inheritdoc />
+        public object TargetItem { get; private set; }
+
+        /// <inheritdoc />
+        public CollectionViewGroup TargetGroup { get; private set; }
+
+        /// <summary>
+        /// Gets the ScrollViewer control for the visual target.
+        /// </summary>
+        public ScrollViewer TargetScrollViewer { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets the ScrollingMode for the drop action.
+        /// </summary>
+        public ScrollingMode TargetScrollingMode { get; set; }
+
+        /// <inheritdoc />
+        public UIElement VisualTarget { get; private set; }
+
+        /// <inheritdoc />
+        public UIElement VisualTargetItem { get; private set; }
+
+        /// <inheritdoc />
+        public Orientation VisualTargetOrientation { get; private set; }
+
+        /// <inheritdoc />
+        public FlowDirection VisualTargetFlowDirection { get; private set; }
+
+        /// <inheritdoc />
+        public string DestinationText { get; set; }
+
+        /// <inheritdoc />
+        public string EffectText { get; set; }
+
+        /// <inheritdoc />
+        public RelativeInsertPosition InsertPosition { get; private set; }
+
+        /// <inheritdoc />
+        public DragDropKeyStates KeyStates { get; private set; }
+
+        /// <inheritdoc />
+        public bool NotHandled { get; set; }
+
+        /// <inheritdoc />
+        public bool IsSameDragDropContextAsSource
+        {
+            get
+            {
+                // Check if DragInfo stuff exists
+                if (this.DragInfo?.VisualSource is null)
+                {
+                    return true;
+                }
+
+                // A target should be exists
+                if (this.VisualTarget is null)
+                {
+                    return true;
+                }
+
+                // Source element has a drag context constraint, we need to check the target property matches.
+                var sourceContext = DragDrop.GetDragDropContext(this.DragInfo.VisualSource);
+                var targetContext = DragDrop.GetDragDropContext(this.VisualTarget);
+
+                return string.Equals(sourceContext, targetContext)
+                       || string.IsNullOrEmpty(targetContext);
+            }
+        }
+
+        /// <inheritdoc />
+        public EventType EventType { get; }
+
         /// <summary>
         /// Initializes a new instance of the DropInfo class.
         /// </summary>
-        /// 
-        /// <param name="sender">
-        /// The sender of the drag event.
-        /// </param>
-        /// 
-        /// <param name="e">
-        /// The drag event.
-        /// </param>
-        /// 
-        /// <param name="dragInfo">
-        /// Information about the source of the drag, if the drag came from within the framework.
-        /// </param>
-        /// 
-        /// <param name="eventType">
-        /// The type of the underlying event (tunneled or bubbled).
-        /// </param>
-        public DropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo, EventType eventType)
+        /// <param name="sender">The sender of the drop event.</param>
+        /// <param name="e">The drag event arguments.</param>
+        /// <param name="dragInfo">Information about the drag source, if the drag came from within the framework.</param>
+        /// <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
+        public DropInfo(object sender, DragEventArgs e, [CanBeNull] IDragInfo dragInfo, EventType eventType)
         {
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
@@ -238,133 +353,6 @@ namespace GongSolutions.Wpf.DragDrop
                 this.VisualTargetItem = this.VisualTarget;
             }
         }
-
-        /// <inheritdoc />
-        public object Data { get; set; }
-
-        /// <inheritdoc />
-        public IDragInfo DragInfo { get; private set; }
-
-        /// <inheritdoc />
-        public Point DropPosition { get; private set; }
-
-        /// <inheritdoc />
-        public Type DropTargetAdorner { get; set; }
-
-        /// <inheritdoc />
-        public DragDropEffects Effects { get; set; }
-
-        /// <inheritdoc />
-        public int InsertIndex { get; private set; }
-
-        /// <inheritdoc />
-        public int UnfilteredInsertIndex
-        {
-            get
-            {
-                var insertIndex = this.InsertIndex;
-                if (itemParent != null)
-                {
-                    var itemSourceAsList = itemParent.ItemsSource.TryGetList();
-                    if (itemSourceAsList != null && itemParent.Items != null && itemParent.Items.Count != itemSourceAsList.Count)
-                    {
-                        if (insertIndex >= 0 && insertIndex < itemParent.Items.Count)
-                        {
-                            var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex]);
-                            if (indexOf >= 0)
-                            {
-                                return indexOf;
-                            }
-                        }
-                        else if (itemParent.Items.Count > 0 && insertIndex == itemParent.Items.Count)
-                        {
-                            var indexOf = itemSourceAsList.IndexOf(itemParent.Items[insertIndex - 1]);
-                            if (indexOf >= 0)
-                            {
-                                return indexOf + 1;
-                            }
-                        }
-                    }
-                }
-
-                return insertIndex;
-            }
-        }
-
-        /// <inheritdoc />
-        public IEnumerable TargetCollection { get; private set; }
-
-        /// <inheritdoc />
-        public object TargetItem { get; private set; }
-
-        /// <inheritdoc />
-        public CollectionViewGroup TargetGroup { get; private set; }
-
-        /// <summary>
-        /// Gets the ScrollViewer control for the visual target.
-        /// </summary>
-        public ScrollViewer TargetScrollViewer { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets the ScrollingMode for the drop action.
-        /// </summary>
-        public ScrollingMode TargetScrollingMode { get; set; }
-
-        /// <inheritdoc />
-        public UIElement VisualTarget { get; private set; }
-
-        /// <inheritdoc />
-        public UIElement VisualTargetItem { get; private set; }
-
-        /// <inheritdoc />
-        public Orientation VisualTargetOrientation { get; private set; }
-
-        /// <inheritdoc />
-        public FlowDirection VisualTargetFlowDirection { get; private set; }
-
-        /// <inheritdoc />
-        public string DestinationText { get; set; }
-
-        /// <inheritdoc />
-        public string EffectText { get; set; }
-
-        /// <inheritdoc />
-        public RelativeInsertPosition InsertPosition { get; private set; }
-
-        /// <inheritdoc />
-        public DragDropKeyStates KeyStates { get; private set; }
-
-        /// <inheritdoc />
-        public bool NotHandled { get; set; }
-
-        /// <inheritdoc />
-        public bool IsSameDragDropContextAsSource
-        {
-            get
-            {
-                // Check if DragInfo stuff exists
-                if (this.DragInfo?.VisualSource is null)
-                {
-                    return true;
-                }
-
-                // A target should be exists
-                if (this.VisualTarget is null)
-                {
-                    return true;
-                }
-
-                // Source element has a drag context constraint, we need to check the target property matches.
-                var sourceContext = DragDrop.GetDragDropContext(this.DragInfo.VisualSource);
-                var targetContext = DragDrop.GetDragDropContext(this.VisualTarget);
-
-                return string.Equals(sourceContext, targetContext)
-                       || string.IsNullOrEmpty(targetContext);
-            }
-        }
-
-        /// <inheritdoc />
-        public EventType EventType { get; }
     }
 
     [Flags]
