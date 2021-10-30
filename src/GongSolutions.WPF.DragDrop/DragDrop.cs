@@ -357,7 +357,8 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             var infoBuilder = TryGetDragInfoBuilder(sender as DependencyObject);
-            var dragInfo = infoBuilder?.CreateDragInfo(sender, e) ?? new DragInfo(sender, e);
+            var dragInfo = infoBuilder?.CreateDragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position)
+                           ?? new DragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position);
 
             DragSourceDown(sender, dragInfo, e);
         }
@@ -379,7 +380,8 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             var infoBuilder = TryGetDragInfoBuilder(sender as DependencyObject);
-            var dragInfo = infoBuilder?.CreateDragInfo(sender, e) ?? new DragInfo(sender, e);
+            var dragInfo = infoBuilder?.CreateDragInfo(sender, e.OriginalSource, e.ChangedButton, item => e.GetPosition(item))
+                           ?? new DragInfo(sender, e.OriginalSource, e.ChangedButton, item => e.GetPosition(item));
 
             DragSourceDown(sender, dragInfo, e);
         }
