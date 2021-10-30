@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop
 {
@@ -9,29 +12,13 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDragInfoBuilder
     {
         /// <summary>
-        /// Creates a drag info object from <see cref="MouseButtonEventArgs"/>.
+        /// Initializes a new instance of the DragInfo class.
         /// </summary>
-        /// 
-        /// <param name="sender">
-        /// The sender of the mouse event that initiated the drag.
-        /// </param>
-        /// 
-        /// <param name="e">
-        /// The mouse event that initiated the drag.
-        /// </param>
-        DragInfo CreateDragInfo(object sender, MouseButtonEventArgs e);
-
-        /// <summary>
-        /// Creates a drag info object from <see cref="TouchEventArgs"/>.
-        /// </summary>
-        /// 
-        /// <param name="sender">
-        /// The sender of the touch event that initiated the drag.
-        /// </param>
-        /// 
-        /// <param name="e">
-        /// The touch event that initiated the drag.
-        /// </param>
-        DragInfo CreateDragInfo(object sender, TouchEventArgs e);
+        /// <param name="sender">The sender of the input event that initiated the drag operation.</param>
+        /// <param name="originalSource">The original source of the input event.</param>
+        /// <param name="mouseButton">The mouse button which was used for the drag operation.</param>
+        /// <param name="getPosition">A function of the input event which is used to get drag position points.</param>
+        [CanBeNull]
+        DragInfo CreateDragInfo(object sender, object originalSource, MouseButton mouseButton, Func<IInputElement, Point> getPosition);
     }
 }
