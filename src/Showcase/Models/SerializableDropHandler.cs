@@ -7,6 +7,14 @@ namespace Showcase.WPF.DragDrop.Models
 {
     public class SerializableDropHandler : IDropTarget
     {
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragEnter(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public void DragOver(IDropInfo dropInfo)
         {
@@ -17,6 +25,14 @@ namespace Showcase.WPF.DragDrop.Models
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
             }
         }
+
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
 
         /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)
@@ -95,6 +111,7 @@ namespace Showcase.WPF.DragDrop.Models
             {
                 return false;
             }
+
             var copyData = ((dragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dragDropCopyKeyState))
                            || dragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton);
             return copyData;

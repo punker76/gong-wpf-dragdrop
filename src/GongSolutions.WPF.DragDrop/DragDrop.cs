@@ -612,49 +612,66 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
-        {
-            DropTargetOnDragOver(sender, e, EventType.Bubbled);
-        }
-
-        private static void DropTargetOnPreviewDragEnter(object sender, DragEventArgs e)
-        {
-            DropTargetOnDragOver(sender, e, EventType.Tunneled);
-        }
-
         private static void DropTargetOnDragLeave(object sender, DragEventArgs e)
         {
-            _isDragOver = false;
+            SetIsDragOver(sender as DependencyObject, false);
             DropTargetAdorner = null;
 
             (sender as UIElement)?.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if (_isDragOver == false)
+                    if (GetIsDragOver(sender as DependencyObject) == false && GetIsDragLeaved(sender as DependencyObject) == false)
                     {
                         OnRealTargetDragLeave(sender, e);
                     }
                 }));
         }
 
-        private static void OnRealTargetDragLeave(object sender, DragEventArgs dragEventArgs)
+        private static void OnRealTargetDragLeave(object sender, DragEventArgs e)
         {
+            SetIsDragLeaved(sender as DependencyObject, true);
+
+            var eventType = e.RoutedEvent?.RoutingStrategy switch
+            {
+                RoutingStrategy.Tunnel => EventType.Tunneled,
+                RoutingStrategy.Bubble => EventType.Bubbled,
+                _ => EventType.Auto
+            };
+
+            var dragInfo = _dragInfo;
+            var dropInfoBuilder = TryGetDropInfoBuilder(sender as DependencyObject);
+            var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
+            var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
+
+            dropHandler?.DragLeave(dropInfo);
+
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
         }
 
+        private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
+        {
+            DropTargetOnDragOver(sender, e, EventType.Bubbled, GetIsDragLeaved(sender as DependencyObject));
+        }
+
+        private static void DropTargetOnPreviewDragEnter(object sender, DragEventArgs e)
+        {
+            DropTargetOnDragOver(sender, e, EventType.Tunneled, GetIsDragLeaved(sender as DependencyObject));
+        }
+
         private static void DropTargetOnDragOver(object sender, DragEventArgs e)
         {
-            DropTargetOnDragOver(sender, e, EventType.Bubbled);
+            DropTargetOnDragOver(sender, e, EventType.Bubbled, false);
         }
 
         private static void DropTargetOnPreviewDragOver(object sender, DragEventArgs e)
         {
-            DropTargetOnDragOver(sender, e, EventType.Tunneled);
+            DropTargetOnDragOver(sender, e, EventType.Tunneled, false);
         }
 
-        private static void DropTargetOnDragOver(object sender, DragEventArgs e, EventType eventType)
+        private static void DropTargetOnDragOver(object sender, DragEventArgs e, EventType eventType, bool isDragEnter)
         {
-            _isDragOver = true;
+            SetIsDragOver(sender as DependencyObject, true);
+            SetIsDragLeaved(sender as DependencyObject, false);
 
             var elementPosition = e.GetPosition((IInputElement)sender);
 
@@ -663,6 +680,11 @@ namespace GongSolutions.Wpf.DragDrop
             var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
             var itemsControl = dropInfo.VisualTarget;
+
+            if (isDragEnter)
+            {
+                dropHandler.DragEnter(dropInfo);
+            }
 
             dropHandler.DragOver(dropInfo);
 
@@ -806,6 +828,7 @@ namespace GongSolutions.Wpf.DragDrop
             e.Handled = !dropInfo.NotHandled;
 
             Mouse.OverrideCursor = null;
+            SetIsDragLeaved(sender as DependencyObject, true);
         }
 
         private static void DragSourceOnGiveFeedback(object sender, GiveFeedbackEventArgs e)
@@ -906,9 +929,40 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static bool _isDragOver;
         private static DragInfo _dragInfo;
         private static bool _dragInProgress;
         private static object _clickSupressItem;
+
+        private static readonly DependencyProperty IsDragOverProperty
+            = DependencyProperty.RegisterAttached("IsDragOver",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(bool)));
+
+        private static void SetIsDragOver(DependencyObject element, bool value)
+        {
+            element.SetValue(IsDragOverProperty, value);
+        }
+
+        private static bool GetIsDragOver(DependencyObject element)
+        {
+            return (bool)element.GetValue(IsDragOverProperty);
+        }
+
+        private static readonly DependencyProperty IsDragLeavedProperty
+            = DependencyProperty.RegisterAttached("IsDragLeaved",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(true));
+
+        private static void SetIsDragLeaved(DependencyObject element, bool value)
+        {
+            element.SetValue(IsDragLeavedProperty, value);
+        }
+
+        private static bool GetIsDragLeaved(DependencyObject element)
+        {
+            return (bool)element.GetValue(IsDragLeavedProperty);
+        }
     }
 }
