@@ -8,6 +8,19 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDropTarget
     {
         /// <summary>
+        /// Notifies the drop handler when dragging operation enters a potential drop target.
+        /// </summary>
+        /// <param name="dropInfo">Object which contains several drop information.</param>
+#if NETCOREAPP3_1_OR_GREATER
+        void DragEnter(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#else
+        void DragEnter(IDropInfo dropInfo);
+#endif
+
+        /// <summary>
         /// Notifies the drop handler about the current drag operation state.
         /// </summary>
         /// <param name="dropInfo">Object which contains several drop information.</param>

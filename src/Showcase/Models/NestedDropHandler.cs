@@ -6,6 +6,14 @@ namespace Showcase.WPF.DragDrop.Models
 {
     public class NestedDropHandler : IDropTarget
     {
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragEnter(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public void DragOver(IDropInfo dropInfo)
         {

@@ -217,6 +217,14 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragEnter(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public virtual void DragOver(IDropInfo dropInfo)
         {
