@@ -636,8 +636,22 @@ namespace GongSolutions.Wpf.DragDrop
                 }));
         }
 
-        private static void OnRealTargetDragLeave(object sender, DragEventArgs dragEventArgs)
+        private static void OnRealTargetDragLeave(object sender, DragEventArgs e)
         {
+            var eventType = e.RoutedEvent?.RoutingStrategy switch
+            {
+                RoutingStrategy.Tunnel => EventType.Tunneled,
+                RoutingStrategy.Bubble => EventType.Bubbled,
+                _ => EventType.Auto
+            };
+
+            var dragInfo = _dragInfo;
+            var dropInfoBuilder = TryGetDropInfoBuilder(sender as DependencyObject);
+            var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
+            var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
+
+            dropHandler?.DragLeave(dropInfo);
+
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
         }

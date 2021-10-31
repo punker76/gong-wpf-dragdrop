@@ -19,7 +19,20 @@ namespace GongSolutions.Wpf.DragDrop
         void DragOver(IDropInfo dropInfo);
 
         /// <summary>
-        /// Performs a drop.
+        /// Notifies the drop handler when dragging operation leaves a potential drop target.
+        /// </summary>
+        /// <param name="dropInfo">Object which contains several drop information.</param>
+#if NETCOREAPP3_1_OR_GREATER
+        void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#else
+        void DragLeave(IDropInfo dropInfo);
+#endif
+
+        /// <summary>
+        /// Performs a drop on the target.
         /// </summary>
         /// <param name="dropInfo">Object which contains several drop information.</param>
         void Drop(IDropInfo dropInfo);

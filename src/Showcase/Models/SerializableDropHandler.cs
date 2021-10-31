@@ -18,6 +18,14 @@ namespace Showcase.WPF.DragDrop.Models
             }
         }
 
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)
         {
@@ -95,6 +103,7 @@ namespace Showcase.WPF.DragDrop.Models
             {
                 return false;
             }
+
             var copyData = ((dragDropCopyKeyState != default(DragDropKeyStates)) && dropInfo.KeyStates.HasFlag(dragDropCopyKeyState))
                            || dragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton);
             return copyData;

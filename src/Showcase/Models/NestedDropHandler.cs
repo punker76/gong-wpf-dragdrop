@@ -16,6 +16,14 @@ namespace Showcase.WPF.DragDrop.Models
             }
         }
 
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)
         {

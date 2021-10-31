@@ -144,6 +144,79 @@ namespace GongSolutions.Wpf.DragDrop
             return copyData;
         }
 
+        protected static int GetInsertIndex(IDropInfo dropInfo)
+        {
+            var insertIndex = dropInfo.UnfilteredInsertIndex;
+
+            if (dropInfo.VisualTarget is ItemsControl itemsControl)
+            {
+                if (itemsControl.Items is IEditableCollectionView editableItems)
+                {
+                    var newItemPlaceholderPosition = editableItems.NewItemPlaceholderPosition;
+                    if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtBeginning && insertIndex == 0)
+                    {
+                        ++insertIndex;
+                    }
+                    else if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtEnd && insertIndex == itemsControl.Items.Count)
+                    {
+                        --insertIndex;
+                    }
+                }
+            }
+
+            return insertIndex;
+        }
+
+        protected static void Move(IList list, int sourceIndex, int destinationIndex)
+        {
+            if (!list.IsObservableCollection())
+            {
+                throw new ArgumentException("ObservableCollection<T> was expected", nameof(list));
+            }
+
+            if (sourceIndex != destinationIndex)
+            {
+                var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+                _ = method?.Invoke(list, new object[] { sourceIndex, destinationIndex });
+            }
+        }
+
+        protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
+        {
+            var parent = ItemsControl.ItemsControlFromItemContainer(targetItem);
+
+            while (parent != null)
+            {
+                if (parent == sourceItem)
+                {
+                    return true;
+                }
+
+                parent = ItemsControl.ItemsControlFromItemContainer(parent);
+            }
+
+            return false;
+        }
+
+        protected static bool TestCompatibleTypes(IEnumerable target, object data)
+        {
+            bool InterfaceFilter(Type t, object o) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+            var enumerableInterfaces = target.GetType().FindInterfaces(InterfaceFilter, null);
+            var enumerableTypes = from i in enumerableInterfaces
+                                  select i.GetGenericArguments().Single();
+
+            if (enumerableTypes.Any())
+            {
+                var dataType = TypeUtilities.GetCommonBaseClass(ExtractData(data));
+                return enumerableTypes.Any(t => t.IsAssignableFrom(dataType));
+            }
+            else
+            {
+                return target is IList || target is ICollectionView;
+            }
+        }
+
         /// <inheritdoc />
         public virtual void DragOver(IDropInfo dropInfo)
         {
@@ -155,6 +228,14 @@ namespace GongSolutions.Wpf.DragDrop
                 dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
             }
         }
+
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
 
         /// <inheritdoc />
         public virtual void Drop(IDropInfo dropInfo)
@@ -236,79 +317,6 @@ namespace GongSolutions.Wpf.DragDrop
                 }
 
                 SelectDroppedItems(dropInfo, objects2Insert);
-            }
-        }
-
-        protected static int GetInsertIndex(IDropInfo dropInfo)
-        {
-            var insertIndex = dropInfo.UnfilteredInsertIndex;
-
-            if (dropInfo.VisualTarget is ItemsControl itemsControl)
-            {
-                if (itemsControl.Items is IEditableCollectionView editableItems)
-                {
-                    var newItemPlaceholderPosition = editableItems.NewItemPlaceholderPosition;
-                    if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtBeginning && insertIndex == 0)
-                    {
-                        ++insertIndex;
-                    }
-                    else if (newItemPlaceholderPosition == NewItemPlaceholderPosition.AtEnd && insertIndex == itemsControl.Items.Count)
-                    {
-                        --insertIndex;
-                    }
-                }
-            }
-
-            return insertIndex;
-        }
-
-        protected static void Move(IList list, int sourceIndex, int destinationIndex)
-        {
-            if (!list.IsObservableCollection())
-            {
-                throw new ArgumentException("ObservableCollection<T> was expected", nameof(list));
-            }
-
-            if (sourceIndex != destinationIndex)
-            {
-                var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-                _ = method?.Invoke(list, new object[] { sourceIndex, destinationIndex });
-            }
-        }
-
-        protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)
-        {
-            var parent = ItemsControl.ItemsControlFromItemContainer(targetItem);
-
-            while (parent != null)
-            {
-                if (parent == sourceItem)
-                {
-                    return true;
-                }
-
-                parent = ItemsControl.ItemsControlFromItemContainer(parent);
-            }
-
-            return false;
-        }
-
-        protected static bool TestCompatibleTypes(IEnumerable target, object data)
-        {
-            bool InterfaceFilter(Type t, object o) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-
-            var enumerableInterfaces = target.GetType().FindInterfaces(InterfaceFilter, null);
-            var enumerableTypes = from i in enumerableInterfaces
-                                  select i.GetGenericArguments().Single();
-
-            if (enumerableTypes.Any())
-            {
-                var dataType = TypeUtilities.GetCommonBaseClass(ExtractData(data));
-                return enumerableTypes.Any(t => t.IsAssignableFrom(dataType));
-            }
-            else
-            {
-                return target is IList || target is ICollectionView;
             }
         }
     }
