@@ -531,12 +531,18 @@
                                          dd:DragDrop.IsDropTarget="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <Grid Grid.Column="1" Margin="4">
-                                    <TextBox Height="150"
-                                             dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}"
-                                             dd:DragDrop.IsDropTarget="True"
-                                             Text="Drop any item on this TextBox..."
-                                             TextWrapping="Wrap"
-                                             VerticalScrollBarVisibility="Auto" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBox Height="150"
+                                                 Text="Drag any text part from this TextBox."
+                                                 TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                        <TextBox Height="150"
+                                                 dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}"
+                                                 dd:DragDrop.IsDropTarget="True"
+                                                 Text="Drop any item or Text on this TextBox..."
+                                                 TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                    </StackPanel>
                                 </Grid>
                             </Grid>
                         </StackPanel>
