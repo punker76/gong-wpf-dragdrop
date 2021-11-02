@@ -62,6 +62,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public bool UseDefaultDragAdorner { get; private set; }
 
+        /// <summary>Identifies the <see cref="ItemTemplate"/> dependency property.</summary>
         public static readonly DependencyProperty ItemTemplateProperty
             = DependencyProperty.Register(nameof(ItemTemplate),
                                           typeof(DataTemplate),
@@ -74,6 +75,7 @@ namespace GongSolutions.Wpf.DragDrop
             set => this.SetValue(ItemTemplateProperty, value);
         }
 
+        /// <summary>Identifies the <see cref="ItemTemplateSelector"/> dependency property.</summary>
         public static readonly DependencyProperty ItemTemplateSelectorProperty
             = DependencyProperty.Register(nameof(ItemTemplateSelector),
                                           typeof(DataTemplateSelector),

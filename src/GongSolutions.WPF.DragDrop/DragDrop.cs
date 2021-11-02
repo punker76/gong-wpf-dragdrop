@@ -937,11 +937,19 @@ namespace GongSolutions.Wpf.DragDrop
                                                   typeof(DragDrop),
                                                   new PropertyMetadata(default(bool)));
 
+        /// <summary>Helper for setting <see cref="IsDragOverProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="IsDragOverProperty"/> on.</param>
+        /// <param name="value">IsDragOver property value.</param>
+        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
         internal static void SetIsDragOver(DependencyObject element, bool value)
         {
             element.SetValue(IsDragOverProperty, value);
         }
 
+        /// <summary>Helper for getting <see cref="IsDragOverProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="IsDragOverProperty"/> from.</param>
+        /// <returns>IsDragOver property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
         internal static bool GetIsDragOver(DependencyObject element)
         {
             return (bool)element.GetValue(IsDragOverProperty);
@@ -953,11 +961,19 @@ namespace GongSolutions.Wpf.DragDrop
                                                   typeof(DragDrop),
                                                   new PropertyMetadata(true));
 
+        /// <summary>Helper for setting <see cref="IsDragLeavedProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="IsDragLeavedProperty"/> on.</param>
+        /// <param name="value">IsDragLeaved property value.</param>
+        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
         internal static void SetIsDragLeaved(DependencyObject element, bool value)
         {
             element.SetValue(IsDragLeavedProperty, value);
         }
 
+        /// <summary>Helper for getting <see cref="IsDragLeavedProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="IsDragLeavedProperty"/> from.</param>
+        /// <returns>IsDragLeaved property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
         internal static bool GetIsDragLeaved(DependencyObject element)
         {
             return (bool)element.GetValue(IsDragLeavedProperty);
