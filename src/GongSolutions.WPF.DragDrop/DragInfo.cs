@@ -141,8 +141,7 @@ namespace GongSolutions.Wpf.DragDrop
                         this.SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
                         if (itemParent != itemsControl)
                         {
-                            var tvItem = item as TreeViewItem;
-                            if (tvItem != null)
+                            if (item is TreeViewItem tvItem)
                             {
                                 var tv = tvItem.GetVisualAncestor<TreeView>();
                                 if (tv != null && tv != itemsControl && !tv.IsDragSource())
@@ -196,30 +195,27 @@ namespace GongSolutions.Wpf.DragDrop
                 this.PositionInDraggedItem = sourceElement != null ? getPosition(sourceElement) : this.DragStartPosition;
             }
 
-            if (this.SourceItems == null)
-            {
-                this.SourceItems = Enumerable.Empty<object>();
-            }
+            this.SourceItems ??= Enumerable.Empty<object>();
         }
 
         internal void RefreshSelectedItems(object sender)
         {
-            if (sender is ItemsControl)
+            if (sender is not ItemsControl itemsControl)
             {
-                var itemsControl = (ItemsControl)sender;
+                return;
+            }
 
-                var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
-                this.SourceItems = selectedItems;
+            var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
+            this.SourceItems = selectedItems;
 
-                // Some controls (I'm looking at you TreeView!) haven't updated their
-                // SelectedItem by this point. Check to see if there 1 or less item in 
-                // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
-                //
-                // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
-                if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem))
-                {
-                    this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
-                }
+            // Some controls (I'm looking at you TreeView!) haven't updated their
+            // SelectedItem by this point. Check to see if there 1 or less item in 
+            // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
+            //
+            // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
+            if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem))
+            {
+                this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
             }
         }
     }

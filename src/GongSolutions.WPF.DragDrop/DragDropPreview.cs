@@ -231,9 +231,10 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (this.ItemTemplate != null || this.ItemTemplateSelector != null)
             {
-                if (dragInfo.Data is IEnumerable items && !(items is string))
+                if (dragInfo.Data is IEnumerable enumerable and not string)
                 {
-                    var itemsCount = items.Cast<object>().Count();
+                    var items = enumerable.Cast<object>().ToList();
+                    var itemsCount = items.Count;
                     var maxItemsCount = DragDrop.TryGetDragPreviewMaxItemsCount(dragInfo, sender);
                     if (!this.UseDefaultDragAdorner && itemsCount <= maxItemsCount)
                     {

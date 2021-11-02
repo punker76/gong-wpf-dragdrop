@@ -407,8 +407,11 @@ namespace GongSolutions.Wpf.DragDrop
             // If the sender is a list box that allows multiple selections, ensure that clicking on an 
             // already selected item does not change the selection, otherwise dragging multiple items 
             // is made impossible.
-            var itemsControl = sender as ItemsControl;
-            if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0 && (Keyboard.Modifiers & ModifierKeys.Control) == 0 && dragInfo.VisualSourceItem != null && itemsControl != null && itemsControl.CanSelectMultipleItems())
+            if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0
+                && (Keyboard.Modifiers & ModifierKeys.Control) == 0
+                && dragInfo.VisualSourceItem != null
+                && sender is ItemsControl itemsControl
+                && itemsControl.CanSelectMultipleItems())
             {
                 var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
                 if (selectedItems.Count > 1 && selectedItems.Contains(dragInfo.SourceItem))
@@ -423,25 +426,20 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            DoMouseButtonUp(sender, e);
+            DragSourceUp(sender);
         }
 
         private static void DragSourceOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            DoMouseButtonUp(sender, e);
+            DragSourceUp(sender);
         }
 
         private static void DragSourceOnTouchUp(object sender, TouchEventArgs e)
         {
-            DragSourceUp(sender, e.GetTouchPoint((IInputElement)sender).Position);
+            DragSourceUp(sender);
         }
 
-        private static void DoMouseButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            DragSourceUp(sender, e.GetPosition((IInputElement)sender));
-        }
-
-        private static void DragSourceUp(object sender, Point elementPosition)
+        private static void DragSourceUp(object sender)
         {
             var dragInfo = _dragInfo;
 
@@ -716,7 +714,7 @@ namespace GongSolutions.Wpf.DragDrop
                 // Display the adorner in the control's ItemsPresenter. If there is no 
                 // ItemsPresenter provided by the style, try getting hold of a
                 // ScrollContentPresenter and using that.
-                UIElement adornedElement = null;
+                UIElement adornedElement;
                 if (itemsControl is TabControl)
                 {
                     adornedElement = itemsControl.GetVisualDescendent<TabPanel>();
@@ -747,7 +745,7 @@ namespace GongSolutions.Wpf.DragDrop
                         var adornerBrush = GetDropTargetAdornerBrush(dropInfo.VisualTarget);
                         if (adornerBrush != null)
                         {
-                            adorner.Pen.Brush = adornerBrush;
+                            adorner.Pen.SetCurrentValue(Pen.BrushProperty, adornerBrush);
                         }
 
                         adorner.DropInfo = dropInfo;
@@ -816,7 +814,7 @@ namespace GongSolutions.Wpf.DragDrop
 
             dropHandler.DragOver(dropInfo);
 
-            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable && !(enumerable is string))
+            if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable and not string)
             {
                 dropInfo.Data = itemsSorter.SortDropTargetItems(enumerable);
             }
@@ -933,34 +931,34 @@ namespace GongSolutions.Wpf.DragDrop
         private static bool _dragInProgress;
         private static object _clickSupressItem;
 
-        private static readonly DependencyProperty IsDragOverProperty
+        internal static readonly DependencyProperty IsDragOverProperty
             = DependencyProperty.RegisterAttached("IsDragOver",
                                                   typeof(bool),
                                                   typeof(DragDrop),
                                                   new PropertyMetadata(default(bool)));
 
-        private static void SetIsDragOver(DependencyObject element, bool value)
+        internal static void SetIsDragOver(DependencyObject element, bool value)
         {
             element.SetValue(IsDragOverProperty, value);
         }
 
-        private static bool GetIsDragOver(DependencyObject element)
+        internal static bool GetIsDragOver(DependencyObject element)
         {
             return (bool)element.GetValue(IsDragOverProperty);
         }
 
-        private static readonly DependencyProperty IsDragLeavedProperty
+        internal static readonly DependencyProperty IsDragLeavedProperty
             = DependencyProperty.RegisterAttached("IsDragLeaved",
                                                   typeof(bool),
                                                   typeof(DragDrop),
                                                   new PropertyMetadata(true));
 
-        private static void SetIsDragLeaved(DependencyObject element, bool value)
+        internal static void SetIsDragLeaved(DependencyObject element, bool value)
         {
             element.SetValue(IsDragLeavedProperty, value);
         }
 
-        private static bool GetIsDragLeaved(DependencyObject element)
+        internal static bool GetIsDragLeaved(DependencyObject element)
         {
             return (bool)element.GetValue(IsDragLeavedProperty);
         }

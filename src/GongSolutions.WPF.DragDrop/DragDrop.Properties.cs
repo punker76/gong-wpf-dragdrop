@@ -17,6 +17,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>
         /// Gets or sets the data format which will be used for the drag and drop operations.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("WpfAnalyzers.Correctness", "WPF0150:Use nameof() instead of literal.", Justification = "<Pending>")]
         public static readonly DependencyProperty DataFormatProperty
             = DependencyProperty.RegisterAttached("DataFormat",
                                                   typeof(DataFormat),
@@ -46,7 +47,7 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("IsDragSource",
                                                   typeof(bool),
                                                   typeof(DragDrop),
-                                                  new UIPropertyMetadata(false, IsDragSourceChanged));
+                                                  new UIPropertyMetadata(false, OnIsDragSourceChanged));
 
         /// <summary>
         /// Gets whether the control can be used as drag source.
@@ -64,7 +65,7 @@ namespace GongSolutions.Wpf.DragDrop
             target.SetValue(IsDragSourceProperty, value);
         }
 
-        private static void IsDragSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsDragSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var uiElement = (UIElement)d;
 
@@ -103,7 +104,7 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("IsDropTarget",
                                                   typeof(bool),
                                                   typeof(DragDrop),
-                                                  new UIPropertyMetadata(false, IsDropTargetChanged));
+                                                  new UIPropertyMetadata(false, OnIsDropTargetChanged));
 
         /// <summary>
         /// Gets whether the control can be used as drop target.
@@ -121,7 +122,7 @@ namespace GongSolutions.Wpf.DragDrop
             target.SetValue(IsDropTargetProperty, value);
         }
 
-        private static void IsDropTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsDropTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var uiElement = (UIElement)d;
 
@@ -164,14 +165,16 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("DropEventType",
                                                   typeof(EventType),
                                                   typeof(DragDrop),
-                                                  new PropertyMetadata(EventType.Auto, DropEventTypeChanged));
+                                                  new PropertyMetadata(EventType.Auto, OnDropEventTypeChanged));
 
-        private static void DropEventTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnDropEventTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var uiElement = (UIElement)d;
 
             if (!GetIsDropTarget(uiElement))
+            {
                 return;
+            }
 
             UnregisterDragDropEvents(uiElement, (EventType)e.OldValue);
             RegisterDragDropEvents(uiElement, (EventType)e.NewValue);
@@ -304,7 +307,7 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("CanDragWithMouseRightButton",
                                                   typeof(bool),
                                                   typeof(DragDrop),
-                                                  new UIPropertyMetadata(false, CanDragWithMouseRightButtonChanged));
+                                                  new UIPropertyMetadata(false, OnCanDragWithMouseRightButtonChanged));
 
         /// <summary>
         /// Gets whether the control can be used as drag source together with the right mouse.
@@ -322,19 +325,18 @@ namespace GongSolutions.Wpf.DragDrop
             target.SetValue(CanDragWithMouseRightButtonProperty, value);
         }
 
-        private static void CanDragWithMouseRightButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnCanDragWithMouseRightButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uiElement = (UIElement)d;
-
-            if ((bool)e.NewValue)
-            {
-                uiElement.PreviewMouseRightButtonDown += DragSourceOnMouseRightButtonDown;
-                uiElement.PreviewMouseRightButtonUp += DragSourceOnMouseRightButtonUp;
-            }
-            else
+            if (d is UIElement uiElement)
             {
                 uiElement.PreviewMouseRightButtonDown -= DragSourceOnMouseRightButtonDown;
                 uiElement.PreviewMouseRightButtonUp -= DragSourceOnMouseRightButtonUp;
+
+                if ((bool)e.NewValue)
+                {
+                    uiElement.PreviewMouseRightButtonDown += DragSourceOnMouseRightButtonDown;
+                    uiElement.PreviewMouseRightButtonUp += DragSourceOnMouseRightButtonUp;
+                }
             }
         }
 
@@ -585,7 +587,7 @@ namespace GongSolutions.Wpf.DragDrop
                                                   new PropertyMetadata(false));
 
         /// <summary>
-        /// Gets wheter the drag action should be started only directly on a selected item.
+        /// Gets whether the drag action should be started only directly on a selected item.
         /// </summary>
         public static bool GetDragDirectlySelectedOnly(DependencyObject obj)
         {
@@ -593,7 +595,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Sets wheter the drag action should be started only directly on a selected item.
+        /// Sets whether the drag action should be started only directly on a selected item.
         /// </summary>
         public static void SetDragDirectlySelectedOnly(DependencyObject obj, bool value)
         {
@@ -1216,7 +1218,7 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("DragPreviewMaxItemsCount",
                                                   typeof(int),
                                                   typeof(DragDrop),
-                                                  new PropertyMetadata(10, null, (d, baseValue) =>
+                                                  new PropertyMetadata(10, null, (_, baseValue) =>
                                                       {
                                                           var itemsCount = (int)baseValue;
                                                           // Checking for MaxValue is maybe not necessary

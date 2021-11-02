@@ -61,7 +61,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static IEnumerable ExtractData(object data)
         {
-            if (data is IEnumerable enumerable && !(enumerable is string))
+            if (data is IEnumerable enumerable and not string)
             {
                 return enumerable;
             }
@@ -138,9 +138,9 @@ namespace GongSolutions.Wpf.DragDrop
             var copyData = ((dropInfo.DragInfo.DragDropCopyKeyState != default) && dropInfo.KeyStates.HasFlag(dropInfo.DragInfo.DragDropCopyKeyState))
                            || dropInfo.DragInfo.DragDropCopyKeyState.HasFlag(DragDropKeyStates.LeftMouseButton);
             copyData = copyData
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedContentControl)
-                       && !(dropInfo.DragInfo.SourceItem is HeaderedItemsControl)
-                       && !(dropInfo.DragInfo.SourceItem is ListBoxItem);
+                       && dropInfo.DragInfo.SourceItem is not HeaderedContentControl
+                       && dropInfo.DragInfo.SourceItem is not HeaderedItemsControl
+                       && dropInfo.DragInfo.SourceItem is not ListBoxItem;
             return copyData;
         }
 
@@ -213,7 +213,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
             else
             {
-                return target is IList || target is ICollectionView;
+                return target is IList or ICollectionView;
             }
         }
 
