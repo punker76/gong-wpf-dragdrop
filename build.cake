@@ -323,12 +323,6 @@ Task("SignNuGet")
         return;
     }
 
-    var vctid = EnvironmentVariable("azure-key-vault-tenant-id");
-    if(string.IsNullOrWhiteSpace(vctid)) {
-        Error("Could not resolve signing client tenant id.");
-        return;
-    }
-
     var vcs = EnvironmentVariable("azure-key-vault-client-secret");
     if(string.IsNullOrWhiteSpace(vcs)) {
         Error("Could not resolve signing client secret.");
@@ -357,7 +351,6 @@ Task("SignNuGet")
                 .AppendSwitchQuoted("--timestamp-digest", "sha256")
                 .AppendSwitchQuoted("--azure-key-vault-url", vurl)
                 .AppendSwitchQuotedSecret("--azure-key-vault-client-id", vcid)
-                .AppendSwitchQuotedSecret("--azure-key-vault-tenant-id", vctid)
                 .AppendSwitchQuotedSecret("--azure-key-vault-client-secret", vcs)
                 .AppendSwitchQuotedSecret("--azure-key-vault-certificate", vc)
         };
