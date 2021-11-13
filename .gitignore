@@ -258,7 +258,6 @@ paket-files/
 
 # cake
 [tT]ools/
-![tT]ools/packages.config
 
 # XamlStyler
 !XamlStyler/
