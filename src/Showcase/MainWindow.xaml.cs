@@ -13,9 +13,9 @@ namespace Showcase.WPF.DragDrop
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.DataContext = new MainViewModel();
-            this.Loaded += MainWindowLoaded;
+            this.Loaded += this.MainWindowLoaded;
         }
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -23,7 +23,7 @@ namespace Showcase.WPF.DragDrop
             var appArgs = Environment.GetCommandLineArgs();
             if (appArgs.Length > 1 && appArgs[1] == "anotherOne")
             {
-                this.MainTabControl.SelectedItem = MainTabControl.Items.OfType<TabItem>().FirstOrDefault(t => (string)t.Header == "Mixed");
+                this.MainTabControl.SelectedItem = this.MainTabControl.Items.OfType<TabItem>().FirstOrDefault(t => (string)t.Header == "Mixed");
             }
         }
     }

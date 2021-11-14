@@ -12,7 +12,7 @@ namespace Showcase.WPF.DragDrop.Models
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var itemModel = item as ItemModel;
-            return itemModel != null && (itemModel.Index & 0x01) == 0 ? TemplateEven : TemplateOdd;
+            return itemModel != null && (itemModel.Index & 0x01) == 0 ? this.TemplateEven : this.TemplateOdd;
         }
     }
 }

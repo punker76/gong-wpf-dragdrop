@@ -13,7 +13,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     internal class DragDropPreview : Popup
     {
-        public DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
+        protected DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
         {
             this.PlacementTarget = rootElement;
             this.Placement = PlacementMode.Relative;
@@ -130,12 +130,12 @@ namespace GongSolutions.Wpf.DragDrop
             if (PresentationSource.FromVisual(this.Child) is HwndSource hwndSource)
             {
                 var windowHandle = hwndSource.Handle;
-                var wsex = WindowStyleHelper.GetWindowStyleEx(windowHandle);
+                var wsEx = WindowStyleHelper.GetWindowStyleEx(windowHandle);
 
-                wsex |= WindowStyleHelper.WS_EX.NOACTIVATE; // We don't want our this window to be activated
-                wsex |= WindowStyleHelper.WS_EX.TRANSPARENT;
+                wsEx |= WindowStyleHelper.WS_EX.NOACTIVATE; // We don't want our this window to be activated
+                wsEx |= WindowStyleHelper.WS_EX.TRANSPARENT;
 
-                WindowStyleHelper.SetWindowStyleEx(windowHandle, wsex);
+                WindowStyleHelper.SetWindowStyleEx(windowHandle, wsEx);
             }
         }
 

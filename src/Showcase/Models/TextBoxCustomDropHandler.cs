@@ -66,9 +66,9 @@ namespace Showcase.WPF.DragDrop.Models
         public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
-            _pen = new Pen(Brushes.Tomato, 2);
-            _pen.Freeze();
-            _brush = new SolidColorBrush(Colors.Coral) { Opacity = 0.2 };
+            this._pen = new Pen(Brushes.Tomato, 2);
+            this._pen.Freeze();
+            this._brush = new SolidColorBrush(Colors.Coral) { Opacity = 0.2 };
             this._brush.Freeze();
 
             this.SetValue(SnapsToDevicePixelsProperty, true);
@@ -83,7 +83,7 @@ namespace Showcase.WPF.DragDrop.Models
                 translatePoint.Offset(1, 1);
                 var bounds = new Rect(translatePoint,
                                       new Size(visualTarget.RenderSize.Width - 2, visualTarget.RenderSize.Height - 2));
-                drawingContext.DrawRectangle(_brush, _pen, bounds);
+                drawingContext.DrawRectangle(this._brush, this._pen, bounds);
             }
         }
     }

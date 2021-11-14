@@ -19,7 +19,7 @@ namespace Showcase.WPF.DragDrop.Models
             this.BindableDoubleValue = Faker.RandomNumber.Next(0, 100);
             for (int i = 0; i < Faker.RandomNumber.Next(2, 20); i++)
             {
-                SubItemCollection.Add(new SubItemModel($"Sub item {i}"));
+                this.SubItemCollection.Add(new SubItemModel($"Sub item {i}"));
             }
         }
 
@@ -38,34 +38,34 @@ namespace Showcase.WPF.DragDrop.Models
 
         public string SelectedSubItem
         {
-            get { return _selectedSubItem; }
+            get => this._selectedSubItem;
             set
             {
-                if (value == _selectedSubItem) return;
-                _selectedSubItem = value;
-                OnPropertyChanged();
+                if (value == this._selectedSubItem) return;
+                this._selectedSubItem = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool IsChecked
         {
-            get { return _isChecked; }
+            get => this._isChecked;
             set
             {
-                if (value == _isChecked) return;
-                _isChecked = value;
-                OnPropertyChanged();
+                if (value == this._isChecked) return;
+                this._isChecked = value;
+                this.OnPropertyChanged();
             }
         }
 
         public double BindableDoubleValue
         {
-            get { return _bindableDoubleValue; }
+            get => this._bindableDoubleValue;
             set
             {
-                if (value.Equals(_bindableDoubleValue)) return;
-                _bindableDoubleValue = value;
-                OnPropertyChanged();
+                if (value.Equals(this._bindableDoubleValue)) return;
+                this._bindableDoubleValue = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -79,7 +79,7 @@ namespace Showcase.WPF.DragDrop.Models
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -101,34 +101,34 @@ namespace Showcase.WPF.DragDrop.Models
 
         public string BindableValue
         {
-            get { return _bindableValue; }
+            get => this._bindableValue;
             set
             {
-                if (value == _bindableValue) return;
-                _bindableValue = value;
-                OnPropertyChanged();
+                if (value == this._bindableValue) return;
+                this._bindableValue = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool BindableOptionA
         {
-            get { return _bindableOptionA; }
+            get => this._bindableOptionA;
             set
             {
-                if (value == _bindableOptionA) return;
-                _bindableOptionA = value;
-                OnPropertyChanged();
+                if (value == this._bindableOptionA) return;
+                this._bindableOptionA = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool BindableOptionB
         {
-            get { return _bindableOptionB; }
+            get => this._bindableOptionB;
             set
             {
-                if (value == _bindableOptionB) return;
-                _bindableOptionB = value;
-                OnPropertyChanged();
+                if (value == this._bindableOptionB) return;
+                this._bindableOptionB = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -142,7 +142,7 @@ namespace Showcase.WPF.DragDrop.Models
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

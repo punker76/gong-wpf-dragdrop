@@ -8,13 +8,11 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
 {
     internal static class WindowStyleHelper
     {
-        [CLSCompliant(false)]
         internal static WS_EX GetWindowStyleEx(IntPtr hWnd)
         {
             return (WS_EX)GetWindowLongPtr(hWnd, GWL.EXSTYLE);
         }
 
-        [CLSCompliant(false)]
         internal static WS_EX SetWindowStyleEx(IntPtr hWnd, WS_EX dwNewLong)
         {
             return (WS_EX)SetWindowLongPtr(hWnd, GWL.EXSTYLE, (IntPtr)(int)dwNewLong);
@@ -88,7 +86,6 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// Window style extended values, WS_EX_*
         /// </summary>
         [Flags]
-        [CLSCompliant(false)]
         internal enum WS_EX : uint
         {
             None = 0,

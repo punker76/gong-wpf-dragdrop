@@ -9,7 +9,7 @@ namespace Showcase.WPF.DragDrop.Views
     {
         public ListViewSamples()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

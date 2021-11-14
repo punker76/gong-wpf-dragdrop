@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+#if !NET462_OR_GREATER && !NETCOREAPP
+    using System.Reflection;
+#endif
 using System.Windows;
 using System.Windows.Media;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
-#if NET461 || NET46 || NET452 || NET451 || NET45
-    using System.Reflection;
-#endif
-
     /// <summary>
     /// A helper class for Dpi logicm cause Microsoft hides this with the internal flag.
     /// </summary>
@@ -23,6 +22,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// Convert a point in device independent pixels (1/96") to a point in the system coordinates.
         /// </summary>
         /// <param name="logicalPoint">A point in the logical coordinate system.</param>
+        /// <param name='dpiScaleX'>The scale factor in the x dimension</param>
+        /// <param name='dpiScaleY'>The scale factor in the y dimension</param>
         /// <returns>Returns the parameter converted to the system's coordinates.</returns>
         public static Point LogicalPixelsToDevice(Point logicalPoint, double dpiScaleX, double dpiScaleY)
         {
@@ -35,6 +36,8 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// Convert a point in system coordinates to a point in device independent pixels (1/96").
         /// </summary>
         /// <param name="devicePoint">A point in the physical coordinate system.</param>
+        /// <param name='dpiScaleX'>The scale factor in the x dimension</param>
+        /// <param name='dpiScaleY'>The scale factor in the y dimension</param>
         /// <returns>Returns the parameter converted to the device independent coordinate system.</returns>
         public static Point DevicePixelsToLogical(Point devicePoint, double dpiScaleX, double dpiScaleY)
         {
@@ -83,7 +86,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             return new Thickness(topLeft.X, topLeft.Y, bottomRight.X, bottomRight.Y);
         }
 
-#if NET461 || NET46 || NET452 || NET451 || NET45
+#if !NET462_OR_GREATER && !NETCOREAPP
         public static double DpiX = 0d;
         public static double DpiY = 0d;
 

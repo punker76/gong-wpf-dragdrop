@@ -9,7 +9,7 @@ namespace Showcase.WPF.DragDrop.Views
     {
         public Issues()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

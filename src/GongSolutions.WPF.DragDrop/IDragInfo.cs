@@ -106,11 +106,13 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         object DataObject { get; set; }
 
+#pragma warning disable 1572
         /// <summary>Initiates a drag-and-drop operation.</summary>
         /// <param name="dragSource">A reference to the dependency object that is the source of the data being dragged.</param>
         /// <param name="data">A data object that contains the data being dragged.</param>
         /// <param name="allowedEffects">One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies permitted effects of the drag-and-drop operation.</param>
         /// <returns>One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies the final effect that was performed during the drag-and-drop operation.</returns>
+#pragma warning restore 1572
         Func<DependencyObject, object, DragDropEffects, DragDropEffects> DragDropHandler { get; set; }
 
         /// <summary>

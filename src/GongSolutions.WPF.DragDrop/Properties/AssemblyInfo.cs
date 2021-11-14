@@ -1,5 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Markup;
+
+[assembly: CLSCompliant(true)]
 
 [assembly: XmlnsPrefix("urn:gong-wpf-dragdrop", "dd")]
 [assembly: XmlnsDefinition("urn:gong-wpf-dragdrop", "GongSolutions.Wpf.DragDrop")]

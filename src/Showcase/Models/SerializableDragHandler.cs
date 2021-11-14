@@ -22,7 +22,7 @@ namespace Showcase.WPF.DragDrop.Models
         /// <inheritdoc />
         public void StartDrag(IDragInfo dragInfo)
         {
-            alreadyDropped = false;
+            this.alreadyDropped = false;
             var items = dragInfo.SourceItems.OfType<object>().ToList();
             var wrapper = new SerializableWrapper()
                           {
@@ -43,13 +43,13 @@ namespace Showcase.WPF.DragDrop.Models
         /// <inheritdoc />
         public void Dropped(IDropInfo dropInfo)
         {
-            alreadyDropped = true;
+            this.alreadyDropped = true;
         }
 
         /// <inheritdoc />
         public void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
-            if (alreadyDropped || dragInfo == null)
+            if (this.alreadyDropped || dragInfo == null)
             {
                 return;
             }
@@ -68,7 +68,8 @@ namespace Showcase.WPF.DragDrop.Models
                             sourceList.Remove(o);
                         }
                     }
-                    alreadyDropped = true;
+
+                    this.alreadyDropped = true;
                 }
             }
         }
