@@ -94,6 +94,17 @@ namespace GongSolutions.Wpf.DragDrop
             return templateSelector;
         }
 
+        internal static ItemsPanelTemplate TryGetDragAdornerItemsPanel(UIElement source, UIElement sender)
+        {
+            var itemsPanel = source is not null ? GetDragAdornerItemsPanel(source) : null;
+            if (itemsPanel is null && sender is not null)
+            {
+                itemsPanel = GetDragAdornerItemsPanel(sender);
+            }
+
+            return itemsPanel;
+        }
+
         internal static DataTemplate TryGetDropAdornerTemplate(UIElement source, UIElement sender)
         {
             var template = source is not null ? GetDropAdornerTemplate(source) : null;
@@ -114,6 +125,17 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             return templateSelector;
+        }
+
+        internal static ItemsPanelTemplate TryGetDropAdornerItemsPanel(UIElement source, UIElement sender)
+        {
+            var itemsPanel = source is not null ? GetDropAdornerItemsPanel(source) : null;
+            if (itemsPanel is null && sender is not null)
+            {
+                itemsPanel = GetDropAdornerItemsPanel(sender);
+            }
+
+            return itemsPanel;
         }
 
         internal static int TryGetDragPreviewMaxItemsCount(IDragInfo dragInfo, UIElement sender)

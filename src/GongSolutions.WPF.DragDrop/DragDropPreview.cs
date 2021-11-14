@@ -88,6 +88,19 @@ namespace GongSolutions.Wpf.DragDrop
             set => this.SetValue(ItemTemplateSelectorProperty, value);
         }
 
+        /// <summary>Identifies the <see cref="ItemsPanel"/> dependency property.</summary>
+        public static readonly DependencyProperty ItemsPanelProperty
+            = DependencyProperty.Register(nameof(ItemsPanel),
+                                          typeof(ItemsPanelTemplate),
+                                          typeof(DragDropPreview),
+                                          new PropertyMetadata(default(ItemsPanelTemplate)));
+
+        public ItemsPanelTemplate ItemsPanel
+        {
+            get => (ItemsPanelTemplate)this.GetValue(ItemsPanelProperty);
+            set => this.SetValue(ItemsPanelProperty, value);
+        }
+
         public void Move(Point point)
         {
             var translation = this.Translation;
@@ -188,6 +201,7 @@ namespace GongSolutions.Wpf.DragDrop
             // Get target template or template selector
             DataTemplate template = DragDrop.TryGetDropAdornerTemplate(visualTarget, sender);
             DataTemplateSelector templateSelector = DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender);
+            ItemsPanelTemplate itemsPanel = DragDrop.TryGetDropAdornerItemsPanel(visualTarget, sender);
 
             if (template is not null)
             {
@@ -199,6 +213,7 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 template = DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
                 templateSelector = DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                itemsPanel = DragDrop.TryGetDragAdornerItemsPanel(visualTarget, sender);
 
                 this.UseDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
                 if (this.UseDefaultDragAdorner)
@@ -215,6 +230,7 @@ namespace GongSolutions.Wpf.DragDrop
 
             this.SetCurrentValue(ItemTemplateSelectorProperty, templateSelector);
             this.SetCurrentValue(ItemTemplateProperty, template);
+            this.SetCurrentValue(ItemsPanelProperty, itemsPanel);
         }
 
         public UIElement CreatePreviewPresenter(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
@@ -251,6 +267,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                         itemsControl.SetBinding(ItemsControl.ItemTemplateProperty, new Binding(nameof(this.ItemTemplate)) { Source = this });
                         itemsControl.SetBinding(ItemsControl.ItemTemplateSelectorProperty, new Binding(nameof(this.ItemTemplateSelector)) { Source = this });
+                        itemsControl.SetBinding(ItemsControl.ItemsPanelProperty, new Binding(nameof(this.ItemsPanel)) { Source = this });
 
                         if (useVisualSourceItemSizeForDragAdorner)
                         {
