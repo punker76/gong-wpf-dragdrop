@@ -922,6 +922,35 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets a ItemsPanel for the DragAdorner.
+        /// </summary>
+        public static readonly DependencyProperty DragAdornerItemsPanelProperty
+            = DependencyProperty.RegisterAttached("DragAdornerItemsPanel",
+                                                  typeof(ItemsPanelTemplate),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(ItemsControl.ItemsPanelProperty.DefaultMetadata.DefaultValue));
+
+        /// <summary>Helper for getting <see cref="DragAdornerItemsPanelProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DragAdornerItemsPanelProperty"/> from.</param>
+        /// <remarks>Gets the ItemsPanel for the DragAdorner.</remarks>
+        /// <returns>DragAdornerItemsPanel property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static ItemsPanelTemplate GetDragAdornerItemsPanel(DependencyObject element)
+        {
+            return (ItemsPanelTemplate)element.GetValue(DragAdornerItemsPanelProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DragAdornerItemsPanelProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DragAdornerItemsPanelProperty"/> on.</param>
+        /// <param name="value">DragAdornerItemsPanel property value.</param>
+        /// <remarks>Sets the ItemsPanel for the DragAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDragAdornerItemsPanel(DependencyObject element, ItemsPanelTemplate value)
+        {
+            element.SetValue(DragAdornerItemsPanelProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
         /// </summary>
         public static readonly DependencyProperty DropAdornerTemplateSelectorProperty
@@ -948,6 +977,35 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetDropAdornerTemplateSelector(DependencyObject element, DataTemplateSelector value)
         {
             element.SetValue(DropAdornerTemplateSelectorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a ItemsPanel for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerItemsPanelProperty
+            = DependencyProperty.RegisterAttached("DropAdornerItemsPanel",
+                                                  typeof(ItemsPanelTemplate),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(ItemsControl.ItemsPanelProperty.DefaultMetadata.DefaultValue));
+
+        /// <summary>Helper for getting <see cref="DropAdornerItemsPanelProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropAdornerItemsPanelProperty"/> from.</param>
+        /// <remarks>Gets the ItemsPanel for the DragAdorner based on the DropTarget.</remarks>
+        /// <returns>DropAdornerItemsPanel property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static ItemsPanelTemplate GetDropAdornerItemsPanel(DependencyObject element)
+        {
+            return (ItemsPanelTemplate)element.GetValue(DropAdornerItemsPanelProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DropAdornerItemsPanelProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropAdornerItemsPanelProperty"/> on.</param>
+        /// <param name="value">DropAdornerItemsPanel property value.</param>
+        /// <remarks>Sets the ItemsPanel for the DragAdorner based on the DropTarget.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropAdornerItemsPanel(DependencyObject element, ItemsPanelTemplate value)
+        {
+            element.SetValue(DropAdornerItemsPanelProperty, value);
         }
 
         /// <summary>
