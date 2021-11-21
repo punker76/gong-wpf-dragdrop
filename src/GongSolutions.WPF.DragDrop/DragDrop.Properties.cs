@@ -865,34 +865,6 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or sets a DataTemplate for the DragAdorner based on the DropTarget.
-        /// </summary>
-        public static readonly DependencyProperty DropAdornerTemplateProperty
-            = DependencyProperty.RegisterAttached("DropAdornerTemplate",
-                                                  typeof(DataTemplate),
-                                                  typeof(DragDrop));
-
-        /// <summary>Helper for getting <see cref="DropAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
-        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropAdornerTemplateProperty"/> from.</param>
-        /// <remarks>Gets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
-        /// <returns>DropAdornerTemplate property value.</returns>
-        [AttachedPropertyBrowsableForType(typeof(UIElement))]
-        public static DataTemplate GetDropAdornerTemplate(DependencyObject element)
-        {
-            return (DataTemplate)element.GetValue(DropAdornerTemplateProperty);
-        }
-
-        /// <summary>Helper for setting <see cref="DropAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
-        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropAdornerTemplateProperty"/> on.</param>
-        /// <param name="value">DropAdornerTemplate property value.</param>
-        /// <remarks>Sets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
-        [AttachedPropertyBrowsableForType(typeof(UIElement))]
-        public static void SetDropAdornerTemplate(DependencyObject element, DataTemplate value)
-        {
-            element.SetValue(DropAdornerTemplateProperty, value);
-        }
-
-        /// <summary>
         /// Gets or sets a DataTemplateSelector for the DragAdorner.
         /// </summary>
         public static readonly DependencyProperty DragAdornerTemplateSelectorProperty
@@ -919,6 +891,63 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetDragAdornerTemplateSelector(DependencyObject element, DataTemplateSelector value)
         {
             element.SetValue(DragAdornerTemplateSelectorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a DragAdorner DataTemplate for multiple item selection.
+        /// </summary>
+        public static readonly DependencyProperty DragAdornerMultiItemTemplateProperty
+            = DependencyProperty.RegisterAttached("DragAdornerMultiItemTemplate",
+                                                  typeof(DataTemplate),
+                                                  typeof(DragDrop));
+
+        /// <summary>Helper for getting <see cref="DragAdornerMultiItemTemplateProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DragAdornerMultiItemTemplateProperty"/> from.</param>
+        /// <remarks>Gets the DragAdorner DataTemplate for multiple item selection.</remarks>
+        /// <returns>DragAdornerMultiItemTemplate property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplate GetDragAdornerMultiItemTemplate(DependencyObject element)
+        {
+            return (DataTemplate)element.GetValue(DragAdornerMultiItemTemplateProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DragAdornerMultiItemTemplateProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DragAdornerMultiItemTemplateProperty"/> on.</param>
+        /// <param name="value">DragAdornerMultiItemTemplate property value.</param>
+        /// <remarks>Sets the DragAdorner DataTemplate for multiple item selection.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDragAdornerMultiItemTemplate(DependencyObject element, DataTemplate value)
+        {
+            element.SetValue(DragAdornerMultiItemTemplateProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a DragAdorner DataTemplateSelector for multiple item selection.
+        /// </summary>
+        public static readonly DependencyProperty DragAdornerMultiItemTemplateSelectorProperty
+            = DependencyProperty.RegisterAttached("DragAdornerMultiItemTemplateSelector",
+                                                  typeof(DataTemplateSelector),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(DataTemplateSelector)));
+
+        /// <summary>Helper for getting <see cref="DragAdornerMultiItemTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DragAdornerMultiItemTemplateSelectorProperty"/> from.</param>
+        /// <remarks>Gets the DragAdorner DataTemplateSelector for multiple item selection.</remarks>
+        /// <returns>DragAdornerMultiItemTemplateSelector property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplateSelector GetDragAdornerMultiItemTemplateSelector(DependencyObject element)
+        {
+            return (DataTemplateSelector)element.GetValue(DragAdornerMultiItemTemplateSelectorProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DragAdornerMultiItemTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DragAdornerMultiItemTemplateSelectorProperty"/> on.</param>
+        /// <param name="value">DragAdornerMultiItemTemplateSelector property value.</param>
+        /// <remarks>Sets the DragAdorner DataTemplateSelector for multiple item selection.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDragAdornerMultiItemTemplateSelector(DependencyObject element, DataTemplateSelector value)
+        {
+            element.SetValue(DragAdornerMultiItemTemplateSelectorProperty, value);
         }
 
         /// <summary>
@@ -951,6 +980,34 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets a DataTemplate for the DragAdorner based on the DropTarget.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerTemplateProperty
+            = DependencyProperty.RegisterAttached("DropAdornerTemplate",
+                                                  typeof(DataTemplate),
+                                                  typeof(DragDrop));
+
+        /// <summary>Helper for getting <see cref="DropAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropAdornerTemplateProperty"/> from.</param>
+        /// <remarks>Gets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
+        /// <returns>DropAdornerTemplate property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplate GetDropAdornerTemplate(DependencyObject element)
+        {
+            return (DataTemplate)element.GetValue(DropAdornerTemplateProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DropAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropAdornerTemplateProperty"/> on.</param>
+        /// <param name="value">DropAdornerTemplate property value.</param>
+        /// <remarks>Sets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropAdornerTemplate(DependencyObject element, DataTemplate value)
+        {
+            element.SetValue(DropAdornerTemplateProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
         /// </summary>
         public static readonly DependencyProperty DropAdornerTemplateSelectorProperty
@@ -977,6 +1034,63 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetDropAdornerTemplateSelector(DependencyObject element, DataTemplateSelector value)
         {
             element.SetValue(DropAdornerTemplateSelectorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a DropAdorner DataTemplate for multiple item selection.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerMultiItemTemplateProperty
+            = DependencyProperty.RegisterAttached("DropAdornerMultiItemTemplate",
+                                                  typeof(DataTemplate),
+                                                  typeof(DragDrop));
+
+        /// <summary>Helper for getting <see cref="DropAdornerMultiItemTemplateProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropAdornerMultiItemTemplateProperty"/> from.</param>
+        /// <remarks>Gets the DropAdorner DataTemplate for multiple item selection.</remarks>
+        /// <returns>DropAdornerMultiItemTemplate property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplate GetDropAdornerMultiItemTemplate(DependencyObject element)
+        {
+            return (DataTemplate)element.GetValue(DropAdornerMultiItemTemplateProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DropAdornerMultiItemTemplateProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropAdornerMultiItemTemplateProperty"/> on.</param>
+        /// <param name="value">DropAdornerMultiItemTemplate property value.</param>
+        /// <remarks>Sets the DropAdorner DataTemplate for multiple item selection.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropAdornerMultiItemTemplate(DependencyObject element, DataTemplate value)
+        {
+            element.SetValue(DropAdornerMultiItemTemplateProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a DropAdorner DataTemplateSelector for multiple item selection.
+        /// </summary>
+        public static readonly DependencyProperty DropAdornerMultiItemTemplateSelectorProperty
+            = DependencyProperty.RegisterAttached("DropAdornerMultiItemTemplateSelector",
+                                                  typeof(DataTemplateSelector),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(DataTemplateSelector)));
+
+        /// <summary>Helper for getting <see cref="DropAdornerMultiItemTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropAdornerMultiItemTemplateSelectorProperty"/> from.</param>
+        /// <remarks>Gets the DropAdorner DataTemplateSelector for multiple item selection.</remarks>
+        /// <returns>DropAdornerMultiItemTemplateSelector property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplateSelector GetDropAdornerMultiItemTemplateSelector(DependencyObject element)
+        {
+            return (DataTemplateSelector)element.GetValue(DropAdornerMultiItemTemplateSelectorProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DropAdornerMultiItemTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropAdornerMultiItemTemplateSelectorProperty"/> on.</param>
+        /// <param name="value">DropAdornerMultiItemTemplateSelector property value.</param>
+        /// <remarks>Sets the DropAdorner DataTemplateSelector for multiple item selection.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropAdornerMultiItemTemplateSelector(DependencyObject element, DataTemplateSelector value)
+        {
+            element.SetValue(DropAdornerMultiItemTemplateSelectorProperty, value);
         }
 
         /// <summary>

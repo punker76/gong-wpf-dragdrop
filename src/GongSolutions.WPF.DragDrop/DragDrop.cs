@@ -94,6 +94,28 @@ namespace GongSolutions.Wpf.DragDrop
             return templateSelector;
         }
 
+        internal static DataTemplate TryGetDragAdornerMultiItemTemplate(UIElement source, UIElement sender)
+        {
+            var template = source is not null ? GetDragAdornerMultiItemTemplate(source) : null;
+            if (template is null && sender is not null)
+            {
+                template = GetDragAdornerMultiItemTemplate(sender);
+            }
+
+            return template;
+        }
+
+        internal static DataTemplateSelector TryGetDragAdornerMultiItemTemplateSelector(UIElement source, UIElement sender)
+        {
+            var templateSelector = source is not null ? GetDragAdornerMultiItemTemplateSelector(source) : null;
+            if (templateSelector is null && sender is not null)
+            {
+                templateSelector = GetDragAdornerMultiItemTemplateSelector(sender);
+            }
+
+            return templateSelector;
+        }
+
         internal static ItemsPanelTemplate TryGetDragAdornerItemsPanel(UIElement source, UIElement sender)
         {
             var itemsPanel = source is not null ? GetDragAdornerItemsPanel(source) : null;
@@ -122,6 +144,28 @@ namespace GongSolutions.Wpf.DragDrop
             if (templateSelector is null && sender is not null)
             {
                 templateSelector = GetDropAdornerTemplateSelector(sender);
+            }
+
+            return templateSelector;
+        }
+
+        internal static DataTemplate TryGetDropAdornerMultiItemTemplate(UIElement source, UIElement sender)
+        {
+            var template = source is not null ? GetDropAdornerMultiItemTemplate(source) : null;
+            if (template is null && sender is not null)
+            {
+                template = GetDropAdornerMultiItemTemplate(sender);
+            }
+
+            return template;
+        }
+
+        internal static DataTemplateSelector TryGetDropAdornerMultiItemTemplateSelector(UIElement source, UIElement sender)
+        {
+            var templateSelector = source is not null ? GetDropAdornerMultiItemTemplateSelector(source) : null;
+            if (templateSelector is null && sender is not null)
+            {
+                templateSelector = GetDropAdornerMultiItemTemplateSelector(sender);
             }
 
             return templateSelector;
