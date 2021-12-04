@@ -426,7 +426,7 @@ namespace GongSolutions.Wpf.DragDrop
             var dragInfo = infoBuilder?.CreateDragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position)
                            ?? new DragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position);
 
-            DragSourceDown(sender, dragInfo, e);
+            DragSourceDown(sender, dragInfo, e, elementPosition);
         }
 
         private static void DoMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -449,10 +449,10 @@ namespace GongSolutions.Wpf.DragDrop
             var dragInfo = infoBuilder?.CreateDragInfo(sender, e.OriginalSource, e.ChangedButton, item => e.GetPosition(item))
                            ?? new DragInfo(sender, e.OriginalSource, e.ChangedButton, item => e.GetPosition(item));
 
-            DragSourceDown(sender, dragInfo, e);
+            DragSourceDown(sender, dragInfo, e, elementPosition);
         }
 
-        private static void DragSourceDown(object sender, DragInfo dragInfo, InputEventArgs e)
+        private static void DragSourceDown(object sender, DragInfo dragInfo, InputEventArgs e, Point elementPosition)
         {
             if (dragInfo.VisualSource is ItemsControl control && control.CanSelectMultipleItems())
             {
@@ -482,8 +482,11 @@ namespace GongSolutions.Wpf.DragDrop
                 var selectedItems = itemsControl.GetSelectedItems().OfType<object>().ToList();
                 if (selectedItems.Count > 1 && selectedItems.Contains(dragInfo.SourceItem))
                 {
-                    _clickSupressItem = dragInfo.SourceItem;
-                    e.Handled = true;
+                    if (!HitTestUtilities.HitTest4Type<ToggleButton>(sender, elementPosition))
+                    {
+                        _clickSupressItem = dragInfo.SourceItem;
+                        e.Handled = true;
+                    }
                 }
             }
 
@@ -492,21 +495,26 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            DragSourceUp(sender);
+            DragSourceUp(sender, e.GetPosition((IInputElement)sender));
         }
 
         private static void DragSourceOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            DragSourceUp(sender);
+            DragSourceUp(sender, e.GetPosition((IInputElement)sender));
         }
 
         private static void DragSourceOnTouchUp(object sender, TouchEventArgs e)
         {
-            DragSourceUp(sender);
+            DragSourceUp(sender, e.GetTouchPoint((IInputElement)sender).Position);
         }
 
-        private static void DragSourceUp(object sender)
+        private static void DragSourceUp(object sender, Point elementPosition)
         {
+            if (HitTestUtilities.HitTest4Type<ToggleButton>(sender, elementPosition))
+            {
+                return;
+            }
+
             var dragInfo = _dragInfo;
 
             // If we prevented the control's default selection handling in DragSource_PreviewMouseLeftButtonDown
@@ -946,7 +954,6 @@ namespace GongSolutions.Wpf.DragDrop
                    || HitTestUtilities.HitTest4Type<TextBoxBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<PasswordBox>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<ComboBox>(sender, elementPosition)
-                   || HitTestUtilities.HitTest4Type<ToggleButton>(sender, elementPosition)
                    || HitTestUtilities.HitTest4Type<MenuBase>(sender, elementPosition)
                    || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
                    || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition);
