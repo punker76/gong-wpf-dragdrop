@@ -11,8 +11,8 @@ namespace GongSolutions.Wpf.DragDrop
     /// </summary>
     public class DefaultDragHandler : IDragSource
     {
-      /// <inheritdoc />
-      public virtual void StartDrag(IDragInfo dragInfo)
+        /// <inheritdoc />
+        public virtual void StartDrag(IDragInfo dragInfo)
         {
             var items = TypeUtilities.CreateDynamicallyTypedList(dragInfo.SourceItems).Cast<object>().ToList();
             if (items.Count > 1)
@@ -23,14 +23,7 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 // special case: if the single item is an enumerable then we can not drop it as single item
                 var singleItem = items.FirstOrDefault();
-                if (singleItem is IEnumerable && !(singleItem is string))
-                {
-                    dragInfo.Data = items;
-                }
-                else
-                {
-                    dragInfo.Data = singleItem;
-                }
+                dragInfo.Data = singleItem is IEnumerable and not string ? items : singleItem;
             }
 
             dragInfo.Effects = dragInfo.Data != null ? DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.None;

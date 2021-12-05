@@ -1,16 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using GongSolutions.Wpf.DragDrop;
 using Showcase.WPF.DragDrop.Models;
 
 namespace Showcase.WPF.DragDrop.ViewModels
 {
-    using GongSolutions.Wpf.DragDrop;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-
     public class ListMember : List<SubMember>
     {
         public string Name { get; set; }
@@ -23,11 +22,11 @@ namespace Showcase.WPF.DragDrop.ViewModels
 
     public class MainViewModel : ViewModelBase, IDragPreviewItemsSorter, IDropTargetItemsSorter
     {
-        private SampleData _data;
-        private ICommand _openIssueCommand;
-        private ICommand _openPullRequestCommand;
-        private ICommand _openLinkCommand;
-        private ICommand _filterCollectionCommand;
+        private SampleData data;
+        private ICommand openIssueCommand;
+        private ICommand openPullRequestCommand;
+        private ICommand openLinkCommand;
+        private ICommand filterCollectionCommand;
 
         public ObservableCollection<ListMember> Members { get; set; } = new ObservableCollection<ListMember>();
 
@@ -46,26 +45,23 @@ namespace Showcase.WPF.DragDrop.ViewModels
             ////}
 
             var listMember = new ListMember() { Name = "Item 1" };
-            Members.Add(listMember);
+            this.Members.Add(listMember);
 
             listMember = new ListMember() { Name = "Item 2 with SubItems" };
             listMember.Add(new SubMember() { Name = "SubItem 1" });
             listMember.Add(new SubMember() { Name = "SubItem 2" });
-            Members.Add(listMember);
+            this.Members.Add(listMember);
 
             listMember = new ListMember() { Name = "Item 3" };
-            Members.Add(listMember);
+            this.Members.Add(listMember);
 
             this.Data = new SampleData();
-            this.OpenIssueCommand = new SimpleCommand(issue =>
-            {
-                OpenUrlLink($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}");
-            });
+            this.OpenIssueCommand = new SimpleCommand(issue => { OpenUrlLink($"https://github.com/punker76/gong-wpf-dragdrop/issues/{issue}"); });
             this.OpenPullRequestCommand = new SimpleCommand(pr => { OpenUrlLink($"https://github.com/punker76/gong-wpf-dragdrop/pull/{pr}"); });
             this.OpenLinkCommand = new SimpleCommand(link => { OpenUrlLink(link.ToString()); });
             this.FilterCollectionCommand = new SimpleCommand(isChecked =>
                 {
-                    var coll = Data.FilterCollection1;
+                    var coll = this.Data.FilterCollection1;
                     var collView = CollectionViewSource.GetDefaultView(coll);
                     collView.Filter += o =>
                         {
@@ -73,6 +69,7 @@ namespace Showcase.WPF.DragDrop.ViewModels
                             {
                                 return true;
                             }
+
                             var itemModel = (ItemModel)o;
                             var number = itemModel.Index;
                             return (number & 0x01) == 0;
@@ -80,72 +77,72 @@ namespace Showcase.WPF.DragDrop.ViewModels
                 });
 
             static void OpenUrlLink(string link) => Process.Start(new ProcessStartInfo
-            {
-                FileName = link ?? throw new System.ArgumentNullException(nameof(link)),
-                // UseShellExecute is default to false on .NET Core while true on .NET Framework.
-                // Only this value is set to true, the url link can be opened.
-                UseShellExecute = true,
-            });
+                                                                  {
+                                                                      FileName = link ?? throw new System.ArgumentNullException(nameof(link)),
+                                                                      // UseShellExecute is default to false on .NET Core while true on .NET Framework.
+                                                                      // Only this value is set to true, the url link can be opened.
+                                                                      UseShellExecute = true,
+                                                                  });
         }
 
         public SampleData Data
         {
-            get { return _data; }
+            get => this.data;
             set
             {
-                if (Equals(value, _data)) return;
-                _data = value;
-                OnPropertyChanged();
+                if (Equals(value, this.data)) return;
+                this.data = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ICommand OpenIssueCommand
         {
-            get { return _openIssueCommand; }
+            get => this.openIssueCommand;
             set
             {
-                if (Equals(value, _openIssueCommand)) return;
-                _openIssueCommand = value;
-                OnPropertyChanged();
+                if (Equals(value, this.openIssueCommand)) return;
+                this.openIssueCommand = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ICommand OpenPullRequestCommand
         {
-            get { return _openPullRequestCommand; }
+            get => this.openPullRequestCommand;
             set
             {
-                if (Equals(value, _openPullRequestCommand)) return;
-                _openPullRequestCommand = value;
-                OnPropertyChanged();
+                if (Equals(value, this.openPullRequestCommand)) return;
+                this.openPullRequestCommand = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ICommand OpenLinkCommand
         {
-            get { return _openLinkCommand; }
+            get => this.openLinkCommand;
             set
             {
-                if (Equals(value, _openLinkCommand)) return;
-                _openLinkCommand = value;
-                OnPropertyChanged();
+                if (Equals(value, this.openLinkCommand)) return;
+                this.openLinkCommand = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ICommand FilterCollectionCommand
         {
-            get { return _filterCollectionCommand; }
+            get => this.filterCollectionCommand;
             set
             {
-                if (Equals(value, _filterCollectionCommand)) return;
-                _filterCollectionCommand = value;
-                OnPropertyChanged();
+                if (Equals(value, this.filterCollectionCommand)) return;
+                this.filterCollectionCommand = value;
+                this.OnPropertyChanged();
             }
         }
 
         public IEnumerable SortDropTargetItems(IEnumerable items)
         {
-            return SortDragPreviewItems(items);
+            return this.SortDragPreviewItems(items);
         }
 
         public IEnumerable SortDragPreviewItems(IEnumerable items)
@@ -158,7 +155,8 @@ namespace Showcase.WPF.DragDrop.ViewModels
                     return allItems.OrderBy(x => ((ItemModel)x).Index);
                 }
             }
-            return items;
+
+            return allItems;
         }
     }
 }

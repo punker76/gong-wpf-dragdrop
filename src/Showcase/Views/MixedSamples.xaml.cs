@@ -14,8 +14,8 @@ namespace Showcase.WPF.DragDrop.Views
     {
         public MixedSamples()
         {
-            InitializeComponent();
-            this.Loaded += MainWindowLoaded;
+            this.InitializeComponent();
+            this.Loaded += this.MainWindowLoaded;
         }
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -23,7 +23,7 @@ namespace Showcase.WPF.DragDrop.Views
             var appArgs = Environment.GetCommandLineArgs();
             if (appArgs.Length > 1 && appArgs[1] == "anotherOne")
             {
-                MixedTabControl.SelectedItem = MixedTabControl.Items.OfType<TabItem>().FirstOrDefault(t => (string)t.Header == "Outside");
+                this.MixedTabControl.SelectedItem = this.MixedTabControl.Items.OfType<TabItem>().FirstOrDefault(t => (string)t.Header == "Outside");
             }
         }
 

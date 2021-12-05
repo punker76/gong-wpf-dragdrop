@@ -17,7 +17,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// - The dragged data if a single item was dragged.
         /// - A typed IEnumerable if multiple items were dragged.
         /// </remarks>
-        object Data { get; }
+        object Data { get; set; }
 
         /// <summary>
         /// Gets a <see cref="DragInfo"/> object holding information about the source of the drag, 
@@ -86,6 +86,16 @@ namespace GongSolutions.Wpf.DragDrop
         /// the drag is currently over.
         /// </remarks>
         CollectionViewGroup TargetGroup { get; }
+
+        /// <summary>
+        /// Gets the ScrollViewer control for the visual target.
+        /// </summary>
+        ScrollViewer TargetScrollViewer { get; }
+
+        /// <summary>
+        /// Gets or Sets the ScrollingMode for the drop action.
+        /// </summary>
+        ScrollingMode TargetScrollingMode { get; }
 
         /// <summary>
         /// Gets the control that is the current drop target.

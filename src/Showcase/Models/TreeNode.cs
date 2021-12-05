@@ -21,45 +21,45 @@ namespace Showcase.WPF.DragDrop.Models
 
         public string Caption
         {
-            get { return _caption; }
+            get => this._caption;
             set
             {
-                if (value == _caption) return;
-                _caption = value;
-                OnPropertyChanged();
+                if (value == this._caption) return;
+                this._caption = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ObservableCollection<TreeNode> Children
         {
-            get { return _children; }
+            get => this._children;
             set
             {
-                if (Equals(value, _children)) return;
-                _children = value;
-                OnPropertyChanged();
+                if (Equals(value, this._children)) return;
+                this._children = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool IsCloned
         {
-            get { return _isCloned; }
+            get => this._isCloned;
             set
             {
-                if (value == _isCloned) return;
-                _isCloned = value;
-                OnPropertyChanged();
+                if (value == this._isCloned) return;
+                this._isCloned = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get => this._isExpanded;
             set
             {
-                if (value == _isExpanded) return;
-                _isExpanded = value;
-                OnPropertyChanged();
+                if (value == this._isExpanded) return;
+                this._isExpanded = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -83,7 +83,7 @@ namespace Showcase.WPF.DragDrop.Models
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

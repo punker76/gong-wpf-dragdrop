@@ -13,7 +13,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     internal class DragDropPreview : Popup
     {
-        public DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
+        protected DragDropPreview(UIElement rootElement, UIElement previewElement, Point translation, Point anchorPoint)
         {
             this.PlacementTarget = rootElement;
             this.Placement = PlacementMode.Relative;
@@ -62,6 +62,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public bool UseDefaultDragAdorner { get; private set; }
 
+        /// <summary>Identifies the <see cref="ItemTemplate"/> dependency property.</summary>
         public static readonly DependencyProperty ItemTemplateProperty
             = DependencyProperty.Register(nameof(ItemTemplate),
                                           typeof(DataTemplate),
@@ -74,6 +75,7 @@ namespace GongSolutions.Wpf.DragDrop
             set => this.SetValue(ItemTemplateProperty, value);
         }
 
+        /// <summary>Identifies the <see cref="ItemTemplateSelector"/> dependency property.</summary>
         public static readonly DependencyProperty ItemTemplateSelectorProperty
             = DependencyProperty.Register(nameof(ItemTemplateSelector),
                                           typeof(DataTemplateSelector),
@@ -84,6 +86,19 @@ namespace GongSolutions.Wpf.DragDrop
         {
             get => (DataTemplateSelector)this.GetValue(ItemTemplateSelectorProperty);
             set => this.SetValue(ItemTemplateSelectorProperty, value);
+        }
+
+        /// <summary>Identifies the <see cref="ItemsPanel"/> dependency property.</summary>
+        public static readonly DependencyProperty ItemsPanelProperty
+            = DependencyProperty.Register(nameof(ItemsPanel),
+                                          typeof(ItemsPanelTemplate),
+                                          typeof(DragDropPreview),
+                                          new PropertyMetadata(default(ItemsPanelTemplate)));
+
+        public ItemsPanelTemplate ItemsPanel
+        {
+            get => (ItemsPanelTemplate)this.GetValue(ItemsPanelProperty);
+            set => this.SetValue(ItemsPanelProperty, value);
         }
 
         public void Move(Point point)
@@ -128,13 +143,18 @@ namespace GongSolutions.Wpf.DragDrop
             if (PresentationSource.FromVisual(this.Child) is HwndSource hwndSource)
             {
                 var windowHandle = hwndSource.Handle;
-                var wsex = WindowStyleHelper.GetWindowStyleEx(windowHandle);
+                var wsEx = WindowStyleHelper.GetWindowStyleEx(windowHandle);
 
-                wsex |= WindowStyleHelper.WS_EX.NOACTIVATE; // We don't want our this window to be activated
-                wsex |= WindowStyleHelper.WS_EX.TRANSPARENT;
+                wsEx |= WindowStyleHelper.WS_EX.NOACTIVATE; // We don't want our this window to be activated
+                wsEx |= WindowStyleHelper.WS_EX.TRANSPARENT;
 
-                WindowStyleHelper.SetWindowStyleEx(windowHandle, wsex);
+                WindowStyleHelper.SetWindowStyleEx(windowHandle, wsEx);
             }
+        }
+
+        private static bool IsMultiSelection(IDragInfo dragInfo)
+        {
+            return dragInfo?.Data is IEnumerable and not string;
         }
 
         public static bool HasDragDropPreview(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
@@ -145,9 +165,15 @@ namespace GongSolutions.Wpf.DragDrop
                 return false;
             }
 
+            var isMultiSelection = IsMultiSelection(dragInfo);
+
             // Check for target template or template selector
-            DataTemplate template = DragDrop.TryGetDropAdornerTemplate(visualTarget, sender);
-            DataTemplateSelector templateSelector = DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender);
+            DataTemplate template = isMultiSelection
+                ? DragDrop.TryGetDropAdornerMultiItemTemplate(visualTarget, sender) ?? DragDrop.TryGetDropAdornerTemplate(visualTarget, sender)
+                : DragDrop.TryGetDropAdornerTemplate(visualTarget, sender);
+            DataTemplateSelector templateSelector = isMultiSelection
+                ? DragDrop.TryGetDropAdornerMultiItemTemplateSelector(visualTarget, sender) ?? DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender)
+                : DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender);
 
             if (template is not null)
             {
@@ -157,8 +183,12 @@ namespace GongSolutions.Wpf.DragDrop
             // Check for source template or template selector if there is no target one
             if (template is null && templateSelector is null)
             {
-                template = DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
-                templateSelector = DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                template = isMultiSelection
+                    ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
+                    : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
+                templateSelector = isMultiSelection
+                    ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
+                    : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
 
                 var useDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
                 if (useDefaultDragAdorner)
@@ -183,9 +213,16 @@ namespace GongSolutions.Wpf.DragDrop
                 return;
             }
 
+            var isMultiSelection = IsMultiSelection(dragInfo);
+
             // Get target template or template selector
-            DataTemplate template = DragDrop.TryGetDropAdornerTemplate(visualTarget, sender);
-            DataTemplateSelector templateSelector = DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender);
+            DataTemplate template = isMultiSelection
+                ? DragDrop.TryGetDropAdornerMultiItemTemplate(visualTarget, sender) ?? DragDrop.TryGetDropAdornerTemplate(visualTarget, sender)
+                : DragDrop.TryGetDropAdornerTemplate(visualTarget, sender);
+            DataTemplateSelector templateSelector = isMultiSelection
+                ? DragDrop.TryGetDropAdornerMultiItemTemplateSelector(visualTarget, sender) ?? DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender)
+                : DragDrop.TryGetDropAdornerTemplateSelector(visualTarget, sender);
+            ItemsPanelTemplate itemsPanel = DragDrop.TryGetDropAdornerItemsPanel(visualTarget, sender);
 
             if (template is not null)
             {
@@ -195,8 +232,13 @@ namespace GongSolutions.Wpf.DragDrop
             // Get source template or template selector if there is no target one
             if (template is null && templateSelector is null)
             {
-                template = DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
-                templateSelector = DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                template = isMultiSelection
+                    ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
+                    : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
+                templateSelector = isMultiSelection
+                    ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
+                    : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                itemsPanel = DragDrop.TryGetDragAdornerItemsPanel(visualTarget, sender);
 
                 this.UseDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
                 if (this.UseDefaultDragAdorner)
@@ -213,9 +255,10 @@ namespace GongSolutions.Wpf.DragDrop
 
             this.SetCurrentValue(ItemTemplateSelectorProperty, templateSelector);
             this.SetCurrentValue(ItemTemplateProperty, template);
+            this.SetCurrentValue(ItemsPanelProperty, itemsPanel);
         }
 
-        public UIElement CreatePreviewPresenter(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
+        private UIElement CreatePreviewPresenter(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
         {
             var visualSource = dragInfo?.VisualSource;
             if (visualSource is null)
@@ -231,9 +274,10 @@ namespace GongSolutions.Wpf.DragDrop
 
             if (this.ItemTemplate != null || this.ItemTemplateSelector != null)
             {
-                if (dragInfo.Data is IEnumerable items && !(items is string))
+                if (dragInfo.Data is IEnumerable enumerable and not string)
                 {
-                    var itemsCount = items.Cast<object>().Count();
+                    var items = enumerable.Cast<object>().ToList();
+                    var itemsCount = items.Count;
                     var maxItemsCount = DragDrop.TryGetDragPreviewMaxItemsCount(dragInfo, sender);
                     if (!this.UseDefaultDragAdorner && itemsCount <= maxItemsCount)
                     {
@@ -248,6 +292,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                         itemsControl.SetBinding(ItemsControl.ItemTemplateProperty, new Binding(nameof(this.ItemTemplate)) { Source = this });
                         itemsControl.SetBinding(ItemsControl.ItemTemplateSelectorProperty, new Binding(nameof(this.ItemTemplateSelector)) { Source = this });
+                        itemsControl.SetBinding(ItemsControl.ItemsPanelProperty, new Binding(nameof(this.ItemsPanel)) { Source = this });
 
                         if (useVisualSourceItemSizeForDragAdorner)
                         {

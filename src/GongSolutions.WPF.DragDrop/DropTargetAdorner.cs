@@ -7,7 +7,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public abstract class DropTargetAdorner : Adorner
     {
-        public DropTargetAdorner(UIElement adornedElement, DropInfo dropInfo)
+        public DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement)
         {
             this.DropInfo = dropInfo;
@@ -18,7 +18,7 @@ namespace GongSolutions.Wpf.DragDrop
             this.m_AdornerLayer.Add(this);
         }
 
-        public DropInfo DropInfo { get; set; }
+        public IDropInfo DropInfo { get; set; }
 
         /// <summary>
         /// Gets or Sets the pen which can be used for the render process.

@@ -9,6 +9,14 @@ namespace Showcase.WPF.DragDrop.Models
     /// </summary>
     public class GroupedDropHandler : IDropTarget
     {
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragEnter(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
+
         /// <inheritdoc />
         public void DragOver(IDropInfo dropInfo)
         {
@@ -19,6 +27,14 @@ namespace Showcase.WPF.DragDrop.Models
                 dropInfo.Effects = System.Windows.DragDropEffects.None;
             }
         }
+
+#if !NETCOREAPP3_1_OR_GREATER
+        /// <inheritdoc />
+        public void DragLeave(IDropInfo dropInfo)
+        {
+            // nothing here
+        }
+#endif
 
         /// <inheritdoc />
         public void Drop(IDropInfo dropInfo)

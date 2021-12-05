@@ -10,7 +10,7 @@ namespace Showcase.WPF.DragDrop.Views
     {
         public TreeViewSamples()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void LeftBoundTreeView_RequestBringIntoView(object sender, System.Windows.RequestBringIntoViewEventArgs e)

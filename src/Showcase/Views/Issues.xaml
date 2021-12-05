@@ -531,12 +531,18 @@
                                          dd:DragDrop.IsDropTarget="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <Grid Grid.Column="1" Margin="4">
-                                    <TextBox Height="150"
-                                             dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}"
-                                             dd:DragDrop.IsDropTarget="True"
-                                             Text="Drop any item on this TextBox..."
-                                             TextWrapping="Wrap"
-                                             VerticalScrollBarVisibility="Auto" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBox Height="150"
+                                                 Text="Drag any text part from this TextBox."
+                                                 TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                        <TextBox Height="150"
+                                                 dd:DragDrop.DropHandler="{Binding Data.TextBoxCustomDropHandler}"
+                                                 dd:DragDrop.IsDropTarget="True"
+                                                 Text="Drop any item or Text on this TextBox..."
+                                                 TextWrapping="Wrap"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                    </StackPanel>
                                 </Grid>
                             </Grid>
                         </StackPanel>
@@ -931,16 +937,18 @@
                                           SelectionMode="Extended">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
-                                                <TextBlock Text="{Binding Caption}" Margin="2" />
-                                                <Menu Margin="2">
-                                                    <MenuItem Header="Menu">
-                                                        <MenuItem Header="Some Menu Item"></MenuItem>
-                                                        <MenuItem Header="Some Other Menu Item"></MenuItem>
-                                                    </MenuItem>
-                                                </Menu>
-                                            </StackPanel>
+                                            <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Caption}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
+                                                    <TextBlock Text="{Binding Caption}" Margin="2" />
+                                                    <Menu Margin="2">
+                                                        <MenuItem Header="Menu">
+                                                            <MenuItem Header="Some Menu Item"></MenuItem>
+                                                            <MenuItem Header="Some Other Menu Item"></MenuItem>
+                                                        </MenuItem>
+                                                    </Menu>
+                                                </StackPanel>
+                                            </Expander>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>

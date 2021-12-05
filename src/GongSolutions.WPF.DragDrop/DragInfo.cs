@@ -20,60 +20,6 @@ namespace GongSolutions.Wpf.DragDrop
     /// </remarks>
     public class DragInfo : IDragInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the DragInfo class.
-        /// </summary>
-        /// 
-        /// <param name="sender">
-        /// The sender of the mouse event that initiated the drag.
-        /// </param>
-        /// 
-        /// <param name="e">
-        /// The mouse event that initiated the drag.
-        /// </param>
-        public DragInfo(object sender, MouseButtonEventArgs e)
-        {
-            this.InitializeDragInfo(sender, e.OriginalSource, item => e.GetPosition(item));
-            this.MouseButton = e.ChangedButton;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the DragInfo class.
-        /// </summary>
-        /// 
-        /// <param name="sender">
-        /// The sender of the mouse event that initiated the drag.
-        /// </param>
-        /// 
-        /// <param name="e">
-        /// The touch event that initiated the drag.
-        /// </param>
-        public DragInfo(object sender, TouchEventArgs e)
-        {
-            this.InitializeDragInfo(sender, e.OriginalSource, item => e.GetTouchPoint(item).Position);
-        }
-
-        internal void RefreshSelectedItems(object sender)
-        {
-            if (sender is ItemsControl)
-            {
-                var itemsControl = (ItemsControl)sender;
-
-                var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
-                this.SourceItems = selectedItems;
-
-                // Some controls (I'm looking at you TreeView!) haven't updated their
-                // SelectedItem by this point. Check to see if there 1 or less item in 
-                // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
-                //
-                // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
-                if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem))
-                {
-                    this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
-                }
-            }
-        }
-
         /// <inheritdoc />
         public DataFormat DataFormat { get; set; } = DragDrop.DataFormat;
 
@@ -81,40 +27,40 @@ namespace GongSolutions.Wpf.DragDrop
         public object Data { get; set; }
 
         /// <inheritdoc />
-        public Point DragStartPosition { get; private set; }
+        public Point DragStartPosition { get; protected set; }
 
         /// <inheritdoc />
-        public Point PositionInDraggedItem { get; private set; }
+        public Point PositionInDraggedItem { get; protected set; }
 
         /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
         /// <inheritdoc />
-        public MouseButton MouseButton { get; private set; }
+        public MouseButton MouseButton { get; protected set; }
 
         /// <inheritdoc />
-        public IEnumerable SourceCollection { get; private set; }
+        public IEnumerable SourceCollection { get; protected set; }
 
         /// <inheritdoc />
-        public int SourceIndex { get; private set; }
+        public int SourceIndex { get; protected set; }
 
         /// <inheritdoc />
-        public object SourceItem { get; private set; }
+        public object SourceItem { get; protected set; }
 
         /// <inheritdoc />
-        public IEnumerable SourceItems { get; private set; }
+        public IEnumerable SourceItems { get; protected set; }
 
         /// <inheritdoc />
-        public CollectionViewGroup SourceGroup { get; private set; }
+        public CollectionViewGroup SourceGroup { get; protected set; }
 
         /// <inheritdoc />
-        public UIElement VisualSource { get; private set; }
+        public UIElement VisualSource { get; protected set; }
 
         /// <inheritdoc />
-        public UIElement VisualSourceItem { get; private set; }
+        public UIElement VisualSourceItem { get; protected set; }
 
         /// <inheritdoc />
-        public FlowDirection VisualSourceFlowDirection { get; private set; }
+        public FlowDirection VisualSourceFlowDirection { get; protected set; }
 
         /// <inheritdoc />
         public object DataObject { get; set; }
@@ -123,10 +69,18 @@ namespace GongSolutions.Wpf.DragDrop
         public Func<DependencyObject, object, DragDropEffects, DragDropEffects> DragDropHandler { get; set; } = System.Windows.DragDrop.DoDragDrop;
 
         /// <inheritdoc />
-        public DragDropKeyStates DragDropCopyKeyState { get; private set; }
+        public DragDropKeyStates DragDropCopyKeyState { get; protected set; }
 
-        private void InitializeDragInfo(object sender, object originalSource, Func<IInputElement, Point> getPosition)
+        /// <summary>
+        /// Initializes a new instance of the DragInfo class.
+        /// </summary>
+        /// <param name="sender">The sender of the input event that initiated the drag operation.</param>
+        /// <param name="originalSource">The original source of the input event.</param>
+        /// <param name="mouseButton">The mouse button which was used for the drag operation.</param>
+        /// <param name="getPosition">A function of the input event which is used to get drag position points.</param>
+        public DragInfo(object sender, object originalSource, MouseButton mouseButton, Func<IInputElement, Point> getPosition)
         {
+            this.MouseButton = mouseButton;
             this.Effects = DragDropEffects.None;
             this.VisualSource = sender as UIElement;
             this.DragStartPosition = getPosition(this.VisualSource);
@@ -158,7 +112,7 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if (item == null)
                 {
-                    var itemPosition = getPosition(itemsControl);
+                    var itemPosition = this.DragStartPosition;
 
                     if (DragDrop.GetDragDirectlySelectedOnly(this.VisualSource))
                     {
@@ -187,8 +141,7 @@ namespace GongSolutions.Wpf.DragDrop
                         this.SourceCollection = itemParent.ItemsSource ?? itemParent.Items;
                         if (itemParent != itemsControl)
                         {
-                            var tvItem = item as TreeViewItem;
-                            if (tvItem != null)
+                            if (item is TreeViewItem tvItem)
                             {
                                 var tv = tvItem.GetVisualAncestor<TreeView>();
                                 if (tv != null && tv != itemsControl && !tv.IsDragSource())
@@ -201,6 +154,7 @@ namespace GongSolutions.Wpf.DragDrop
                                 return;
                             }
                         }
+
                         this.SourceIndex = itemParent.ItemContainerGenerator.IndexFromContainer(item);
                         this.SourceItem = itemParent.ItemContainerGenerator.ItemFromContainer(item);
                     }
@@ -236,13 +190,32 @@ namespace GongSolutions.Wpf.DragDrop
                 {
                     this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
                 }
+
                 this.VisualSourceItem = sourceElement;
                 this.PositionInDraggedItem = sourceElement != null ? getPosition(sourceElement) : this.DragStartPosition;
             }
 
-            if (this.SourceItems == null)
+            this.SourceItems ??= Enumerable.Empty<object>();
+        }
+
+        internal void RefreshSelectedItems(object sender)
+        {
+            if (sender is not ItemsControl itemsControl)
             {
-                this.SourceItems = Enumerable.Empty<object>();
+                return;
+            }
+
+            var selectedItems = itemsControl.GetSelectedItems().OfType<object>().Where(i => i != CollectionView.NewItemPlaceholder).ToList();
+            this.SourceItems = selectedItems;
+
+            // Some controls (I'm looking at you TreeView!) haven't updated their
+            // SelectedItem by this point. Check to see if there 1 or less item in 
+            // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
+            //
+            // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
+            if (selectedItems.Count <= 1 || this.SourceItem != null && !selectedItems.Contains(this.SourceItem))
+            {
+                this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
             }
         }
     }

@@ -17,27 +17,28 @@ namespace Showcase.WPF.DragDrop.Models
 
         public string Caption
         {
-            get { return _caption; }
+            get => this._caption;
             set
             {
-                if (value == _caption) return;
-                _caption = value;
-                OnPropertyChanged();
+                if (value == this._caption) return;
+                this._caption = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string Group
 
         {
-            get { return _group; }
+            get => this._group;
             set
             {
-                if (value == _group)
+                if (value == this._group)
                 {
                     return;
                 }
-                _group = value;
-                OnPropertyChanged();
+
+                this._group = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -46,7 +47,7 @@ namespace Showcase.WPF.DragDrop.Models
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
