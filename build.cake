@@ -139,30 +139,10 @@ Task("Clean")
 Task("Restore")
     .Does<BuildData>(data =>
 {
-    NuGetRestore(solution, new NuGetRestoreSettings { MSBuildPath = data.MSBuildPath.ToString() });
+    DotNetCoreRestore(solution);
 });
 
 Task("Build")
-    .Does<BuildData>(data =>
-{
-    var msBuildSettings = new MSBuildSettings {
-        Verbosity = data.Verbosity
-        , ToolPath = data.MSBuildExe
-        , Configuration = data.Configuration
-        , ArgumentCustomization = args => args.Append("/m").Append("/nr:false") // The /nr switch tells msbuild to quite once it�s done
-        , BinaryLogger = new MSBuildBinaryLogSettings() { Enabled = data.IsLocalBuild }
-    };
-    MSBuild(solution, msBuildSettings
-            .SetMaxCpuCount(0)
-            .WithProperty("Version", data.IsReleaseBranch ? data.GitVersion.MajorMinorPatch : data.GitVersion.NuGetVersion)
-            .WithProperty("AssemblyVersion", data.GitVersion.AssemblySemVer)
-            .WithProperty("FileVersion", data.GitVersion.AssemblySemFileVer)
-            .WithProperty("InformationalVersion", data.GitVersion.InformationalVersion)
-            .WithProperty("ContinuousIntegrationBuild", data.IsReleaseBranch ? "true" : "false")
-            );
-});
-
-Task("dotnetBuild")
     .Does<BuildData>(data =>
 {
     var buildSettings = new DotNetCoreBuildSettings {
@@ -247,45 +227,43 @@ void SignFiles(IEnumerable<FilePath> files, string description)
         return;
     }
 
-    foreach(var file in files)
+    var filesToSign = string.Join(" ", files.Select(f => MakeAbsolute(f).FullPath));
+
+    var processSettings = new ProcessSettings {
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        Arguments = new ProcessArgumentBuilder()
+            .Append("sign")
+            .Append(filesToSign)
+            .AppendSwitchQuoted("--file-digest", "sha256")
+            .AppendSwitchQuoted("--description", description)
+            .AppendSwitchQuoted("--description-url", "https://github.com/punker76/gong-wpf-dragdrop")
+            .Append("--no-page-hashing")
+            .AppendSwitchQuoted("--timestamp-rfc3161", "http://timestamp.digicert.com")
+            .AppendSwitchQuoted("--timestamp-digest", "sha256")
+            .AppendSwitchQuoted("--azure-key-vault-url", vurl)
+            .AppendSwitchQuotedSecret("--azure-key-vault-client-id", vcid)
+            .AppendSwitchQuotedSecret("--azure-key-vault-tenant-id", vctid)
+            .AppendSwitchQuotedSecret("--azure-key-vault-client-secret", vcs)
+            .AppendSwitchQuotedSecret("--azure-key-vault-certificate", vc)
+    };
+
+    using(var process = StartAndReturnProcess("tools/AzureSignTool", processSettings))
     {
-        Information($"Sign file: {file}");
-        var processSettings = new ProcessSettings {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            Arguments = new ProcessArgumentBuilder()
-                .Append("sign")
-                .Append(MakeAbsolute(file).FullPath)
-                .AppendSwitchQuoted("--file-digest", "sha256")
-                .AppendSwitchQuoted("--description", description)
-                .AppendSwitchQuoted("--description-url", "https://github.com/punker76/gong-wpf-dragdrop")
-                .Append("--no-page-hashing")
-                .AppendSwitchQuoted("--timestamp-rfc3161", "http://timestamp.digicert.com")
-                .AppendSwitchQuoted("--timestamp-digest", "sha256")
-                .AppendSwitchQuoted("--azure-key-vault-url", vurl)
-                .AppendSwitchQuotedSecret("--azure-key-vault-client-id", vcid)
-                .AppendSwitchQuotedSecret("--azure-key-vault-tenant-id", vctid)
-                .AppendSwitchQuotedSecret("--azure-key-vault-client-secret", vcs)
-                .AppendSwitchQuotedSecret("--azure-key-vault-certificate", vc)
-        };
+        process.WaitForExit();
 
-        using(var process = StartAndReturnProcess("tools/AzureSignTool", processSettings))
+        if (process.GetStandardOutput().Any())
         {
-            process.WaitForExit();
-
-            if (process.GetStandardOutput().Any())
-            {
-                Information($"Output:{Environment.NewLine}{string.Join(Environment.NewLine, process.GetStandardOutput())}");
-            }
-
-            if (process.GetStandardError().Any())
-            {
-                Information($"Errors occurred:{Environment.NewLine}{string.Join(Environment.NewLine, process.GetStandardError())}");
-            }
-
-            // This should output 0 as valid arguments supplied
-            Information("Exit code: {0}", process.GetExitCode());
+            Information($"Output:{Environment.NewLine}{string.Join(Environment.NewLine, process.GetStandardOutput())}");
         }
+
+        if (process.GetStandardError().Any())
+        {
+            Information($"Errors occurred:{Environment.NewLine}{string.Join(Environment.NewLine, process.GetStandardError())}");
+        }
+
+        // This should output 0 as valid arguments supplied
+        Information("Exit code: {0}", process.GetExitCode());
     }
 }
 
@@ -408,8 +386,7 @@ Task("CreateRelease")
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
-    //.IsDependentOn("Build")
-    .IsDependentOn("dotnetBuild") // doesn't work with Fody
+    .IsDependentOn("Build")
     ;
 
 Task("ci")

@@ -93,18 +93,10 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
             var bounds = VisualTreeHelper.GetDescendantBounds(target);
             var cropBounds = VisualTreeExtensions.GetVisibleDescendantBounds(target);
 
-#if NET461 || NET46 || NET452 || NET451 || NET45
-            var dpiX = DpiHelper.DpiX;
-            var dpiY = DpiHelper.DpiY;
-
-            var dpiBounds = DpiHelper.LogicalRectToDevice(cropBounds);
-#else
             var dpiScale = VisualTreeHelper.GetDpi(target);
             var dpiX = dpiScale.PixelsPerInchX;
             var dpiY = dpiScale.PixelsPerInchY;
-
             var dpiBounds = DpiHelper.LogicalRectToDevice(cropBounds, dpiScale.DpiScaleX, dpiScale.DpiScaleY);
-#endif
 
             var pixelWidth = (int)Math.Ceiling(dpiBounds.Width);
             var pixelHeight = (int)Math.Ceiling(dpiBounds.Height);
