@@ -467,7 +467,7 @@ namespace GongSolutions.Wpf.DragDrop
             DragSourceDown(sender, dragInfo, e, elementPosition);
         }
 
-        private static void DragSourceDown(object sender, DragInfo dragInfo, InputEventArgs e, Point elementPosition)
+        private static void DragSourceDown(object sender, IDragInfo dragInfo, InputEventArgs e, Point elementPosition)
         {
             if (dragInfo.VisualSource is ItemsControl control && control.CanSelectMultipleItems())
             {
@@ -619,7 +619,7 @@ namespace GongSolutions.Wpf.DragDrop
                     && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(dragInfo.VisualSource) ||
                         Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(dragInfo.VisualSource)))
                 {
-                    dragInfo.RefreshSelectedItems(sender);
+                    dragInfo.RefreshSourceItems(sender);
 
                     var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
                     if (dragHandler.CanStartDrag(dragInfo))
@@ -1040,7 +1040,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        private static DragInfo _dragInfo;
+        private static IDragInfo _dragInfo;
         private static bool _dragInProgress;
         private static object _clickSupressItem;
 
