@@ -816,10 +816,18 @@ namespace GongSolutions.Wpf.DragDrop
                     var adorner = DropTargetAdorner;
                     if (adorner != null)
                     {
-                        var adornerBrush = GetDropTargetAdornerBrush(dropInfo.VisualTarget);
-                        if (adornerBrush != null)
+                        var adornerPen = GetDropTargetAdornerPen(dropInfo.VisualTarget);
+                        if (adornerPen != null)
                         {
-                            adorner.Pen.SetCurrentValue(Pen.BrushProperty, adornerBrush);
+                            adorner.Pen = adornerPen;
+                        }
+                        else
+                        {
+                            var adornerBrush = GetDropTargetAdornerBrush(dropInfo.VisualTarget);
+                            if (adornerBrush != null)
+                            {
+                                adorner.Pen.SetCurrentValue(Pen.BrushProperty, adornerBrush);
+                            }
                         }
 
                         adorner.DropInfo = dropInfo;

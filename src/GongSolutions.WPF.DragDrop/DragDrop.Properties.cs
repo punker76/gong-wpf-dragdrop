@@ -572,6 +572,35 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets the pen for the DropTargetAdorner.
+        /// </summary>
+        public static readonly DependencyProperty DropTargetAdornerPenProperty
+            = DependencyProperty.RegisterAttached("DropTargetAdornerPen",
+                                                  typeof(Pen),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata((Pen)null));
+
+        /// <summary>Helper for getting <see cref="DropTargetAdornerPenProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropTargetAdornerPenProperty"/> from.</param>
+        /// <remarks>Gets the pen for the DropTargetAdorner.</remarks>
+        /// <returns>DropTargetAdornerPen property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static Pen GetDropTargetAdornerPen(DependencyObject element)
+        {
+            return (Pen)element.GetValue(DropTargetAdornerPenProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="DropTargetAdornerPenProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetAdornerPenProperty"/> on.</param>
+        /// <param name="value">DropTargetAdornerPen property value.</param>
+        /// <remarks>Sets the pen for the DropTargetAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropTargetAdornerPen(DependencyObject element, Pen value)
+        {
+            element.SetValue(DropTargetAdornerPenProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets a context for a control. Only controls with the same context are allowed for drag or drop actions.
         /// </summary>
         public static readonly DependencyProperty DragDropContextProperty
