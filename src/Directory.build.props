@@ -14,8 +14,6 @@
         <AnalysisLevel>latest</AnalysisLevel>
         <LangVersion>latest</LangVersion>
         
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NoError>$(NoError);CS1591</NoError>
         <UseWPF>true</UseWPF>
