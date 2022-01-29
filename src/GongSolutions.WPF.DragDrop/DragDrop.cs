@@ -675,7 +675,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
         {
-            if (e.Action == DragAction.Cancel || e.EscapePressed || (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton) == false && e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton) == false))
+            if (e.Action == DragAction.Cancel || e.EscapePressed || (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton) == e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton)))
             {
                 DragDropPreview = null;
                 DragDropEffectPreview = null;
