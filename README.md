@@ -8,7 +8,7 @@
     An easy to use drag'n'drop framework for WPF.
   </p>
   <p>
-    Supporting .NET Framework 4.5.2+, .NET Core 3.1, .NET 5 and .NET 6 (on Windows)
+    Supporting .NET Framework 4.6.2+, .NET Core 3.1, .NET 5 and .NET 6 (on Windows)
   </p>
 
   <a href="https://gitter.im/punker76/gong-wpf-dragdrop">
