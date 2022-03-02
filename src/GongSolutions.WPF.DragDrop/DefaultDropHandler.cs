@@ -297,7 +297,11 @@ namespace GongSolutions.Wpf.DragDrop
                     var obj2Insert = o;
                     if (cloneData)
                     {
-                        if (o is ICloneable cloneable)
+                        if (o is IDragItemCloneable cloneableItem)
+                        {
+                            obj2Insert = cloneableItem.CloneDragItem(dropInfo);
+                        }
+                        else if (o is ICloneable cloneable)
                         {
                             obj2Insert = cloneable.Clone();
                         }
