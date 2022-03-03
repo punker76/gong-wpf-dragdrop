@@ -326,6 +326,11 @@ namespace GongSolutions.Wpf.DragDrop
                     {
                         destinationList.Insert(insertIndex++, obj2Insert);
                     }
+
+                    if (obj2Insert is IDragItemSource dragItemSource)
+                    {
+                        dragItemSource.ItemDropped(dropInfo);
+                    }
                 }
 
                 SelectDroppedItems(dropInfo, objects2Insert);

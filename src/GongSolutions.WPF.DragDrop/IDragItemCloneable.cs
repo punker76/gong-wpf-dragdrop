@@ -1,5 +1,8 @@
 ﻿namespace GongSolutions.Wpf.DragDrop
 {
+    /// <summary>
+    /// Supports cloning like the ICloneable interface, which creates a new instance of a class with the same value as an existing instance.
+    /// </summary>
     public interface IDragItemCloneable
     {
         /// <summary>
