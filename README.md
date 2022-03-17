@@ -1,9 +1,11 @@
-<div align="center">
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 
+<div align="center">
+  <br />
   <a href="https://github.com/punker76/gong-wpf-dragdrop">
     <img alt="gong-wpf-dragdrop" width="700" heigth="142" src="./GongSolutions.Wpf.DragDrop.Full.png">
   </a>
-  <h1>GongSolutions.WPF.DragDrop</h1>
+  <h1>GongSolutions>WPF.DragDrop</h1>
   <p>
     An easy to use drag'n'drop framework for WPF.
   </p>
@@ -42,7 +44,6 @@
   </a>
   <br />
   <br />
-
 </div>
 
 ## Features
