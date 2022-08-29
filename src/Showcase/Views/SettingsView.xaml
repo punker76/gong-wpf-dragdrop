@@ -11,32 +11,35 @@
     <StackPanel>
         <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
                    Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="IsDragSource"
                   IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="IsDropTarget"
                   IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="DragDirectlySelectedOnly"
                   IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="ShowAlwaysDropTargetAdorner"
                   IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="SelectDroppedItems"
                   IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="CanDragWithMouseRightButton"
                   IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultDragAdorner"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="UseVisualSourceItemSizeForDragAdorner"
                   IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+        <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultEffectDataTemplate"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox Margin="10 2 2 2"
+                  Content="MouseMoveTimerTriggered"
+                  IsChecked="{Binding Path=(dd:DragDrop.MouseMoveTimerTriggered), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>
