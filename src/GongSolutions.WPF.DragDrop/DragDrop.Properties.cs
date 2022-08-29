@@ -1660,5 +1660,34 @@ namespace GongSolutions.Wpf.DragDrop
         {
             element.SetValue(DropTargetItemsSorterProperty, value);
         }
+        
+        /// <summary>
+        /// Gets or sets the mouse move triggered by a timer.
+        /// </summary>
+        public static readonly DependencyProperty MouseMoveTimerTriggeredProperty
+            = DependencyProperty.RegisterAttached("MouseMoveTimerTriggered",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(false));
+
+        /// <summary>Helper for getting <see cref="MouseMoveTimerTriggeredProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="MouseMoveTimerTriggeredProperty"/> from.</param>
+        /// <remarks>Gets the mouse move triggered by a timer.</remarks>
+        /// <returns>MouseMoveTimerTriggered property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetMouseMoveTimerTriggered(DependencyObject element)
+        {
+            return (bool)element.GetValue(MouseMoveTimerTriggeredProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="MouseMoveTimerTriggeredProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="MouseMoveTimerTriggeredProperty"/> on.</param>
+        /// <param name="value">MouseMoveTimerTriggered property value.</param>
+        /// <remarks>Sets the mouse move triggered by a timer.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetMouseMoveTimerTriggered(DependencyObject element, bool value)
+        {
+            element.SetValue(MouseMoveTimerTriggeredProperty, value);
+        }
     }
 }
