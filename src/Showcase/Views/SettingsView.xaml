@@ -13,33 +13,43 @@
                    Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
         <CheckBox Margin="10 2 2 2"
                   Content="IsDragSource"
+                  ToolTip="Sets whether the control can be used as drag source."
                   IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="IsDropTarget"
+                  ToolTip="Sets whether the control can be used as drop target."
                   IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="DragDirectlySelectedOnly"
+                  ToolTip="Sets whether the drag action should be started only directly on a selected item or also on the free control space (e.g. in a ListBox)."
                   IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="ShowAlwaysDropTargetAdorner"
+                  ToolTip="Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too."
                   IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="SelectDroppedItems"
+                  ToolTip="Sets whether if the dropped items should be select again (should keep the selection)."
                   IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="CanDragWithMouseRightButton"
+                  ToolTip="Sets whether the control can be used as drag source together with the right mouse."
                   IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultDragAdorner"
+                  ToolTip="Sets whether if the default DragAdorner should be use."
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="UseVisualSourceItemSizeForDragAdorner"
+                  ToolTip="Use descendant bounds of the VisualSourceItem as MinWidth for the DragAdorner."
                   IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultEffectDataTemplate"
+                  ToolTip="Sets whether if the default DataTemplate for the effects should be use."
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CheckBox Margin="10 2 2 2"
                   Content="MouseMoveTimerTriggered"
+                  ToolTip="Sets the mouse move triggered by a timer."
                   IsChecked="{Binding Path=(dd:DragDrop.MouseMoveTimerTriggered), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

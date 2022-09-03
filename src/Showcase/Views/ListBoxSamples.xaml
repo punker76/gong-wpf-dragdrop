@@ -51,7 +51,6 @@
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
-                                         dd:DragDrop.MouseMoveTimerTriggered="True"
                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                          ItemsSource="{Binding Data.Collection2}" />
 

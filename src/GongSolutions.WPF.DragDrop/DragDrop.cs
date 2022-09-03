@@ -639,11 +639,12 @@ namespace GongSolutions.Wpf.DragDrop
                                     DragDropPreview?.Move(getPosition(DragDropPreview.PlacementTarget));
                                 }
 
-                                hookId = MouseHelper.HookMouseMove(DragDrop.GetMouseMoveTimerTriggered(dragInfo.VisualSource), 
-                                    point =>                                    {
-                                        DragDropPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropPreview.PlacementTarget, point));
-                                        DragDropEffectPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropEffectPreview.PlacementTarget, point));
-                                    });
+                                hookId = MouseHelper.HookMouseMove(DragDrop.GetMouseMoveTimerTriggered(dragInfo.VisualSource),
+                                                                   point =>
+                                                                       {
+                                                                           DragDropPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropPreview.PlacementTarget, point));
+                                                                           DragDropEffectPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropEffectPreview.PlacementTarget, point));
+                                                                       });
 
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
                                 var dragDropEffects = dragDropHandler(dragInfo.VisualSource, dataObject, dragInfo.Effects);
