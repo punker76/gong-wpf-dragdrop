@@ -17,6 +17,7 @@ namespace Showcase.WPF.DragDrop.Models
                 this.ClonableCollection1.Add(new ClonableItemModel(n + 1));
                 this.DataGridCollection1.Add(new DataGridRowModel());
             }
+
             for (var n = 0; n < 10; ++n)
             {
                 this.Collection4.Add(new ItemModel() { Caption = $"Model {n + 1}" });
@@ -40,6 +41,7 @@ namespace Showcase.WPF.DragDrop.Models
                 {
                     root.Children.Add(new TreeNode($"Item {i + 10 * r}"));
                 }
+
                 this.TreeCollection1.Add(root);
                 if (r == 2)
                 {
@@ -51,6 +53,7 @@ namespace Showcase.WPF.DragDrop.Models
             {
                 this.TabItemCollection1.Add(new TabItemModel(i + 1));
             }
+
             this.TabItemCollection2.Add(new TabItemModel(1));
         }
 
@@ -62,7 +65,7 @@ namespace Showcase.WPF.DragDrop.Models
 
         public SerializableDropHandler SerializableDropHandler { get; set; } = new SerializableDropHandler();
 
-        public ObservableCollection<ItemModel> Collection1 { get; set; } = new ObservableCollection<ItemModel>();
+        public ItemModelObservableCollection Collection1 { get; set; } = new ItemModelObservableCollection();
 
         public ObservableCollection<ItemModel> Collection2 { get; set; } = new ObservableCollection<ItemModel>();
 
