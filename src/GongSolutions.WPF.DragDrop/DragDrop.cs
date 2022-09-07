@@ -641,12 +641,12 @@ namespace GongSolutions.Wpf.DragDrop
                                     {
                                         if (DragDropPreview?.PlacementTarget != null)
                                         {
-                                            DragDropPreview?.Move(DragDropPreview.PlacementTarget.PointFromScreen(point));
+                                            DragDropPreview.Move(DragDropPreview.PlacementTarget.PointFromScreen(point));
                                         }
 
-                                        if (DragDropPreview?.PlacementTarget != null)
+                                        if (DragDropEffectPreview?.PlacementTarget != null)
                                         {
-                                            DragDropEffectPreview?.Move(DragDropEffectPreview.PlacementTarget.PointFromScreen(point));
+                                            DragDropEffectPreview.Move(DragDropEffectPreview.PlacementTarget.PointFromScreen(point));
                                         }
                                     });
 

@@ -185,7 +185,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
             else
             {
-                this.SourceItem = (sender as FrameworkElement)?.DataContext;
+                this.SourceItem = (sourceElement as FrameworkElement)?.DataContext ?? (sender as FrameworkElement)?.DataContext;
                 if (this.SourceItem != null)
                 {
                     this.SourceItems = Enumerable.Repeat(this.SourceItem, 1);
