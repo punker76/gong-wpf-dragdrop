@@ -47,9 +47,5 @@
                   Content="UseDefaultEffectDataTemplate"
                   ToolTip="Sets whether if the default DataTemplate for the effects should be use."
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 2 2 2"
-                  Content="MouseMoveTimerTriggered"
-                  ToolTip="Sets the mouse move triggered by a timer."
-                  IsChecked="{Binding Path=(dd:DragDrop.MouseMoveTimerTriggered), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

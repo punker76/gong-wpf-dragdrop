@@ -43,7 +43,6 @@
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                         dd:DragDrop.MouseMoveTimerTriggered="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <ListBox x:Name="RightBoundListBox"
                                          Grid.Column="1"

@@ -627,8 +627,6 @@ namespace GongSolutions.Wpf.DragDrop
                                 dataObject = new DataObject(dragInfo.DataFormat.Name, dragInfo.Data);
                             }
 
-                            var hookId = IntPtr.Zero;
-
                             try
                             {
                                 _dragInProgress = true;
@@ -639,12 +637,18 @@ namespace GongSolutions.Wpf.DragDrop
                                     DragDropPreview?.Move(getPosition(DragDropPreview.PlacementTarget));
                                 }
 
-                                hookId = MouseHelper.HookMouseMove(DragDrop.GetMouseMoveTimerTriggered(dragInfo.VisualSource),
-                                                                   point =>
-                                                                       {
-                                                                           DragDropPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropPreview.PlacementTarget, point));
-                                                                           DragDropEffectPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropEffectPreview.PlacementTarget, point));
-                                                                       });
+                                MouseHelper.HookMouseMove(point =>
+                                    {
+                                        if (DragDropPreview?.PlacementTarget != null)
+                                        {
+                                            DragDropPreview?.Move(DragDropPreview.PlacementTarget.PointFromScreen(point));
+                                        }
+
+                                        if (DragDropPreview?.PlacementTarget != null)
+                                        {
+                                            DragDropEffectPreview?.Move(DragDropEffectPreview.PlacementTarget.PointFromScreen(point));
+                                        }
+                                    });
 
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
                                 var dragDropEffects = dragDropHandler(dragInfo.VisualSource, dataObject, dragInfo.Effects);
@@ -664,7 +668,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                             finally
                             {
-                                MouseHelper.RemoveHook(hookId);
+                                MouseHelper.UnHook();
                                 _dragInProgress = false;
                                 _dragInfo = null;
                             }
