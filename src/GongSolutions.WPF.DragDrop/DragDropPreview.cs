@@ -183,22 +183,29 @@ namespace GongSolutions.Wpf.DragDrop
             // Check for source template or template selector if there is no target one
             if (template is null && templateSelector is null)
             {
-                template = isMultiSelection
-                    ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
-                    : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
-                templateSelector = isMultiSelection
-                    ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
-                    : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                var sourceContext = DragDrop.GetDragDropContext(dragInfo.VisualSource);
+                var targetContext = visualTarget != null ? DragDrop.GetDragDropContext(visualTarget) : null;
+                var isSameContext = string.Equals(sourceContext, targetContext) || string.IsNullOrEmpty(targetContext);
 
-                var useDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
-                if (useDefaultDragAdorner)
+                if (isSameContext)
                 {
-                    template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
-                }
+                    template = isMultiSelection
+                        ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
+                        : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
+                    templateSelector = isMultiSelection
+                        ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
+                        : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
 
-                if (template is not null)
-                {
-                    templateSelector = null;
+                    var useDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
+                    if (useDefaultDragAdorner)
+                    {
+                        template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
+                    }
+
+                    if (template is not null)
+                    {
+                        templateSelector = null;
+                    }
                 }
             }
 
@@ -232,24 +239,31 @@ namespace GongSolutions.Wpf.DragDrop
             // Get source template or template selector if there is no target one
             if (template is null && templateSelector is null)
             {
-                template = isMultiSelection
-                    ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
-                    : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
-                templateSelector = isMultiSelection
-                    ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
-                    : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
-                itemsPanel = DragDrop.TryGetDragAdornerItemsPanel(visualTarget, sender);
+                var sourceContext = DragDrop.GetDragDropContext(dragInfo.VisualSource);
+                var targetContext = visualTarget != null ? DragDrop.GetDragDropContext(visualTarget) : null;
+                var isSameContext = string.Equals(sourceContext, targetContext) || string.IsNullOrEmpty(targetContext);
 
-                this.UseDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
-                if (this.UseDefaultDragAdorner)
+                if (isSameContext)
                 {
-                    template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
-                    this.UseDefaultDragAdorner = template is not null;
-                }
+                    template = isMultiSelection
+                        ? DragDrop.TryGetDragAdornerMultiItemTemplate(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplate(visualSource, sender)
+                        : DragDrop.TryGetDragAdornerTemplate(visualSource, sender);
+                    templateSelector = isMultiSelection
+                        ? DragDrop.TryGetDragAdornerMultiItemTemplateSelector(visualSource, sender) ?? DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender)
+                        : DragDrop.TryGetDragAdornerTemplateSelector(visualSource, sender);
+                    itemsPanel = DragDrop.TryGetDragAdornerItemsPanel(visualTarget, sender);
 
-                if (template is not null)
-                {
-                    templateSelector = null;
+                    this.UseDefaultDragAdorner = template is null && templateSelector is null && DragDrop.GetUseDefaultDragAdorner(visualSource);
+                    if (this.UseDefaultDragAdorner)
+                    {
+                        template = dragInfo.VisualSourceItem.GetCaptureScreenDataTemplate(dragInfo.VisualSourceFlowDirection);
+                        this.UseDefaultDragAdorner = template is not null;
+                    }
+
+                    if (template is not null)
+                    {
+                        templateSelector = null;
+                    }
                 }
             }
 
