@@ -531,7 +531,7 @@
                                          dd:DragDrop.IsDropTarget="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <Grid Grid.Column="1" Margin="4">
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBox Height="150"
                                                  Text="Drag any text part from this TextBox."
                                                  TextWrapping="Wrap"
@@ -931,20 +931,20 @@
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ListView selection should not change if CheckBox will be checked or the Menu will be opened." />
                             <Grid>
                                 <ListView x:Name="LeftItemsControlIssue342"
-                                          ItemsSource="{Binding Data.Collection1}" 
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          ItemsSource="{Binding Data.Collection1}"
                                           SelectionMode="Extended">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="{Binding Caption}">
+                                            <Expander Header="{Binding Caption}" IsExpanded="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" />
-                                                    <TextBlock Text="{Binding Caption}" Margin="2" />
+                                                    <CheckBox Margin="2" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock Margin="2" Text="{Binding Caption}" />
                                                     <Menu Margin="2">
                                                         <MenuItem Header="Menu">
-                                                            <MenuItem Header="Some Menu Item"></MenuItem>
-                                                            <MenuItem Header="Some Other Menu Item"></MenuItem>
+                                                            <MenuItem Header="Some Menu Item" />
+                                                            <MenuItem Header="Some Other Menu Item" />
                                                         </MenuItem>
                                                     </Menu>
                                                 </StackPanel>
@@ -1069,16 +1069,16 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Item selection/deselection in ItemsControl should be handled when multiple/extended selection is enabled inside a TabControl." />
-                            
-                            <TabControl dd:DragDrop.IsDragSource="True"
-                                        dd:DragDrop.IsDropTarget="True"
-                                        dd:DragDrop.DragDropContext="TabControl">
+
+                            <TabControl dd:DragDrop.DragDropContext="TabControl"
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True">
                                 <TabItem Header="ListBox 1 Extended">
-                                    <ListBox dd:DragDrop.IsDragSource="True"
+                                    <ListBox Margin="5"
+                                             dd:DragDrop.IsDragSource="True"
                                              dd:DragDrop.IsDropTarget="True"
                                              dd:DragDrop.UseDefaultDragAdorner="True"
                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                             Margin="5"
                                              SelectionMode="Extended">
                                         <ListBoxItem Content="Item 1" />
                                         <ListBoxItem Content="Item 2" />
@@ -1088,12 +1088,12 @@
                                     </ListBox>
                                 </TabItem>
                                 <TabItem Header="ListBox 2 Multiple">
-                                    <ListBox dd:DragDrop.IsDragSource="True"
-                                             dd:DragDrop.IsDropTarget="True"
+                                    <ListBox Margin="5"
                                              dd:DragDrop.DragDropContext="ListBox"
+                                             dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
                                              dd:DragDrop.UseDefaultDragAdorner="True"
                                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                             Margin="5"
                                              SelectionMode="Multiple">
                                         <ListBoxItem Content="Item 11" />
                                         <ListBoxItem Content="Item 12" />
@@ -1104,12 +1104,12 @@
                                 </TabItem>
 
                                 <TabItem Header="ListView 1 Extended">
-                                    <ListView dd:DragDrop.IsDragSource="True"
-                                              dd:DragDrop.IsDropTarget="True"
+                                    <ListView Margin="5"
                                               dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
                                               dd:DragDrop.UseDefaultDragAdorner="True"
                                               dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                              Margin="5"
                                               SelectionMode="Extended">
                                         <ListViewItem Content="Item 1" />
                                         <ListViewItem Content="Item 2" />
@@ -1119,12 +1119,12 @@
                                     </ListView>
                                 </TabItem>
                                 <TabItem Header="ListView 2 Multiple">
-                                    <ListView dd:DragDrop.IsDragSource="True"
-                                              dd:DragDrop.IsDropTarget="True"
+                                    <ListView Margin="5"
                                               dd:DragDrop.DragDropContext="ListView"
+                                              dd:DragDrop.IsDragSource="True"
+                                              dd:DragDrop.IsDropTarget="True"
                                               dd:DragDrop.UseDefaultDragAdorner="True"
                                               dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                              Margin="5"
                                               SelectionMode="Multiple">
                                         <ListViewItem Content="Item 11" />
                                         <ListViewItem Content="Item 12" />
@@ -1238,10 +1238,10 @@
                                 </Grid.ColumnDefinitions>
 
                                 <ListBox MinWidth="200"
-                                         ItemsSource="{Binding Members}"
-                                         DisplayMemberPath="Name"
                                          dd:DragDrop.IsDragSource="True"
-                                         dd:DragDrop.IsDropTarget="True" />
+                                         dd:DragDrop.IsDropTarget="True"
+                                         DisplayMemberPath="Name"
+                                         ItemsSource="{Binding Members}" />
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

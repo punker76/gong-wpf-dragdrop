@@ -42,16 +42,16 @@
                                 </Grid.RowDefinitions>
 
                                 <TreeView x:Name="LeftBoundTreeView"
-                                          Grid.Column="0"
                                           Grid.Row="0"
+                                          Grid.Column="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.SelectDroppedItems="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
                                           dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                          dd:DragDrop.SelectDroppedItems="True"
                                           ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
-                                          Loaded="LeftBoundTreeView_Loaded"
-                                          ItemsSource="{Binding Data.TreeCollection1}">
+                                          ItemsSource="{Binding Data.TreeCollection1}"
+                                          Loaded="LeftBoundTreeView_Loaded">
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                             <TextBlock Margin="2" Text="{Binding Caption}" />
@@ -59,8 +59,8 @@
                                     </TreeView.ItemTemplate>
                                 </TreeView>
                                 <TreeView x:Name="RightBoundTreeView"
-                                          Grid.Column="1"
                                           Grid.Row="0"
+                                          Grid.Column="1"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
@@ -73,8 +73,14 @@
                                     </TreeView.ItemTemplate>
                                 </TreeView>
 
-                                <views:SettingsView Grid.Column="0" Grid.Row="1" Caption="Customization (for left TreeView)" DataContext="{x:Reference LeftBoundTreeView}" />
-                                <views:SettingsView Grid.Column="1" Grid.Row="1" Caption="Customization (for right TreeView)" DataContext="{x:Reference RightBoundTreeView}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for left TreeView)"
+                                                    DataContext="{x:Reference LeftBoundTreeView}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for right TreeView)"
+                                                    DataContext="{x:Reference RightBoundTreeView}" />
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>

@@ -1,51 +1,50 @@
 ﻿<UserControl x:Class="Showcase.WPF.DragDrop.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="This"
              d:DesignHeight="600"
              d:DesignWidth="400"
-             x:Name="This">
+             mc:Ignorable="d">
     <StackPanel>
-        <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                   Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
+        <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
         <CheckBox Margin="10 2 2 2"
                   Content="IsDragSource"
-                  ToolTip="Sets whether the control can be used as drag source."
-                  IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drag source." />
         <CheckBox Margin="10 2 2 2"
                   Content="IsDropTarget"
-                  ToolTip="Sets whether the control can be used as drop target."
-                  IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drop target." />
         <CheckBox Margin="10 2 2 2"
                   Content="DragDirectlySelectedOnly"
-                  ToolTip="Sets whether the drag action should be started only directly on a selected item or also on the free control space (e.g. in a ListBox)."
-                  IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the drag action should be started only directly on a selected item or also on the free control space (e.g. in a ListBox)." />
         <CheckBox Margin="10 2 2 2"
                   Content="ShowAlwaysDropTargetAdorner"
-                  ToolTip="Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too."
-                  IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too." />
         <CheckBox Margin="10 2 2 2"
                   Content="SelectDroppedItems"
-                  ToolTip="Sets whether if the dropped items should be select again (should keep the selection)."
-                  IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the dropped items should be select again (should keep the selection)." />
         <CheckBox Margin="10 2 2 2"
                   Content="CanDragWithMouseRightButton"
-                  ToolTip="Sets whether the control can be used as drag source together with the right mouse."
-                  IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drag source together with the right mouse." />
         <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultDragAdorner"
-                  ToolTip="Sets whether if the default DragAdorner should be use."
-                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the default DragAdorner should be use." />
         <CheckBox Margin="10 2 2 2"
                   Content="UseVisualSourceItemSizeForDragAdorner"
-                  ToolTip="Use descendant bounds of the VisualSourceItem as MinWidth for the DragAdorner."
-                  IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Use descendant bounds of the VisualSourceItem as MinWidth for the DragAdorner." />
         <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultEffectDataTemplate"
-                  ToolTip="Sets whether if the default DataTemplate for the effects should be use."
-                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the default DataTemplate for the effects should be use." />
     </StackPanel>
 </UserControl>

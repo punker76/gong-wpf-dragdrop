@@ -51,10 +51,10 @@
                                        Text="ListBox -- drag preview has sorted items" />
                             <ListBox Height="Auto"
                                      dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                                     dd:DragDrop.DragPreviewItemsSorter="{Binding}"
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                     dd:DragDrop.DragPreviewItemsSorter="{Binding}"
                                      ItemsSource="{Binding Data.Collection1}" />
                         </DockPanel>
 
@@ -64,10 +64,10 @@
                                        Text="ListView -- dropped items are added in sorted order" />
                             <ListView Height="Auto"
                                       dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                                      dd:DragDrop.DropTargetItemsSorter="{Binding}"
                                       dd:DragDrop.IsDragSource="True"
                                       dd:DragDrop.IsDropTarget="True"
                                       dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                      dd:DragDrop.DropTargetItemsSorter="{Binding}"
                                       ItemsSource="{Binding Data.Collection2}" />
                         </DockPanel>
 

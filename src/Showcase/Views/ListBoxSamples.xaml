@@ -36,8 +36,8 @@
                                 </Grid.RowDefinitions>
 
                                 <ListBox x:Name="LeftBoundListBox"
-                                         Grid.Column="0"
                                          Grid.Row="0"
+                                         Grid.Column="0"
                                          dd:DragDrop.CanDragWithMouseRightButton="True"
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
                                          dd:DragDrop.IsDragSource="True"
@@ -45,16 +45,22 @@
                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                          ItemsSource="{Binding Data.Collection1}" />
                                 <ListBox x:Name="RightBoundListBox"
-                                         Grid.Column="1"
                                          Grid.Row="0"
+                                         Grid.Column="1"
                                          dd:DragDrop.DropTargetAdornerBrush="Coral"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                          ItemsSource="{Binding Data.Collection2}" />
 
-                                <views:SettingsView Grid.Column="0" Grid.Row="1" Caption="Customization (for left ListBox)" DataContext="{x:Reference LeftBoundListBox}" />
-                                <views:SettingsView Grid.Column="1" Grid.Row="1" Caption="Customization (for right ListBox)" DataContext="{x:Reference RightBoundListBox}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for left ListBox)"
+                                                    DataContext="{x:Reference LeftBoundListBox}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for right ListBox)"
+                                                    DataContext="{x:Reference RightBoundListBox}" />
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
@@ -123,14 +129,14 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with horizontal ListBoxes and right to left flow direction." />
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Unbound ListBox" />
-                            <ListBox MinHeight="30"
-                                     Height="Auto"
+                            <ListBox Height="Auto"
+                                     MinHeight="30"
                                      dd:DragDrop.DefaultDragAdornerOpacity="0.5"
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                      dd:DragDrop.UseDefaultDragAdorner="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                      SelectionMode="Extended">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -144,15 +150,15 @@
                                 <ListBoxItem>ListBoxItem5</ListBoxItem>
                             </ListBox>
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="ListBox with right to left flow direction" />
-                            <ListBox MinHeight="30"
-                                     Height="Auto"
-                                     FlowDirection="RightToLeft"
+                            <ListBox Height="Auto"
+                                     MinHeight="30"
                                      dd:DragDrop.DefaultDragAdornerOpacity="0.5"
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                                      dd:DragDrop.UseDefaultDragAdorner="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                     FlowDirection="RightToLeft"
                                      SelectionMode="Extended">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -402,30 +408,32 @@
                                          Grid.Column="1"
                                          Height="450"
                                          dd:DragDrop.IsDropTarget="True">
-                                    <Border BorderBrush="Silver" BorderThickness="1">
-                                        <ListBox x:Name="Inner1"
-                                                 Width="200"
-                                                 Height="150"
-                                                 HorizontalContentAlignment="Stretch"
-                                                 dd:DragDrop.IsDragSource="True"
-                                                 dd:DragDrop.IsDropTarget="True"
-                                                 dd:DragDrop.UseDefaultDragAdorner="True"
-                                                 Background="DarkOrange"
-                                                 ItemsSource="{Binding Data.Collection2}" />
-                                    </Border>
-                                    <Border BorderBrush="Silver" BorderThickness="1">
-                                        <ListBox x:Name="Inner2"
-                                                 Width="200"
-                                                 Height="150"
-                                                 HorizontalContentAlignment="Stretch"
-                                                 dd:DragDrop.IsDragSource="True"
-                                                 dd:DragDrop.IsDropTarget="True"
-                                                 dd:DragDrop.UseDefaultDragAdorner="True"
-                                                 Background="DarkSeaGreen">
-                                            <ListBoxItem Content="ListBoxItem1" />
-                                            <ListBoxItem Content="ListBoxItem2" />
-                                        </ListBox>
-                                    </Border>
+                                    <ListBox x:Name="Inner1"
+                                             Width="200"
+                                             Height="150"
+                                             Padding="1"
+                                             HorizontalContentAlignment="Stretch"
+                                             dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             Background="DarkOrange"
+                                             BorderBrush="Silver"
+                                             BorderThickness="1"
+                                             ItemsSource="{Binding Data.Collection2}" />
+                                    <ListBox x:Name="Inner2"
+                                             Width="200"
+                                             Height="150"
+                                             Padding="1"
+                                             HorizontalContentAlignment="Stretch"
+                                             dd:DragDrop.IsDragSource="True"
+                                             dd:DragDrop.IsDropTarget="True"
+                                             dd:DragDrop.UseDefaultDragAdorner="True"
+                                             Background="DarkSeaGreen"
+                                             BorderBrush="Silver"
+                                             BorderThickness="1">
+                                        <ListBoxItem Content="ListBoxItem1" />
+                                        <ListBoxItem Content="ListBoxItem2" />
+                                    </ListBox>
                                 </ListBox>
                             </Grid>
                         </StackPanel>
@@ -475,63 +483,56 @@
 
             <TabItem Header="UniformGrid">
                 <DockPanel LastChildFill="True">
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        Style="{StaticResource SampleHeaderTextBlockStyle}"
-                        Text="UniformGrid" />
+                    <TextBlock DockPanel.Dock="Top"
+                               Style="{StaticResource SampleHeaderTextBlockStyle}"
+                               Text="UniformGrid" />
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates insert drop target adorner in ListBox with UniformGrid panel" />
-                            <ListBox
-                                Height="NaN"
-                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
-                                dd:DragDrop.IsDragSource="True"
-                                dd:DragDrop.IsDropTarget="True"
-                                dd:DragDrop.UseDefaultDragAdorner="True">
+                            <ListBox Height="NaN"
+                                     dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.UseDefaultDragAdorner="True">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid
-                                            HorizontalAlignment="Center"
-                                            IsItemsHost="True"
-                                            Rows="1" />
+                                        <UniformGrid HorizontalAlignment="Center"
+                                                     IsItemsHost="True"
+                                                     Rows="1" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                                 <ListBoxItem Height="32" Content="Horizontal Item 1" />
                                 <ListBoxItem Content="Horizontal Item 2" />
                                 <ListBoxItem Content="Horizontal Item 3" />
                             </ListBox>
-                            <ListBox
-                                Height="NaN"
-                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
-                                dd:DragDrop.IsDragSource="True"
-                                dd:DragDrop.IsDropTarget="True"
-                                dd:DragDrop.UseDefaultDragAdorner="True">
+                            <ListBox Height="NaN"
+                                     dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.UseDefaultDragAdorner="True">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid
-                                            VerticalAlignment="Center"
-                                            Columns="1"
-                                            IsItemsHost="True" />
+                                        <UniformGrid VerticalAlignment="Center"
+                                                     Columns="1"
+                                                     IsItemsHost="True" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                                 <ListBoxItem Height="32" Content="Vertical Item 1" />
                                 <ListBoxItem Content="Vertical Item 2" />
                                 <ListBoxItem Content="Vertical Item 3" />
                             </ListBox>
-                            <ListBox
-                                Height="NaN"
-                                dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
-                                dd:DragDrop.IsDragSource="True"
-                                dd:DragDrop.IsDropTarget="True"
-                                dd:DragDrop.UseDefaultDragAdorner="True">
+                            <ListBox Height="NaN"
+                                     dd:DragDrop.DropTargetAdornerBrush="DodgerBlue"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.UseDefaultDragAdorner="True">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid
-                                            VerticalAlignment="Center"
-                                            Columns="3"
-                                            FirstColumn="1"
-                                            IsItemsHost="True"
-                                            Rows="3" />
+                                        <UniformGrid VerticalAlignment="Center"
+                                                     Columns="3"
+                                                     FirstColumn="1"
+                                                     IsItemsHost="True"
+                                                     Rows="3" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                                 <ListBoxItem Height="50" Content="Item 1" />
