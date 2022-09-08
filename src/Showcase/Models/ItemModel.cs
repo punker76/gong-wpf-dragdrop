@@ -158,6 +158,10 @@ namespace Showcase.WPF.DragDrop.Models
         }
     }
 
+    public class ItemModelObservableCollection : ObservableCollection<ItemModel>
+    {
+    }
+
     [Serializable]
     public class SerializableItemModel
     {

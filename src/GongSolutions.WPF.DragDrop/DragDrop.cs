@@ -474,7 +474,7 @@ namespace GongSolutions.Wpf.DragDrop
             // already selected item does not change the selection, otherwise dragging multiple items 
             // is made impossible.
             if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0
-                && (Keyboard.Modifiers & ModifierKeys.Control) == 0
+                //&& (Keyboard.Modifiers & ModifierKeys.Control) == 0 // #432
                 && dragInfo.VisualSourceItem != null
                 && sender is ItemsControl itemsControl
                 && itemsControl.CanSelectMultipleItems())
@@ -627,8 +627,6 @@ namespace GongSolutions.Wpf.DragDrop
                                 dataObject = new DataObject(dragInfo.DataFormat.Name, dragInfo.Data);
                             }
 
-                            var hookId = IntPtr.Zero;
-
                             try
                             {
                                 _dragInProgress = true;
@@ -639,10 +637,17 @@ namespace GongSolutions.Wpf.DragDrop
                                     DragDropPreview?.Move(getPosition(DragDropPreview.PlacementTarget));
                                 }
 
-                                hookId = MouseHelper.HookMouseMove(point =>
+                                MouseHelper.HookMouseMove(point =>
                                     {
-                                        DragDropPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropPreview.PlacementTarget, point));
-                                        DragDropEffectPreview?.Move(CursorHelper.GetCurrentCursorPosition(DragDropEffectPreview.PlacementTarget, point));
+                                        if (DragDropPreview?.PlacementTarget != null)
+                                        {
+                                            DragDropPreview.Move(DragDropPreview.PlacementTarget.PointFromScreen(point));
+                                        }
+
+                                        if (DragDropEffectPreview?.PlacementTarget != null)
+                                        {
+                                            DragDropEffectPreview.Move(DragDropEffectPreview.PlacementTarget.PointFromScreen(point));
+                                        }
                                     });
 
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
@@ -663,7 +668,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                             finally
                             {
-                                MouseHelper.RemoveHook(hookId);
+                                MouseHelper.UnHook();
                                 _dragInProgress = false;
                                 _dragInfo = null;
                             }

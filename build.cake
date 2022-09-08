@@ -6,6 +6,7 @@
 #tool dotnet:?package=AzureSignTool&version=3.0.0
 #tool dotnet:?package=GitReleaseManager.Tool&version=0.12.1
 #tool dotnet:?package=GitVersion.Tool&version=5.6.3
+#tool dotnet:?package=XamlStyler.Console&version=3.2008.4
 
 #tool vswhere&version=2.8.4
 #addin nuget:?package=Cake.Figlet&version=2.0.1
@@ -25,6 +26,9 @@ var baseDir = MakeAbsolute(Directory(".")).ToString();
 var srcDir = baseDir + "/src";
 var solution = srcDir + "/GongSolutions.WPF.DragDrop.sln";
 var publishDir = baseDir + "/Publish";
+
+var styler = Context.Tools.Resolve("xstyler.exe");
+var stylerFile = baseDir + "/Settings.XAMLStyler";
 
 public class BuildData
 {
@@ -360,6 +364,18 @@ Task("Zip")
     Zip($"./src/Showcase/bin/{data.Configuration}", $"{publishDir}/Showcase.DragDrop.{data.Configuration}-v" + data.GitVersion.NuGetVersion + ".zip");
 });
 
+Task("StyleXaml")
+    .Description("Ensures XAML Formatting is Clean")
+    .Does(() =>
+{
+    Func<IFileSystemInfo, bool> exclude_Dir =
+        fileSystemInfo => !fileSystemInfo.Path.Segments.Contains("obj");
+
+    var files = GetFiles(srcDir + "/**/*.xaml", new GlobberSettings { Predicate = exclude_Dir });
+    Information("\nChecking " + files.Count() + " file(s) for XAML Structure");
+    StartProcess(styler, "-f \"" + string.Join(",", files.Select(f => f.ToString())) + "\" -c \"" + stylerFile + "\"");
+});
+
 Task("CreateRelease")
     .WithCriteria<BuildData>((context, data) => !data.IsPullRequest)
     .Does<BuildData>(data =>
@@ -386,6 +402,7 @@ Task("CreateRelease")
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
+    .IsDependentOn("StyleXaml")
     .IsDependentOn("Build")
     ;
 

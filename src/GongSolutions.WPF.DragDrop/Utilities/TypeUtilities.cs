@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Collections;
 using System.Collections.ObjectModel;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
@@ -86,11 +87,24 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         /// </summary>
         /// <param name="collection">The collection to test.</param>
         /// <returns>True if the collection is a ObservableCollection&lt;&gt;</returns>
-        public static bool IsObservableCollection(this IList collection)
+        public static bool IsObservableCollection([CanBeNull] this IList collection)
         {
-            return collection != null
-                   && collection.GetType().IsGenericType
-                   && collection.GetType().GetGenericTypeDefinition() == typeof(ObservableCollection<>);
+            return collection != null && IsObservableCollectionType(collection.GetType());
+        }
+
+        private static bool IsObservableCollectionType([CanBeNull] Type type)
+        {
+            if (type is null || !typeof(IList).IsAssignableFrom(type))
+            {
+                return false;
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ObservableCollection<>))
+            {
+                return true;
+            }
+
+            return IsObservableCollectionType(type.BaseType);
         }
 
         /// <summary>

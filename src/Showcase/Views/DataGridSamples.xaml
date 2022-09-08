@@ -5,13 +5,14 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultDataGridStyle}" TargetType="{x:Type DataGrid}" />
+            <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DefaultDataGridStyle}" />
         </Grid.Resources>
 
         <DockPanel LastChildFill="True">
@@ -26,7 +27,13 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
                         <DataGrid x:Name="LeftBoundDataGrid"
+                                  Grid.Row="0"
                                   Grid.Column="0"
                                   dd:DragDrop.DropScrollingMode="VerticalOnly"
                                   dd:DragDrop.IsDragSource="True"
@@ -37,27 +44,24 @@
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   ItemsSource="{Binding Data.DataGridCollection1}" />
-                        <DataGrid Grid.Column="1"
+                        <DataGrid x:Name="RightBoundDataGrid"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
                                   dd:DragDrop.IsDragSource="True"
                                   dd:DragDrop.IsDropTarget="True"
                                   CanUserAddRows="True"
                                   CanUserDeleteRows="True"
                                   ItemsSource="{Binding Data.DataGridCollection2}" />
-                    </Grid>
 
-                    <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left DataGrid)" />
-                    <CheckBox Margin="10 5"
-                              Content="IsDragSource"
-                              IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Margin="10 5"
-                              Content="IsDropTarget"
-                              IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Margin="10 5"
-                              Content="UseDefaultDragAdorner"
-                              IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Margin="10 5"
-                              Content="UseDefaultEffectDataTemplate"
-                              IsChecked="{Binding ElementName=LeftBoundDataGrid, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <views:SettingsView Grid.Row="1"
+                                            Grid.Column="0"
+                                            Caption="Customization (for left DataGrid)"
+                                            DataContext="{x:Reference LeftBoundDataGrid}" />
+                        <views:SettingsView Grid.Row="1"
+                                            Grid.Column="1"
+                                            Caption="Customization (for right DataGrid)"
+                                            DataContext="{x:Reference RightBoundDataGrid}" />
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>

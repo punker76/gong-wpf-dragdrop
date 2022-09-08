@@ -39,7 +39,9 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if (rect.IsEmpty)
                 {
-                    rect = new Rect(visualTargetItem.TranslatePoint(new Point(), this.AdornedElement), VisualTreeExtensions.GetVisibleDescendantBounds(visualTargetItem).Size);
+                    var bounds = VisualTreeExtensions.GetVisibleDescendantBounds(visualTargetItem);
+                    var location = visualTargetItem.TranslatePoint(bounds.Location, this.AdornedElement);
+                    rect = new Rect(location, bounds.Size);
                 }
 
                 drawingContext.DrawRoundedRectangle(null, this.Pen, rect, 2, 2);

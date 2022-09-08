@@ -297,7 +297,11 @@ namespace GongSolutions.Wpf.DragDrop
                     var obj2Insert = o;
                     if (cloneData)
                     {
-                        if (o is ICloneable cloneable)
+                        if (o is ICloneableDragItem cloneableItem)
+                        {
+                            obj2Insert = cloneableItem.CloneItem(dropInfo);
+                        }
+                        else if (o is ICloneable cloneable)
                         {
                             obj2Insert = cloneable.Clone();
                         }
@@ -321,6 +325,11 @@ namespace GongSolutions.Wpf.DragDrop
                     else
                     {
                         destinationList.Insert(insertIndex++, obj2Insert);
+                    }
+
+                    if (obj2Insert is IDragItemSource dragItemSource)
+                    {
+                        dragItemSource.ItemDropped(dropInfo);
                     }
                 }
 

@@ -1,42 +1,82 @@
 ﻿<UserControl x:Class="Showcase.WPF.DragDrop.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="This"
+             Padding="0 5"
              d:DesignHeight="600"
              d:DesignWidth="400"
-             x:Name="This">
+             mc:Ignorable="d">
     <StackPanel>
-        <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                   Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
-        <CheckBox Margin="10 5 5 5"
+        <StackPanel.Resources>
+            <ResourceDictionary>
+                <ObjectDataProvider x:Key="DragDropKeyStatesEnumValues"
+                                    MethodName="GetValues"
+                                    ObjectType="{x:Type DragDropKeyStates}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="DragDropKeyStates" />
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+
+                <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            </ResourceDictionary>
+        </StackPanel.Resources>
+
+        <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
+        <CheckBox Margin="10 2 2 2"
+                  Command="{Binding ElementName=This, Path=FilterCollectionCommand, Mode=OneWay}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                  Content="Filter by %2"
+                  Visibility="{Binding ElementName=This, Path=FilterCollectionCommandShown, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+        <CheckBox Margin="10 2 2 2"
                   Content="IsDragSource"
-                  IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drag source." />
+        <CheckBox Margin="10 2 2 2"
                   Content="IsDropTarget"
-                  IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drop target." />
+        <CheckBox Margin="10 2 2 2"
                   Content="DragDirectlySelectedOnly"
-                  IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.DragDirectlySelectedOnly), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the drag action should be started only directly on a selected item or also on the free control space (e.g. in a ListBox)." />
+        <CheckBox Margin="10 2 2 2"
                   Content="ShowAlwaysDropTargetAdorner"
-                  IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.ShowAlwaysDropTargetAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too." />
+        <CheckBox Margin="10 2 2 2"
                   Content="SelectDroppedItems"
-                  IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.SelectDroppedItems), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the dropped items should be select again (should keep the selection)." />
+        <CheckBox Margin="10 2 2 2"
                   Content="CanDragWithMouseRightButton"
-                  IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.CanDragWithMouseRightButton), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether the control can be used as drag source together with the right mouse." />
+        <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultDragAdorner"
-                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the default DragAdorner should be use." />
+        <CheckBox Margin="10 2 2 2"
                   Content="UseVisualSourceItemSizeForDragAdorner"
-                  IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <CheckBox Margin="10 5 5 5"
+                  IsChecked="{Binding Path=(dd:DragDrop.UseVisualSourceItemSizeForDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Use descendant bounds of the VisualSourceItem as MinWidth for the DragAdorner." />
+        <CheckBox Margin="10 2 2 2"
                   Content="UseDefaultEffectDataTemplate"
-                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="Sets whether if the default DataTemplate for the effects should be use." />
+        <StackPanel Margin="10 2 2 2"
+                    Orientation="Horizontal"
+                    Visibility="{Binding ElementName=This, Path=ShowCopyKeyState, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+            <TextBlock VerticalAlignment="Center"
+                       Text="DragDropCopyKeyState"
+                       ToolTip="Sets the copy key state which indicates the effect of the drag drop operation." />
+            <ComboBox Width="200"
+                      Margin="5 0 0 0"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding Source={StaticResource DragDropKeyStatesEnumValues}}"
+                      SelectedItem="{Binding Path=(dd:DragDrop.DragDropCopyKeyState), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>
