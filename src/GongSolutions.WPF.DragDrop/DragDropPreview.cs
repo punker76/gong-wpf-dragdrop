@@ -46,15 +46,15 @@ namespace GongSolutions.Wpf.DragDrop
             this.HorizontalAlignment = HorizontalAlignment.Left;
             this.VerticalAlignment = VerticalAlignment.Top;
 
-            this.DragInfo = dragInfo;
+            this._dragInfo = dragInfo;
             this.Child = this.CreatePreviewPresenter(dragInfo, visualTarget, sender);
             this.Translation = DragDrop.GetDragAdornerTranslation(dragInfo.VisualSource);
             this.AnchorPoint = DragDrop.GetDragMouseAnchorPoint(dragInfo.VisualSource);
         }
 
-        private IDragInfo DragInfo { get; }
-
-        private Rect VisualSourceItemBounds { get; set; } = Rect.Empty;
+        private IDragInfo _dragInfo = null;
+        private UIElement _visualTarget = null;
+        private Rect _visualSourceItemBounds = Rect.Empty;
 
         public Point Translation { get; }
 
@@ -115,10 +115,10 @@ namespace GongSolutions.Wpf.DragDrop
                 var renderSizeHeight = renderSize.Height;
 
                 // Only set if the template contains a Canvas.
-                if (!this.VisualSourceItemBounds.IsEmpty)
+                if (!this._visualSourceItemBounds.IsEmpty)
                 {
-                    renderSizeWidth = Math.Min(renderSizeWidth, this.VisualSourceItemBounds.Width);
-                    renderSizeHeight = Math.Min(renderSizeHeight, this.VisualSourceItemBounds.Height);
+                    renderSizeWidth = Math.Min(renderSizeWidth, this._visualSourceItemBounds.Width);
+                    renderSizeHeight = Math.Min(renderSizeHeight, this._visualSourceItemBounds.Height);
                 }
 
                 if (renderSizeWidth > 0 && renderSizeHeight > 0)
@@ -219,6 +219,13 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 return;
             }
+
+            if (this._visualTarget != null && visualTarget != null && ReferenceEquals(this._visualTarget, visualTarget))
+            {
+                return;
+            }
+
+            this._visualTarget = visualTarget;
 
             var isMultiSelection = IsMultiSelection(dragInfo);
 
@@ -359,14 +366,14 @@ namespace GongSolutions.Wpf.DragDrop
                 contentPresenter.Loaded -= this.ContentPresenter_OnLoaded;
 
                 // If the template contains a Canvas then we get a strange size.
-                if (this.UseDefaultDragAdorner && this.DragInfo?.VisualSourceItem.GetVisualDescendent<Canvas>() is not null)
+                if (this.UseDefaultDragAdorner && this._dragInfo?.VisualSourceItem.GetVisualDescendent<Canvas>() is not null)
                 {
-                    this.VisualSourceItemBounds = this.DragInfo?.VisualSourceItem != null ? VisualTreeHelper.GetDescendantBounds(this.DragInfo.VisualSourceItem) : Rect.Empty;
+                    this._visualSourceItemBounds = this._dragInfo?.VisualSourceItem != null ? VisualTreeHelper.GetDescendantBounds(this._dragInfo.VisualSourceItem) : Rect.Empty;
 
-                    contentPresenter.SetCurrentValue(MaxWidthProperty, this.VisualSourceItemBounds.Width);
-                    contentPresenter.SetCurrentValue(MaxHeightProperty, this.VisualSourceItemBounds.Height);
-                    this.SetCurrentValue(MaxWidthProperty, this.VisualSourceItemBounds.Width);
-                    this.SetCurrentValue(MaxHeightProperty, this.VisualSourceItemBounds.Height);
+                    contentPresenter.SetCurrentValue(MaxWidthProperty, this._visualSourceItemBounds.Width);
+                    contentPresenter.SetCurrentValue(MaxHeightProperty, this._visualSourceItemBounds.Height);
+                    this.SetCurrentValue(MaxWidthProperty, this._visualSourceItemBounds.Width);
+                    this.SetCurrentValue(MaxHeightProperty, this._visualSourceItemBounds.Height);
                 }
                 else
                 {
@@ -379,12 +386,12 @@ namespace GongSolutions.Wpf.DragDrop
                             fe.SetCurrentValue(VerticalAlignmentProperty, VerticalAlignment.Top);
                         }
 
-                        this.VisualSourceItemBounds = this.DragInfo?.VisualSourceItem != null ? VisualTreeHelper.GetDescendantBounds(this.DragInfo.VisualSourceItem) : Rect.Empty;
+                        this._visualSourceItemBounds = this._dragInfo?.VisualSourceItem != null ? VisualTreeHelper.GetDescendantBounds(this._dragInfo.VisualSourceItem) : Rect.Empty;
 
-                        contentPresenter.SetCurrentValue(MaxWidthProperty, this.VisualSourceItemBounds.Width);
-                        contentPresenter.SetCurrentValue(MaxHeightProperty, this.VisualSourceItemBounds.Height);
-                        this.SetCurrentValue(MaxWidthProperty, this.VisualSourceItemBounds.Width);
-                        this.SetCurrentValue(MaxHeightProperty, this.VisualSourceItemBounds.Height);
+                        contentPresenter.SetCurrentValue(MaxWidthProperty, this._visualSourceItemBounds.Width);
+                        contentPresenter.SetCurrentValue(MaxHeightProperty, this._visualSourceItemBounds.Height);
+                        this.SetCurrentValue(MaxWidthProperty, this._visualSourceItemBounds.Width);
+                        this.SetCurrentValue(MaxHeightProperty, this._visualSourceItemBounds.Height);
                     }
                 }
             }
