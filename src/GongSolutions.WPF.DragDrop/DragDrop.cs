@@ -474,7 +474,7 @@ namespace GongSolutions.Wpf.DragDrop
             // already selected item does not change the selection, otherwise dragging multiple items 
             // is made impossible.
             if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0
-                && (Keyboard.Modifiers & ModifierKeys.Control) == 0
+                //&& (Keyboard.Modifiers & ModifierKeys.Control) == 0 // #432
                 && dragInfo.VisualSourceItem != null
                 && sender is ItemsControl itemsControl
                 && itemsControl.CanSelectMultipleItems())
