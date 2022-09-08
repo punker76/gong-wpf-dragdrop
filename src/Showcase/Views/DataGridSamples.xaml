@@ -12,7 +12,7 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultDataGridStyle}" TargetType="{x:Type DataGrid}" />
+            <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DefaultDataGridStyle}" />
         </Grid.Resources>
 
         <DockPanel LastChildFill="True">

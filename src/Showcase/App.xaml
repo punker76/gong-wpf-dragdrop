@@ -15,8 +15,8 @@
             <SolidColorBrush x:Key="TabItemSelectorBrush" Color="LawnGreen" />
 
             <Style x:Key="GitHubIssueButtonStyle"
-                   x:Shared="False"
-                   TargetType="{x:Type Button}">
+                   TargetType="{x:Type Button}"
+                   x:Shared="False">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Command" Value="{Binding OpenIssueCommand}" />
                 <Setter Property="Content">
@@ -59,16 +59,16 @@
             </Style>
 
             <Style x:Key="GitHubPullRequestButtonStyle"
-                   x:Shared="False"
+                   TargetType="{x:Type Button}"
                    BasedOn="{StaticResource GitHubIssueButtonStyle}"
-                   TargetType="{x:Type Button}">
+                   x:Shared="False">
                 <Setter Property="Command" Value="{Binding OpenPullRequestCommand}" />
             </Style>
 
             <Style x:Key="OpenLinkButtonStyle"
-                   x:Shared="False"
+                   TargetType="{x:Type Button}"
                    BasedOn="{StaticResource GitHubIssueButtonStyle}"
-                   TargetType="{x:Type Button}">
+                   x:Shared="False">
                 <Setter Property="Command" Value="{Binding OpenLinkCommand}" />
                 <Setter Property="Content">
                     <Setter.Value>
@@ -191,7 +191,7 @@
             <Style x:Key="DefaultListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Padding" Value="2" />
             </Style>
-            <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="{x:Type ListBoxItem}" />
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource DefaultListBoxItemStyle}" />
 
             <Style x:Key="DefaultListBoxStyle" TargetType="{x:Type ListBox}">
                 <Setter Property="Height" Value="300" />
@@ -211,7 +211,7 @@
             <Style x:Key="DefaultListViewItemStyle" TargetType="{x:Type ListViewItem}">
                 <Setter Property="Padding" Value="2" />
             </Style>
-            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="{x:Type ListViewItem}" />
+            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource DefaultListViewItemStyle}" />
 
             <Style x:Key="DefaultListViewStyle" TargetType="{x:Type ListView}">
                 <Setter Property="Height" Value="300" />
@@ -230,7 +230,7 @@
                 </Setter>
                 <Setter Property="Padding" Value="2" />
             </Style>
-            <Style BasedOn="{StaticResource DefaultTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}" />
+            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DefaultTreeViewItemStyle}" />
 
             <Style x:Key="DefaultTreeViewStyle" TargetType="{x:Type TreeView}">
                 <Setter Property="Height" Value="300" />

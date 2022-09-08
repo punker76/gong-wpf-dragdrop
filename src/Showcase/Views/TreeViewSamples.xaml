@@ -13,7 +13,7 @@
 
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultTreeViewStyle}" TargetType="{x:Type TreeView}" />
+            <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
         </Grid.Resources>
 
         <TabControl Style="{StaticResource ShowcaseTabControlStyle}">

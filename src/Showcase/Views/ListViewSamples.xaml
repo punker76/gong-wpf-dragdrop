@@ -14,7 +14,7 @@
 
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultListViewStyle}" TargetType="{x:Type ListView}" />
+            <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
         </Grid.Resources>
 
         <TabControl Style="{StaticResource ShowcaseTabControlStyle}">

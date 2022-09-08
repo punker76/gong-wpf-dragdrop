@@ -2,28 +2,29 @@
 
     <!-- SourceLink -->
     <PropertyGroup>
-        <DebugType>portable</DebugType>
-        <DebugSymbols>true</DebugSymbols>
-
         <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
-
         <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <!-- By using EmbedAllSources we don't need SourceLink itself -->
+        <!-- https://github.com/dotnet/sourcelink/blob/master/docs/README.md#embedallsources -->
+        <EmbedAllSources>true</EmbedAllSources>
+    </PropertyGroup>
 
-        <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- PDB-Options -->
+    <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>Embedded</DebugType>
     </PropertyGroup>
 
     <!-- reference includes -->
-    <ItemGroup>
+<!--     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
+ -->
     <ItemGroup>
         <SourceRoot Include="$(NuGetPackageRoot)" Condition="'$(NuGetPackageRoot)' != ''" />
     </ItemGroup>

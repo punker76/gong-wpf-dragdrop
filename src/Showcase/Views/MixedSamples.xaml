@@ -15,10 +15,10 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultItemsControl}" TargetType="{x:Type ItemsControl}" />
-            <Style BasedOn="{StaticResource DefaultListBoxStyle}" TargetType="{x:Type ListBox}" />
-            <Style BasedOn="{StaticResource DefaultListViewStyle}" TargetType="{x:Type ListView}" />
-            <Style BasedOn="{StaticResource DefaultTreeViewStyle}" TargetType="{x:Type TreeView}" />
+            <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}" />
+            <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+            <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
+            <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
         </Grid.Resources>
 
         <TabControl x:Name="MixedTabControl" Style="{StaticResource ShowcaseTabControlStyle}">
@@ -79,7 +79,7 @@
 
             <TabItem Header="DragDropContext">
                 <TabItem.Resources>
-                    <Style BasedOn="{StaticResource DefaultListBoxStyle}" TargetType="{x:Type ListBox}">
+                    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}">
                         <Setter Property="Height" Value="Auto" />
                     </Style>
                 </TabItem.Resources>
@@ -206,7 +206,7 @@
                                               dd:DragDrop.UseDefaultDragAdorner="True"
                                               ItemsSource="{Binding Data.Collection1}">
                                     <ItemsControl.Style>
-                                        <Style BasedOn="{StaticResource DefaultItemsControl}" TargetType="{x:Type ItemsControl}">
+                                        <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}">
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="{x:Type ItemsControl}">
@@ -335,8 +335,8 @@
             <TabItem Header="Cloning">
                 <TabItem.Resources>
                     <Style x:Key="ClonableListBoxItemStyle"
-                           BasedOn="{StaticResource DefaultListBoxItemStyle}"
-                           TargetType="{x:Type ListBoxItem}">
+                           TargetType="{x:Type ListBoxItem}"
+                           BasedOn="{StaticResource DefaultListBoxItemStyle}">
                         <Setter Property="dd:DragDrop.DragSourceIgnore" Value="True" />
                     </Style>
                     <DataTemplate x:Key="CloningTemplate" DataType="{x:Type models:ClonableItemModel}">

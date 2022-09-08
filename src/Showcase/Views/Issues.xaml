@@ -14,10 +14,10 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultItemsControl}" TargetType="{x:Type ItemsControl}" />
-            <Style BasedOn="{StaticResource DefaultListBoxStyle}" TargetType="{x:Type ListBox}" />
-            <Style BasedOn="{StaticResource DefaultListViewStyle}" TargetType="{x:Type ListView}" />
-            <Style BasedOn="{StaticResource DefaultTreeViewStyle}" TargetType="{x:Type TreeView}" />
+            <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}" />
+            <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DefaultListBoxStyle}" />
+            <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource DefaultListViewStyle}" />
+            <Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource DefaultTreeViewStyle}" />
         </Grid.Resources>
 
         <TabControl Style="{StaticResource ShowcaseTabControlStyle}">

@@ -13,14 +13,14 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style BasedOn="{StaticResource DefaultTabControlStyle}" TargetType="{x:Type TabControl}" />
+            <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource DefaultTabControlStyle}" />
 
             <Style x:Key="CustomTabControlStyle"
-                   BasedOn="{StaticResource DefaultTabControlStyle}"
-                   TargetType="{x:Type TabControl}">
+                   TargetType="{x:Type TabControl}"
+                   BasedOn="{StaticResource DefaultTabControlStyle}">
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>
-                        <Style BasedOn="{StaticResource DefaultTabItemStyle}" TargetType="{x:Type TabItem}">
+                        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource DefaultTabItemStyle}">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate DataType="{x:Type models:TabItemModel}">
