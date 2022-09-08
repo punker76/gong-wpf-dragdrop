@@ -6,6 +6,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -30,7 +31,13 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
                                 <ListView x:Name="LeftBoundListView"
+                                          Grid.Row="0"
                                           Grid.Column="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
@@ -65,7 +72,9 @@
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
-                                <ListView Grid.Column="1"
+                                <ListView x:Name="RightBoundListView"
+                                          Grid.Row="0"
+                                          Grid.Column="1"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
@@ -96,21 +105,16 @@
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                 </ListView>
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left ListView)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=LeftBoundListView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for left ListView)"
+                                                    DataContext="{x:Reference LeftBoundListView}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for right ListView)"
+                                                    DataContext="{x:Reference RightBoundListView}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
@@ -175,7 +179,13 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
                                 <ListView x:Name="LeftUnboundListView"
+                                          Grid.Row="0"
                                           Grid.Column="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
@@ -187,7 +197,9 @@
                                     <ListViewItem>Unbound Item4</ListViewItem>
                                     <ListViewItem>Unbound Item5</ListViewItem>
                                 </ListView>
-                                <ListView Grid.Column="1"
+                                <ListView x:Name="RightUnboundListView"
+                                          Grid.Row="0"
+                                          Grid.Column="1"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           ItemContainerStyle="{StaticResource CustomRightUnboundListViewItemStyle}">
@@ -197,21 +209,16 @@
                                     <ListViewItem>Unbound Item9</ListViewItem>
                                     <ListViewItem>Unbound Item10</ListViewItem>
                                 </ListView>
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left ListView)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=LeftUnboundListView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for left ListView)"
+                                                    DataContext="{x:Reference LeftUnboundListView}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for right ListView)"
+                                                    DataContext="{x:Reference RightUnboundListView}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

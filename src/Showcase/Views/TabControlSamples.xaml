@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -51,36 +52,42 @@
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with two TabControls bound to two collections of the same type." />
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="It's currently not possible to drag into an empty TabControl." />
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
+
                                 <TabControl x:Name="TopBoundTabControl"
                                             Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
                                             dd:DragDrop.IsDragSource="True"
                                             dd:DragDrop.IsDropTarget="True"
                                             ItemsSource="{Binding Data.TabItemCollection1}"
                                             Style="{StaticResource CustomTabControlStyle}" />
-                                <TabControl Grid.Row="1"
+                                <TabControl x:Name="BottomBoundTabControl"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
                                             dd:DragDrop.IsDragSource="True"
                                             dd:DragDrop.IsDropTarget="True"
                                             ItemsSource="{Binding Data.TabItemCollection2}"
                                             Style="{StaticResource CustomTabControlStyle}" />
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for top TabControl)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=TopBoundTabControl, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=TopBoundTabControl, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=TopBoundTabControl, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=TopBoundTabControl, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for top TabControl)"
+                                                    DataContext="{x:Reference TopBoundTabControl}" />
+                                <views:SettingsView Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for bottom TabControl)"
+                                                    DataContext="{x:Reference BottomBoundTabControl}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>
@@ -96,12 +103,20 @@
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with two TabControls and unbound items (e.g. direct usage of TabItem)." />
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="It's currently not possible to drag into an empty TabControl." />
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
+
                                 <TabControl x:Name="TopUnboundTabControl"
                                             Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
                                             dd:DragDrop.IsDragSource="True"
                                             dd:DragDrop.IsDropTarget="True">
                                     <TabItem Header="Unbound Item 1">Content of Unbound Item 1</TabItem>
@@ -110,7 +125,10 @@
                                     <TabItem Header="Unbound Item 4">Content of Unbound Item 4</TabItem>
                                     <TabItem Header="Unbound Item 5">Content of Unbound Item 5</TabItem>
                                 </TabControl>
-                                <TabControl Grid.Row="1"
+                                <TabControl x:Name="BottomUnboundTabControl"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
                                             dd:DragDrop.IsDragSource="True"
                                             dd:DragDrop.IsDropTarget="True">
                                     <TabItem Header="Unbound Item 6">Content of Unbound Item 6</TabItem>
@@ -119,21 +137,16 @@
                                     <TabItem Header="Unbound Item 9">Content of Unbound Item 9</TabItem>
                                     <TabItem Header="Unbound Item 10">Content of Unbound Item 10</TabItem>
                                 </TabControl>
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for top TabControl)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=TopUnboundTabControl, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=TopUnboundTabControl, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=TopUnboundTabControl, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=TopUnboundTabControl, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for top TabControl)"
+                                                    DataContext="{x:Reference TopBoundTabControl}" />
+                                <views:SettingsView Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for bottom TabControl)"
+                                                    DataContext="{x:Reference BottomBoundTabControl}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

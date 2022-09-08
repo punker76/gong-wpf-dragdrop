@@ -100,7 +100,13 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
                                 <TreeView x:Name="LeftUnboundTreeView"
+                                          Grid.Row="0"
                                           Grid.Column="0"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
@@ -120,25 +126,22 @@
                                     </TreeViewItem>
                                     <TreeViewItem Header="Root 3" />
                                 </TreeView>
-                                <TreeView Grid.Column="1"
+                                <TreeView x:Name="RightUnboundTreeView"
+                                          Grid.Row="0"
+                                          Grid.Column="1"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True" />
-                            </Grid>
 
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for left TreeView)" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDragSource"
-                                      IsChecked="{Binding ElementName=LeftUnboundTreeView, Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="IsDropTarget"
-                                      IsChecked="{Binding ElementName=LeftUnboundTreeView, Path=(dd:DragDrop.IsDropTarget), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultDragAdorner"
-                                      IsChecked="{Binding ElementName=LeftUnboundTreeView, Path=(dd:DragDrop.UseDefaultDragAdorner), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <CheckBox Margin="10 5"
-                                      Content="UseDefaultEffectDataTemplate"
-                                      IsChecked="{Binding ElementName=LeftUnboundTreeView, Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Caption="Customization (for left TreeView)"
+                                                    DataContext="{x:Reference LeftUnboundTreeView}" />
+                                <views:SettingsView Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Caption="Customization (for right TreeView)"
+                                                    DataContext="{x:Reference RightUnboundTreeView}" />
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </DockPanel>

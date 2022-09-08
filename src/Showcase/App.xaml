@@ -81,7 +81,7 @@
 
             <Style x:Key="DefaultTabItemStyle" TargetType="{x:Type TabItem}" />
             <Style x:Key="DefaultTabControlStyle" TargetType="{x:Type TabControl}">
-                <Setter Property="Height" Value="100" />
+                <Setter Property="Height" Value="150" />
                 <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultTabItemStyle}" />
                 <Setter Property="Margin" Value="4" />
                 <Setter Property="TabStripPlacement" Value="Top" />

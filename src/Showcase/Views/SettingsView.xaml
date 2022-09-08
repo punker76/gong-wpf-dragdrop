@@ -5,11 +5,31 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="This"
+             Padding="0 5"
              d:DesignHeight="600"
              d:DesignWidth="400"
              mc:Ignorable="d">
     <StackPanel>
+        <StackPanel.Resources>
+            <ResourceDictionary>
+                <ObjectDataProvider x:Key="DragDropKeyStatesEnumValues"
+                                    MethodName="GetValues"
+                                    ObjectType="{x:Type DragDropKeyStates}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="DragDropKeyStates" />
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+
+                <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            </ResourceDictionary>
+        </StackPanel.Resources>
+
         <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="{Binding ElementName=This, Path=Caption, Mode=OneWay}" />
+        <CheckBox Margin="10 2 2 2"
+                  Command="{Binding ElementName=This, Path=FilterCollectionCommand, Mode=OneWay}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                  Content="Filter by %2"
+                  Visibility="{Binding ElementName=This, Path=FilterCollectionCommandShown, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
         <CheckBox Margin="10 2 2 2"
                   Content="IsDragSource"
                   IsChecked="{Binding Path=(dd:DragDrop.IsDragSource), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -46,5 +66,17 @@
                   Content="UseDefaultEffectDataTemplate"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="Sets whether if the default DataTemplate for the effects should be use." />
+        <StackPanel Margin="10 2 2 2"
+                    Orientation="Horizontal"
+                    Visibility="{Binding ElementName=This, Path=ShowCopyKeyState, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+            <TextBlock VerticalAlignment="Center"
+                       Text="DragDropCopyKeyState"
+                       ToolTip="Sets the copy key state which indicates the effect of the drag drop operation." />
+            <ComboBox Width="200"
+                      Margin="5 0 0 0"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding Source={StaticResource DragDropKeyStatesEnumValues}}"
+                      SelectedItem="{Binding Path=(dd:DragDrop.DragDropCopyKeyState), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>
