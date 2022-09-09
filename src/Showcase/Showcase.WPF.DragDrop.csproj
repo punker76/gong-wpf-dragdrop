@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
-        <PackageReference Include="Fody" Version="6.5.*">
+        <PackageReference Include="Fody" Version="6.6.*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
