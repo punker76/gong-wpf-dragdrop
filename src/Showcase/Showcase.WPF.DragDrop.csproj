@@ -32,7 +32,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Costura.Fody" Version="5.6.*" PrivateAssets="All" />
+        <PackageReference Include="Costura.Fody" Version="5.7.*" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
