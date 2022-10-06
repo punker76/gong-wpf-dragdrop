@@ -12,6 +12,9 @@ using GongSolutions.Wpf.DragDrop.Utilities;
 
 namespace GongSolutions.Wpf.DragDrop
 {
+    using System.Windows.Documents;
+    using System.Windows.Threading;
+
     public static partial class DragDrop
     {
         /// <summary>
@@ -412,6 +415,7 @@ namespace GongSolutions.Wpf.DragDrop
             _dragInfo = null;
 
             // Ignore the click if clickCount != 1 or the user has clicked on a scrollbar.
+            var touchPoint = e.GetTouchPoint((IInputElement)sender);
             var elementPosition = e.GetTouchPoint((IInputElement)sender).Position;
             if ((sender as UIElement).IsDragSourceIgnored()
                 || (e.Source as UIElement).IsDragSourceIgnored()
@@ -426,7 +430,47 @@ namespace GongSolutions.Wpf.DragDrop
             var dragInfo = infoBuilder?.CreateDragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position)
                            ?? new DragInfo(sender, e.OriginalSource, MouseButton.Left, item => e.GetTouchPoint(item).Position);
 
-            DragSourceDown(sender, dragInfo, e, elementPosition);
+            _isTouchDown = true;
+
+            var touchDownDelay = DragDrop.GetTouchHoldDelay((UIElement)sender);
+
+            _touchDownTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(touchDownDelay) };
+
+            _touchDownTimer.Tick += (_, _) =>
+                {
+                    _touchDownTimer.Stop();
+
+                    if (_isTouchDown)
+                    {
+                        _isTouchDown = false;
+
+                        var dragStart = dragInfo.DragStartPosition;
+
+                        var position = e.GetTouchPoint((IInputElement)sender).Position;
+
+                        if (dragInfo.VisualSource == sender
+                            && (Math.Abs(position.X - dragStart.X) > DragDrop.GetMinimumHorizontalDragDistance(dragInfo.VisualSource) ||
+                                Math.Abs(position.Y - dragStart.Y) > DragDrop.GetMinimumVerticalDragDistance(dragInfo.VisualSource)))
+                        {
+                            return;
+                        }
+
+                        if (sender is ItemsControl itemsControl)
+                        {
+                            _touchItemsControl = itemsControl;
+                            _touchPreviousPanningMode = (PanningMode)_touchItemsControl.GetValue(ScrollViewer.PanningModeProperty);
+                            _touchItemsControl.SetCurrentValue(ScrollViewer.PanningModeProperty, PanningMode.None);
+                        }
+
+                        _touchAdornerLayer = AdornerLayer.GetAdornerLayer((UIElement)sender);
+                        _touchAdorner = new TouchAdorner((UIElement)sender, touchPoint, DragDrop.GetTouchHoldAdornerBackground((UIElement)sender));
+                        _touchAdornerLayer?.Add(_touchAdorner);
+            
+                        DragSourceDown(sender, dragInfo, e, elementPosition);
+                    }
+                };
+
+            _touchDownTimer.Start();
         }
 
         private static void DoMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -505,6 +549,18 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnTouchUp(object sender, TouchEventArgs e)
         {
+            _isTouchDown = false;
+            _touchDownTimer.Stop();
+            _touchDownTimer = null;
+
+            _touchAdornerLayer?.Remove(_touchAdorner);
+
+            if (_touchItemsControl != null)
+            {
+                _touchItemsControl.SetCurrentValue(ScrollViewer.PanningModeProperty, _touchPreviousPanningMode);
+                _touchItemsControl = null;
+            }
+
             DragSourceUp(sender, e.GetTouchPoint((IInputElement)sender).Position);
         }
 
@@ -1016,6 +1072,13 @@ namespace GongSolutions.Wpf.DragDrop
         private static DragInfo _dragInfo;
         private static bool _dragInProgress;
         private static object _clickSupressItem;
+
+        private static bool _isTouchDown;
+        private static DispatcherTimer _touchDownTimer;
+        private static AdornerLayer _touchAdornerLayer;
+        private static TouchAdorner _touchAdorner;
+        private static ItemsControl _touchItemsControl;
+        private static PanningMode _touchPreviousPanningMode;
 
         internal static readonly DependencyProperty IsDragOverProperty
             = DependencyProperty.RegisterAttached("IsDragOver",
