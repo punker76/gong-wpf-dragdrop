@@ -1660,5 +1660,63 @@ namespace GongSolutions.Wpf.DragDrop
         {
             element.SetValue(DropTargetItemsSorterProperty, value);
         }
+
+        /// <summary>
+        /// Gets or sets the background brush for the touch hold adorner.
+        /// </summary>
+        public static readonly DependencyProperty TouchHoldAdornerBackgroundProperty
+            = DependencyProperty.RegisterAttached("TouchHoldAdornerBackground",
+                                                  typeof(Brush),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(Brushes.DeepSkyBlue));
+
+        /// <summary>Helper for getting <see cref="TouchHoldAdornerBackgroundProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="TouchHoldAdornerBackgroundProperty"/> from.</param>
+        /// <remarks>Gets the background brush for the touch hold adorner.</remarks>
+        /// <returns>TouchHoldAdornerBackground property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static Brush GetTouchHoldAdornerBackground(DependencyObject element)
+        {
+            return (Brush)element.GetValue(TouchHoldAdornerBackgroundProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="TouchHoldAdornerBackgroundProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="TouchHoldAdornerBackgroundProperty"/> on.</param>
+        /// <param name="value">TouchHoldAdornerBackground property value.</param>
+        /// <remarks>Sets the background brush for the touch hold adorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetTouchHoldAdornerBackground(DependencyObject element, Brush value)
+        {
+            element.SetValue(TouchHoldAdornerBackgroundProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the delay in milliseconds before a touch and hold gesture triggers a drag.
+        /// </summary>
+        public static readonly DependencyProperty TouchHoldDelayProperty
+            = DependencyProperty.RegisterAttached("TouchHoldDelay",
+                                                  typeof(int),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(600));
+
+        /// <summary>Helper for getting <see cref="TouchHoldDelayProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="TouchHoldDelayProperty"/> from.</param>
+        /// <remarks>Gets the delay in milliseconds before a touch and hold gesture triggers a drag.</remarks>
+        /// <returns>TouchHoldDelay property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static int GetTouchHoldDelay(DependencyObject element)
+        {
+            return (int)element.GetValue(TouchHoldDelayProperty);
+        }
+
+        /// <summary>Helper for setting <see cref="TouchHoldDelayProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="TouchHoldDelayProperty"/> on.</param>
+        /// <param name="value">TouchHoldDelay property value.</param>
+        /// <remarks>Sets the delay in milliseconds before a touch and hold gesture triggers a drag.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetTouchHoldDelay(DependencyObject element, int value)
+        {
+            element.SetValue(TouchHoldDelayProperty, value);
+        }
     }
 }
