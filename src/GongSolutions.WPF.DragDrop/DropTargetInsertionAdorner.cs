@@ -23,141 +23,136 @@ namespace GongSolutions.Wpf.DragDrop
         protected override void OnRender(DrawingContext drawingContext)
         {
             var dropInfo = this.DropInfo;
-            var itemsControl = dropInfo.VisualTarget as ItemsControl;
 
-            if (itemsControl != null)
+            if (dropInfo.VisualTarget is not ItemsControl itemsControl)
             {
-                // Get the position of the item at the insertion index. If the insertion point is
-                // to be after the last item, then get the position of the last item and add an 
-                // offset later to draw it at the end of the list.
-                ItemsControl itemParent;
+                return;
+            }
 
-                var visualTargetItem = dropInfo.VisualTargetItem;
-                if (visualTargetItem != null)
+            // Get the position of the item at the insertion index. If the insertion point is
+            // to be after the last item, then get the position of the last item and add an 
+            // offset later to draw it at the end of the list.
+
+            var visualTargetItem = dropInfo.VisualTargetItem;
+            var itemParent = visualTargetItem != null ? ItemsControl.ItemsControlFromItemContainer(visualTargetItem) : itemsControl;
+
+            // this could be happen with a thread scenario where items are removed very quickly
+            if (itemParent == null)
+            {
+                return;
+            }
+
+            var itemsCount = itemParent.Items.Count;
+            var index = Math.Min(dropInfo.InsertIndex, itemsCount - 1);
+
+            var lastItemInGroup = false;
+            var targetGroup = dropInfo.TargetGroup;
+            if (targetGroup != null && targetGroup.IsBottomLevel && dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem))
+            {
+                var indexOf = targetGroup.Items.IndexOf(dropInfo.TargetItem);
+                lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
+                if (lastItemInGroup && dropInfo.InsertIndex != itemsCount)
                 {
-                    itemParent = ItemsControl.ItemsControlFromItemContainer(visualTargetItem);
+                    index--;
                 }
-                else
+            }
+
+            var itemContainer = (UIElement)itemParent.ItemContainerGenerator.ContainerFromIndex(index);
+
+            var showAlwaysDropTargetAdorner = itemContainer == null && DragDrop.GetShowAlwaysDropTargetAdorner(itemParent);
+            if (showAlwaysDropTargetAdorner)
+            {
+                itemContainer = itemParent;
+            }
+
+            if (itemContainer == null)
+            {
+                return;
+            }
+
+            var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement), itemContainer.RenderSize);
+            Point point1,
+                  point2;
+            double rotation = 0;
+
+            // If the ItemsControl has a scrollable content then try to get the viewport width/height
+            // to paint the insertion adorner only on this size.
+            var viewportWidth = double.MaxValue;
+            var viewportHeight = double.MaxValue;
+            if (dropInfo.TargetScrollViewer != null)
+            {
+                if (dropInfo.TargetScrollViewer.ScrollableWidth != 0)
                 {
-                    itemParent = itemsControl;
+                    viewportWidth = dropInfo.TargetScrollViewer.ViewportWidth;
                 }
 
-                // this could be happen with a thread scenario where items are removed very quickly
-                if (itemParent == null)
+                if (dropInfo.TargetScrollViewer.ScrollableHeight != 0)
                 {
-                    return;
+                    viewportHeight = dropInfo.TargetScrollViewer.ViewportHeight;
                 }
+            }
 
-                var itemsCount = itemParent.Items.Count;
-                var index = Math.Min(dropInfo.InsertIndex, itemsCount - 1);
-
-                var lastItemInGroup = false;
-                var targetGroup = dropInfo.TargetGroup;
-                if (targetGroup != null && targetGroup.IsBottomLevel && dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.AfterTargetItem))
+            if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
+            {
+                if ((dropInfo.InsertIndex == itemsCount) || lastItemInGroup)
                 {
-                    var indexOf = targetGroup.Items.IndexOf(dropInfo.TargetItem);
-                    lastItemInGroup = indexOf == targetGroup.ItemCount - 1;
-                    if (lastItemInGroup && dropInfo.InsertIndex != itemsCount)
+                    if (itemsCount > 0)
                     {
-                        index--;
-                    }
-                }
-
-                var itemContainer = (UIElement)itemParent.ItemContainerGenerator.ContainerFromIndex(index);
-
-                var showAlwaysDropTargetAdorner = itemContainer == null && DragDrop.GetShowAlwaysDropTargetAdorner(itemParent);
-                if (showAlwaysDropTargetAdorner)
-                {
-                    itemContainer = itemParent;
-                }
-
-                if (itemContainer != null)
-                {
-                    var itemRect = new Rect(itemContainer.TranslatePoint(new Point(), this.AdornedElement), itemContainer.RenderSize);
-                    Point point1,
-                          point2;
-                    double rotation = 0;
-
-                    // I really don't know why I did this
-                    //
-                    // var viewportWidth = double.MaxValue;
-                    // var viewportHeight = double.MaxValue;
-                    // if (DropInfo.TargetScrollViewer != null)
-                    // {
-                    //     if (DropInfo.TargetScrollViewer.ScrollableWidth != 0)
-                    //     {
-                    //         viewportWidth = DropInfo.TargetScrollViewer.ViewportWidth;
-                    //     }
-                    //
-                    //     if (DropInfo.TargetScrollViewer.ScrollableHeight != 0)
-                    //     {
-                    //         viewportHeight = DropInfo.TargetScrollViewer.ViewportHeight;
-                    //     }
-                    // }
-
-                    if (dropInfo.VisualTargetOrientation == Orientation.Vertical)
-                    {
-                        if ((dropInfo.InsertIndex == itemsCount) || lastItemInGroup)
-                        {
-                            if (itemsCount > 0)
-                            {
-                                itemRect.Y += itemContainer.RenderSize.Height;
-                            }
-                            else
-                            {
-                                if ((itemsControl as ListView)?.View is GridView)
-                                {
-                                    var header = itemsControl.GetVisualDescendent<GridViewHeaderRowPresenter>();
-                                    if (header != null)
-                                    {
-                                        itemRect.Y += header.RenderSize.Height;
-                                    }
-                                }
-                                else if (itemsControl is DataGrid)
-                                {
-                                    var header = itemsControl.GetVisualDescendent<DataGridColumnHeadersPresenter>();
-                                    if (header != null)
-                                    {
-                                        itemRect.Y += header.RenderSize.Height;
-                                    }
-                                }
-
-                                itemRect.Y += this.Pen.Thickness;
-                            }
-                        }
-
-                        var itemRectRight = itemRect.Right; //Math.Min(itemRect.Right, viewportWidth);
-                        var itemRectLeft = itemRect.X < 0 ? 0 : itemRect.X;
-                        point1 = new Point(itemRectLeft, itemRect.Y);
-                        point2 = new Point(itemRectRight, itemRect.Y);
+                        itemRect.Y += itemContainer.RenderSize.Height;
                     }
                     else
                     {
-                        if (dropInfo.InsertIndex == itemsCount)
+                        if ((itemsControl as ListView)?.View is GridView)
                         {
-                            if (itemsCount > 0)
+                            var header = itemsControl.GetVisualDescendent<GridViewHeaderRowPresenter>();
+                            if (header != null)
                             {
-                                itemRect.X += itemContainer.RenderSize.Width;
+                                itemRect.Y += header.RenderSize.Height;
                             }
-                            else
+                        }
+                        else if (itemsControl is DataGrid)
+                        {
+                            var header = itemsControl.GetVisualDescendent<DataGridColumnHeadersPresenter>();
+                            if (header != null)
                             {
-                                itemRect.X += this.Pen.Thickness;
+                                itemRect.Y += header.RenderSize.Height;
                             }
                         }
 
-                        var itemRectTop = itemRect.Y < 0 ? 0 : itemRect.Y;
-                        var itemRectBottom = itemRect.Bottom; //Math.Min(itemRect.Bottom, viewportHeight);
-
-                        point1 = new Point(itemRect.X, itemRectTop);
-                        point2 = new Point(itemRect.X, itemRectBottom);
-                        rotation = 90;
+                        itemRect.Y += this.Pen.Thickness;
                     }
-
-                    drawingContext.DrawLine(this.Pen, point1, point2);
-                    this.DrawTriangle(drawingContext, point1, rotation);
-                    this.DrawTriangle(drawingContext, point2, 180 + rotation);
                 }
+
+                var itemRectRight = Math.Min(itemRect.Right, viewportWidth);
+                var itemRectLeft = itemRect.X < 0 ? 0 : itemRect.X;
+                point1 = new Point(itemRectLeft, itemRect.Y);
+                point2 = new Point(itemRectRight, itemRect.Y);
             }
+            else
+            {
+                if (dropInfo.InsertIndex == itemsCount)
+                {
+                    if (itemsCount > 0)
+                    {
+                        itemRect.X += itemContainer.RenderSize.Width;
+                    }
+                    else
+                    {
+                        itemRect.X += this.Pen.Thickness;
+                    }
+                }
+
+                var itemRectTop = itemRect.Y < 0 ? 0 : itemRect.Y;
+                var itemRectBottom = Math.Min(itemRect.Bottom, viewportHeight);
+
+                point1 = new Point(itemRect.X, itemRectTop);
+                point2 = new Point(itemRect.X, itemRectBottom);
+                rotation = 90;
+            }
+
+            drawingContext.DrawLine(this.Pen, point1, point2);
+            this.DrawTriangle(drawingContext, point1, rotation);
+            this.DrawTriangle(drawingContext, point2, 180 + rotation);
         }
 
         private void DrawTriangle(DrawingContext drawingContext, Point origin, double rotation)
