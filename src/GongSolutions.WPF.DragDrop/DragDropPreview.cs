@@ -300,7 +300,7 @@ namespace GongSolutions.Wpf.DragDrop
                     var items = enumerable.Cast<object>().ToList();
                     var itemsCount = items.Count;
                     var maxItemsCount = DragDrop.TryGetDragPreviewMaxItemsCount(dragInfo, sender);
-                    if (!this.UseDefaultDragAdorner && itemsCount <= maxItemsCount)
+                    if (this.UseDefaultDragAdorner && itemsCount <= maxItemsCount)
                     {
                         // sort items if necessary before creating the preview
                         var sorter = DragDrop.TryGetDragPreviewItemsSorter(dragInfo, sender);
