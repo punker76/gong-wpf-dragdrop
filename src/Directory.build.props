@@ -13,6 +13,8 @@
         <AutoGenerateBindingRedirects Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">true</AutoGenerateBindingRedirects>
         <AnalysisLevel>latest</AnalysisLevel>
         <LangVersion>latest</LangVersion>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>Embedded</DebugType>
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <NoError>$(NoError);CS1591</NoError>
         <UseWPF>true</UseWPF>
@@ -22,8 +24,8 @@
 
     <!-- Add the references for all projects and targets -->
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2022.*" PrivateAssets="All" IncludeAssets="build;compile" />
-        <PackageReference Include="WpfAnalyzers" Version="4.1.*" PrivateAssets="all" IncludeAssets="build;analyzers" />
+        <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" IncludeAssets="build;compile" />
+        <PackageReference Include="WpfAnalyzers" PrivateAssets="all" IncludeAssets="build;analyzers" />
     </ItemGroup>
 
     <ItemGroup>
