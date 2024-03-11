@@ -317,13 +317,7 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
         {
             if (itemsControl is MultiSelector multiSelector)
             {
-                var itemsToDeselect = multiSelector.SelectedItems.Cast<object>().Where(si => si != item2Select).ToArray();
-
-                foreach (var item in itemsToDeselect)
-                {
-                    multiSelector.SelectedItems.Remove(item);
-                }
-
+                multiSelector.UnselectAll();
                 multiSelector.SetCurrentValue(Selector.SelectedItemProperty, item2Select);
 
                 if (itemsControl is DataGrid dataGrid)
