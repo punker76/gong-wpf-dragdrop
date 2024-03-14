@@ -9,7 +9,7 @@ namespace Showcase.WPF.DragDrop.Models
     {
         public SampleData()
         {
-            for (var n = 0; n < 50; ++n)
+            for (var n = 0; n < 10_000; ++n)
             {
                 this.SerializableCollection1.Add(new SerializableItemModel(n + 1));
                 this.Collection1.Add(new ItemModel(n + 1));
