@@ -3,11 +3,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using MahApps.Metro.IconPacks;
 
 namespace Showcase.WPF.DragDrop.Models
 {
     public class TreeNode : INotifyPropertyChanged, ICloneable
     {
+        private PackIconMaterialKind _icon;
         private string _caption;
         private ObservableCollection<TreeNode> _children;
         private bool _isCloned;
@@ -17,6 +19,17 @@ namespace Showcase.WPF.DragDrop.Models
         {
             this.Caption = caption;
             this.Children = new ObservableCollection<TreeNode>();
+        }
+
+        public PackIconMaterialKind Icon
+        {
+            get => this._icon;
+            set
+            {
+                if (value == this._icon) return;
+                this._icon = value;
+                this.OnPropertyChanged();
+            }
         }
 
         public string Caption

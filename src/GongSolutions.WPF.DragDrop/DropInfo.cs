@@ -21,7 +21,9 @@ namespace GongSolutions.Wpf.DragDrop
     /// </remarks>
     public class DropInfo : IDropInfo
     {
-        private readonly ItemsControl itemParent;
+        private readonly DragEventArgs eventArgs;
+        private ItemsControl itemParent;
+        private bool? acceptChildItem;
 
         /// <inheritdoc />
         public object Data { get; set; }
@@ -153,6 +155,25 @@ namespace GongSolutions.Wpf.DragDrop
         public EventType EventType { get; }
 
         /// <summary>
+        /// Indicates if the drop target can accept the dragged data as a child item (applies to tree view items).
+        /// </summary>
+        /// <remarks>
+        /// Changing this value will update other properties.
+        /// </remarks>
+        public bool AcceptChildItem
+        {
+            get => this.acceptChildItem.GetValueOrDefault();
+            set
+            {
+                if (value != this.acceptChildItem)
+                {
+                    this.acceptChildItem = value;
+                    Update();
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the DropInfo class.
         /// </summary>
         /// <param name="sender">The sender of the drop event.</param>
@@ -161,6 +182,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
         public DropInfo(object sender, DragEventArgs e, [CanBeNull] IDragInfo dragInfo, EventType eventType)
         {
+            this.eventArgs = e;
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
             this.EventType = eventType;
@@ -200,6 +222,11 @@ namespace GongSolutions.Wpf.DragDrop
             // visual target can be null, so give us a point...
             this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
+            Update();
+        }
+
+        private void Update()
+        {
             if (this.VisualTarget is TabControl)
             {
                 if (!HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition))
@@ -256,10 +283,11 @@ namespace GongSolutions.Wpf.DragDrop
 
                     var tvItemIsExpanded = tvItem is { HasHeader: true, HasItems: true, IsExpanded: true };
                     var itemRenderSize = tvItemIsExpanded ? tvItem.GetHeaderSize() : item.RenderSize;
+                    this.acceptChildItem ??= tvItem != null;
 
                     if (this.VisualTargetOrientation == Orientation.Vertical)
                     {
-                        var currentYPos = e.GetPosition(item).Y;
+                        var currentYPos = this.eventArgs.GetPosition(item).Y;
                         var targetHeight = itemRenderSize.Height;
 
                         var topGap = targetHeight * 0.25;
@@ -285,7 +313,7 @@ namespace GongSolutions.Wpf.DragDrop
                             this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
                         }
 
-                        if (currentYPos > topGap && currentYPos < bottomGap)
+                        if (this.AcceptChildItem && currentYPos > topGap && currentYPos < bottomGap)
                         {
                             if (tvItem != null)
                             {
@@ -300,7 +328,7 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                     else
                     {
-                        var currentXPos = e.GetPosition(item).X;
+                        var currentXPos = this.eventArgs.GetPosition(item).X;
                         var targetWidth = itemRenderSize.Width;
 
                         if (this.VisualTargetFlowDirection == FlowDirection.RightToLeft)
@@ -328,7 +356,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                         }
 
-                        if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
+                        if (this.AcceptChildItem && currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
                         {
                             if (tvItem != null)
                             {

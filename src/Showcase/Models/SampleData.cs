@@ -5,6 +5,8 @@ using GongSolutions.Wpf.DragDrop;
 
 namespace Showcase.WPF.DragDrop.Models
 {
+    using MahApps.Metro.IconPacks;
+
     public class SampleData
     {
         public SampleData()
@@ -37,15 +39,19 @@ namespace Showcase.WPF.DragDrop.Models
             for (int r = 1; r <= 6; r++)
             {
                 var root = new TreeNode($"Root {r}");
+                var folder = new TreeNode($"Folder {r}") { Icon = PackIconMaterialKind.Folder };
                 for (var i = 0; i < ((r % 2) == 0 ? 8 : 3); ++i)
                 {
                     root.Children.Add(new TreeNode($"Item {i + 10 * r}"));
+                    folder.Children.Add(new TreeNode($"File {i + 10 * r}") { Icon = PackIconMaterialKind.File });
                 }
 
                 this.TreeCollection1.Add(root);
+                this.TreeCollectionFiles.Add(folder);
                 if (r == 2)
                 {
                     root.IsExpanded = true;
+                    folder.IsExpanded = true;
                 }
             }
 
@@ -84,6 +90,10 @@ namespace Showcase.WPF.DragDrop.Models
         public ObservableCollection<TreeNode> TreeCollection1 { get; set; } = new ObservableCollection<TreeNode>();
 
         public ObservableCollection<TreeNode> TreeCollection2 { get; set; } = new ObservableCollection<TreeNode>();
+
+        public ObservableCollection<TreeNode> TreeCollectionFiles { get; set; } = new ObservableCollection<TreeNode>();
+
+        public FilesDropHandler FilesDropHandler { get; set; } = new FilesDropHandler();
 
         public GroupedDropHandler GroupedDropHandler { get; set; } = new GroupedDropHandler();
 
