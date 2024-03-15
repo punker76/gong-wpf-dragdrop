@@ -121,7 +121,7 @@ namespace GongSolutions.Wpf.DragDrop
         FlowDirection VisualTargetFlowDirection { get; }
 
         /// <summary>
-        /// Gets and sets the text displayed in the DropDropEffects Adorner.
+        /// Gets and sets the text displayed in the DropDropEffects Adorner and DropTargetHintAdorner.
         /// </summary>
         string DestinationText { get; set; }
 
