@@ -745,6 +745,60 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Get or set whether drop target hint is used to indicate where the user can drop.
+        /// </summary>
+        public static readonly DependencyProperty UseDropTargetHintProperty
+            = DependencyProperty.RegisterAttached("UseDropTargetHint",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(bool), OnUseDropTargetHintPropertyChanged));
+
+        /// <summary>Helper for setting <see cref="UseDropTargetHintProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="UseDropTargetHintProperty"/> on.</param>
+        /// <param name="value">UseDropTargetHintProperty property value.</param>
+        /// <remarks>Sets whether the hint adorner should be displayed.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetUseDropTargetHint(DependencyObject element, bool value)
+        {
+            element.SetValue(UseDropTargetHintProperty, value);
+        }
+
+        /// <summary>Helper for getting <see cref="UseDropTargetHintProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="UseDropTargetHintProperty"/> from.</param>
+        /// <remarks>Gets whether if the default DragAdorner is used.</remarks>
+        /// <returns>UseDropTargetHintProperty property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetUseDropTargetHint(DependencyObject element)
+        {
+            return (bool)element.GetValue(UseDropTargetHintProperty);
+        }
+
+        /// <summary>
+        /// Implements side effects for when the UseDropTargetHintProperty changes.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnUseDropTargetHintPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dropTarget = d as UIElement;
+            if (dropTarget == null)
+            {
+                return;
+            }
+
+            // Add or remove drop target from hint cache.
+            bool useDropTargetHint = (bool)e.NewValue;
+            if (useDropTargetHint)
+            {
+                DropHintHelpers.AddDropHintTarget(dropTarget);
+            }
+            else
+            {
+                DropHintHelpers.RemoveDropHintTarget(dropTarget);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets whether if the default DragAdorner should be use.
         /// </summary>
         public static readonly DependencyProperty UseDefaultDragAdornerProperty
