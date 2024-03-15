@@ -13,7 +13,7 @@ namespace GongSolutions.Wpf.DragDrop
     /// <summary>
     /// A default insertion drop handler for the most common usages
     /// </summary>
-    public class DefaultDropHandler : IDropTarget
+    public class DefaultDropHandler : IDropTargetHint
     {
         /// <summary>
         /// Test the specified drop information for the right data.
@@ -214,6 +214,14 @@ namespace GongSolutions.Wpf.DragDrop
             else
             {
                 return target is IList or ICollectionView;
+            }
+        }
+
+        public virtual void DropHint(IDropInfo dropInfo)
+        {
+            if (CanAcceptData(dropInfo))
+            {
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Hint;
             }
         }
 
