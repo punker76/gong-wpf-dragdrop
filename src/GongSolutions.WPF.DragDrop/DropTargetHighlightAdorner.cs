@@ -53,7 +53,5 @@ namespace GongSolutions.Wpf.DragDrop
                 drawingContext.DrawRoundedRectangle(this.Background, this.Pen, rect, 2, 2);
             }
         }
-            }
-        }
     }
 }

@@ -53,6 +53,7 @@
                                           dd:DragDrop.SelectDroppedItems="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
                                           dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                          dd:DragDrop.DropTargetHighlightBrush="{StaticResource DropTargetHighlightBrush}"
                                           ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
                                           ItemsSource="{Binding Data.TreeCollection1}"
                                           Loaded="LeftBoundTreeView_Loaded">
