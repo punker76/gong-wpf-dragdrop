@@ -570,6 +570,32 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets the brush to use for the <see cref="DropTargetHighlightAdorner"/>.
+        /// </summary>
+        public static readonly DependencyProperty DropTargetHighlightBrushProperty = DependencyProperty.RegisterAttached(
+            "DropTargetHighlightBrush", typeof(Brush), typeof(DragDrop), new PropertyMetadata(default(Brush)));
+
+        /// <summary>Helper for setting <see cref="DropTargetHighlightBrushProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetHighlightBrushProperty"/> on.</param>
+        /// <param name="value">The brush to use for the background of <see cref="DropTargetHighlightAdorner"/>.</param>
+        /// <remarks>Sets the brush for the DropTargetAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropTargetHighlightBrush(DependencyObject element, Brush value)
+        {
+            element.SetValue(DropTargetHighlightBrushProperty, value);
+        }
+
+        /// <summary>Helper for setting <see cref="DropTargetAdornerBrushProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetAdornerBrushProperty"/> on.</param>
+        /// <param name="value">DropTargetAdornerBrush property value.</param>
+        /// <remarks>Sets the brush for the DropTargetAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static Brush GetDropTargetHighlightBrush(DependencyObject element)
+        {
+            return (Brush)element.GetValue(DropTargetHighlightBrushProperty);
+        }
+
+        /// <summary>
         /// Gets or sets the pen for the DropTargetAdorner.
         /// </summary>
         public static readonly DependencyProperty DropTargetAdornerPenProperty

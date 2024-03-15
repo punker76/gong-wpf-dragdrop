@@ -828,6 +828,15 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                         }
 
+                        if(adorner is DropTargetHighlightAdorner highlightAdorner)
+                        {
+                            var highlightBrush = GetDropTargetHighlightBrush(dropInfo.VisualTarget);
+                            if (highlightBrush != null)
+                            {
+                                highlightAdorner.Background = highlightBrush;
+                            }
+                        }
+
                         adorner.DropInfo = dropInfo;
                         adorner.InvalidateVisual();
                     }
