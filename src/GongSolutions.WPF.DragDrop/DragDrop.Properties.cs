@@ -745,6 +745,30 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Data template for displaying drop hint.
+        /// </summary>
+        public static readonly DependencyProperty DropHintDataTemplateProperty = DependencyProperty.RegisterAttached(
+            "DropHintDataTemplate", typeof(DataTemplate), typeof(DragDrop), new PropertyMetadata(default(DataTemplate)));
+
+        /// <summary>
+        /// Helper method for setting the <see cref="DropHintDataTemplateProperty"/> on the given <paramref name="element"/>.
+        /// This property is used when <see cref="UseDropTargetHintProperty"/> is set to <c>true</c> to display hint overlay
+        /// </summary>
+        /// <param name="element">The element to set the drop hint template for</param>
+        /// <param name="value">The <see cref="DataTemplate"/> to display</param>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropHintDataTemplate(DependencyObject element, DataTemplate value)
+        {
+            element.SetValue(DropHintDataTemplateProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplate GetDropHintDataTemplate(DependencyObject element)
+        {
+            return (DataTemplate)element.GetValue(DropHintDataTemplateProperty);
+        }
+
+        /// <summary>
         /// Get or set whether drop target hint is used to indicate where the user can drop.
         /// </summary>
         public static readonly DependencyProperty UseDropTargetHintProperty
