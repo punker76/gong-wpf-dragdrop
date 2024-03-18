@@ -7,7 +7,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public class DropTargetHighlightAdorner : DropTargetAdorner
     {
-        public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
+        public DropTargetHighlightAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
         }

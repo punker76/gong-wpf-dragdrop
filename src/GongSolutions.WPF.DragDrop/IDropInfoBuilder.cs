@@ -17,6 +17,6 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dragInfo">Information about the drag source, if the drag came from within the framework.</param>
         /// <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
         [CanBeNull]
-        IDropInfo CreateDropInfo(object sender, DragEventArgs e, [CanBeNull] DragInfo dragInfo, EventType eventType);
+        IDropInfo CreateDropInfo(object sender, DragEventArgs e, [CanBeNull] IDragInfo dragInfo, EventType eventType);
     }
 }

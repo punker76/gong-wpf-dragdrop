@@ -119,5 +119,11 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the drag drop copy key state indicating the effect of the drag drop operation.
         /// </summary>
         DragDropKeyStates DragDropCopyKeyState { get; }
+
+        /// <summary>
+        /// Refreshes the <see cref="SourceItems" /> property.
+        /// </summary>
+        /// <param name="sender">The drag source control.</param>
+        void RefreshSourceItems(object sender);
     }
 }

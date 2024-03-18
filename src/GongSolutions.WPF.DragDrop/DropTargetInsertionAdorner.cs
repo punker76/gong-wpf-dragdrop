@@ -9,7 +9,7 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public class DropTargetInsertionAdorner : DropTargetAdorner
     {
-        public DropTargetInsertionAdorner(UIElement adornedElement, DropInfo dropInfo)
+        public DropTargetInsertionAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
         }
