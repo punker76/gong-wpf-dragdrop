@@ -200,6 +200,11 @@ namespace GongSolutions.Wpf.DragDrop
 
         protected static bool TestCompatibleTypes(IEnumerable target, object data)
         {
+            if (data == null)
+            {
+                return false;
+            }
+
             bool InterfaceFilter(Type t, object o) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
             var enumerableInterfaces = target.GetType().FindInterfaces(InterfaceFilter, null);
