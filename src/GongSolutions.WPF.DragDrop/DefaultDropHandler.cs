@@ -13,7 +13,7 @@ namespace GongSolutions.Wpf.DragDrop
     /// <summary>
     /// A default insertion drop handler for the most common usages
     /// </summary>
-    public class DefaultDropHandler : IDropTargetHint
+    public class DefaultDropHandler : IDropTarget
     {
         /// <summary>
         /// Test the specified drop information for the right data.
@@ -61,6 +61,11 @@ namespace GongSolutions.Wpf.DragDrop
 
         public static IEnumerable ExtractData(object data)
         {
+            if (data == null)
+            {
+                return Enumerable.Empty<object>();
+            }
+
             if (data is IEnumerable enumerable and not string)
             {
                 return enumerable;
@@ -222,12 +227,14 @@ namespace GongSolutions.Wpf.DragDrop
             }
         }
 
-        public virtual void DropHint(IDropInfo dropInfo)
+        public virtual void DropHint(IDropHintInfo dropHintInfo)
         {
-            if (CanAcceptData(dropInfo))
-            {
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Hint;
-            }
+            dropHintInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
+        }
+
+        public virtual void DropHintOver(IDropHintInfo dropHintInfo)
+        {
+            dropHintInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
         }
 
 #if !NETCOREAPP3_1_OR_GREATER

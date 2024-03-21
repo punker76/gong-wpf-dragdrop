@@ -40,6 +40,15 @@ namespace GongSolutions.Wpf.DragDrop
         Type DropTargetAdorner { get; set; }
 
         /// <summary>
+        /// Gets or sets the class of drop target to display for hint.
+        /// </summary>
+        /// <remarks>
+        /// The standard drop target Adorner classes are held in the <see cref="DropTargetAdorners"/>
+        /// class.
+        /// </remarks>
+        Type DropTargetHintAdorner { get; set; }
+
+        /// <summary>
         /// Gets or sets the allowed effects for the drop.
         /// </summary>
         /// <remarks>

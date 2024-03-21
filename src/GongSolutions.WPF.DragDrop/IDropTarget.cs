@@ -8,6 +8,26 @@ namespace GongSolutions.Wpf.DragDrop
     public interface IDropTarget
     {
         /// <summary>
+        /// Notifies the drop handler when a drag is initiated to display hint about potential drop targets.
+        /// </summary>
+        /// <param name="dropHintInfo">Object which contains several drop information.</param>
+#if NETCOREAPP3_1_OR_GREATER
+        void DropHint(IDropHintInfo dropHintInfo)
+        {
+            // nothing here
+        }
+
+        void DropHintOver(IDropHintInfo dropHintInfo)
+        {
+            // nothing here
+        }
+#else
+        void DropHint(IDropHintInfo dropHintInfo);
+
+        void DropHintOver(IDropHintInfo dropHintInfo);
+#endif
+
+        /// <summary>
         /// Notifies the drop handler when dragging operation enters a potential drop target.
         /// </summary>
         /// <param name="dropInfo">Object which contains several drop information.</param>
