@@ -51,7 +51,8 @@ public class DropTargetHintAdorner : DropTargetHighlightAdorner
             translatePoint.Offset(1, 1);
             var width = Math.Max(visualTarget.RenderSize.Width, 2) - 2;
             var height = Math.Max(visualTarget.RenderSize.Width, 2) - 2;
-            var bounds = new Rect(translatePoint, new Size(width - 2, height));
+
+            var bounds = new Rect(translatePoint, new Size(width, height));
             drawingContext.DrawRectangle(this.Background, this.Pen, bounds);
         }
     }
