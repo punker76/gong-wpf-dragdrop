@@ -34,7 +34,7 @@
                             <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Demonstrates the default behaviour with two TreeViews bound to two collections of the same type. Just try drag and drop some Items from left TreeView to right TreeView." />
                             <Grid>
                                 <Grid.Resources>
-                                    <SolidColorBrush x:Key="DropTargetHighlightBrush" Color="#33008000" />
+                                    <SolidColorBrush x:Key="DropTargetHighlightBrush" Color="#750086FF" />
                                 </Grid.Resources>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />

@@ -1,15 +1,27 @@
-﻿using System;
+using System;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace GongSolutions.Wpf.DragDrop
 {
     using JetBrains.Annotations;
+    using System.Windows.Documents;
+    using System.Windows.Media;
 
+    /// <summary>
+    /// Base class for drop target adorner.
+    /// </summary>
     public abstract class DropTargetAdorner : Adorner
     {
-        public DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
+        private readonly AdornerLayer m_AdornerLayer;
+
+        /// <summary>
+        /// Gets or Sets the pen which can be used for the render process.
+        /// </summary>
+        public Pen Pen { get; set; } = new Pen(Brushes.Gray, 2);
+
+        public IDropInfo DropInfo { get; set; }
+
+        protected DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement)
         {
             this.DropInfo = dropInfo;
@@ -20,13 +32,6 @@ namespace GongSolutions.Wpf.DragDrop
             // can be null but should normally not be null
             this.adornerLayer?.Add(this);
         }
-
-        public IDropInfo DropInfo { get; set; }
-
-        /// <summary>
-        /// Gets or Sets the pen which can be used for the render process.
-        /// </summary>
-        public Pen Pen { get; set; } = new Pen(Brushes.Gray, 2);
 
         public void Detach()
         {
@@ -40,8 +45,6 @@ namespace GongSolutions.Wpf.DragDrop
                 this.adornerLayer.Dispatcher.Invoke(this.Detach);
                 return;
             }
-
-            this.adornerLayer.Remove(this);
         }
 
         internal static DropTargetAdorner Create(Type type, UIElement adornedElement, IDropInfo dropInfo)
@@ -53,7 +56,6 @@ namespace GongSolutions.Wpf.DragDrop
 
             return type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) })?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
         }
-
         [CanBeNull]
         private readonly AdornerLayer adornerLayer;
     }

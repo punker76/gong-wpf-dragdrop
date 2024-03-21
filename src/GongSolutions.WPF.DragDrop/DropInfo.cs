@@ -38,6 +38,9 @@ namespace GongSolutions.Wpf.DragDrop
         public Type DropTargetAdorner { get; set; }
 
         /// <inheritdoc />
+        public Type DropTargetHintAdorner { get; set; }
+
+        /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
         /// <inheritdoc />
@@ -179,10 +182,11 @@ namespace GongSolutions.Wpf.DragDrop
         {
             this.eventArgs = e;
             this.DragInfo = dragInfo;
-            this.KeyStates = e.KeyStates;
+            this.KeyStates = e?.KeyStates ?? DragDropKeyStates.None;
             this.EventType = eventType;
-            var dataFormat = dragInfo?.DataFormat;
-            this.Data = dataFormat != null && e.Data.GetDataPresent(dataFormat.Name) ? e.Data.GetData(dataFormat.Name) : e.Data;
+            var dataFormat = dragInfo?.DataFormat ?? dragInfo?.DataFormat;
+            if(e?.Data != null)
+                this.Data = dataFormat != null && e.Data.GetDataPresent(dataFormat.Name) ? e.Data.GetData(dataFormat.Name) : dragInfo?.Data;
 
             this.VisualTarget = sender as UIElement;
             // if there is no drop target, find another
@@ -215,7 +219,7 @@ namespace GongSolutions.Wpf.DragDrop
             this.TargetScrollingMode = this.VisualTarget != null ? DragDrop.GetDropScrollingMode(this.VisualTarget) : ScrollingMode.Both;
 
             // visual target can be null, so give us a point...
-            this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
+            this.DropPosition = this.VisualTarget != null && e != null ? e.GetPosition(this.VisualTarget) : new Point();
 
             this.Update();
         }

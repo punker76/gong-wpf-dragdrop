@@ -33,7 +33,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dropInfo">the drop info object</param>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
         /// <returns></returns>
-        private static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
+        internal static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
         {
             var dropHandler = (dropInfo?.VisualTarget != null ? GetDropHandler(dropInfo.VisualTarget) : null) ?? (sender != null ? GetDropHandler(sender) : null);
 
@@ -55,7 +55,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
         /// <returns></returns>
-        private static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
+        internal static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
         {
             return sender != null ? GetDropInfoBuilder(sender) : null;
         }
@@ -650,6 +650,7 @@ namespace GongSolutions.Wpf.DragDrop
                                         }
                                     });
 
+                                DropHintHelpers.ShowDropHintAdorners(dragInfo);
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
                                 var dragDropEffects = dragDropHandler(dragInfo.VisualSource, dataObject, dragInfo.Effects);
                                 if (dragDropEffects == DragDropEffects.None)
@@ -658,9 +659,11 @@ namespace GongSolutions.Wpf.DragDrop
                                     DragDropPreview = null;
                                     DragDropEffectPreview = null;
                                     DropTargetAdorner = null;
+                                    DropHintHelpers.HideDropHintAdorners();
                                     Mouse.OverrideCursor = null;
                                 }
 
+                                DropHintHelpers.HideDropHintAdorners();
                                 dragHandler.DragDropOperationFinished(dragDropEffects, dragInfo);
                             }
                             catch (Exception ex)
@@ -712,7 +715,11 @@ namespace GongSolutions.Wpf.DragDrop
             var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
 
-            dropHandler?.DragLeave(dropInfo);
+            if(dropHandler != null)
+            {
+                dropHandler.DragLeave(dropInfo);
+                DropHintHelpers.OnDropHintLeave(dropHandler, dragInfo, dropInfo, sender);
+            }
 
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
@@ -757,6 +764,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             dropHandler.DragOver(dropInfo);
+            DropHintHelpers.OnDropHintEnter(dropHandler, dragInfo, dropInfo, sender);
 
             if (dragInfo is not null)
             {
