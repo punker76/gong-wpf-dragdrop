@@ -98,6 +98,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection1}" />
                         </DockPanel>
 
@@ -110,6 +111,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection2}" />
                         </DockPanel>
 
@@ -122,6 +124,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection2}" />
                         </DockPanel>
 
@@ -133,6 +136,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection4}" />
                         </DockPanel>
 
