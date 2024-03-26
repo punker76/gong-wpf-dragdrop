@@ -23,7 +23,6 @@ namespace Showcase.WPF.DragDrop.Models
             for (var n = 0; n < 10; ++n)
             {
                 this.Collection4.Add(new ItemModel() { Caption = $"Model {n + 1}" });
-                this.DestinationCollection.Add(new DestinationModel { Name = $"Destination {n + 1}" });
             }
 
             for (var g = 0; g < 4; ++g)
@@ -63,8 +62,6 @@ namespace Showcase.WPF.DragDrop.Models
 
             this.TabItemCollection2.Add(new TabItemModel(1));
         }
-
-        public ObservableCollection<DestinationModel> DestinationCollection { get; } = new ObservableCollection<DestinationModel>();
 
         public ObservableCollection<SerializableItemModel> SerializableCollection1 { get; set; } = new ObservableCollection<SerializableItemModel>();
 
@@ -118,7 +115,6 @@ namespace Showcase.WPF.DragDrop.Models
 
         public IDropTarget NestedDropHandler { get; set; } = new NestedDropHandler();
 
-        public IDropTarget HintDropTarget { get; set; } = new HintDropTarget();
-        public IDropTarget SpecializedDropHintTarget { get; set; } = new SpecializedDropHintTarget();
+        public CustomDropHintHandler CustomDropHintHandler { get; set; } = new CustomDropHintHandler();
     }
 }

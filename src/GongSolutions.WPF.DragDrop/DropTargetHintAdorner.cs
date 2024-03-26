@@ -3,61 +3,70 @@ namespace GongSolutions.Wpf.DragDrop;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 /// <summary>
 /// This adorner is used to display hints for where items can be dropped.
 /// </summary>
-public class DropTargetHintAdorner : DropTargetHighlightAdorner
+public class DropTargetHintAdorner : Adorner
 {
-    private readonly IDropHintInfo _dropHintInfo;
-    private readonly ContentPresenter _presenter;
+    private readonly ContentPresenter m_Presenter;
+    private readonly AdornerLayer m_AdornerLayer;
+
+    public static readonly DependencyProperty DropHintDataProperty = DependencyProperty.Register(
+        nameof(DropHintData), typeof(DropHintData), typeof(DropTargetHintAdorner), new PropertyMetadata(default(DropHintData)));
+
+    public DropHintData DropHintData
+    {
+        get => (DropHintData)GetValue(DropHintDataProperty);
+        set => SetValue(DropHintDataProperty, value);
+    }
 
     public DropTargetHintAdorner(UIElement adornedElement,
-                                 IDropHintInfo dropHintInfo,
-                                 DataTemplate dataTemplate)
-        : base(adornedElement, dropHintInfo.DropInfo)
+                                 DataTemplate dataTemplate,
+                                 DropHintData dropHintData)
+        : base(adornedElement)
     {
+        SetCurrentValue(DropHintDataProperty, dropHintData);
+        this.IsHitTestVisible = false;
+        this.AllowDrop = false;
+        this.SnapsToDevicePixels = true;
+        this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
+        this.m_AdornerLayer?.Add(this);
 
-        Pen = new Pen(Brushes.Green, 0.3);
-        Background = new SolidColorBrush(Colors.Green) { Opacity = 0.5 };
-
-        _dropHintInfo = dropHintInfo;
-
-        // Not showing hint when no data template is provided
-        _presenter = dataTemplate == null ? new ContentPresenter() :
-            new ContentPresenter
-            {
-                Content = dropHintInfo.DestinationText,
-                ContentTemplate = dataTemplate
-            };
-
-        if(dataTemplate != null)
-        {
-            Background = new SolidColorBrush(Colors.Transparent);
-            Pen = new Pen(new SolidColorBrush(Colors.Transparent), 0.5);
-        }
-
-        Background.Freeze();
-        Pen.Freeze();
+        this.m_Presenter = new ContentPresenter()
+                           {
+                               IsHitTestVisible = false,
+                               ContentTemplate = dataTemplate
+                           };
+        var binding = new Binding(nameof(DropHintData))
+                      {
+                          Source = this,
+                          Mode = BindingMode.OneWay
+                      };
+        this.m_Presenter.SetBinding(ContentPresenter.ContentProperty, binding);
     }
 
-    /// <inheritdoc />
-    protected override void OnRender(DrawingContext drawingContext)
+    /// <summary>
+    /// Detach the adorner from it's adorner layer.
+    /// </summary>
+    public void Detatch()
     {
-        if (this.AdornedElement is UIElement visualTarget)
-        {
-            var translatePoint = visualTarget.TranslatePoint(new Point(), this.AdornedElement);
-            translatePoint.Offset(1, 1);
-            var width = Math.Max(visualTarget.RenderSize.Width, 2) - 2;
-            var height = Math.Max(visualTarget.RenderSize.Width, 2) - 2;
-
-            var bounds = new Rect(translatePoint, new Size(width, height));
-            drawingContext.DrawRectangle(this.Background, this.Pen, bounds);
-        }
+        this.m_AdornerLayer?.Remove(this);
     }
 
-    internal static DropTargetHintAdorner CreateHintAdorner(Type type, UIElement adornedElement, IDropHintInfo dropHintInfo, DataTemplate dataTemplate)
+    /// <summary>
+    /// Construct a new drop hint target adorner.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="adornedElement"></param>
+    /// <param name="dataTemplate"></param>
+    /// <param name="hintData"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    internal static DropTargetHintAdorner CreateHintAdorner(Type type, UIElement adornedElement, DataTemplate dataTemplate, DropHintData hintData)
     {
         if (!typeof(DropTargetHintAdorner).IsAssignableFrom(type))
         {
@@ -67,13 +76,15 @@ public class DropTargetHintAdorner : DropTargetHighlightAdorner
         return type.GetConstructor(new[]
                                    {
                                        typeof(UIElement),
-                                       typeof(DropHintInfo),
-                                       typeof(DataTemplate)
+                                       typeof(DataTemplate),
+                                       typeof(DropHintData)
                                    })
                    ?.Invoke(new object[]
-                            { adornedElement,
-                                dropHintInfo,
-                                dataTemplate})
+                            {
+                                adornedElement,
+                                dataTemplate,
+                                hintData
+                            })
             as DropTargetHintAdorner;
     }
 
@@ -86,20 +97,20 @@ public class DropTargetHintAdorner : DropTargetHighlightAdorner
 
     protected override Size MeasureOverride(Size constraint)
     {
-        _presenter.Measure(constraint);
-        return _presenter.DesiredSize;
+        this.m_Presenter.Measure(constraint);
+        return this.m_Presenter.DesiredSize;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
         var bounds = GetBounds(AdornedElement as FrameworkElement, AdornedElement);
-        _presenter.Arrange(bounds);
+        this.m_Presenter.Arrange(bounds);
         return bounds.Size;
     }
 
     protected override Visual GetVisualChild(int index)
     {
-        return _presenter;
+        return this.m_Presenter;
     }
 
     protected override int VisualChildrenCount
@@ -107,8 +118,18 @@ public class DropTargetHintAdorner : DropTargetHighlightAdorner
         get { return 1; }
     }
 
-    public ContentPresenter Presenter
+    /// <summary>
+    /// Update hint text and state for the adorner.
+    /// </summary>
+    /// <param name="hintData"></param>
+    public void Update(DropHintData hintData)
     {
-        get { return _presenter; }
+        var currentData = DropHintData;
+        bool requiresUpdate = (hintData?.HintState != currentData?.HintState || hintData?.HintText != currentData?.HintText);
+        SetCurrentValue(DropHintDataProperty, hintData);
+        if(requiresUpdate)
+        {
+            this.m_AdornerLayer.Update();
+        }
     }
 }

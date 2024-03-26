@@ -9,18 +9,18 @@ public class DropHintInfo : IDropHintInfo
 {
     /// <inheritdoc />
     public IDragInfo DragInfo { get; }
-    /// <inheritdoc />
-    public IDropInfo DropInfo { get; }
 
     /// <inheritdoc />
     public Type DropTargetHintAdorner { get; set; }
 
     /// <inheritdoc />
-    public string DestinationText { get; set; }
+    public string DropHintText { get; set; }
 
-    public DropHintInfo(IDragInfo dragInfo, IDropInfo dropInfo = null)
+    /// <inheritdoc />
+    public DropHintState DropTargetHintState { get; set; }
+
+    public DropHintInfo(IDragInfo dragInfo)
     {
         this.DragInfo = dragInfo;
-        this.DropInfo = dropInfo;
     }
 }

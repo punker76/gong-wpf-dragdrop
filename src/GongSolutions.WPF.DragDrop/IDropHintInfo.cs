@@ -13,10 +13,6 @@ public interface IDropHintInfo
     /// if the drag came from within the framework.
     /// </summary>
     IDragInfo DragInfo { get; }
-    /// <summary>
-    /// Get the drop info holding information about the current drag state.
-    /// </summary>
-    IDropInfo DropInfo { get; }
 
     /// <summary>
     /// Gets or sets the class of drop target hint to display.
@@ -27,5 +23,16 @@ public interface IDropHintInfo
     /// </remarks>
     Type DropTargetHintAdorner { get; set; }
 
-    string DestinationText { get; set; }
+    /// <summary>
+    /// Get or set the text that is displayed when initial drop hint is displayed.
+    /// </summary>
+    /// <remarks>
+    /// This corresponds to <see cref="IDropInfo.DropHintText"/> in <see cref="IDropTarget.DragEnter"/>
+    /// and <see cref="IDropTarget.DragOver"/>.
+    /// </remarks>
+    string DropHintText { get; set; }
+    /// <summary>
+    /// The hint state to display different colors for hints.
+    /// </summary>
+    DropHintState DropTargetHintState { get; set; }
 }

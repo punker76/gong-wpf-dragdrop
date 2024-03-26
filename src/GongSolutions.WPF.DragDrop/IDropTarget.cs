@@ -16,15 +16,8 @@ namespace GongSolutions.Wpf.DragDrop
         {
             // nothing here
         }
-
-        void DropHintOver(IDropHintInfo dropHintInfo)
-        {
-            // nothing here
-        }
 #else
         void DropHint(IDropHintInfo dropHintInfo);
-
-        void DropHintOver(IDropHintInfo dropHintInfo);
 #endif
 
         /// <summary>
