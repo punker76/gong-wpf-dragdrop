@@ -3,7 +3,7 @@
 using System;
 
 /// <summary>
-/// This interface is used with the <see cref="IDropTarget.DropHint"/> and <see cref="IDropTarget.DropHintOver"/> methods for
+/// This interface is used with the <see cref="IDropTarget.DropHint"/> for
 /// hint to the user about potential drop targets.
 /// </summary>
 public interface IDropHintInfo

@@ -111,20 +111,18 @@ internal static class DropHintHelpers
             return;
         }
 
-        if (adornerType.IsAssignableTo(typeof(DropTargetHintAdorner)))
-        {
-            if (weakReference.DropTargetHintAdorner != null && weakReference.DropTargetHintAdorner.GetType() != adornerType)
-            {
-                // Type has changed, so we need to remove the old adorner.
-                weakReference.DropTargetHintAdorner = null;
-            }
 
-            if (weakReference.DropTargetHintAdorner == null)
-            {
-                // Create new adorner if it does not exist.
-                var dataTemplate = DragDrop.TryGetDropHintDataTemplate(weakReference.Target);
-                weakReference.DropTargetHintAdorner = DropTargetHintAdorner.CreateHintAdorner(adornerType, weakReference.Target, dataTemplate, hintData);
-            }
+        if (weakReference.DropTargetHintAdorner != null && weakReference.DropTargetHintAdorner.GetType() != adornerType)
+        {
+            // Type has changed, so we need to remove the old adorner.
+            weakReference.DropTargetHintAdorner = null;
+        }
+
+        if (weakReference.DropTargetHintAdorner == null)
+        {
+            // Create new adorner if it does not exist.
+            var dataTemplate = DragDrop.TryGetDropHintDataTemplate(weakReference.Target);
+            weakReference.DropTargetHintAdorner = DropTargetHintAdorner.CreateHintAdorner(adornerType, weakReference.Target, dataTemplate, hintData);
         }
 
         weakReference.DropTargetHintAdorner?.Update(hintData);
