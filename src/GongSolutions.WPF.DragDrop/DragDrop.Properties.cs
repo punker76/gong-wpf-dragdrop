@@ -587,7 +587,6 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <summary>Helper for setting <see cref="DropTargetAdornerBrushProperty"/> on <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetAdornerBrushProperty"/> on.</param>
-        /// <param name="value">DropTargetAdornerBrush property value.</param>
         /// <remarks>Sets the brush for the DropTargetAdorner.</remarks>
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static Brush GetDropTargetHighlightBrush(DependencyObject element)
@@ -748,7 +747,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// Data template for displaying drop hint.
         /// </summary>
         public static readonly DependencyProperty DropHintDataTemplateProperty = DependencyProperty.RegisterAttached(
-            "DropHintDataTemplate", typeof(DataTemplate), typeof(DragDrop), new PropertyMetadata(default(DataTemplate)));
+            "DropHintDataTemplate", typeof(DataTemplate), typeof(DragDrop));
 
         /// <summary>
         /// Helper method for setting the <see cref="DropHintDataTemplateProperty"/> on the given <paramref name="element"/>.
@@ -775,7 +774,7 @@ namespace GongSolutions.Wpf.DragDrop
             = DependencyProperty.RegisterAttached("UseDropTargetHint",
                                                   typeof(bool),
                                                   typeof(DragDrop),
-                                                  new PropertyMetadata(default(bool), OnUseDropTargetHintPropertyChanged));
+                                                  new PropertyMetadata(default(bool), OnUseDropTargetHintChanged));
 
         /// <summary>Helper for setting <see cref="UseDropTargetHintProperty"/> on <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to set <see cref="UseDropTargetHintProperty"/> on.</param>
@@ -802,7 +801,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void OnUseDropTargetHintPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnUseDropTargetHintChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var dropTarget = d as UIElement;
             if (dropTarget == null)
