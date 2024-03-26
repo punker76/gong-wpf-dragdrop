@@ -104,5 +104,7 @@ namespace Showcase.WPF.DragDrop.Models
         public ListBoxCustomDropHandler ListBoxCustomDropHandler { get; set; } = new ListBoxCustomDropHandler();
 
         public IDropTarget NestedDropHandler { get; set; } = new NestedDropHandler();
+
+        public CustomDropHintHandler CustomDropHintHandler { get; set; } = new CustomDropHintHandler();
     }
 }
