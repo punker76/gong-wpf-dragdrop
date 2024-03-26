@@ -97,4 +97,4 @@ Does your company use `GongSolutions.WPF.DragDrop`?  Ask your manager or marketi
 
 ![gif02](./screenshots/DragDropSample01.gif)
 
-![gif02](./screenshots/DragHint-Demo.gif.gif)
+![gif03](./screenshots/DragHint-Demo.gif)
