@@ -39,6 +39,12 @@ namespace GongSolutions.Wpf.DragDrop
         public Type DropTargetHintAdorner { get; set; }
 
         /// <inheritdoc />
+        public DropHintState DropTargetHintState { get; set; }
+
+        /// <inheritdoc />
+        public string DropHintText { get; set; }
+
+        /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
 
         /// <inheritdoc />

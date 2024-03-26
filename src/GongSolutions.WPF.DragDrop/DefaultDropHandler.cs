@@ -232,11 +232,6 @@ namespace GongSolutions.Wpf.DragDrop
             dropHintInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
         }
 
-        public virtual void DropHintOver(IDropHintInfo dropHintInfo)
-        {
-            dropHintInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
-        }
-
 #if !NETCOREAPP3_1_OR_GREATER
         /// <inheritdoc />
         public void DragEnter(IDropInfo dropInfo)
@@ -254,6 +249,15 @@ namespace GongSolutions.Wpf.DragDrop
                 dropInfo.Effects = copyData ? DragDropEffects.Copy : DragDropEffects.Move;
                 var isTreeViewItem = dropInfo.InsertPosition.HasFlag(RelativeInsertPosition.TargetItemCenter) && dropInfo.VisualTargetItem is TreeViewItem;
                 dropInfo.DropTargetAdorner = isTreeViewItem ? DropTargetAdorners.Highlight : DropTargetAdorners.Insert;
+
+                dropInfo.DropTargetHintState = DropHintState.Active;
+                dropInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
+            }
+            else
+            {
+                dropInfo.Effects = DragDropEffects.None;
+                dropInfo.DropTargetHintAdorner = DropTargetAdorners.Hint;
+                dropInfo.DropTargetHintState = DropHintState.Error;
             }
         }
 

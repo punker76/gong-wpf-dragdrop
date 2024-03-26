@@ -49,6 +49,16 @@ namespace GongSolutions.Wpf.DragDrop
         Type DropTargetHintAdorner { get; set; }
 
         /// <summary>
+        /// The hint state to display different colors for hints.
+        /// </summary>
+        DropHintState DropTargetHintState { get; set; }
+
+        /// <summary>
+        /// Get or set the text that is displayed when the drop hint is displayed.
+        /// </summary>
+        string DropHintText { get; set; }
+
+        /// <summary>
         /// Gets or sets the allowed effects for the drop.
         /// </summary>
         /// <remarks>
