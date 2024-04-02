@@ -585,24 +585,24 @@
             <TabItem Header="DropHint">
                 <TabItem.Resources>
                     <DataTemplate x:Key="DefaultDropHintTemplate" DataType="{x:Type dd:DropHintData}">
-                        <Border BorderThickness="1"
-                                CornerRadius="5"
-                                Padding="5,2"
-                                x:Name="RootBorder"
+                        <Border x:Name="RootBorder"
+                                Padding="5 2"
                                 Background="#83008000"
-                                BorderBrush="#B1008000">
-                            <TextBlock VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
+                                BorderBrush="#B1008000"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
                                        Foreground="White"
                                        Text="{Binding HintText}"
-                                       TextWrapping="Wrap"/>
+                                       TextWrapping="Wrap" />
                         </Border>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Path=HintState}" Value="Active">
-                                <Setter TargetName="RootBorder" Property="Background" Value="#9B008000"/>
+                                <Setter TargetName="RootBorder" Property="Background" Value="#9B008000" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Path=HintState}" Value="Error">
-                                <Setter TargetName="RootBorder" Property="Background" Value="#948B0000"/>
+                                <Setter TargetName="RootBorder" Property="Background" Value="#948B0000" />
                             </DataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
@@ -631,61 +631,56 @@
                                  dd:DragDrop.IsDropTarget="True"
                                  dd:DragDrop.SelectDroppedItems="True"
                                  dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
-                                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                  dd:DragDrop.UseDefaultDragAdorner="True"
+                                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                  dd:DragDrop.UseDropTargetHint="True"
                                  ItemsSource="{Binding Data.Collection1}" />
-                        <TabControl Grid.Row="0"
-                                    Grid.Column="1">
+                        <TabControl Grid.Row="0" Grid.Column="1">
                             <TabItem Header="Default style">
                                 <ListBox Height="Auto"
+                                         dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          dd:DragDrop.SelectDroppedItems="True"
                                          dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
-                                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                          dd:DragDrop.UseDefaultDragAdorner="True"
+                                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
                                          dd:DragDrop.UseDropTargetHint="True"
-                                         dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
-                                         ItemsSource="{Binding Data.Collection2}">
-                                </ListBox>
+                                         ItemsSource="{Binding Data.Collection2}" />
                             </TabItem>
                             <TabItem Header="Custom style">
                                 <ListBox Height="Auto"
-                                             dd:DragDrop.DropTargetAdornerBrush="DarkGreen"
-                                             dd:DragDrop.IsDragSource="True"
-                                             dd:DragDrop.IsDropTarget="True"
-                                             dd:DragDrop.SelectDroppedItems="True"
-                                             dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
-                                             dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                             dd:DragDrop.UseDefaultDragAdorner="True"
-                                             dd:DragDrop.UseDropTargetHint="True"
-                                             dd:DragDrop.DropTargetHighlightBrush="#75008000"
-                                             dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}"
-                                             dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
-                                             ItemsSource="{Binding Data.Collection2}">
-                                    </ListBox>
+                                         dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
+                                         dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}"
+                                         dd:DragDrop.DropTargetAdornerBrush="DarkGreen"
+                                         dd:DragDrop.DropTargetHighlightBrush="#75008000"
+                                         dd:DragDrop.IsDragSource="True"
+                                         dd:DragDrop.IsDropTarget="True"
+                                         dd:DragDrop.SelectDroppedItems="True"
+                                         dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                         dd:DragDrop.UseDefaultDragAdorner="True"
+                                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                         dd:DragDrop.UseDropTargetHint="True"
+                                         ItemsSource="{Binding Data.Collection2}" />
                             </TabItem>
                         </TabControl>
 
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="1">
-                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}"
-                                       Text="Customization (for right ListBox)" />
-                            <TextBlock Text="OnStartDrag"/>
-                            <CheckBox IsChecked="{Binding Path=Data.CustomDropHintHandler.IsDropAllowed}"
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for right ListBox)" />
+                            <TextBlock Text="OnStartDrag" />
+                            <CheckBox Margin="8 2 2 2"
                                       Content="IsDropAllowed"
-                                      Margin="8 2 2 2"
-                                      ToolTip="Checking this will allow any data, or display 'warning'"/>
-                            <TextBlock Text="OnDragOver"/>
-                            <CheckBox IsChecked="{Binding Path=Data.CustomDropHintHandler.BlockOdd}"
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.IsDropAllowed}"
+                                      ToolTip="Checking this will allow any data, or display 'warning'" />
+                            <TextBlock Text="OnDragOver" />
+                            <CheckBox Margin="8 2 2 2"
                                       Content="Allow even only"
-                                      Margin="8 2 2 2"
-                                      ToolTip="Only elements with even item is allowed"/>
-                            <CheckBox IsChecked="{Binding Path=Data.CustomDropHintHandler.IsActiveHintDisabled}"
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.BlockOdd}"
+                                      ToolTip="Only elements with even item is allowed" />
+                            <CheckBox Margin="8 2 2 2"
                                       Content="Don't hint on mouseover"
-                                      Margin="8 2 2 2"
-                                      ToolTip="No hint should be displayed on mouse-over"/>
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.IsActiveHintDisabled}"
+                                      ToolTip="No hint should be displayed on mouse-over" />
 
                         </StackPanel>
 
