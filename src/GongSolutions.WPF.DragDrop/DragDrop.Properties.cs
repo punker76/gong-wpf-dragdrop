@@ -92,7 +92,6 @@ namespace GongSolutions.Wpf.DragDrop
         {
             if (e.OldValue != e.NewValue && d is UIElement uiElement)
             {
-                Console.WriteLine($"OnIsDragSourceChanged unsubscribing");
                 uiElement.PreviewMouseLeftButtonDown -= DragSourceOnMouseLeftButtonDown;
                 uiElement.PreviewMouseLeftButtonUp -= DragSourceOnMouseLeftButtonUp;
                 uiElement.PreviewMouseMove -= DragSourceOnMouseMove;
@@ -106,7 +105,6 @@ namespace GongSolutions.Wpf.DragDrop
 
                 if ((bool)e.NewValue)
                 {
-                    Console.WriteLine($"OnIsDragSourceChanged subscribing");
                     uiElement.PreviewMouseLeftButtonDown += DragSourceOnMouseLeftButtonDown;
                     uiElement.PreviewMouseLeftButtonUp += DragSourceOnMouseLeftButtonUp;
                     uiElement.PreviewMouseMove += DragSourceOnMouseMove;
@@ -210,7 +208,6 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void RegisterDragDropEvents(UIElement uiElement, EventType eventType)
         {
-            Console.WriteLine($"RegisterDragDropEvents -> {eventType}");
             switch (eventType)
             {
                 case EventType.Auto:
@@ -271,7 +268,6 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void UnregisterDragDropEvents(UIElement uiElement, EventType eventType)
         {
-            Console.WriteLine($"UnregisterDragDropEvents -> {eventType}");
             switch (eventType)
             {
                 case EventType.Auto:
