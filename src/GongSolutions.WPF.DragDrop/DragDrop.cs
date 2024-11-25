@@ -727,7 +727,8 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
         {
-            if (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton))
+            if (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton)
+                != e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton))
             {
                 DropTargetOnDragOver(sender, e, EventType.Bubbled, GetIsDragLeaved(sender as DependencyObject));
             }
