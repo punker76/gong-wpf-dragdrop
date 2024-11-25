@@ -495,11 +495,13 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            Console.WriteLine("DragSourceOnMouseLeftButtonUp");
             DragSourceUp(sender, e.GetPosition((IInputElement)sender));
         }
 
         private static void DragSourceOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
+            Console.WriteLine("DragSourceOnMouseRightButtonUp");
             DragSourceUp(sender, e.GetPosition((IInputElement)sender));
         }
 
@@ -567,6 +569,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DragSourceOnMouseMove(object sender, MouseEventArgs e)
         {
+            //Console.WriteLine($"DragSourceOnMouseMove ->");
             if (_dragInfo != null && !_dragInProgress)
             {
                 if (_dragInfo.MouseButton == MouseButton.Left && e.LeftButton == MouseButtonState.Released)
@@ -583,6 +586,7 @@ namespace GongSolutions.Wpf.DragDrop
                     return;
                 }
 
+                //Console.WriteLine($"DragSourceOnMouseMove {_dragInfo.MouseButton} {e.LeftButton}");
                 DoDragSourceMove(sender, element => e.GetPosition(element));
             }
         }
@@ -629,10 +633,12 @@ namespace GongSolutions.Wpf.DragDrop
 
                             try
                             {
+                                Console.WriteLine("_draginProgress true");
                                 _dragInProgress = true;
 
                                 if (DragDropPreview is null)
                                 {
+                                    Console.WriteLine($"DoDragSourceMove setting preview");
                                     DragDropPreview = GetDragDropPreview(dragInfo, null, sender as UIElement);
                                     DragDropPreview?.Move(getPosition(DragDropPreview.PlacementTarget));
                                 }
@@ -669,6 +675,7 @@ namespace GongSolutions.Wpf.DragDrop
                             finally
                             {
                                 MouseHelper.UnHook();
+                                Console.WriteLine("_draginProgress false");
                                 _dragInProgress = false;
                                 _dragInfo = null;
                             }
@@ -682,10 +689,15 @@ namespace GongSolutions.Wpf.DragDrop
         {
             if (e.Action == DragAction.Cancel || e.EscapePressed || (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton) == e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton)))
             {
+                Console.WriteLine($"DragSourceOnQueryContinueDrag setting nulls");
                 DragDropPreview = null;
                 DragDropEffectPreview = null;
                 DropTargetAdorner = null;
                 Mouse.OverrideCursor = null;
+            }
+            else
+            {
+                Console.WriteLine($"DragSourceOnQueryContinueDrag {e.Action}");
             }
         }
 
@@ -727,21 +739,28 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDragEnter(object sender, DragEventArgs e)
         {
-            DropTargetOnDragOver(sender, e, EventType.Bubbled, GetIsDragLeaved(sender as DependencyObject));
+            if (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton))
+            {
+                Console.WriteLine($"DropTargetOnDragEnter {e.Effects} {e.KeyStates}");
+                DropTargetOnDragOver(sender, e, EventType.Bubbled, GetIsDragLeaved(sender as DependencyObject));
+            }
         }
 
         private static void DropTargetOnPreviewDragEnter(object sender, DragEventArgs e)
         {
+            Console.WriteLine("DropTargetOnPreviewDragEnter");
             DropTargetOnDragOver(sender, e, EventType.Tunneled, GetIsDragLeaved(sender as DependencyObject));
         }
 
         private static void DropTargetOnDragOver(object sender, DragEventArgs e)
         {
+            Console.WriteLine("DropTargetOnDragOver");
             DropTargetOnDragOver(sender, e, EventType.Bubbled, false);
         }
 
         private static void DropTargetOnPreviewDragOver(object sender, DragEventArgs e)
         {
+            Console.WriteLine("DropTargetOnPreviewDragOver");
             DropTargetOnDragOver(sender, e, EventType.Tunneled, false);
         }
 
@@ -769,6 +788,7 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 if (DragDropPreview is null)
                 {
+                    Console.WriteLine($"DropTargetOnDragOver setting preview");
                     DragDropPreview = GetDragDropPreview(dragInfo, dropInfo.VisualTarget, sender as UIElement);
                     DragDropPreview?.Move(e.GetPosition(DragDropPreview.PlacementTarget));
                 }
@@ -888,6 +908,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         private static void DropTargetOnDrop(object sender, DragEventArgs e, EventType eventType)
         {
+            Console.WriteLine($"DropTargetOnDrop ->");
             var dragInfo = _dragInfo;
             var dropInfoBuilder = TryGetDropInfoBuilder(sender as DependencyObject);
             var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
@@ -895,6 +916,7 @@ namespace GongSolutions.Wpf.DragDrop
             var dragHandler = TryGetDragHandler(dragInfo, sender as UIElement);
             var itemsSorter = TryGetDropTargetItemsSorter(dropInfo, sender as UIElement);
 
+            Console.WriteLine($"DropTargetOnDrop setting nulls");
             DragDropPreview = null;
             DragDropEffectPreview = null;
             DropTargetAdorner = null;

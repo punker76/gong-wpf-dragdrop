@@ -214,14 +214,17 @@ namespace GongSolutions.Wpf.DragDrop
 
         public void UpdatePreviewPresenter(IDragInfo dragInfo, UIElement visualTarget, UIElement sender)
         {
+            Console.WriteLine($"UpdatePreviewPresenter ->");
             var visualSource = dragInfo?.VisualSource;
             if (visualSource is null)
             {
+                Console.WriteLine($"visual source null");
                 return;
             }
 
             if (this._visualTarget != null && visualTarget != null && ReferenceEquals(this._visualTarget, visualTarget))
             {
+                Console.WriteLine($"visual source not null");
                 return;
             }
 
@@ -274,6 +277,7 @@ namespace GongSolutions.Wpf.DragDrop
                 }
             }
 
+            Console.WriteLine($"setting template");
             this.SetCurrentValue(ItemTemplateSelectorProperty, templateSelector);
             this.SetCurrentValue(ItemTemplateProperty, template);
             this.SetCurrentValue(ItemsPanelProperty, itemsPanel);
