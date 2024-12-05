@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <!-- Project properties -->
     <PropertyGroup>
+        <TargetFrameworks>net9.0-windows;net8.0-windows;net6.0-windows;net462</TargetFrameworks>
         <AssemblyName>Showcase.WPF.DragDrop</AssemblyName>
         <RootNamespace>Showcase.WPF.DragDrop</RootNamespace>
         <DisableFody Condition=" '$(Configuration)' == 'Debug' ">true</DisableFody>
@@ -33,13 +34,8 @@
           <IncludeAssets>compile; runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
       </ItemGroup>
-    
-    <ItemGroup>
-        <None Include="app.manifest" />
-    </ItemGroup>
 
     <ItemGroup>
-        <Compile DependentUpon="%(Filename)" SubType="Code" Update="**\obj\**\*.g$(DefaultLanguageSourceExtension)" />
-        <Compile DependentUpon="%(Filename)" SubType="Designer" Update="**\*.xaml$(DefaultLanguageSourceExtension)" />
+        <None Include="app.manifest" />
     </ItemGroup>
 </Project>
