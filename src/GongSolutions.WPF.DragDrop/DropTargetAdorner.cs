@@ -27,6 +27,12 @@ namespace GongSolutions.Wpf.DragDrop
 
         public void Detatch()
         {
+            if (!m_AdornerLayer.Dispatcher.CheckAccess())
+            {
+                m_AdornerLayer.Dispatcher.Invoke(this.Detatch);
+                return;
+            }
+
             this.m_AdornerLayer.Remove(this);
         }
 
