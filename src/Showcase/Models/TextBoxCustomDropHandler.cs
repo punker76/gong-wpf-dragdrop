@@ -15,6 +15,12 @@ namespace Showcase.WPF.DragDrop.Models
         {
             // nothing here
         }
+
+        /// <inheritdoc />
+        public void DropHint(IDropHintInfo dropHintInfo)
+        {
+            // nothing here
+        }
 #endif
 
         /// <inheritdoc />
@@ -63,7 +69,7 @@ namespace Showcase.WPF.DragDrop.Models
         private readonly Pen _pen;
         private readonly Brush _brush;
 
-        public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
+        public DropTargetHighlightAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
             this._pen = new Pen(Brushes.Tomato, 2);

@@ -98,6 +98,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection1}" />
                         </DockPanel>
 
@@ -110,6 +111,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection2}" />
                         </DockPanel>
 
@@ -122,6 +124,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection2}" />
                         </DockPanel>
 
@@ -133,6 +136,7 @@
                                      dd:DragDrop.IsDragSource="True"
                                      dd:DragDrop.IsDropTarget="True"
                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                     dd:DragDrop.UseDropTargetHint="True"
                                      ItemsSource="{Binding Data.Collection4}" />
                         </DockPanel>
 
@@ -205,21 +209,6 @@
                                               dd:DragDrop.IsDropTarget="True"
                                               dd:DragDrop.UseDefaultDragAdorner="True"
                                               ItemsSource="{Binding Data.Collection1}">
-                                    <ItemsControl.Style>
-                                        <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                        <Border Background="WhiteSmoke">
-                                                            <ScrollViewer>
-                                                                <ItemsPresenter />
-                                                            </ScrollViewer>
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ItemsControl.Style>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Margin="4" Background="Bisque">
@@ -422,56 +411,54 @@
                         <TextBlock DockPanel.Dock="Top"
                                    Style="{StaticResource DefaultTextBlockStyle}"
                                    Text="Demonstrates the behaviour with an ItemsControl that has a DataTemplate with an ItemsControl and Buttons inside." />
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl Height="Auto"
-                                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
-                                          dd:DragDrop.DragDropContext="OuterContext"
-                                          dd:DragDrop.IsDragSource="True"
-                                          dd:DragDrop.IsDropTarget="True"
-                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                          ItemsSource="{Binding Data.Collection1}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0 1 0 1" Background="Coral">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row="0"
-                                                       Margin="2"
-                                                       FontSize="16"
-                                                       Text="{Binding}" />
-                                            <ItemsControl Grid.Row="1"
-                                                          Height="Auto"
-                                                          dd:DragDrop.DragDropContext="InnerContext"
-                                                          dd:DragDrop.IsDragSource="True"
-                                                          dd:DragDrop.IsDropTarget="True"
-                                                          ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="{x:Type models:SubItemModel}">
-                                                        <Grid Background="#FDA07E">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Button Margin="20 0 10 0"
-                                                                        VerticalAlignment="Center"
-                                                                        Command="{Binding ButtonTestCommand}"
-                                                                        Content="{Binding Caption}" />
-                                                                <RadioButton VerticalAlignment="Center"
-                                                                             Content="Option A"
-                                                                             IsChecked="{Binding BindableOptionA}" />
-                                                                <RadioButton VerticalAlignment="Center"
-                                                                             Content="Option B"
-                                                                             IsChecked="{Binding BindableOptionB}" />
-                                                                <TextBlock VerticalAlignment="Center" Text="{Binding BindableValue}" />
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                        <ItemsControl Height="Auto"
+                                      dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                                      dd:DragDrop.DragDropContext="OuterContext"
+                                      dd:DragDrop.IsDragSource="True"
+                                      dd:DragDrop.IsDropTarget="True"
+                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                      ItemsSource="{Binding Data.Collection1}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 1 0 1" Background="Coral">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   Margin="2"
+                                                   FontSize="16"
+                                                   Text="{Binding}" />
+                                        <ItemsControl Grid.Row="1"
+                                                      Height="Auto"
+                                                      dd:DragDrop.DragDropContext="InnerContext"
+                                                      dd:DragDrop.IsDragSource="True"
+                                                      dd:DragDrop.IsDropTarget="True"
+                                                      ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type models:SubItemModel}">
+                                                    <Grid Background="#FDA07E">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button Margin="20 0 10 0"
+                                                                    VerticalAlignment="Center"
+                                                                    Command="{Binding ButtonTestCommand}"
+                                                                    Content="{Binding Caption}" />
+                                                            <RadioButton VerticalAlignment="Center"
+                                                                         Content="Option A"
+                                                                         IsChecked="{Binding BindableOptionA}" />
+                                                            <RadioButton VerticalAlignment="Center"
+                                                                         Content="Option B"
+                                                                         IsChecked="{Binding BindableOptionB}" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{Binding BindableValue}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </DockPanel>
                 </DockPanel>
             </TabItem>
@@ -595,6 +582,115 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="DropHint">
+                <TabItem.Resources>
+                    <DataTemplate x:Key="DefaultDropHintTemplate" DataType="{x:Type dd:DropHintData}">
+                        <Border x:Name="RootBorder"
+                                Padding="5 2"
+                                Background="#83008000"
+                                BorderBrush="#B1008000"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Text="{Binding HintText}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=HintState}" Value="Active">
+                                <Setter TargetName="RootBorder" Property="Background" Value="#9B008000" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=HintState}" Value="Error">
+                                <Setter TargetName="RootBorder" Property="Background" Value="#948B0000" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </TabItem.Resources>
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Demonstrate drop hints for information about available drop targets." />
+                        <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Showing different examples with DropHint for helping user interact with drag and drop." />
+                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ListBox x:Name="LeftBoundDropHintListBox"
+                                 Grid.Row="0"
+                                 Grid.Column="0"
+                                 Height="Auto"
+                                 dd:DragDrop.DropTargetAdornerBrush="Crimson"
+                                 dd:DragDrop.IsDragSource="True"
+                                 dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.SelectDroppedItems="True"
+                                 dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                 dd:DragDrop.UseDefaultDragAdorner="True"
+                                 dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                 dd:DragDrop.UseDropTargetHint="True"
+                                 ItemsSource="{Binding Data.Collection1}" />
+                        <TabControl Grid.Row="0" Grid.Column="1">
+                            <TabItem Header="Default style">
+                                <ListBox Height="Auto"
+                                         dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
+                                         dd:DragDrop.IsDragSource="True"
+                                         dd:DragDrop.IsDropTarget="True"
+                                         dd:DragDrop.SelectDroppedItems="True"
+                                         dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                         dd:DragDrop.UseDefaultDragAdorner="True"
+                                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                         dd:DragDrop.UseDropTargetHint="True"
+                                         ItemsSource="{Binding Data.Collection2}" />
+                            </TabItem>
+                            <TabItem Header="Custom style">
+                                <ListBox Height="Auto"
+                                         dd:DragDrop.DropHandler="{Binding Path=Data.CustomDropHintHandler}"
+                                         dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}"
+                                         dd:DragDrop.DropTargetAdornerBrush="DarkGreen"
+                                         dd:DragDrop.DropTargetHighlightBrush="#75008000"
+                                         dd:DragDrop.IsDragSource="True"
+                                         dd:DragDrop.IsDropTarget="True"
+                                         dd:DragDrop.SelectDroppedItems="True"
+                                         dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                         dd:DragDrop.UseDefaultDragAdorner="True"
+                                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                         dd:DragDrop.UseDropTargetHint="True"
+                                         ItemsSource="{Binding Data.Collection2}" />
+                            </TabItem>
+                        </TabControl>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <TextBlock Style="{StaticResource DefaultTextBlockStyle}" Text="Customization (for right ListBox)" />
+                            <TextBlock Text="OnStartDrag" />
+                            <CheckBox Margin="8 2 2 2"
+                                      Content="IsDropAllowed"
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.IsDropAllowed}"
+                                      ToolTip="Checking this will allow any data, or display 'warning'" />
+                            <TextBlock Text="OnDragOver" />
+                            <CheckBox Margin="8 2 2 2"
+                                      Content="Allow even only"
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.BlockOdd}"
+                                      ToolTip="Only elements with even item is allowed" />
+                            <CheckBox Margin="8 2 2 2"
+                                      Content="Don't hint on mouseover"
+                                      IsChecked="{Binding Path=Data.CustomDropHintHandler.IsActiveHintDisabled}"
+                                      ToolTip="No hint should be displayed on mouse-over" />
+
+                        </StackPanel>
+
+                        <views:SettingsView Grid.Row="1"
+                                            Grid.Column="0"
+                                            Caption="Customization (for left ListBox)"
+                                            DataContext="{x:Reference LeftBoundDropHintListBox}" />
+                    </Grid>
+                </DockPanel>
+            </TabItem>
         </TabControl>
 
     </Grid>

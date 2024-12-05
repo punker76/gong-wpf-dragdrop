@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.ObjectModel;
 using JetBrains.Annotations;
+using System.Diagnostics;
 
 namespace GongSolutions.Wpf.DragDrop.Utilities
 {
@@ -12,24 +13,33 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
     {
         public static IEnumerable CreateDynamicallyTypedList(IEnumerable source)
         {
-            var type = GetCommonBaseClass(source);
+            var sourceObjects = source.Cast<object>().ToArray();
+            var type = GetCommonBaseClass(sourceObjects.Select(o => o.GetType()).Distinct().ToArray());
 
-            var listType = typeof(List<>).MakeGenericType(type);
-            var addMethod = listType.GetMethod("Add");
-
-            var list = listType.GetConstructor(Type.EmptyTypes)?.Invoke(null);
-
-            foreach (var o in source)
+            try
             {
-                addMethod.Invoke(list, new[] { o });
+                var listType = typeof(List<>).MakeGenericType(type);
+                if (listType.GetConstructor(Type.EmptyTypes)?.Invoke(null) is IList list)
+                {
+                    foreach (var o in sourceObjects)
+                    {
+                        list.Add(o);
+                    }
+
+                    return list;
+                }
+            }
+            catch (Exception exception)
+            {
+                Trace.TraceError($"Could not create a typed list from the source enumerable! {exception}");
             }
 
-            return list as IEnumerable;
+            return sourceObjects;
         }
 
         public static Type GetCommonBaseClass(IEnumerable e)
         {
-            var types = e.Cast<object>().Select(o => o.GetType()).ToArray();
+            var types = e.Cast<object>().Select(o => o.GetType()).Distinct().ToArray();
             return GetCommonBaseClass(types);
         }
 
@@ -40,25 +50,25 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 return typeof(object);
             }
 
-            var ret = types[0];
+            var classType = types[0];
 
             for (var i = 1; i < types.Length; ++i)
             {
-                if (types[i].IsAssignableFrom(ret))
+                if (types[i].IsAssignableFrom(classType))
                 {
-                    ret = types[i];
+                    classType = types[i];
                 }
                 else
                 {
                     // This will always terminate when ret == typeof(object)
-                    while (ret is { } && !ret.IsAssignableFrom(types[i]))
+                    while (classType is not null && !classType.IsAssignableFrom(types[i]))
                     {
-                        ret = ret.BaseType;
+                        classType = classType.BaseType;
                     }
                 }
             }
 
-            return ret;
+            return classType;
         }
 
         /// <summary>

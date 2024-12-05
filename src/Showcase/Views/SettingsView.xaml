@@ -66,6 +66,11 @@
                   Content="UseDefaultEffectDataTemplate"
                   IsChecked="{Binding Path=(dd:DragDrop.UseDefaultEffectDataTemplate), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="Sets whether if the default DataTemplate for the effects should be use." />
+
+        <CheckBox Margin="10 2 2 2"
+                  Content="UseDropTargetHint"
+                  IsChecked="{Binding Path=(dd:DragDrop.UseDropTargetHint), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="When checked drop hints are displayed when drag operation starts." />
         <StackPanel Margin="10 2 2 2"
                     Orientation="Horizontal"
                     Visibility="{Binding ElementName=This, Path=ShowCopyKeyState, Mode=OneWay, Converter={StaticResource BoolToVis}}">

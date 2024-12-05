@@ -6,6 +6,8 @@ branches:
     - main
 
 environment:
+  # bad, but without this, gitversion doesn't work anymore
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
   azure-key-vault-url:
     secure: 1mKS/HfCVq+iYNRVSrrN8NEowOkKt3knrpMzw+SOy3g=
   azure-key-vault-client-id:
@@ -17,21 +19,20 @@ environment:
   azure-key-vault-certificate:
     secure: BSPdW2TgnQtoQXXbeDECug==
 
-skip_tags: true
 image: Visual Studio 2022
-test: off
+test: false
 
 # install:
   # - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile 'dotnet-install.ps1'
-  # - ps: ./dotnet-install.ps1 -Version 6.0.100 -InstallDir "C:\Program Files\dotnet"
+  # - ps: ./dotnet-install.ps1 -Version 8.0.403 -InstallDir "C:\Program Files\dotnet"
 
 pull_requests:
   do_not_increment_build_number: false
 
 build_script:
-  - ps: dotnet --list-sdks
+  - ps: dotnet --info
   - ps: gitversion /version
-  - ps: .\build.ps1 --target=ci
+  - ps: .\build.ps1 --target=ci --verbosity=diagnostic
 
 artifacts:
   - path: \Publish\*.*

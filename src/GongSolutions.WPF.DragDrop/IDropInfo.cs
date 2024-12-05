@@ -40,6 +40,25 @@ namespace GongSolutions.Wpf.DragDrop
         Type DropTargetAdorner { get; set; }
 
         /// <summary>
+        /// Gets or sets the class of drop target to display for hint.
+        /// </summary>
+        /// <remarks>
+        /// The standard drop target Adorner classes are held in the <see cref="DropTargetAdorners"/>
+        /// class.
+        /// </remarks>
+        Type DropTargetHintAdorner { get; set; }
+
+        /// <summary>
+        /// The hint state to display different colors for hints.
+        /// </summary>
+        DropHintState DropTargetHintState { get; set; }
+
+        /// <summary>
+        /// Get or set the text that is displayed when the drop hint is displayed.
+        /// </summary>
+        string DropHintText { get; set; }
+
+        /// <summary>
         /// Gets or sets the allowed effects for the drop.
         /// </summary>
         /// <remarks>
@@ -121,7 +140,7 @@ namespace GongSolutions.Wpf.DragDrop
         FlowDirection VisualTargetFlowDirection { get; }
 
         /// <summary>
-        /// Gets and sets the text displayed in the DropDropEffects Adorner.
+        /// Gets and sets the text displayed in the DropDropEffects Adorner and DropTargetHintAdorner.
         /// </summary>
         string DestinationText { get; set; }
 
@@ -154,5 +173,13 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the current mode of the underlying routed event.
         /// </summary>
         EventType EventType { get; }
+
+        /// <summary>
+        /// Indicates if the drop target can accept the dragged data as a child item (applies to tree view items).
+        /// </summary>
+        /// <remarks>
+        /// Changing this value will update other properties.
+        /// </remarks>
+        bool AcceptChildItem { get; set; }
     }
 }

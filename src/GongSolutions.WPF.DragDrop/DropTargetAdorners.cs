@@ -13,5 +13,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the type of the default insert target adorner.
         /// </summary>
         public static Type Insert { get; } = typeof(DropTargetInsertionAdorner);
+
+        /// <summary>
+        /// Get the type for the default hint target adorner.
+        /// </summary>
+        public static Type Hint { get; } = typeof(DropTargetHintAdorner);
     }
 }

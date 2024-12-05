@@ -17,6 +17,12 @@ namespace Showcase.WPF.DragDrop.Models
         {
             // nothing here
         }
+
+        /// <inheritdoc />
+        public void DropHint(IDropHintInfo dropHintInfo)
+        {
+            // nothing here
+        }
 #endif
 
         /// <inheritdoc />

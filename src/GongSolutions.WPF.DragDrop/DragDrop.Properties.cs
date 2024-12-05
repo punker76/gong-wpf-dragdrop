@@ -100,7 +100,6 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewTouchUp -= DragSourceOnTouchUp;
                 uiElement.PreviewTouchMove -= DragSourceOnTouchMove;
 
-                uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
                 uiElement.GiveFeedback -= DragSourceOnGiveFeedback;
 
                 if ((bool)e.NewValue)
@@ -113,7 +112,6 @@ namespace GongSolutions.Wpf.DragDrop
                     uiElement.PreviewTouchUp += DragSourceOnTouchUp;
                     uiElement.PreviewTouchMove += DragSourceOnTouchMove;
 
-                    uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
                     uiElement.GiveFeedback += DragSourceOnGiveFeedback;
                 }
             }
@@ -572,6 +570,31 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
+        /// Gets or sets the brush to use for the <see cref="DropTargetHighlightAdorner"/>.
+        /// </summary>
+        public static readonly DependencyProperty DropTargetHighlightBrushProperty = DependencyProperty.RegisterAttached(
+            "DropTargetHighlightBrush", typeof(Brush), typeof(DragDrop), new PropertyMetadata(default(Brush)));
+
+        /// <summary>Helper for setting <see cref="DropTargetHighlightBrushProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetHighlightBrushProperty"/> on.</param>
+        /// <param name="value">The brush to use for the background of <see cref="DropTargetHighlightAdorner"/>.</param>
+        /// <remarks>Sets the brush for the DropTargetAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropTargetHighlightBrush(DependencyObject element, Brush value)
+        {
+            element.SetValue(DropTargetHighlightBrushProperty, value);
+        }
+
+        /// <summary>Helper for setting <see cref="DropTargetAdornerBrushProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetAdornerBrushProperty"/> on.</param>
+        /// <remarks>Sets the brush for the DropTargetAdorner.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static Brush GetDropTargetHighlightBrush(DependencyObject element)
+        {
+            return (Brush)element.GetValue(DropTargetHighlightBrushProperty);
+        }
+
+        /// <summary>
         /// Gets or sets the pen for the DropTargetAdorner.
         /// </summary>
         public static readonly DependencyProperty DropTargetAdornerPenProperty
@@ -718,6 +741,84 @@ namespace GongSolutions.Wpf.DragDrop
         public static void SetDragDropCopyKeyState(DependencyObject element, DragDropKeyStates value)
         {
             element.SetValue(DragDropCopyKeyStateProperty, value);
+        }
+
+        /// <summary>
+        /// Data template for displaying drop hint.
+        /// </summary>
+        public static readonly DependencyProperty DropHintDataTemplateProperty = DependencyProperty.RegisterAttached(
+            "DropHintDataTemplate", typeof(DataTemplate), typeof(DragDrop));
+
+        /// <summary>
+        /// Helper method for setting the <see cref="DropHintDataTemplateProperty"/> on the given <paramref name="element"/>.
+        /// This property is used when <see cref="UseDropTargetHintProperty"/> is set to <c>true</c> to display hint overlay
+        /// </summary>
+        /// <param name="element">The element to set the drop hint template for</param>
+        /// <param name="value">The <see cref="DataTemplate"/> to display</param>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetDropHintDataTemplate(DependencyObject element, DataTemplate value)
+        {
+            element.SetValue(DropHintDataTemplateProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static DataTemplate GetDropHintDataTemplate(DependencyObject element)
+        {
+            return (DataTemplate)element.GetValue(DropHintDataTemplateProperty);
+        }
+
+        /// <summary>
+        /// Get or set whether drop target hint is used to indicate where the user can drop.
+        /// </summary>
+        public static readonly DependencyProperty UseDropTargetHintProperty
+            = DependencyProperty.RegisterAttached("UseDropTargetHint",
+                                                  typeof(bool),
+                                                  typeof(DragDrop),
+                                                  new PropertyMetadata(default(bool), OnUseDropTargetHintChanged));
+
+        /// <summary>Helper for setting <see cref="UseDropTargetHintProperty"/> on <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to set <see cref="UseDropTargetHintProperty"/> on.</param>
+        /// <param name="value">UseDropTargetHintProperty property value.</param>
+        /// <remarks>Sets whether the hint adorner should be displayed.</remarks>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static void SetUseDropTargetHint(DependencyObject element, bool value)
+        {
+            element.SetValue(UseDropTargetHintProperty, value);
+        }
+
+        /// <summary>Helper for getting <see cref="UseDropTargetHintProperty"/> from <paramref name="element"/>.</summary>
+        /// <param name="element"><see cref="DependencyObject"/> to read <see cref="UseDropTargetHintProperty"/> from.</param>
+        /// <remarks>Gets whether if the default DragAdorner is used.</remarks>
+        /// <returns>UseDropTargetHintProperty property value.</returns>
+        [AttachedPropertyBrowsableForType(typeof(UIElement))]
+        public static bool GetUseDropTargetHint(DependencyObject element)
+        {
+            return (bool)element.GetValue(UseDropTargetHintProperty);
+        }
+
+        /// <summary>
+        /// Implements side effects for when the UseDropTargetHintProperty changes.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnUseDropTargetHintChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dropTarget = d as UIElement;
+            if (dropTarget == null)
+            {
+                return;
+            }
+
+            // Add or remove drop target from hint cache.
+            bool useDropTargetHint = (bool)e.NewValue;
+            if (useDropTargetHint)
+            {
+                DropHintHelpers.AddDropHintTarget(dropTarget);
+            }
+            else
+            {
+                DropHintHelpers.RemoveDropHintTarget(dropTarget);
+            }
         }
 
         /// <summary>
@@ -1513,7 +1614,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.
+        /// Gets or sets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.
         /// </summary>
         public static readonly DependencyProperty DropTargetScrollViewerProperty
             = DependencyProperty.RegisterAttached("DropTargetScrollViewer",
@@ -1523,7 +1624,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <summary>Helper for getting <see cref="DropTargetScrollViewerProperty"/> from <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropTargetScrollViewerProperty"/> from.</param>
-        /// <remarks>Gets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.</remarks>
+        /// <remarks>Gets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.</remarks>
         /// <returns>DropTargetScrollViewer property value.</returns>
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static ScrollViewer GetDropTargetScrollViewer(DependencyObject element)
@@ -1534,7 +1635,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>Helper for setting <see cref="DropTargetScrollViewerProperty"/> on <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetScrollViewerProperty"/> on.</param>
         /// <param name="value">DropTargetScrollViewer property value.</param>
-        /// <remarks>Sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.</remarks>
+        /// <remarks>Sets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.</remarks>
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static void SetDropTargetScrollViewer(DependencyObject element, ScrollViewer value)
         {

@@ -13,7 +13,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="dragInfo">Object which contains several drag information.</param>
         /// <remarks>
-        /// To allow a drag to be started, the <see cref="DragInfo.Effects" /> property on <paramref name="dragInfo" />
+        /// To allow a drag to be started, the <see cref="IDragInfo.Effects" /> property on <paramref name="dragInfo" />
         /// should be set to a value other than <see cref="DragDropEffects.None" />.
         /// </remarks>
         void StartDrag(IDragInfo dragInfo);

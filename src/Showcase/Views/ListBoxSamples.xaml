@@ -283,13 +283,6 @@
             </TabItem>
 
             <TabItem Header="Grouping">
-                <TabItem.Resources>
-                    <CollectionViewSource x:Key="GroupedCollectionViewSource" Source="{Binding Data.GroupedCollection}">
-                        <CollectionViewSource.GroupDescriptions>
-                            <PropertyGroupDescription PropertyName="Group" />
-                        </CollectionViewSource.GroupDescriptions>
-                    </CollectionViewSource>
-                </TabItem.Resources>
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Top"
                                Style="{StaticResource SampleHeaderTextBlockStyle}"
@@ -309,7 +302,7 @@
                                          dd:DragDrop.IsDragSource="True"
                                          dd:DragDrop.IsDropTarget="True"
                                          DisplayMemberPath="Caption"
-                                         ItemsSource="{Binding Source={StaticResource GroupedCollectionViewSource}}"
+                                         ItemsSource="{Binding Data.GroupedItemsCollectionViewSource}"
                                          SelectionMode="Extended">
                                     <ListBox.GroupStyle>
                                         <x:Static Member="GroupStyle.Default" />

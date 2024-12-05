@@ -1,6 +1,6 @@
 assembly-versioning-scheme: Major
 assembly-file-versioning-scheme: MajorMinorPatchTag
-next-version: 3.2.0
+next-version: 4.0.0
 mode: ContinuousDeployment
 branches:
   master:

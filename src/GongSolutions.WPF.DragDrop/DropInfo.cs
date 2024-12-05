@@ -11,17 +11,18 @@ using JetBrains.Annotations;
 namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
-    /// Holds information about a the target of a drag drop operation.
+    /// Holds information about the target of a drag drop operation.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The <see cref="DropInfo"/> class holds all of the framework's information about the current 
-    /// target of a drag. It is used by <see cref="IDropTarget.DragOver"/> method to determine whether 
+    /// The <see cref="DropInfo"/> class holds all the framework's information about the current
+    /// target of a drag. It is used by <see cref="IDropTarget.DragOver"/> method to determine whether
     /// the current drop target is valid, and by <see cref="IDropTarget.Drop"/> to perform the drop.
     /// </remarks>
     public class DropInfo : IDropInfo
     {
-        private readonly ItemsControl itemParent;
+        private readonly DragEventArgs eventArgs;
+        private ItemsControl itemParent;
+        private bool? acceptChildItem;
 
         /// <inheritdoc />
         public object Data { get; set; }
@@ -34,6 +35,15 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <inheritdoc />
         public Type DropTargetAdorner { get; set; }
+
+        /// <inheritdoc />
+        public Type DropTargetHintAdorner { get; set; }
+
+        /// <inheritdoc />
+        public DropHintState DropTargetHintState { get; set; }
+
+        /// <inheritdoc />
+        public string DropHintText { get; set; }
 
         /// <inheritdoc />
         public DragDropEffects Effects { get; set; }
@@ -86,14 +96,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// <inheritdoc />
         public CollectionViewGroup TargetGroup { get; protected set; }
 
-        /// <summary>
-        /// Gets the ScrollViewer control for the visual target.
-        /// </summary>
+        /// <inheritdoc />
         public ScrollViewer TargetScrollViewer { get; protected set; }
 
-        /// <summary>
-        /// Gets or Sets the ScrollingMode for the drop action.
-        /// </summary>
+        /// <inheritdoc />
         public ScrollingMode TargetScrollingMode { get; set; }
 
         /// <inheritdoc />
@@ -152,6 +158,20 @@ namespace GongSolutions.Wpf.DragDrop
         /// <inheritdoc />
         public EventType EventType { get; }
 
+        /// <inheritdoc />
+        public bool AcceptChildItem
+        {
+            get => this.acceptChildItem.GetValueOrDefault();
+            set
+            {
+                if (value != this.acceptChildItem.GetValueOrDefault())
+                {
+                    this.acceptChildItem = value;
+                    this.Update();
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the DropInfo class.
         /// </summary>
@@ -161,6 +181,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
         public DropInfo(object sender, DragEventArgs e, [CanBeNull] IDragInfo dragInfo, EventType eventType)
         {
+            this.eventArgs = e;
             this.DragInfo = dragInfo;
             this.KeyStates = e.KeyStates;
             this.EventType = eventType;
@@ -200,12 +221,14 @@ namespace GongSolutions.Wpf.DragDrop
             // visual target can be null, so give us a point...
             this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
-            if (this.VisualTarget is TabControl)
+            this.Update();
+        }
+
+        private void Update()
+        {
+            if (this.VisualTarget is TabControl && !HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition))
             {
-                if (!HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition))
-                {
-                    return;
-                }
+                return;
             }
 
             if (this.VisualTarget is ItemsControl itemsControl)
@@ -256,10 +279,11 @@ namespace GongSolutions.Wpf.DragDrop
 
                     var tvItemIsExpanded = tvItem is { HasHeader: true, HasItems: true, IsExpanded: true };
                     var itemRenderSize = tvItemIsExpanded ? tvItem.GetHeaderSize() : item.RenderSize;
+                    this.acceptChildItem ??= tvItem != null;
 
                     if (this.VisualTargetOrientation == Orientation.Vertical)
                     {
-                        var currentYPos = e.GetPosition(item).Y;
+                        var currentYPos = this.eventArgs.GetPosition(item).Y;
                         var targetHeight = itemRenderSize.Height;
 
                         var topGap = targetHeight * 0.25;
@@ -285,7 +309,7 @@ namespace GongSolutions.Wpf.DragDrop
                             this.InsertPosition = RelativeInsertPosition.BeforeTargetItem;
                         }
 
-                        if (currentYPos > topGap && currentYPos < bottomGap)
+                        if (this.AcceptChildItem && currentYPos > topGap && currentYPos < bottomGap)
                         {
                             if (tvItem != null)
                             {
@@ -300,7 +324,7 @@ namespace GongSolutions.Wpf.DragDrop
                     }
                     else
                     {
-                        var currentXPos = e.GetPosition(item).X;
+                        var currentXPos = this.eventArgs.GetPosition(item).X;
                         var targetWidth = itemRenderSize.Width;
 
                         if (this.VisualTargetFlowDirection == FlowDirection.RightToLeft)
@@ -328,7 +352,7 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                         }
 
-                        if (currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
+                        if (this.AcceptChildItem && currentXPos > targetWidth * 0.25 && currentXPos < targetWidth * 0.75)
                         {
                             if (tvItem != null)
                             {
