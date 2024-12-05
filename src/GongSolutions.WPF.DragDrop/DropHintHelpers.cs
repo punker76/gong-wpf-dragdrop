@@ -1,6 +1,4 @@
-﻿namespace GongSolutions.Wpf.DragDrop;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,197 +6,199 @@ using System.Windows.Data;
 using System.Windows.Media;
 using JetBrains.Annotations;
 
-/// <summary>
-/// Helper methods to assist with drop hints, used through <see cref="DragDrop.UseDropTargetHintProperty"/>.
-/// </summary>
-internal static class DropHintHelpers
+namespace GongSolutions.Wpf.DragDrop
 {
-    private static readonly List<DropTargetHintWeakReference> _dropTargetHintReferences = new();
-
     /// <summary>
-    /// Add reference to drop target so we can show hint when drag operation start.
+    /// Helper methods to assist with drop hints, used through <see cref="DragDrop.UseDropTargetHintProperty"/>.
     /// </summary>
-    /// <param name="dropTarget"></param>
-    public static void AddDropHintTarget(UIElement dropTarget)
+    internal static class DropHintHelpers
     {
-        _dropTargetHintReferences.Add(new DropTargetHintWeakReference(dropTarget));
-        CleanDeadwood();
-    }
+        private static readonly List<DropTargetHintWeakReference> _dropTargetHintReferences = new();
 
-    /// <summary>
-    /// Remove reference to drop target.
-    /// </summary>
-    /// <param name="dropTarget"></param>
-    public static void RemoveDropHintTarget(UIElement dropTarget)
-    {
-        _dropTargetHintReferences.RemoveAll(m => m.Target == dropTarget);
-        CleanDeadwood();
-    }
-
-    /// <summary>
-    /// Show all available drop hints.
-    /// </summary>
-    /// <param name="dragInfo"></param>
-    public static void OnDragStart(IDragInfo dragInfo)
-    {
-        CleanDeadwood();
-        var visibleTargets = GetVisibleTargets();
-        foreach (var weakReference in visibleTargets)
+        /// <summary>
+        /// Add reference to drop target so we can show hint when drag operation start.
+        /// </summary>
+        /// <param name="dropTarget"></param>
+        public static void AddDropHintTarget(UIElement dropTarget)
         {
-            var sender = weakReference.Target;
+            _dropTargetHintReferences.Add(new DropTargetHintWeakReference(dropTarget));
+            CleanDeadwood();
+        }
 
-            var handler = DragDrop.TryGetDropHandler(null, sender);
-            if (handler != null)
+        /// <summary>
+        /// Remove reference to drop target.
+        /// </summary>
+        /// <param name="dropTarget"></param>
+        public static void RemoveDropHintTarget(UIElement dropTarget)
+        {
+            _dropTargetHintReferences.RemoveAll(m => m.Target == dropTarget);
+            CleanDeadwood();
+        }
+
+        /// <summary>
+        /// Show all available drop hints.
+        /// </summary>
+        /// <param name="dragInfo"></param>
+        public static void OnDragStart(IDragInfo dragInfo)
+        {
+            CleanDeadwood();
+            var visibleTargets = GetVisibleTargets();
+            foreach (var weakReference in visibleTargets)
             {
-                var dropHintInfo = new DropHintInfo(dragInfo);
-                handler.DropHint(dropHintInfo);
-                UpdateHintAdorner(weakReference,
-                                  dropHintInfo.DropTargetHintAdorner,
-                                  new DropHintData(dropHintInfo.DropTargetHintState, dropHintInfo.DropHintText));
+                var sender = weakReference.Target;
+
+                var handler = DragDrop.TryGetDropHandler(null, sender);
+                if (handler != null)
+                {
+                    var dropHintInfo = new DropHintInfo(dragInfo);
+                    handler.DropHint(dropHintInfo);
+                    UpdateHintAdorner(weakReference,
+                                      dropHintInfo.DropTargetHintAdorner,
+                                      new DropHintData(dropHintInfo.DropTargetHintState, dropHintInfo.DropHintText));
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// Clears all hint adorner from all drop targets when drag operation is finished.
-    /// </summary>
-    public static void OnDropFinished()
-    {
-        CleanDeadwood();
-        foreach (var target in _dropTargetHintReferences)
+        /// <summary>
+        /// Clears all hint adorner from all drop targets when drag operation is finished.
+        /// </summary>
+        public static void OnDropFinished()
         {
-            target.DropTargetHintAdorner = null;
-        }
-    }
-
-    /// <summary>
-    /// Update drop hint for the current element when drag leaves a drop target.
-    /// </summary>
-    /// <param name="dropHandler">The <see cref="IDropTarget"/> for the operation</param>
-    /// <param name="dragInfo">The <see cref="IDragInfo"/> initiating the drag</param>
-    /// <param name="sender">The target element of the drag</param>
-    public static void OnDragLeave(object sender, IDropTarget dropHandler, IDragInfo dragInfo)
-    {
-        var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
-        if (wrapper != null)
-        {
-            var dropHintInfo = new DropHintInfo(dragInfo);
-            dropHandler.DropHint(dropHintInfo);
-            UpdateHintAdorner(wrapper, dropHintInfo.DropTargetHintAdorner, new DropHintData(dropHintInfo.DropTargetHintState, dropHintInfo.DropHintText));
-        }
-    }
-
-    /// <summary>
-    /// Update drop hint for the current element.
-    /// </summary>
-    /// <param name="dropInfo"></param>
-    /// <param name="sender"></param>
-    public static void DragOver(object sender, IDropInfo dropInfo)
-    {
-        var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
-        if (wrapper != null)
-        {
-            UpdateHintAdorner(wrapper, dropInfo.DropTargetHintAdorner, new DropHintData(dropInfo.DropTargetHintState, dropInfo.DropHintText));
-        }
-    }
-
-    private static void UpdateHintAdorner(DropTargetHintWeakReference weakReference, [CanBeNull] Type adornerType, DropHintData hintData)
-    {
-        if (adornerType == null)
-        {
-            // Discard existing adorner as new parameter is not set
-            weakReference.DropTargetHintAdorner = null;
-            return;
+            CleanDeadwood();
+            foreach (var target in _dropTargetHintReferences)
+            {
+                target.DropTargetHintAdorner = null;
+            }
         }
 
-
-        if (weakReference.DropTargetHintAdorner != null && weakReference.DropTargetHintAdorner.GetType() != adornerType)
+        /// <summary>
+        /// Update drop hint for the current element when drag leaves a drop target.
+        /// </summary>
+        /// <param name="dropHandler">The <see cref="IDropTarget"/> for the operation</param>
+        /// <param name="dragInfo">The <see cref="IDragInfo"/> initiating the drag</param>
+        /// <param name="sender">The target element of the drag</param>
+        public static void OnDragLeave(object sender, IDropTarget dropHandler, IDragInfo dragInfo)
         {
-            // Type has changed, so we need to remove the old adorner.
-            weakReference.DropTargetHintAdorner = null;
+            var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
+            if (wrapper != null)
+            {
+                var dropHintInfo = new DropHintInfo(dragInfo);
+                dropHandler.DropHint(dropHintInfo);
+                UpdateHintAdorner(wrapper, dropHintInfo.DropTargetHintAdorner, new DropHintData(dropHintInfo.DropTargetHintState, dropHintInfo.DropHintText));
+            }
         }
 
-        if (weakReference.DropTargetHintAdorner == null)
+        /// <summary>
+        /// Update drop hint for the current element.
+        /// </summary>
+        /// <param name="dropInfo"></param>
+        /// <param name="sender"></param>
+        public static void DragOver(object sender, IDropInfo dropInfo)
         {
-            // Create new adorner if it does not exist.
-            var dataTemplate = DragDrop.TryGetDropHintDataTemplate(weakReference.Target);
-            weakReference.DropTargetHintAdorner = DropTargetHintAdorner.CreateHintAdorner(adornerType, weakReference.Target, dataTemplate, hintData);
+            var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
+            if (wrapper != null)
+            {
+                UpdateHintAdorner(wrapper, dropInfo.DropTargetHintAdorner, new DropHintData(dropInfo.DropTargetHintState, dropInfo.DropHintText));
+            }
         }
 
-        weakReference.DropTargetHintAdorner?.Update(hintData);
-    }
+        private static void UpdateHintAdorner(DropTargetHintWeakReference weakReference, [CanBeNull] Type adornerType, DropHintData hintData)
+        {
+            if (adornerType == null)
+            {
+                // Discard existing adorner as new parameter is not set
+                weakReference.DropTargetHintAdorner = null;
+                return;
+            }
 
-    /// <summary>
-    /// Helper method for getting available hint drop targets.
-    /// </summary>
-    /// <returns></returns>
-    private static List<DropTargetHintWeakReference> GetVisibleTargets()
-    {
-        return _dropTargetHintReferences.FindAll(m => m.Target?.IsVisible == true && DragDrop.GetIsDropTarget(m.Target));
-    }
+            if (weakReference.DropTargetHintAdorner != null && weakReference.DropTargetHintAdorner.GetType() != adornerType)
+            {
+                // Type has changed, so we need to remove the old adorner.
+                weakReference.DropTargetHintAdorner = null;
+            }
 
-    /// <summary>
-    /// Clean deadwood in case we are holding on to references to dead objects.
-    /// </summary>
-    private static void CleanDeadwood()
-    {
-        _dropTargetHintReferences.RemoveAll((m => !m.IsAlive));
-    }
+            if (weakReference.DropTargetHintAdorner == null)
+            {
+                // Create new adorner if it does not exist.
+                var dataTemplate = DragDrop.TryGetDropHintDataTemplate(weakReference.Target);
+                weakReference.DropTargetHintAdorner = DropTargetHintAdorner.CreateHintAdorner(adornerType, weakReference.Target, dataTemplate, hintData);
+            }
 
-    /// <summary>
-    /// Get the default drop hint template if none other has been provided.
-    /// </summary>
-    /// <returns></returns>
-    public static DataTemplate GetDefaultDropHintTemplate()
-    {
-        var rootBorderName = "RootBorder";
-        var backgroundBrush = new SolidColorBrush(SystemColors.HighlightColor) { Opacity = 0.3 };
-        backgroundBrush.Freeze();
-        var activeBackgroundBrush = new SolidColorBrush(SystemColors.HighlightColor) { Opacity = 0.5 };
-        activeBackgroundBrush.Freeze();
-        var errorBackgroundBrush = new SolidColorBrush(Colors.DarkRed) { Opacity = 0.3 };
-        errorBackgroundBrush.Freeze();
+            weakReference.DropTargetHintAdorner?.Update(hintData);
+        }
 
-        var template = new DataTemplate();
+        /// <summary>
+        /// Helper method for getting available hint drop targets.
+        /// </summary>
+        /// <returns></returns>
+        private static List<DropTargetHintWeakReference> GetVisibleTargets()
+        {
+            return _dropTargetHintReferences.FindAll(m => m.Target?.IsVisible == true && DragDrop.GetIsDropTarget(m.Target));
+        }
 
-        var hintStateBinding = new Binding(nameof(DropHintData.HintState));
-        var activeSetter = new Setter
-                           {
-                               Property = Border.BackgroundProperty,
-                               TargetName = rootBorderName,
-                               Value = activeBackgroundBrush
-                           };
-        var errorSetter = new Setter
-                          {
-                              Property = Border.BackgroundProperty,
-                              TargetName = rootBorderName,
-                              Value = errorBackgroundBrush
-                          };
+        /// <summary>
+        /// Clean deadwood in case we are holding on to references to dead objects.
+        /// </summary>
+        private static void CleanDeadwood()
+        {
+            _dropTargetHintReferences.RemoveAll((m => !m.IsAlive));
+        }
 
-        template.Triggers.Add(new DataTrigger { Binding = hintStateBinding, Value = DropHintState.Active, Setters = { activeSetter } });
-        template.Triggers.Add(new DataTrigger { Binding = hintStateBinding, Value = DropHintState.Error, Setters = { errorSetter } });
+        /// <summary>
+        /// Get the default drop hint template if none other has been provided.
+        /// </summary>
+        /// <returns></returns>
+        public static DataTemplate GetDefaultDropHintTemplate()
+        {
+            var rootBorderName = "RootBorder";
+            var backgroundBrush = new SolidColorBrush(SystemColors.HighlightColor) { Opacity = 0.3 };
+            backgroundBrush.Freeze();
+            var activeBackgroundBrush = new SolidColorBrush(SystemColors.HighlightColor) { Opacity = 0.5 };
+            activeBackgroundBrush.Freeze();
+            var errorBackgroundBrush = new SolidColorBrush(Colors.DarkRed) { Opacity = 0.3 };
+            errorBackgroundBrush.Freeze();
 
-        var textBlockFactory = new FrameworkElementFactory(typeof(TextBlock));
-        textBlockFactory.SetValue(TextBlock.TextProperty, new Binding(nameof(DropHintData.HintText)));
-        textBlockFactory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
-        textBlockFactory.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-        textBlockFactory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Center);
+            var template = new DataTemplate();
 
-        // Create a Border factory
-        var borderFactory = new FrameworkElementFactory(typeof(Border))
-                            {
-                                Name = rootBorderName
-                            };
-        borderFactory.SetValue(Border.BorderBrushProperty, Brushes.CornflowerBlue);
-        borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(2));
-        borderFactory.SetValue(Border.BackgroundProperty, backgroundBrush);
+            var hintStateBinding = new Binding(nameof(DropHintData.HintState));
+            var activeSetter = new Setter
+                               {
+                                   Property = Border.BackgroundProperty,
+                                   TargetName = rootBorderName,
+                                   Value = activeBackgroundBrush
+                               };
+            var errorSetter = new Setter
+                              {
+                                  Property = Border.BackgroundProperty,
+                                  TargetName = rootBorderName,
+                                  Value = errorBackgroundBrush
+                              };
 
-        // Set the TextBlock as the child of the Border
-        borderFactory.AppendChild(textBlockFactory);
+            template.Triggers.Add(new DataTrigger { Binding = hintStateBinding, Value = DropHintState.Active, Setters = { activeSetter } });
+            template.Triggers.Add(new DataTrigger { Binding = hintStateBinding, Value = DropHintState.Error, Setters = { errorSetter } });
 
-        // Set the Border as the root of the visual tree
-        template.VisualTree = borderFactory;
+            var textBlockFactory = new FrameworkElementFactory(typeof(TextBlock));
+            textBlockFactory.SetValue(TextBlock.TextProperty, new Binding(nameof(DropHintData.HintText)));
+            textBlockFactory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+            textBlockFactory.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            textBlockFactory.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Center);
 
-        return template;
+            // Create a Border factory
+            var borderFactory = new FrameworkElementFactory(typeof(Border))
+                                {
+                                    Name = rootBorderName
+                                };
+            borderFactory.SetValue(Border.BorderBrushProperty, Brushes.CornflowerBlue);
+            borderFactory.SetValue(Border.BorderThicknessProperty, new Thickness(2));
+            borderFactory.SetValue(Border.BackgroundProperty, backgroundBrush);
+
+            // Set the TextBlock as the child of the Border
+            borderFactory.AppendChild(textBlockFactory);
+
+            // Set the Border as the root of the visual tree
+            template.VisualTree = borderFactory;
+
+            return template;
+        }
     }
 }

@@ -10,12 +10,11 @@ using GongSolutions.Wpf.DragDrop.Utilities;
 namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
-    /// Holds information about a the source of a drag drop operation.
+    /// Holds information about the source of a drag drop operation.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The <see cref="DragInfo"/> class holds all of the framework's information about the source
-    /// of a drag. It is used by <see cref="IDragSource.StartDrag"/> to determine whether a drag 
+    /// The <see cref="DragInfo"/> class holds all the framework's information about the source
+    /// of a drag. It is used by <see cref="IDragSource.StartDrag"/> to determine whether a drag
     /// can start, and what the dragged data should be.
     /// </remarks>
     public class DragInfo : IDragInfo
@@ -167,7 +166,7 @@ namespace GongSolutions.Wpf.DragDrop
                     this.SourceItems = selectedItems;
 
                     // Some controls (I'm looking at you TreeView!) haven't updated their
-                    // SelectedItem by this point. Check to see if there 1 or less item in 
+                    // SelectedItem by this point. Check to see if there 1 or less item in
                     // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
                     //
                     // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.
@@ -209,7 +208,7 @@ namespace GongSolutions.Wpf.DragDrop
             this.SourceItems = selectedItems;
 
             // Some controls (I'm looking at you TreeView!) haven't updated their
-            // SelectedItem by this point. Check to see if there 1 or less item in 
+            // SelectedItem by this point. Check to see if there 1 or less item in
             // the SourceItems collection, and if so, override the control's SelectedItems with the clicked item.
             //
             // The control has still the old selected items at the mouse down event, so we should check this and give only the real selected item to the user.

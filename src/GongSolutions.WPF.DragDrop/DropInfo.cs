@@ -11,11 +11,10 @@ using JetBrains.Annotations;
 namespace GongSolutions.Wpf.DragDrop
 {
     /// <summary>
-    /// Holds information about a the target of a drag drop operation.
+    /// Holds information about the target of a drag drop operation.
     /// </summary>
-    ///
     /// <remarks>
-    /// The <see cref="DropInfo"/> class holds all of the framework's information about the current
+    /// The <see cref="DropInfo"/> class holds all the framework's information about the current
     /// target of a drag. It is used by <see cref="IDropTarget.DragOver"/> method to determine whether
     /// the current drop target is valid, and by <see cref="IDropTarget.Drop"/> to perform the drop.
     /// </remarks>

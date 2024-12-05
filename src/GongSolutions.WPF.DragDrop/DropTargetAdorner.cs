@@ -1,18 +1,18 @@
 using System;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-    using JetBrains.Annotations;
-    using System.Windows.Documents;
-    using System.Windows.Media;
-
     /// <summary>
-    /// Base class for drop target adorner.
+    /// Base class for drop target Adorner.
     /// </summary>
     public abstract class DropTargetAdorner : Adorner
     {
-        private readonly AdornerLayer m_AdornerLayer;
+        [CanBeNull]
+        private readonly AdornerLayer adornerLayer;
 
         /// <summary>
         /// Gets or Sets the pen which can be used for the render process.
@@ -21,7 +21,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         public IDropInfo DropInfo { get; set; }
 
-        protected DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
+        public DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement)
         {
             this.DropInfo = dropInfo;
@@ -33,6 +33,9 @@ namespace GongSolutions.Wpf.DragDrop
             this.adornerLayer?.Add(this);
         }
 
+        /// <summary>
+        /// Detach the adorner from its adorner layer.
+        /// </summary>
         public void Detach()
         {
             if (this.adornerLayer is null)
@@ -45,6 +48,8 @@ namespace GongSolutions.Wpf.DragDrop
                 this.adornerLayer.Dispatcher.Invoke(this.Detach);
                 return;
             }
+
+            this.adornerLayer.Remove(this);
         }
 
         internal static DropTargetAdorner Create(Type type, UIElement adornedElement, IDropInfo dropInfo)
@@ -54,9 +59,10 @@ namespace GongSolutions.Wpf.DragDrop
                 throw new InvalidOperationException("The requested adorner class does not derive from DropTargetAdorner.");
             }
 
-            return type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) })?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
+            return type
+                .GetConstructor([typeof(UIElement), typeof(DropInfo)])
+                ?.Invoke([adornedElement, dropInfo])
+                as DropTargetAdorner;
         }
-        [CanBeNull]
-        private readonly AdornerLayer adornerLayer;
     }
 }

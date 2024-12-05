@@ -38,7 +38,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="dropInfo">Object which contains several drop information.</param>
         /// <remarks>
-        /// To allow a drop at the current drag position, the <see cref="DropInfo.Effects"/> property on 
+        /// To allow a drop at the current drag position, the <see cref="DropInfo.Effects"/> property on
         /// <paramref name="dropInfo"/> should be set to a value other than <see cref="DragDropEffects.None"/>
         /// and <see cref="DropInfo.Data"/> should be set to a non-null value.
         /// </remarks>
