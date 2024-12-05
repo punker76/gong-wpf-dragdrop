@@ -1,14 +1,26 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using JetBrains.Annotations;
 
 namespace GongSolutions.Wpf.DragDrop
 {
-    using JetBrains.Annotations;
-
+    /// <summary>
+    /// Base class for drop target Adorner.
+    /// </summary>
     public abstract class DropTargetAdorner : Adorner
     {
+        [CanBeNull]
+        private readonly AdornerLayer adornerLayer;
+
+        /// <summary>
+        /// Gets or Sets the pen which can be used for the render process.
+        /// </summary>
+        public Pen Pen { get; set; } = new Pen(Brushes.Gray, 2);
+
+        public IDropInfo DropInfo { get; set; }
+
         public DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement)
         {
@@ -21,13 +33,9 @@ namespace GongSolutions.Wpf.DragDrop
             this.adornerLayer?.Add(this);
         }
 
-        public IDropInfo DropInfo { get; set; }
-
         /// <summary>
-        /// Gets or Sets the pen which can be used for the render process.
+        /// Detach the adorner from its adorner layer.
         /// </summary>
-        public Pen Pen { get; set; } = new Pen(Brushes.Gray, 2);
-
         public void Detach()
         {
             if (this.adornerLayer is null)
@@ -53,8 +61,5 @@ namespace GongSolutions.Wpf.DragDrop
 
             return type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) })?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
         }
-
-        [CanBeNull]
-        private readonly AdornerLayer adornerLayer;
     }
 }

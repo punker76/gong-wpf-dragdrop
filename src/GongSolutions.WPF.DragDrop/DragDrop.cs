@@ -15,6 +15,21 @@ namespace GongSolutions.Wpf.DragDrop
     public static partial class DragDrop
     {
         /// <summary>
+        /// Get the <see cref="DataTemplate"/> for the drop hint, or return the default template if not set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        internal static DataTemplate TryGetDropHintDataTemplate(UIElement sender)
+        {
+            if (sender == null)
+            {
+                return null;
+            }
+
+            return GetDropHintDataTemplate(sender) ?? DropHintHelpers.GetDefaultDropHintTemplate();
+        }
+
+        /// <summary>
         /// Gets the drag handler from the drag info or from the sender, if the drag info is null
         /// </summary>
         /// <param name="dragInfo">the drag info object</param>
@@ -33,7 +48,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <param name="dropInfo">the drop info object</param>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
         /// <returns></returns>
-        private static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
+        internal static IDropTarget TryGetDropHandler(IDropInfo dropInfo, UIElement sender)
         {
             var dropHandler = (dropInfo?.VisualTarget != null ? GetDropHandler(dropInfo.VisualTarget) : null) ?? (sender != null ? GetDropHandler(sender) : null);
 
@@ -55,7 +70,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="sender">the sender from an event, e.g. drag over</param>
         /// <returns></returns>
-        private static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
+        internal static IDropInfoBuilder TryGetDropInfoBuilder(DependencyObject sender)
         {
             return sender != null ? GetDropInfoBuilder(sender) : null;
         }
@@ -650,6 +665,7 @@ namespace GongSolutions.Wpf.DragDrop
                                         }
                                     });
 
+                                DropHintHelpers.OnDragStart(dragInfo);
                                 var dragDropHandler = dragInfo.DragDropHandler ?? System.Windows.DragDrop.DoDragDrop;
                                 var dragDropEffects = dragDropHandler(dragInfo.VisualSource, dataObject, dragInfo.Effects);
                                 if (dragDropEffects == DragDropEffects.None)
@@ -658,9 +674,11 @@ namespace GongSolutions.Wpf.DragDrop
                                     DragDropPreview = null;
                                     DragDropEffectPreview = null;
                                     DropTargetAdorner = null;
+                                    DropHintHelpers.OnDropFinished();
                                     Mouse.OverrideCursor = null;
                                 }
 
+                                DropHintHelpers.OnDropFinished();
                                 dragHandler.DragDropOperationFinished(dragDropEffects, dragInfo);
                             }
                             catch (Exception ex)
@@ -712,7 +730,14 @@ namespace GongSolutions.Wpf.DragDrop
             var dropInfo = dropInfoBuilder?.CreateDropInfo(sender, e, dragInfo, eventType) ?? new DropInfo(sender, e, dragInfo, eventType);
             var dropHandler = TryGetDropHandler(dropInfo, sender as UIElement);
 
-            dropHandler?.DragLeave(dropInfo);
+            if(dropHandler != null)
+            {
+                dropHandler.DragLeave(dropInfo);
+                if(_dragInProgress)
+                {
+                    DropHintHelpers.OnDragLeave(sender, dropHandler, dragInfo);
+                }
+            }
 
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
@@ -757,6 +782,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             dropHandler.DragOver(dropInfo);
+            DropHintHelpers.DragOver(sender, dropInfo);
 
             if (dragInfo is not null)
             {
@@ -828,6 +854,15 @@ namespace GongSolutions.Wpf.DragDrop
                             }
                         }
 
+                        if(adorner is DropTargetHighlightAdorner highlightAdorner)
+                        {
+                            var highlightBrush = GetDropTargetHighlightBrush(dropInfo.VisualTarget);
+                            if (highlightBrush != null)
+                            {
+                                highlightAdorner.Background = highlightBrush;
+                            }
+                        }
+
                         adorner.DropInfo = dropInfo;
                         adorner.InvalidateVisual();
                     }
@@ -891,7 +926,7 @@ namespace GongSolutions.Wpf.DragDrop
             DragDropPreview = null;
             DragDropEffectPreview = null;
             DropTargetAdorner = null;
-
+            DropHintHelpers.OnDropFinished();
             dropHandler.DragOver(dropInfo);
 
             if (itemsSorter != null && dropInfo.Data is IEnumerable enumerable and not string)
@@ -901,7 +936,6 @@ namespace GongSolutions.Wpf.DragDrop
 
             dropHandler.Drop(dropInfo);
             dragHandler.Dropped(dropInfo);
-
             e.Effects = dropInfo.Effects;
             e.Handled = !dropInfo.NotHandled;
 

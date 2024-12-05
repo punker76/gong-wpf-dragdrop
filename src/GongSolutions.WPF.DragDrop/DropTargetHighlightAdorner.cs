@@ -7,10 +7,16 @@ namespace GongSolutions.Wpf.DragDrop
 {
     public class DropTargetHighlightAdorner : DropTargetAdorner
     {
-        public DropTargetHighlightAdorner(UIElement adornedElement, DropInfo dropInfo)
+        public DropTargetHighlightAdorner(UIElement adornedElement, IDropInfo dropInfo)
             : base(adornedElement, dropInfo)
         {
         }
+
+        /// <summary>
+        /// The background brush for the highlight rectangle for TreeViewItem. This can be overridden through
+        /// <see cref="DragDrop.DropTargetHighlightBrushProperty"/>. The default value is <see cref="Brushes.Transparent"/>.
+        /// </summary>
+        public Brush Background { get; set; } = Brushes.Transparent;
 
         /// <summary>
         /// When overridden in a derived class, participates in rendering operations that are directed by the layout system.
@@ -44,7 +50,7 @@ namespace GongSolutions.Wpf.DragDrop
                     rect = new Rect(location, bounds.Size);
                 }
 
-                drawingContext.DrawRoundedRectangle(null, this.Pen, rect, 2, 2);
+                drawingContext.DrawRoundedRectangle(this.Background, this.Pen, rect, 2, 2);
             }
         }
     }
