@@ -154,5 +154,13 @@ namespace GongSolutions.Wpf.DragDrop
         /// Gets the current mode of the underlying routed event.
         /// </summary>
         EventType EventType { get; }
+
+        /// <summary>
+        /// Indicates if the drop target can accept the dragged data as a child item (applies to tree view items).
+        /// </summary>
+        /// <remarks>
+        /// Changing this value will update other properties.
+        /// </remarks>
+        bool AcceptChildItem { get; set; }
     }
 }
