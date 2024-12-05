@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
              xmlns:views="clr-namespace:Showcase.WPF.DragDrop.Views"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -48,12 +48,12 @@
                                 <TreeView x:Name="LeftBoundTreeView"
                                           Grid.Row="0"
                                           Grid.Column="0"
+                                          dd:DragDrop.DropTargetHighlightBrush="{StaticResource DropTargetHighlightBrush}"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.SelectDroppedItems="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
                                           dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                          dd:DragDrop.DropTargetHighlightBrush="{StaticResource DropTargetHighlightBrush}"
                                           ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
                                           ItemsSource="{Binding Data.TreeCollection1}"
                                           Loaded="LeftBoundTreeView_Loaded">
@@ -66,10 +66,10 @@
                                 <TreeView x:Name="RightBoundTreeView"
                                           Grid.Row="0"
                                           Grid.Column="1"
+                                          dd:DragDrop.DropTargetHighlightBrush="{StaticResource DropTargetHighlightBrush}"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
                                           dd:DragDrop.UseDefaultDragAdorner="True"
-                                          dd:DragDrop.DropTargetHighlightBrush="{StaticResource DropTargetHighlightBrush}"
                                           ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
                                           ItemsSource="{Binding Data.TreeCollection2}">
                                     <TreeView.ItemTemplate>
@@ -167,13 +167,13 @@
                     <TextBlock DockPanel.Dock="Top"
                                Style="{StaticResource DefaultTextBlockStyle}"
                                Text="Demonstrates custom logic which defines if a TreeView item can receive child items (folders) or not (files)." />
-                    <TreeView dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="True"
+                    <TreeView Height="NaN"
                               dd:DragDrop.DropHandler="{Binding Data.FilesDropHandler}"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.IsDropTarget="True"
+                              dd:DragDrop.SelectDroppedItems="True"
                               dd:DragDrop.UseDefaultDragAdorner="True"
                               dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                              dd:DragDrop.SelectDroppedItems="True"
-                              Height="NaN"
                               ItemContainerStyle="{StaticResource BoundTreeViewItemStyle}"
                               ItemsSource="{Binding Data.TreeCollectionFiles}">
                         <TreeView.ItemTemplate>
@@ -182,8 +182,7 @@
                                     <iconPacks:PackIconMaterial Focusable="False"
                                                                 Foreground="Gray"
                                                                 Kind="{Binding Icon}" />
-                                    <TextBlock Margin="4,2,2,2"
-                                               Text="{Binding Caption}" />
+                                    <TextBlock Margin="4 2 2 2" Text="{Binding Caption}" />
                                 </StackPanel>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>

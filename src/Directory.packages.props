@@ -1,17 +1,25 @@
 <Project>
+    <!--
+      This enabled central package management.
+      This allows for controling all NuGet packages within the Directory.Packages.props file
+      See https://learn.microsoft.com/nuget/consume-packages/Central-Package-Management?WT.mc_id=DT-MVP-5003472
+      -->
+
     <PropertyGroup>
+        <!-- This property enables the Central Package Management feature -->
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <!-- https://learn.microsoft.com/nuget/consume-packages/Central-Package-Management?WT.mc_id=DT-MVP-5003472#transitive-pinning -->
         <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     </PropertyGroup>
 
     <ItemGroup Label="Build">
-        <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
+        <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
 
-        <PackageVersion Include="MahApps.Metro.IconPacks.FeatherIcons" Version="4.11.0" />
-        <PackageVersion Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
-        <PackageVersion Include="MahApps.Metro.IconPacks.Octicons" Version="4.11.0" />
-        <PackageVersion Include="Faker.Net" Version="2.0.154" />
-        <PackageVersion Include="Costura.Fody" Version="5.7.0" />
+        <PackageVersion Include="MahApps.Metro.IconPacks.FeatherIcons" Version="5.1.0" />
+        <PackageVersion Include="MahApps.Metro.IconPacks.Material" Version="5.1.0" />
+        <PackageVersion Include="MahApps.Metro.IconPacks.Octicons" Version="5.1.0" />
+        <PackageVersion Include="Faker.Net" Version="2.0.163" />
+        <PackageVersion Include="Costura.Fody" Version="6.0.0" />
 
         <PackageVersion Include="WpfAnalyzers" Version="4.1.1" />
     </ItemGroup>

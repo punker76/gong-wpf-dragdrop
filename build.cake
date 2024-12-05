@@ -3,13 +3,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #tool dotnet:?package=NuGetKeyVaultSignTool&version=3.2.3
-#tool dotnet:?package=AzureSignTool&version=4.0.1
-#tool dotnet:?package=GitReleaseManager.Tool&version=0.15.0
+#tool dotnet:?package=AzureSignTool&version=6.0.0
+#tool dotnet:?package=GitReleaseManager.Tool&version=0.17.0
 #tool dotnet:?package=XamlStyler.Console&version=3.2206.4
 
 #tool nuget:?package=GitVersion.CommandLine&version=5.12.0
-
-#addin nuget:?package=Cake.Figlet&version=2.0.1
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -37,8 +35,8 @@ public class BuildData
     public DotNetVerbosity DotNetVerbosity { get; }
     public bool IsLocalBuild { get; set; }
     public bool IsPullRequest { get; set; }
-    public bool IsDevelopBranch { get; set; }
-    public bool IsReleaseBranch { get; set; }
+    public bool IsPrerelease { get; set; }
+    public bool IsRunningOnCI { get; set; }
     public GitVersion GitVersion { get; set; }
 
     public BuildData(
@@ -55,9 +53,7 @@ public class BuildData
     public void SetGitVersion(GitVersion gitVersion)
     {
         GitVersion = gitVersion;
-        
-        IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("develop", GitVersion.BranchName);
-        IsReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("main", GitVersion.BranchName);
+        IsPrerelease = GitVersion.NuGetVersion.Contains("-");
     }
 }
 
@@ -72,10 +68,9 @@ Setup<BuildData>(ctx =>
         throw new NotImplementedException($"{repoName} will only build on Windows because it's not possible to target WPF and Windows Forms from UNIX.");
     }
 
-    Information(Figlet(repoName));
+    Spectre.Console.AnsiConsole.Write(new Spectre.Console.FigletText(repoName));
 
     var gitVersionPath = Context.Tools.Resolve("gitversion.exe");
-
     Information("GitVersion             : {0}", gitVersionPath);
 
     var buildData = new BuildData(
@@ -85,6 +80,7 @@ Setup<BuildData>(ctx =>
     )
     {
         IsLocalBuild = BuildSystem.IsLocalBuild,
+        IsRunningOnCI = BuildSystem.GitHubActions.IsRunningOnGitHubActions || BuildSystem.AppVeyor.IsRunningOnAppVeyor,
         IsPullRequest =
             (BuildSystem.GitHubActions.IsRunningOnGitHubActions && BuildSystem.GitHubActions.Environment.PullRequest.IsPullRequest)
             || (BuildSystem.AppVeyor.IsRunningOnAppVeyor && BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest)
@@ -97,15 +93,19 @@ Setup<BuildData>(ctx =>
     }
     buildData.SetGitVersion(GitVersion(new GitVersionSettings { ToolPath = gitVersionPath, OutputType = GitVersionOutput.Json }));
 
+    Information("GitVersion             : {0}", gitVersionPath);
     Information("Branch                 : {0}", buildData.GitVersion.BranchName);
     Information("Configuration          : {0}", buildData.Configuration);
-    Information("IsLocalBuild           : {0}", buildData.IsLocalBuild);
+    Information("IsRunningOnCI          : {0}", buildData.IsRunningOnCI);
+    Information("IsPrerelease           : {0}", buildData.IsPrerelease);
+    Information("IsPrerelease           : {0}", buildData.IsPrerelease);
     Information("Informational   Version: {0}", buildData.GitVersion.InformationalVersion);
     Information("SemVer          Version: {0}", buildData.GitVersion.SemVer);
     Information("AssemblySemVer  Version: {0}", buildData.GitVersion.AssemblySemVer);
     Information("MajorMinorPatch Version: {0}", buildData.GitVersion.MajorMinorPatch);
     Information("NuGet           Version: {0}", buildData.GitVersion.NuGetVersion);
     Information("Verbosity              : {0}", buildData.Verbosity);
+    Information("Publish folder         : {0}", publishDir);
 
     return buildData;
 });
@@ -141,11 +141,11 @@ Task("Build")
     var msbuildSettings = new DotNetMSBuildSettings
     {
       MaxCpuCount = 0,
-      Version = data.IsReleaseBranch ? data.GitVersion.MajorMinorPatch : data.GitVersion.NuGetVersion,
+      Version = data.GitVersion.NuGetVersion,
       AssemblyVersion = data.GitVersion.AssemblySemVer,
       FileVersion = data.GitVersion.AssemblySemFileVer,
       InformationalVersion = data.GitVersion.InformationalVersion,
-      ContinuousIntegrationBuild = data.IsReleaseBranch,
+      ContinuousIntegrationBuild = data.IsRunningOnCI,
       ArgumentCustomization = args => args.Append("/m").Append("/nr:false") // The /nr switch tells msbuild to quite once it's done
     };
     // msbuildSettings.FileLoggers.Add(
@@ -177,10 +177,11 @@ Task("Pack")
     var msbuildSettings = new DotNetMSBuildSettings
     {
       MaxCpuCount = 0,
-      Version = data.IsReleaseBranch ? data.GitVersion.MajorMinorPatch : data.GitVersion.NuGetVersion,
+      Version = data.GitVersion.NuGetVersion,
       AssemblyVersion = data.GitVersion.AssemblySemVer,
       FileVersion = data.GitVersion.AssemblySemFileVer,
-      InformationalVersion = data.GitVersion.InformationalVersion
+      InformationalVersion = data.GitVersion.InformationalVersion,
+      ContinuousIntegrationBuild = data.IsRunningOnCI
     }
     .WithProperty("IncludeBuildOutput", "true")
     .WithProperty("RepositoryBranch", data.GitVersion.BranchName)
@@ -211,7 +212,7 @@ Task("Pack")
 Task("Sign")
     .WithCriteria<BuildData>((context, data) => !data.IsPullRequest)
     .ContinueOnError()
-    .Does(() =>
+    .Does<BuildData>(data =>
 {
     var files = GetFiles("./src/GongSolutions.WPF.DragDrop/bin/**/*/GongSolutions.WPF.DragDrop.dll");
     SignFiles(files, "GongSolutions.WPF.DragDrop, an easy to use drag'n'drop framework for WPF applications.");
@@ -312,7 +313,7 @@ Task("CreateRelease")
     GitReleaseManagerCreate(token, "punker76", repoName, new GitReleaseManagerCreateSettings {
         Milestone         = data.GitVersion.MajorMinorPatch,
         Name              = data.GitVersion.AssemblySemFileVer,
-        Prerelease        = data.IsDevelopBranch,
+        Prerelease        = data.IsPrerelease,
         TargetCommitish   = data.GitVersion.BranchName,
         WorkingDirectory  = "."
     });
