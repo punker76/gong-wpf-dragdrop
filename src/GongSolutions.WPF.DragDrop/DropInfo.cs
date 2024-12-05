@@ -13,10 +13,10 @@ namespace GongSolutions.Wpf.DragDrop
     /// <summary>
     /// Holds information about a the target of a drag drop operation.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
-    /// The <see cref="DropInfo"/> class holds all of the framework's information about the current 
-    /// target of a drag. It is used by <see cref="IDropTarget.DragOver"/> method to determine whether 
+    /// The <see cref="DropInfo"/> class holds all of the framework's information about the current
+    /// target of a drag. It is used by <see cref="IDropTarget.DragOver"/> method to determine whether
     /// the current drop target is valid, and by <see cref="IDropTarget.Drop"/> to perform the drop.
     /// </remarks>
     public class DropInfo : IDropInfo
@@ -154,21 +154,16 @@ namespace GongSolutions.Wpf.DragDrop
         /// <inheritdoc />
         public EventType EventType { get; }
 
-        /// <summary>
-        /// Indicates if the drop target can accept the dragged data as a child item (applies to tree view items).
-        /// </summary>
-        /// <remarks>
-        /// Changing this value will update other properties.
-        /// </remarks>
+        /// <inheritdoc />
         public bool AcceptChildItem
         {
             get => this.acceptChildItem.GetValueOrDefault();
             set
             {
-                if (value != this.acceptChildItem)
+                if (value != this.acceptChildItem.GetValueOrDefault())
                 {
                     this.acceptChildItem = value;
-                    Update();
+                    this.Update();
                 }
             }
         }
@@ -222,17 +217,14 @@ namespace GongSolutions.Wpf.DragDrop
             // visual target can be null, so give us a point...
             this.DropPosition = this.VisualTarget != null ? e.GetPosition(this.VisualTarget) : new Point();
 
-            Update();
+            this.Update();
         }
 
         private void Update()
         {
-            if (this.VisualTarget is TabControl)
+            if (this.VisualTarget is TabControl && !HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition))
             {
-                if (!HitTestUtilities.HitTest4Type<TabPanel>(this.VisualTarget, this.DropPosition))
-                {
-                    return;
-                }
+                return;
             }
 
             if (this.VisualTarget is ItemsControl itemsControl)
