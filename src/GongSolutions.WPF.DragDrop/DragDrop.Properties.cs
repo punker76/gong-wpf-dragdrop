@@ -100,7 +100,6 @@ namespace GongSolutions.Wpf.DragDrop
                 uiElement.PreviewTouchUp -= DragSourceOnTouchUp;
                 uiElement.PreviewTouchMove -= DragSourceOnTouchMove;
 
-                uiElement.QueryContinueDrag -= DragSourceOnQueryContinueDrag;
                 uiElement.GiveFeedback -= DragSourceOnGiveFeedback;
 
                 if ((bool)e.NewValue)
@@ -113,7 +112,6 @@ namespace GongSolutions.Wpf.DragDrop
                     uiElement.PreviewTouchUp += DragSourceOnTouchUp;
                     uiElement.PreviewTouchMove += DragSourceOnTouchMove;
 
-                    uiElement.QueryContinueDrag += DragSourceOnQueryContinueDrag;
                     uiElement.GiveFeedback += DragSourceOnGiveFeedback;
                 }
             }

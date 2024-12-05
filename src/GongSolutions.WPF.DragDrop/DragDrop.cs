@@ -655,6 +655,10 @@ namespace GongSolutions.Wpf.DragDrop
                                 if (dragDropEffects == DragDropEffects.None)
                                 {
                                     dragHandler.DragCancelled();
+                                    DragDropPreview = null;
+                                    DragDropEffectPreview = null;
+                                    DropTargetAdorner = null;
+                                    Mouse.OverrideCursor = null;
                                 }
 
                                 dragHandler.DragDropOperationFinished(dragDropEffects, dragInfo);
@@ -675,17 +679,6 @@ namespace GongSolutions.Wpf.DragDrop
                         }
                     }
                 }
-            }
-        }
-
-        private static void DragSourceOnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
-        {
-            if (e.Action == DragAction.Cancel || e.EscapePressed || (e.KeyStates.HasFlag(DragDropKeyStates.LeftMouseButton) == e.KeyStates.HasFlag(DragDropKeyStates.RightMouseButton)))
-            {
-                DragDropPreview = null;
-                DragDropEffectPreview = null;
-                DropTargetAdorner = null;
-                Mouse.OverrideCursor = null;
             }
         }
 
