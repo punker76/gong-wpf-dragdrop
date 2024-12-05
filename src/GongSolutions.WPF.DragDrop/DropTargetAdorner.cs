@@ -59,7 +59,13 @@ namespace GongSolutions.Wpf.DragDrop
                 throw new InvalidOperationException("The requested adorner class does not derive from DropTargetAdorner.");
             }
 
-            return type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) })?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
+            var ctor = type.GetConstructor(new[] { typeof(UIElement), typeof(IDropInfo) });
+            if (ctor is null && dropInfo is DropInfo)
+            {
+                ctor = type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) });
+            }
+
+            return ctor?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
         }
     }
 }

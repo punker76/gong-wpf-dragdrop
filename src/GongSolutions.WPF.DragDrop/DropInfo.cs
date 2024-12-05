@@ -96,14 +96,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// <inheritdoc />
         public CollectionViewGroup TargetGroup { get; protected set; }
 
-        /// <summary>
-        /// Gets the ScrollViewer control for the visual target.
-        /// </summary>
+        /// <inheritdoc />
         public ScrollViewer TargetScrollViewer { get; protected set; }
 
-        /// <summary>
-        /// Gets or Sets the ScrollingMode for the drop action.
-        /// </summary>
+        /// <inheritdoc />
         public ScrollingMode TargetScrollingMode { get; set; }
 
         /// <inheritdoc />

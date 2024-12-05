@@ -1614,7 +1614,7 @@ namespace GongSolutions.Wpf.DragDrop
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.
+        /// Gets or sets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.
         /// </summary>
         public static readonly DependencyProperty DropTargetScrollViewerProperty
             = DependencyProperty.RegisterAttached("DropTargetScrollViewer",
@@ -1624,7 +1624,7 @@ namespace GongSolutions.Wpf.DragDrop
 
         /// <summary>Helper for getting <see cref="DropTargetScrollViewerProperty"/> from <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to read <see cref="DropTargetScrollViewerProperty"/> from.</param>
-        /// <remarks>Gets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.</remarks>
+        /// <remarks>Gets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.</remarks>
         /// <returns>DropTargetScrollViewer property value.</returns>
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static ScrollViewer GetDropTargetScrollViewer(DependencyObject element)
@@ -1635,7 +1635,7 @@ namespace GongSolutions.Wpf.DragDrop
         /// <summary>Helper for setting <see cref="DropTargetScrollViewerProperty"/> on <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="DependencyObject"/> to set <see cref="DropTargetScrollViewerProperty"/> on.</param>
         /// <param name="value">DropTargetScrollViewer property value.</param>
-        /// <remarks>Sets the <see cref="ScrollViewer"/> that will be used as <see cref="DropInfo.TargetScrollViewer"/>.</remarks>
+        /// <remarks>Sets the <see cref="ScrollViewer"/> that will be used as <see cref="IDropInfo.TargetScrollViewer"/>.</remarks>
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static void SetDropTargetScrollViewer(DependencyObject element, ScrollViewer value)
         {

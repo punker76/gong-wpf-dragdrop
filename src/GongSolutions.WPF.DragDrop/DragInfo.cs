@@ -197,7 +197,8 @@ namespace GongSolutions.Wpf.DragDrop
             this.SourceItems ??= Enumerable.Empty<object>();
         }
 
-        internal void RefreshSelectedItems(object sender)
+        /// <inheritdoc />
+        public virtual void RefreshSourceItems(object sender)
         {
             if (sender is not ItemsControl itemsControl)
             {
