@@ -5,6 +5,8 @@ using System.Windows.Media;
 
 namespace GongSolutions.Wpf.DragDrop
 {
+    using JetBrains.Annotations;
+
     public abstract class DropTargetAdorner : Adorner
     {
         public DropTargetAdorner(UIElement adornedElement, IDropInfo dropInfo)
@@ -14,8 +16,9 @@ namespace GongSolutions.Wpf.DragDrop
             this.IsHitTestVisible = false;
             this.AllowDrop = false;
             this.SnapsToDevicePixels = true;
-            this.m_AdornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
-            this.m_AdornerLayer.Add(this);
+            this.adornerLayer = AdornerLayer.GetAdornerLayer(adornedElement);
+            // can be null but should normally not be null
+            this.adornerLayer?.Add(this);
         }
 
         public IDropInfo DropInfo { get; set; }
@@ -25,15 +28,20 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         public Pen Pen { get; set; } = new Pen(Brushes.Gray, 2);
 
-        public void Detatch()
+        public void Detach()
         {
-            if (!m_AdornerLayer.Dispatcher.CheckAccess())
+            if (this.adornerLayer is null)
             {
-                m_AdornerLayer.Dispatcher.Invoke(this.Detatch);
                 return;
             }
 
-            this.m_AdornerLayer.Remove(this);
+            if (!this.adornerLayer.Dispatcher.CheckAccess())
+            {
+                this.adornerLayer.Dispatcher.Invoke(this.Detach);
+                return;
+            }
+
+            this.adornerLayer.Remove(this);
         }
 
         internal static DropTargetAdorner Create(Type type, UIElement adornedElement, IDropInfo dropInfo)
@@ -42,9 +50,11 @@ namespace GongSolutions.Wpf.DragDrop
             {
                 throw new InvalidOperationException("The requested adorner class does not derive from DropTargetAdorner.");
             }
+
             return type.GetConstructor(new[] { typeof(UIElement), typeof(DropInfo) })?.Invoke(new object[] { adornedElement, dropInfo }) as DropTargetAdorner;
         }
 
-        private readonly AdornerLayer m_AdornerLayer;
+        [CanBeNull]
+        private readonly AdornerLayer adornerLayer;
     }
 }

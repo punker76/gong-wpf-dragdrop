@@ -470,8 +470,8 @@ namespace GongSolutions.Wpf.DragDrop
                 return;
             }
 
-            // If the sender is a list box that allows multiple selections, ensure that clicking on an 
-            // already selected item does not change the selection, otherwise dragging multiple items 
+            // If the sender is a list box that allows multiple selections, ensure that clicking on an
+            // already selected item does not change the selection, otherwise dragging multiple items
             // is made impossible.
             if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0
                 //&& (Keyboard.Modifiers & ModifierKeys.Control) == 0 // #432
@@ -783,7 +783,7 @@ namespace GongSolutions.Wpf.DragDrop
             // If the target is an ItemsControl then update the drop target adorner.
             if (itemsControl != null)
             {
-                // Display the adorner in the control's ItemsPresenter. If there is no 
+                // Display the adorner in the control's ItemsPresenter. If there is no
                 // ItemsPresenter provided by the style, try getting hold of a
                 // ScrollContentPresenter and using that.
                 UIElement adornedElement;
@@ -1001,7 +1001,7 @@ namespace GongSolutions.Wpf.DragDrop
             get => dropTargetAdorner;
             set
             {
-                dropTargetAdorner?.Detatch();
+                dropTargetAdorner?.Detach();
                 dropTargetAdorner = value;
             }
         }
