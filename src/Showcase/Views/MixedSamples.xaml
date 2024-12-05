@@ -205,21 +205,6 @@
                                               dd:DragDrop.IsDropTarget="True"
                                               dd:DragDrop.UseDefaultDragAdorner="True"
                                               ItemsSource="{Binding Data.Collection1}">
-                                    <ItemsControl.Style>
-                                        <Style TargetType="{x:Type ItemsControl}" BasedOn="{StaticResource DefaultItemsControl}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                        <Border Background="WhiteSmoke">
-                                                            <ScrollViewer>
-                                                                <ItemsPresenter />
-                                                            </ScrollViewer>
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ItemsControl.Style>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Margin="4" Background="Bisque">
@@ -422,56 +407,54 @@
                         <TextBlock DockPanel.Dock="Top"
                                    Style="{StaticResource DefaultTextBlockStyle}"
                                    Text="Demonstrates the behaviour with an ItemsControl that has a DataTemplate with an ItemsControl and Buttons inside." />
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl Height="Auto"
-                                          dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
-                                          dd:DragDrop.DragDropContext="OuterContext"
-                                          dd:DragDrop.IsDragSource="True"
-                                          dd:DragDrop.IsDropTarget="True"
-                                          dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                                          ItemsSource="{Binding Data.Collection1}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0 1 0 1" Background="Coral">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Grid.Row="0"
-                                                       Margin="2"
-                                                       FontSize="16"
-                                                       Text="{Binding}" />
-                                            <ItemsControl Grid.Row="1"
-                                                          Height="Auto"
-                                                          dd:DragDrop.DragDropContext="InnerContext"
-                                                          dd:DragDrop.IsDragSource="True"
-                                                          dd:DragDrop.IsDropTarget="True"
-                                                          ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="{x:Type models:SubItemModel}">
-                                                        <Grid Background="#FDA07E">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Button Margin="20 0 10 0"
-                                                                        VerticalAlignment="Center"
-                                                                        Command="{Binding ButtonTestCommand}"
-                                                                        Content="{Binding Caption}" />
-                                                                <RadioButton VerticalAlignment="Center"
-                                                                             Content="Option A"
-                                                                             IsChecked="{Binding BindableOptionA}" />
-                                                                <RadioButton VerticalAlignment="Center"
-                                                                             Content="Option B"
-                                                                             IsChecked="{Binding BindableOptionB}" />
-                                                                <TextBlock VerticalAlignment="Center" Text="{Binding BindableValue}" />
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                        <ItemsControl Height="Auto"
+                                      dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                                      dd:DragDrop.DragDropContext="OuterContext"
+                                      dd:DragDrop.IsDragSource="True"
+                                      dd:DragDrop.IsDropTarget="True"
+                                      dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                                      ItemsSource="{Binding Data.Collection1}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 1 0 1" Background="Coral">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   Margin="2"
+                                                   FontSize="16"
+                                                   Text="{Binding}" />
+                                        <ItemsControl Grid.Row="1"
+                                                      Height="Auto"
+                                                      dd:DragDrop.DragDropContext="InnerContext"
+                                                      dd:DragDrop.IsDragSource="True"
+                                                      dd:DragDrop.IsDropTarget="True"
+                                                      ItemsSource="{Binding SubItemCollection, Mode=OneWay}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type models:SubItemModel}">
+                                                    <Grid Background="#FDA07E">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button Margin="20 0 10 0"
+                                                                    VerticalAlignment="Center"
+                                                                    Command="{Binding ButtonTestCommand}"
+                                                                    Content="{Binding Caption}" />
+                                                            <RadioButton VerticalAlignment="Center"
+                                                                         Content="Option A"
+                                                                         IsChecked="{Binding BindableOptionA}" />
+                                                            <RadioButton VerticalAlignment="Center"
+                                                                         Content="Option B"
+                                                                         IsChecked="{Binding BindableOptionB}" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{Binding BindableValue}" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </DockPanel>
                 </DockPanel>
             </TabItem>
