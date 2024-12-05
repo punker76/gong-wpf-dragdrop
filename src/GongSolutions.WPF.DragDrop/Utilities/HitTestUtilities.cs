@@ -24,7 +24,34 @@ namespace GongSolutions.Wpf.DragDrop.Utilities
                 return null;
             }
 
-            var hit = VisualTreeHelper.HitTest(visual, elementPosition);
+            HitTestResult hit = null;
+
+            VisualTreeHelper.HitTest(
+                visual,
+                potentialHitTestTarget =>
+                    {
+                        var isHitTestVisible = false;
+
+                        if (potentialHitTestTarget is UIElement uiElement)
+                        {
+                            isHitTestVisible = uiElement.IsHitTestVisible;
+                        }
+                        else if (potentialHitTestTarget is UIElement3D uiElement3D)
+                        {
+                            isHitTestVisible = uiElement3D.IsHitTestVisible;
+                        }
+
+                        return isHitTestVisible ? HitTestFilterBehavior.Continue : HitTestFilterBehavior.ContinueSkipSelf;
+                    },
+                result =>
+                    {
+                        hit = result;
+
+                        // Stop on first element found
+                        return HitTestResultBehavior.Stop;
+                    },
+                new PointHitTestParameters(elementPosition)
+            );
 
             return hit?.VisualHit.GetVisualAncestor<T>();
         }
