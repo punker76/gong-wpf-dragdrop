@@ -76,10 +76,10 @@ namespace GongSolutions.Wpf.DragDrop
         /// </summary>
         /// <param name="dropHandler">The <see cref="IDropTarget"/> for the operation</param>
         /// <param name="dragInfo">The <see cref="IDragInfo"/> initiating the drag</param>
-        /// <param name="sender">The target element of the drag</param>
-        public static void OnDragLeave(object sender, IDropTarget dropHandler, IDragInfo dragInfo)
+        /// <param name="dropInfo">Drop info containing with target.</param>
+        public static void OnDragLeave(IDropTarget dropHandler, IDragInfo dragInfo, IDropInfo dropInfo)
         {
-            var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
+            var wrapper = _dropTargetHintReferences.Find(m => m.Target == dropInfo.VisualTarget);
             if (wrapper != null)
             {
                 var dropHintInfo = new DropHintInfo(dragInfo);
@@ -92,10 +92,9 @@ namespace GongSolutions.Wpf.DragDrop
         /// Update drop hint for the current element.
         /// </summary>
         /// <param name="dropInfo"></param>
-        /// <param name="sender"></param>
-        public static void DragOver(object sender, IDropInfo dropInfo)
+        public static void DragOver(IDropInfo dropInfo)
         {
-            var wrapper = _dropTargetHintReferences.Find(m => m.Target == sender);
+            var wrapper = _dropTargetHintReferences.Find(m => m.Target == dropInfo.VisualTarget);
             if (wrapper != null)
             {
                 UpdateHintAdorner(wrapper, dropInfo.DropTargetHintAdorner, new DropHintData(dropInfo.DropTargetHintState, dropInfo.DropHintText));

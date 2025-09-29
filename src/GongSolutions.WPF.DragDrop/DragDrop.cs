@@ -735,7 +735,7 @@ namespace GongSolutions.Wpf.DragDrop
                 dropHandler.DragLeave(dropInfo);
                 if(_dragInProgress)
                 {
-                    DropHintHelpers.OnDragLeave(sender, dropHandler, dragInfo);
+                    DropHintHelpers.OnDragLeave(dropHandler, dragInfo, dropInfo);
                 }
             }
 
@@ -782,7 +782,7 @@ namespace GongSolutions.Wpf.DragDrop
             }
 
             dropHandler.DragOver(dropInfo);
-            DropHintHelpers.DragOver(sender, dropInfo);
+            DropHintHelpers.DragOver(dropInfo);
 
             if (dragInfo is not null)
             {

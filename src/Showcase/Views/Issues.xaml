@@ -8,6 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Showcase.WPF.DragDrop.Models"
              xmlns:viewModels="clr-namespace:Showcase.WPF.DragDrop.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="400"
              d:DesignWidth="600"
@@ -1248,6 +1249,94 @@
                 </DockPanel>
             </TabItem>
 
+            <TabItem Header="#519">
+                <TabItem.Resources>
+                    <models:ComboBoxDropHandler x:Key="ComboBoxDropHandler"/>
+                    <DataTemplate x:Key="DefaultDropHintTemplate" DataType="{x:Type dd:DropHintData}">
+                        <Border x:Name="RootBorder"
+                                Background="#008000"
+                                BorderBrush="#008000"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Text="{Binding HintText}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=HintState}" Value="Active">
+                                <Setter TargetName="RootBorder" Property="Background" Value="#263B80" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=HintState}" Value="Error">
+                                <Setter TargetName="RootBorder" Property="Background" Value="#8B0000" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </TabItem.Resources>
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource SampleHeaderTextBlockStyle}" Text="Drop hint not available for TextBox part of ComboBox when IsEditable=true." />
+                        <Button CommandParameter="519"
+                                Style="{StaticResource GitHubPullRequestButtonStyle}"
+                                ToolTip="Open #519 on Github" />
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+
+                            <UniformGrid Columns="3">
+                                <TextBlock Text="#1 allows drop only on glyph" TextWrapping="Wrap"/>
+                                <TextBlock Text="#2 allows on whole (behavior)" TextWrapping="Wrap"/>
+                                <TextBlock Text="#3 allows on whole " TextWrapping="Wrap"/>
+                                <ComboBox IsEditable="True"
+                                          Text="IsEditable"
+                                          Margin="2"
+                                          Width="150"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.DropHandler="{StaticResource ComboBoxDropHandler}"
+                                          dd:DragDrop.UseDropTargetHint="True"
+                                          dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}"
+                                />
+                                <ComboBox IsEditable="True"
+                                          Text="IsEditable Behavior"
+                                          Margin="2"
+                                          Width="150"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.DropHandler="{StaticResource ComboBoxDropHandler}"
+                                          dd:DragDrop.UseDropTargetHint="True"
+                                          dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}">
+                                    <b:Interaction.Behaviors>
+                                        <models:ComboBoxDropBehavior />
+                                    </b:Interaction.Behaviors>
+                                </ComboBox>
+                                <ComboBox IsEditable="False"
+                                          Text="IsEditable False"
+                                          Margin="2"
+                                          Width="150"
+                                          dd:DragDrop.IsDropTarget="True"
+                                          dd:DragDrop.DropHandler="{StaticResource ComboBoxDropHandler}"
+                                          dd:DragDrop.UseDropTargetHint="True"
+                                          dd:DragDrop.DropHintDataTemplate="{StaticResource DefaultDropHintTemplate}"
+                                />
+                            </UniformGrid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <ListBox MinWidth="200"
+                                         dd:DragDrop.IsDragSource="True">
+                                    <ListBoxItem Content="Item 1" />
+                                    <ListBoxItem Content="Item 2" />
+                                    <ListBoxItem Content="Item 3" />
+                                    <ListBoxItem Content="Item 4" />
+                                    <ListBoxItem Content="Item 5" />
+                                </ListBox>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
         </TabControl>
 
     </Grid>

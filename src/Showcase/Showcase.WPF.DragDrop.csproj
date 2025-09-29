@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
         <PackageReference Include="MahApps.Metro.IconPacks.FeatherIcons" />
         <PackageReference Include="MahApps.Metro.IconPacks.Material" />
         <PackageReference Include="MahApps.Metro.IconPacks.Octicons" />
